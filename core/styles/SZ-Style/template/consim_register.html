@@ -20,7 +20,12 @@
 	            </dl>
 				<dl>
 	               	<dt><label>{L_GESCHLECHT}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="geschlecht" id="geschlecht" size="50" tabindex="5" value="" /></dd>
+	               	<dd><select name="geschlecht" id="geschlecht">
+							<option value="" selected="selected">Wähle...</option>
+							<option value="m">männlich</option>
+							<option value="w">weiblich</option>
+						</select>
+					</dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_GEBURTSLAND}</label></dt>

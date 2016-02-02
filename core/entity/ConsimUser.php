@@ -96,14 +96,14 @@ class ConsimUser extends abstractEntity
 	{
 		$sql = 'SELECT *
 			FROM ' . $this->consim_user_table . '
-			WHERE user_id = ' . (int) $id;
+			WHERE user_id = ' . (int) $user_id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		if ($data === false)
+		if ($this->data === false)
 		{
-			throw new \consim\core\exception\out_of_bounds('id');
+			throw new \consim\core\exception\out_of_bounds('user_id');
 		}
 
 		return $this;

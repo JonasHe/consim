@@ -34,19 +34,19 @@ class Index
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config                  $config          	Config object
-	* @param \phpbb\controller\helper    			  $controller_helper Controller helper object
-	* @param ContainerInterface                	  $container       	Service container interface
-	* @param \phpbb\user                           $user            	User object
-	* @param \phpbb\template\template              $template        	Template object
+	* @param \phpbb\config\config               $config          	Config object
+	* @param \phpbb\controller\helper			$controller_helper	Controller helper object
+	* @param ContainerInterface                	$container       	Service container interface
+	* @param \phpbb\user                        $user            	User object
+	* @param \phpbb\template\template           $template        	Template object
 	* @return \consim\core\controller\index
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
-										 ContainerInterface $container,
-										 \phpbb\controller\helper $helper,
-                               \phpbb\user $user,
-                               \phpbb\template\template $template)
+								ContainerInterface $container,
+								\phpbb\controller\helper $helper,
+                               	\phpbb\user $user,
+                               	\phpbb\template\template $template)
 	{
 		$this->config = $config;
 		$this->container = $container;
