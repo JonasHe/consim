@@ -37,9 +37,9 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'REGISTER'					=> 'ConSim - Registrierung',
-	'PERSON'						=> 'Personenbeschreibung',
-   'VORNAME'            	=> 'Vorname',
-   'NACHNAME'           	=> 'Nachname',
+	'PERSON'					=> 'Personenbeschreibung',
+   	'VORNAME'            		=> 'Vorname',
+   	'NACHNAME'           		=> 'Nachname',
 	'GESCHLECHT'				=> 'Geschlecht',
 	'GEBURTSLAND'				=> 'Geburtsland',
 	'RELIGION'					=> 'Religion',
@@ -49,8 +49,8 @@ $lang = array_merge($lang, array(
 
 	'ATTRIBUTE'					=> 'Attribute',
 	'SPRACHE_TADSOWISCH'		=> 'Sprache: Tadsowisch',
-	'SPRACHE_BAKIRISCH'		=> 'Sprache: Bakirisch',
-	'SPRACHE_SURANISCH'		=> 'Sprache: Suranisch',
+	'SPRACHE_BAKIRISCH'			=> 'Sprache: Bakirisch',
+	'SPRACHE_SURANISCH'			=> 'Sprache: Suranisch',
 	'RHETORIK'					=> 'Rhetorik',
 	'WIRTSCHAFT'				=> 'Wirtschaft',
 	'TECHNIK'					=> 'Technik',
@@ -61,7 +61,7 @@ $lang = array_merge($lang, array(
 	'MEDIZIN'					=> 'Medizin',
 	'UBERLEBENSKUNDE'			=> 'Überlebenskunde',
 
-	'PERSON_ERSTELLEN'		=> 'Person erstellen',
-	'INPUT_FEHLT'				=> 'Ein Feld ist noch leer.',
-	'TOO_HIGH_ATTRIBUTE'		=>	'Die Summe der Attribute ist zu hoch!',
+	'PERSON_ERSTELLEN'			=> 'Person erstellen',
+	'INPUT_FEHLT'				=> 'Das Feld "%s" ist leer.',
+	'TOO_HIGH_ATTRIBUTE'		=> 'Die Summe der Attribute ist zu hoch!',
 ));

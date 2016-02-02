@@ -180,11 +180,11 @@ class Register
 		);
 
 		//Prüfe, ob ein Element leer ist und werfe einen Fehler
-		foreach($person as $element)
+		foreach($person as $element => $wert)
 		{
-			if($element == '')
+			if($wert == '')
 			{
-				$errors[] = $this->user->lang('INPUT_FEHLT');
+				$errors[] = $this->user->lang('INPUT_FEHLT', $element);
 			}
 		}
 
