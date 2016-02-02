@@ -1,0 +1,119 @@
+<!-- INCLUDE overall_header.html -->
+<form method="post" action="{U_ACTION}" id="post">
+
+<h2>{L_REGISTER}</h2>
+<div class="panel">
+	<div class="inner">
+		<h2>{L_PERSON}</h2>
+		<div class="content">
+
+			<!-- IF S_ERROR --><p class="error">{ERROR_MSG}</p><!-- ENDIF -->
+
+	         <fieldset>
+	            <dl>
+	               	<dt><label>{L_VORNAME}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="text" name="vorname" id="vorname" size="50" tabindex="3" value="" /></dd>
+	            </dl>
+	            <dl>
+	               	<dt><label>{L_NACHNAME}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="text" name="nachname" id="nachname" size="50" tabindex="4" value="" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_GESCHLECHT}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="text" name="geschlecht" id="geschlecht" size="50" tabindex="5" value="" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_GEBURTSLAND}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="text" name="geburtsland" id="geburtsland" size="50" tabindex="6" value="" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_RELIGION}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="text" name="religion" id="religion" size="50" tabindex="7" value="" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_HAARFARBE}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="text" name="haarfarbe" id="haarfarbe" size="50" tabindex="8" value="" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_AUGENFARBE}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="text" name="augenfarbe" id="augenfarbe" size="50" tabindex="9" value="" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_BESONDERE_MERKMALE}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="text" name="besondere_merkmale" id="besondere_merkmale" size="50" tabindex="10" value="" /></dd>
+	            </dl>
+			</fieldset>
+		</div>
+	</div>
+</div>
+<div class="panel">
+	<div class="inner">
+		<h2>{L_ATTRIBUTE}</h2>
+		<div class="content">
+			<fieldset>
+				<dl>
+	               	<dt><label>{L_SPRACHE_TADSOWISCH}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="sprache_tadsowisch" id="sprache_tadsowisch" size="3" tabindex="11" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_SPRACHE_BAKIRISCH}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="sprache_bakirisch" id="sprache_bakirisch" size="3" tabindex="12" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_SPRACHE_SURANISCH}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="sprache_suranisch" id="sprache_suranisch" size="3" tabindex="13" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_RHETORIK}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="rhetorik" id="rhetorik" size="3" tabindex="14" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_WIRTSCHAFT}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="wirtschaft" id="wirtschaft" size="3" tabindex="15" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_TECHNIK}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="technik" id="technik" size="3" tabindex="16" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_NAHKAMPF}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="nahkampf" id="nahkampf" size="3" tabindex="17" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_SCHUSSWAFFEN}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="schusswaffen" id="schusswaffen" size="3" tabindex="18" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_MILITARKUNDE}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="militarkunde" id="militarkunde" size="3" tabindex="19" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_SPIONAGE}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="spionage" id="spionage" size="3" tabindex="20" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_MEDIZIN}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="medizin" id="medizin" size="3" tabindex="21" value="1" max="100" min="1" /></dd>
+	            </dl>
+				<dl>
+	               	<dt><label>{L_UBERLEBENSKUNDE}</label></dt>
+	               	<dd><input class="inputbox autowidth" type="number" name="uberlebenskunde" id="uberlebenskunde" size="3" tabindex="22" value="1" max="100" min="1" /></dd>
+	            </dl>
+        	</fieldset>
+	 	</div>
+	</div>
+</div>
+<div class="panel">
+	<div class="inner">
+		<div class="content">
+			<fieldset class="submit-buttons">
+				<input type="submit" tabindex="23" name="submit" class="button1" value="{L_PERSON_ERSTELLEN}" />
+			</fieldset>
+		</div>
+	</div>
+	{S_FORM_TOKEN}
+</div>
+
+</form>
+
+<!-- INCLUDE overall_footer.html -->

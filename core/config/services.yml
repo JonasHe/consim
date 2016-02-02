@@ -1,0 +1,30 @@
+imports:
+   - { resource: tables.yml }
+
+services:
+   consim.core.controller.Index:
+      class: consim\core\controller\Index
+      arguments:
+            - @config
+            - @service_container
+            - @controller.helper
+            - @user
+            - @template
+
+   consim.core.controller.Register:
+      class: consim\core\controller\Register
+      arguments:
+            - @config
+            - @service_container
+            - @controller.helper
+            - @user
+            - @template
+            - @request
+            - @dbal.conn
+
+   consim.core.entity.ConsimUser:
+      class: consim\core\entity\ConsimUser
+      scope: prototype # scope MUST be prototype for this to work!
+      arguments:
+            - @dbal.conn
+            - %tables.consim.user%

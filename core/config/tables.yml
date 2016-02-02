@@ -1,0 +1,2 @@
+parameters:
+    tables.consim.user: %core.table_prefix%consim_user

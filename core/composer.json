@@ -1,0 +1,25 @@
+{
+	"name": "consim/core",
+	"type": "phpbb-extension",
+	"description": "ConSim",
+	"homepage": "",
+	"version": "0.0.1",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Marco Candian [tacitus89]",
+			"homepage": "http://www.develop.strategie-zone.de",
+			"email": "tacitus@strategie-zone.de",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.3"
+	},
+	"extra": {
+		"display-name": "ConSim",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.1.0-RC2,<3.2.*@dev"
+		}
+	}
+}
