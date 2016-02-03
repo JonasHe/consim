@@ -12,40 +12,71 @@
 	         <fieldset>
 	            <dl>
 	               	<dt><label>{L_VORNAME}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="vorname" id="vorname" size="50" tabindex="3" value="" /></dd>
+	               	<dd><input class="inputbox autowidth" type="text" name="vorname" id="vorname" size="50" tabindex="3" value="{VORNAME}" /></dd>
 	            </dl>
 	            <dl>
 	               	<dt><label>{L_NACHNAME}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="nachname" id="nachname" size="50" tabindex="4" value="" /></dd>
+	               	<dd><input class="inputbox autowidth" type="text" name="nachname" id="nachname" size="50" tabindex="4" value="{NACHNAME}" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_GESCHLECHT}</label></dt>
 	               	<dd><select name="geschlecht" id="geschlecht">
 							<option value="" selected="selected">Wähle...</option>
-							<option value="m">männlich</option>
-							<option value="w">weiblich</option>
+							<!-- BEGIN geschlecht -->
+							<option value="{geschlecht.WERT}">{geschlecht.NAME}</option>
+							<!-- END geschlecht -->
 						</select>
 					</dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_GEBURTSLAND}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="geburtsland" id="geburtsland" size="50" tabindex="6" value="" /></dd>
+					<dd><select name="geburtsland" id="geburtsland">
+							<option value="" selected="selected">Wähle...</option>
+							<!-- BEGIN geburtsland -->
+							<option value="{geburtsland.WERT}">{geburtsland.NAME}</option>
+							<!-- END geburtsland -->
+						</select>
+					</dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_RELIGION}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="religion" id="religion" size="50" tabindex="7" value="" /></dd>
+					<dd><select name="religion" id="religion">
+							<option value="" selected="selected">Wähle...</option>
+							<!-- BEGIN religion -->
+							<option value="{religion.WERT}">{religion.NAME}</option>
+							<!-- END religion -->
+						</select>
+					</dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_HAARFARBE}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="haarfarbe" id="haarfarbe" size="50" tabindex="8" value="" /></dd>
+					<dd><select name="haarfarbe" id="haarfarbe">
+							<option value="" selected="selected">Wähle...</option>
+							<!-- BEGIN haarfarbe -->
+							<option value="{haarfarbe.WERT}">{haarfarbe.NAME}</option>
+							<!-- END haarfarbe -->
+						</select>
+					</dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_AUGENFARBE}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="augenfarbe" id="augenfarbe" size="50" tabindex="9" value="" /></dd>
+					<dd><select name="augenfarbe" id="augenfarbe">
+							<option value="" selected="selected">Wähle...</option>
+							<!-- BEGIN augenfarbe -->
+							<option value="{augenfarbe.WERT}">{augenfarbe.NAME}</option>
+							<!-- END augenfarbe -->
+						</select>
+					</dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_BESONDERE_MERKMALE}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="besondere_merkmale" id="besondere_merkmale" size="50" tabindex="10" value="" /></dd>
+					<dd><select name="besondere_merkmale" id="besondere_merkmale">
+							<option value="" selected="selected">Wähle...</option>
+							<!-- BEGIN besondere_merkmale -->
+							<option value="{besondere_merkmale.WERT}">{besondere_merkmale.NAME}</option>
+							<!-- END besondere_merkmale -->
+						</select>
+					</dd>
 	            </dl>
 			</fieldset>
 		</div>
@@ -58,51 +89,51 @@
 			<fieldset>
 				<dl>
 	               	<dt><label>{L_SPRACHE_TADSOWISCH}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="sprache_tadsowisch" id="sprache_tadsowisch" size="3" tabindex="11" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="sprache_tadsowisch" id="sprache_tadsowisch" size="3" tabindex="11" value="{SPRACHE_TADSOWISCH}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_SPRACHE_BAKIRISCH}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="sprache_bakirisch" id="sprache_bakirisch" size="3" tabindex="12" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="sprache_bakirisch" id="sprache_bakirisch" size="3" tabindex="12" value="{SPRACHE_BAKIRISCH}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_SPRACHE_SURANISCH}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="sprache_suranisch" id="sprache_suranisch" size="3" tabindex="13" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="sprache_suranisch" id="sprache_suranisch" size="3" tabindex="13" value="{SPRACHE_SURANISCH}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_RHETORIK}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="rhetorik" id="rhetorik" size="3" tabindex="14" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="rhetorik" id="rhetorik" size="3" tabindex="14" value="{RHETORIK}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_WIRTSCHAFT}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="wirtschaft" id="wirtschaft" size="3" tabindex="15" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="wirtschaft" id="wirtschaft" size="3" tabindex="15" value="{WIRTSCHAFT}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_TECHNIK}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="technik" id="technik" size="3" tabindex="16" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="technik" id="technik" size="3" tabindex="16" value="{TECHNIK}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_NAHKAMPF}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="nahkampf" id="nahkampf" size="3" tabindex="17" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="nahkampf" id="nahkampf" size="3" tabindex="17" value="{NAHKAMPF}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_SCHUSSWAFFEN}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="schusswaffen" id="schusswaffen" size="3" tabindex="18" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="schusswaffen" id="schusswaffen" size="3" tabindex="18" value="{SCHUSSWAFFEN}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_MILITARKUNDE}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="militarkunde" id="militarkunde" size="3" tabindex="19" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="militarkunde" id="militarkunde" size="3" tabindex="19" value="{MILITARKUNDE}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_SPIONAGE}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="spionage" id="spionage" size="3" tabindex="20" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="spionage" id="spionage" size="3" tabindex="20" value="{SPIONAGE}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_MEDIZIN}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="medizin" id="medizin" size="3" tabindex="21" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="medizin" id="medizin" size="3" tabindex="21" value="{MEDIZIN}" max="100" min="1" /></dd>
 	            </dl>
 				<dl>
 	               	<dt><label>{L_UBERLEBENSKUNDE}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="uberlebenskunde" id="uberlebenskunde" size="3" tabindex="22" value="1" max="100" min="1" /></dd>
+	               	<dd><input class="inputbox autowidth" type="number" name="uberlebenskunde" id="uberlebenskunde" size="3" tabindex="22" value="{UBERLEBENSKUNDE}" max="100" min="1" /></dd>
 	            </dl>
         	</fieldset>
 	 	</div>

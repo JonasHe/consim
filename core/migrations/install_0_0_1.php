@@ -29,6 +29,7 @@ class install_0_0_1 extends \phpbb\db\migration\migration
 		return array(
 			// Set the current version
 			array('config.add', array('consim_version', $this->consim_version)),
+			array('custom', array(array($this, 'insert_consim_figure'))),
 		);
 	}
 
@@ -47,15 +48,15 @@ class install_0_0_1 extends \phpbb\db\migration\migration
 						'user_id'				=> array('UINT:8', 0),
 						'vorname'				=> array('VCHAR:255', ''),
 						'nachname'				=> array('VCHAR:255', ''),
-						'geschlecht'			=> array('VCHAR:1', ''),
-						'geburtsland'			=> array('VCHAR:3', ''),
-						'religion'				=> array('VCHAR:255', ''),
-						'haarfarbe'				=> array('VCHAR:255', ''),
-						'augenfarbe'			=> array('VCHAR:255', ''),
-						'besondere_merkmale'	=> array('VCHAR:255', ''),
+						'geschlecht'			=> array('UINT:8', 0),
+						'geburtsland'			=> array('UINT:8', 0),
+						'religion'				=> array('UINT:8', 0),
+						'haarfarbe'				=> array('UINT:8', 0),
+						'augenfarbe'			=> array('UINT:8', 0),
+						'besondere_merkmale'	=> array('UINT:8', 0),
 						'sprache_tadsowisch'	=> array('UINT:3', 1),
-						'sprache_bakirisch'	=> array('UINT:3', 1),
-						'sprache_suranisch'	=> array('UINT:3', 1),
+						'sprache_bakirisch'		=> array('UINT:3', 1),
+						'sprache_suranisch'		=> array('UINT:3', 1),
 						'rhetorik'				=> array('UINT:3', 1),
 						'wirtschaft'			=> array('UINT:3', 1),
 						'technik'				=> array('UINT:3', 1),
@@ -68,6 +69,15 @@ class install_0_0_1 extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('user_id'),
 				),
+				$this->table_prefix . 'consim_figure' => array(
+					'COLUMNS'		=> array(
+						'id'					=> array('UINT:8', null, 'auto_increment'),
+						'beschreibung'			=> array('VCHAR:255', ''),
+						'wert'					=> array('VCHAR:255', ''),
+						'translate'				=> array('VCHAR:255', ''),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
 			),
 			'add_columns'		=> array(
 				$this->table_prefix . 'users'		=> array(
@@ -75,6 +85,38 @@ class install_0_0_1 extends \phpbb\db\migration\migration
 				),
 			),
 		);
+	}
+
+	public function insert_consim_figure()
+	{
+		$figure_data = array(
+			  array('id' => '1','beschreibung' => 'geschlecht','wert' => 'm','translate' => 'MANNLICH'),
+			  array('id' => '2','beschreibung' => 'geschlecht','wert' => 'w','translate' => 'WEIBLICH'),
+			  array('id' => '3','beschreibung' => 'geburtsland','wert' => 'frt','translate' => 'FRT'),
+			  array('id' => '4','beschreibung' => 'geburtsland','wert' => 'bak','translate' => 'BAK'),
+			  array('id' => '5','beschreibung' => 'geburtsland','wert' => 'sur','translate' => 'SUR'),
+			  array('id' => '6','beschreibung' => 'religion','wert' => 'orthodox','translate' => 'ORTHODOX'),
+			  array('id' => '7','beschreibung' => 'religion','wert' => 'muslimisch','translate' => 'MUSLIMISCH'),
+			  array('id' => '8','beschreibung' => 'religion','wert' => 'atheistisch','translate' => 'ATHEISTISCH'),
+			  array('id' => '9','beschreibung' => 'haarfarbe','wert' => 'schwarz','translate' => 'SCHWARZ'),
+			  array('id' => '10','beschreibung' => 'haarfarbe','wert' => 'rot','translate' => 'ROT'),
+			  array('id' => '11','beschreibung' => 'haarfarbe','wert' => 'hbraun','translate' => 'HELLBRAUN'),
+			  array('id' => '12','beschreibung' => 'haarfarbe','wert' => 'dbraun','translate' => 'DUNKELBRAUN'),
+			  array('id' => '13','beschreibung' => 'haarfarbe','wert' => 'blond','translate' => 'BLOND'),
+			  array('id' => '14','beschreibung' => 'haarfarbe','wert' => 'dblond','translate' => 'DUNKELBLOND'),
+			  array('id' => '15','beschreibung' => 'augenfarbe','wert' => 'grun','translate' => 'GRUN'),
+			  array('id' => '16','beschreibung' => 'augenfarbe','wert' => 'grau','translate' => 'GRAU'),
+			  array('id' => '17','beschreibung' => 'augenfarbe','wert' => 'braun','translate' => 'BRAUN'),
+			  array('id' => '18','beschreibung' => 'augenfarbe','wert' => 'gbraun','translate' => 'GRUNBRAUN'),
+			  array('id' => '19','beschreibung' => 'augenfarbe','wert' => 'blau','translate' => 'BLAU'),
+			  array('id' => '20','beschreibung' => 'augenfarbe','wert' => 'blgrun','translate' => 'BLAUGRUN'),
+			  array('id' => '21','beschreibung' => 'augenfarbe','wert' => 'bernstein','translate' => 'BERNSTEIN'),
+			  array('id' => '22','beschreibung' => 'besondere_merkmale','wert' => 'narbe','translate' => 'NARBE'),
+			  array('id' => '23','beschreibung' => 'besondere_merkmale','wert' => 'schmuck','translate' => 'SCHMUCK'),
+			  array('id' => '24','beschreibung' => 'besondere_merkmale','wert' => 'deformierung','translate' => 'DEFORMIERUNG'),
+			  array('id' => '25','beschreibung' => 'besondere_merkmale','wert' => 'stark_ubergewichtig','translate' => 'STARK_UBERGEWICHTIG'),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_figure', $figure_data);
 	}
 
 	/**
@@ -88,6 +130,7 @@ class install_0_0_1 extends \phpbb\db\migration\migration
 		return array(
 			'drop_tables'		=> array(
 				$this->table_prefix . 'consim_user',
+				$this->table_prefix . 'consim_figure',
 			),
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users' => array('consim_register'),

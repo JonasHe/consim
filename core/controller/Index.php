@@ -69,7 +69,12 @@ class Index
 			return;
 		}
 
-		$consim_user = $this->container->get('consim.core.entity.ConsimUser');
+		// Add language file
+		$this->user->add_lang_ext('consim/core', 'consim_common');
+
+		$consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
+
+		echo $consim_user->getFigureData()[4]->getTranslate();
 
 		echo 'drin!';
 		return;

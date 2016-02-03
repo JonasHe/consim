@@ -8,6 +8,8 @@
 
 namespace consim\core\entity;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
 * Entity for a single ressource
 */
@@ -65,23 +67,44 @@ class ConsimUser extends abstractEntity
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
+	/** @var ContainerInterface */
+	protected $container;
+
 	/**
 	* The database table the consim user data are stored in
 	* @var string
 	*/
 	protected $consim_user_table;
 
+	/**
+	* The database table the person data are stored in
+	* @var string
+	*/
+	protected $consim_person_table;
+
+	/**
+	* Variable to save the data from person table
+	* @var array
+	*/
+	protected $figure_data;
+
    /**
 	* Constructor
 	*
 	* @param \phpbb\db\driver\driver_interface    $db                 Database object
+	* @param ContainerInterface                	  $container            Service container interface
 	* @param string                               $consim_user_table  Name of the table used to store consim user data
 	* @access public
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_user_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db, ContainerInterface $container, $consim_user_table, $consim_person_table)
 	{
 		$this->db = $db;
+		$this->container = $container;
 		$this->consim_user_table = $consim_user_table;
+		$this->consim_person_table = $consim_person_table;
+
+		//get all figure data
+		$this->figure_data = $this->figure_load();
 	}
 
 	/**
@@ -110,6 +133,27 @@ class ConsimUser extends abstractEntity
 	}
 
 	/**
+	* Load all data from the database from person table
+	*
+	* @return array with ConsimPerson Objects
+	* @access private
+	*/
+	private function figure_load()
+	{
+		$sql = 'SELECT id, beschreibung, wert, translate
+			FROM ' . $this->consim_person_table;
+		$result = $this->db->sql_query($sql);
+		while($row = $this->db->sql_fetchrow($result))
+        {
+            $figure_data[$row['id']] = $this->container->get('consim.core.entity.ConsimFigure')
+									  ->import($row);
+        }
+		$this->db->sql_freeresult($result);
+
+		return $figure_data;
+	}
+
+	/**
 	* Insert the Data for the first time
 	*
 	* Will throw an exception if the data was already inserted (call save() instead)
@@ -118,23 +162,20 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
-	public function insert()
+	public function insert($user_id)
 	{
-		if (!empty($this->data['user_id']))
+		//user_id muss bekannt sein
+		if (empty($user_id) || $user_id < 0)
 		{
 			// The data already exists
 			throw new \consim\core\exception\out_of_bounds('user_id');
 		}
 
-		// Make extra sure there is no id set
-		unset($this->data['user_id']);
+		$this->data['user_id'] = $user_id;
 
 		// Insert the data to the database
 		$sql = 'INSERT INTO ' . $this->consim_user_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
-
-		// Set the id using the id created by the SQL insert
-		$this->data['user_id'] = (int) $this->db->sql_nextid();
 
 		return $this;
 	}
@@ -243,7 +284,7 @@ class ConsimUser extends abstractEntity
 	*/
 	public function setGeschlecht($geschlecht)
 	{
-		return $this->setString('geschlecht', $geschlecht, 1);
+		return $this->setFigure('geschlecht', $geschlecht);
 	}
 
    /**
@@ -266,7 +307,7 @@ class ConsimUser extends abstractEntity
 	*/
 	public function setGeburtsland($geburtsland)
 	{
-		return $this->setString('geburtsland', $geburtsland, 3);
+		return $this->setFigure('geburtsland', $geburtsland);
 	}
 
    /**
@@ -289,7 +330,7 @@ class ConsimUser extends abstractEntity
 	*/
 	public function setReligion($religion)
 	{
-		return $this->setString('religion', $religion);
+		return $this->setFigure('religion', $religion);
 	}
 
    /**
@@ -312,7 +353,7 @@ class ConsimUser extends abstractEntity
 	*/
 	public function setHaarfarbe($haarfarbe)
 	{
-		return $this->setString('haarfarbe', $haarfarbe);
+		return $this->setFigure('haarfarbe', $haarfarbe);
 	}
 
    /**
@@ -335,7 +376,7 @@ class ConsimUser extends abstractEntity
 	*/
 	public function setAugenfarbe($augenfarbe)
 	{
-		return $this->setString('augenfarbe', $augenfarbe);
+		return $this->setFigure('augenfarbe', $augenfarbe);
 	}
 
    /**
@@ -358,7 +399,7 @@ class ConsimUser extends abstractEntity
 	*/
 	public function setBesondereMerkmale($besondere_merkmale)
 	{
-		return $this->setString('besondere_merkmale', $besondere_merkmale);
+		return $this->setFigure('besondere_merkmale', $besondere_merkmale);
 	}
 
    /**
@@ -635,5 +676,38 @@ class ConsimUser extends abstractEntity
 	public function setUberlebenskunde($uberlebenskunde)
 	{
 		return $this->setInteger('uberlebenskunde', $uberlebenskunde, true, 100);
+	}
+
+	/**
+ 	* Get Data from Figure
+ 	*
+ 	* @return Array of ConSim-Figure objects
+ 	* @access public
+ 	*/
+	public function getFigureData()
+	{
+		return $this->figure_data;
+	}
+
+	/**
+ 	* Überprüft ob String auch im Figure existiert
+	* und fügt die ID-Nr ein
+ 	*
+ 	* @return bool
+ 	* @access private
+ 	*/
+	private function setFigure($varname, $string)
+	{
+		foreach($this->figure_data as $element)
+		{
+			//Stimmen die Werte überein?
+			if($element->getWert() == $string && $varname == $element->getBeschreibung())
+			{
+				//Setze ID
+				return $this->setInteger($varname, $element->getId());
+			}
+		}
+
+		throw new \consim\core\exception\unexpected_value(array($varname, 'ILLEGAL_CHARACTERS'));
 	}
 }

@@ -105,7 +105,7 @@ abstract class abstractEntity
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
-	abstract public function insert();
+	//abstract public function insert();
 
 	/**
 	* Save the current settings to the database

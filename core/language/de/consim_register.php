@@ -36,31 +36,6 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'REGISTER'					=> 'ConSim - Registrierung',
-	'PERSON'					=> 'Personenbeschreibung',
-   	'VORNAME'            		=> 'Vorname',
-   	'NACHNAME'           		=> 'Nachname',
-	'GESCHLECHT'				=> 'Geschlecht',
-	'GEBURTSLAND'				=> 'Geburtsland',
-	'RELIGION'					=> 'Religion',
-	'HAARFARBE'					=> 'Haarfarbe',
-	'AUGENFARBE'				=> 'Augenfarbe',
-	'BESONDERE_MERKMALE'		=> 'Besondere Merkmale',
-
-	'ATTRIBUTE'					=> 'Attribute',
-	'SPRACHE_TADSOWISCH'		=> 'Sprache: Tadsowisch',
-	'SPRACHE_BAKIRISCH'			=> 'Sprache: Bakirisch',
-	'SPRACHE_SURANISCH'			=> 'Sprache: Suranisch',
-	'RHETORIK'					=> 'Rhetorik',
-	'WIRTSCHAFT'				=> 'Wirtschaft',
-	'TECHNIK'					=> 'Technik',
-	'NAHKAMPF'					=> 'Nahkampf',
-	'SCHUSSWAFFEN'				=> 'Schusswaffen',
-	'MILITARKUNDE'				=> 'Militärkunde',
-	'SPIONAGE'					=> 'Spionage',
-	'MEDIZIN'					=> 'Medizin',
-	'UBERLEBENSKUNDE'			=> 'Überlebenskunde',
-
 	'PERSON_ERSTELLEN'			=> 'Person erstellen',
 	'INPUT_FEHLT'				=> 'Das Feld "%s" ist leer.',
 	'TOO_HIGH_ATTRIBUTE'		=> 'Die Summe der Attribute ist zu hoch!',

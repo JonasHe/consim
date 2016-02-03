@@ -87,10 +87,16 @@ class Register
 		add_form_key('consim_register');
 
 		// Add language file
+		$this->user->add_lang_ext('consim/core', 'consim_common');
+		// Add language file
 		$this->user->add_lang_ext('consim/core', 'consim_register');
 
 		// Create an array to collect errors that will be output to the user
 		$errors = array();
+
+		//get the consimUser Entity
+		$consim_user = $this->container->get('consim.core.entity.ConsimUser');
+		$figure = $consim_user->getFigureData();
 
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('submit'))
@@ -103,9 +109,6 @@ class Register
 
 			//Check die eingehenden request data
 			$data = $this->check_data($errors);
-
-			//get the consimUser Entity
-			$consim_user = $this->container->get('consim.core.entity.ConsimUser');
 
 			// Set the data in the entity
 			foreach ($data as $entity_function => $user_data)
@@ -133,12 +136,35 @@ class Register
 			}
 		}
 
+		$this->createSelection($figure);
+
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			'S_ERROR'	=> (sizeof($errors)) ? true : false,
 			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
 
 			'U_ACTION'	=> $this->helper->route('consim_core_register'),
+
+			'VORNAME'						=> $this->request->variable('vorname', ''),
+	    	'NACHNAME'						=> $this->request->variable('nachname', ''),
+	    	'GESCHLECHT'					=> $this->request->variable('geschlecht', ''),
+	    	'GEBURTSLAND'					=> $this->request->variable('geburtsland', ''),
+	    	'RELIGION'						=> $this->request->variable('religion', ''),
+	    	'HAARFARBE'						=> $this->request->variable('haarfarbe', ''),
+	    	'AUGENFARBE'					=> $this->request->variable('augenfarbe', ''),
+	    	'BESONDERE_MERKMALE'			=> $this->request->variable('besondere_merkmale', ''),
+	    	'SPRACHE_TADSOWISCH'			=> $this->request->variable('sprache_tadsowisch', 1),
+	    	'SPRACHE_BAKIRISCH'				=> $this->request->variable('sprache_bakirisch', 1),
+	    	'SPRACHE_SURANISCH'				=> $this->request->variable('sprache_suranisch', 1),
+	    	'RHETORIK'						=> $this->request->variable('rhetorik', 1),
+	    	'WIRTSCHAFT'					=> $this->request->variable('wirtschaft', 1),
+	      	'TECHNIK'						=> $this->request->variable('technik', 1),
+	      	'NAHKAMPF'						=> $this->request->variable('nahkampf', 1),
+			'SCHUSSWAFFEN'					=> $this->request->variable('schusswaffen', 1),
+	      	'MILITARKUNDE'					=> $this->request->variable('militarkunde', 1),
+	      	'SPIONAGE'						=> $this->request->variable('spionage', 1),
+			'MEDIZIN'						=> $this->request->variable('medizin', 1),
+	      	'UBERLEBENSKUNDE'				=> $this->request->variable('uberlebenskunde', 1),
 		));
 
 		// Send all data to the template file
@@ -208,12 +234,32 @@ class Register
 	*/
 	private function addUserToConsim($consim_user)
 	{
-		$consim_user->insert();
+		$consim_user->insert($this->user->data['user_id']);
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
 			SET consim_register = 1
 			WHERE user_id = ' . $this->user->data['user_id'];
 		$this->db->sql_query($sql);
+	}
+
+	/**
+	* Erzeugt die Auswahl
+	*
+	* @param $figure Array
+	* @return null
+	* @access private
+	*/
+	private function createSelection($figure)
+	{
+		foreach($figure as $element)
+		{
+			$select = array(
+				'NAME'	=> $this->user->lang($element->getTranslate()),
+				'WERT'	=> $element->getWert(),
+			);
+
+			$this->template->assign_block_vars($element->getBeschreibung(), $select);
+		}
 	}
 
 
