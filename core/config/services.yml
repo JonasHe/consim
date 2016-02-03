@@ -10,7 +10,8 @@ services:
             - @controller.helper
             - @user
             - @template
-
+            - @request
+            - @dbal.conn
     consim.core.controller.Register:
         class: consim\core\controller\Register
         arguments:

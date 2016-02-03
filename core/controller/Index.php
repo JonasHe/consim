@@ -31,6 +31,12 @@ class Index
 	/** @var \phpbb\template\template */
 	protected $template;
 
+	/** @var \phpbb\request\request */
+	protected $request;
+
+	/** @var \phpbb\db\driver\driver_interface */
+	protected $db;
+
 	/**
 	* Constructor
 	*
@@ -39,6 +45,8 @@ class Index
 	* @param ContainerInterface                	$container       	Service container interface
 	* @param \phpbb\user                        $user            	User object
 	* @param \phpbb\template\template           $template        	Template object
+	* @param \phpbb\request\request         	$request        	Request object
+	* @param \phpbb\db\driver\driver_interface	$db             	Database object
 	* @return \consim\core\controller\index
 	* @access public
 	*/
@@ -46,13 +54,17 @@ class Index
 								ContainerInterface $container,
 								\phpbb\controller\helper $helper,
                                	\phpbb\user $user,
-                               	\phpbb\template\template $template)
+                               	\phpbb\template\template $template,
+								\phpbb\request\request $request,
+								\phpbb\db\driver\driver_interface $db)
 	{
 		$this->config = $config;
 		$this->container = $container;
 		$this->helper = $helper;
 		$this->user = $user;
 		$this->template = $template;
+		$this->request = $request;
+		$this->db = $db;
 	}
 
 	/**
@@ -74,9 +86,39 @@ class Index
 
 		$consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
-		echo $consim_user->getFigureData()[4]->getTranslate();
+		// Is the form being submitted to us?
+		if ($this->request->is_set_post('submit'))
+		{
+			$sql = 'UPDATE ' . USERS_TABLE . '
+				SET consim_register = 0
+				WHERE user_id = ' . $this->user->data['user_id'];
+			$this->db->sql_query($sql);
 
-		echo 'drin!';
-		return;
+			$sql = 'DELETE FROM phpbb_consim_user
+				WHERE user_id = ' . $this->user->data['user_id'];
+			$this->db->sql_query($sql);
+
+			//Leite den User weiter zum Consim Register
+			redirect($this->helper->route('consim_core_register'));
+		}
+
+		// Set output vars for display in the template
+		$this->template->assign_vars(array(
+	    	'SPRACHE_TADSOWISCH'			=> $consim_user->getSpracheTadsowisch(),
+	    	'SPRACHE_BAKIRISCH'				=> $consim_user->getSpracheBakirisch(),
+	    	'SPRACHE_SURANISCH'				=> $consim_user->getSpracheSuranisch(),
+	    	'RHETORIK'						=> $consim_user->getRhetorik(),
+	    	'WIRTSCHAFT'					=> $consim_user->getWirtschaft(),
+	      	'TECHNIK'						=> $consim_user->getTechnik(),
+	      	'NAHKAMPF'						=> $consim_user->getNahkampf(),
+			'SCHUSSWAFFEN'					=> $consim_user->getSchusswaffen(),
+	      	'MILITARKUNDE'					=> $consim_user->getMilitarkunde(),
+	      	'SPIONAGE'						=> $consim_user->getSpionage(),
+			'MEDIZIN'						=> $consim_user->getMedizin(),
+	      	'UBERLEBENSKUNDE'				=> $consim_user->getUberlebenskunde(),
+		));
+
+		// Send all data to the template file
+		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
 	}
 }
