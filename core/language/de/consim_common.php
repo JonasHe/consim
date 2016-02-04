@@ -37,7 +37,7 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'REGISTER'                 	=> 'ConSim - Registrierung',
-	'PERSON'                   	=> 'Personenbeschreibung',
+	'PERSON'                   	=> 'Charakterbeschreibung',
    	'VORNAME'                  	=> 'Vorname',
    	'NACHNAME'           	   	=> 'Nachname',
 	'GESCHLECHT'		       	=> 'Geschlecht',
@@ -47,7 +47,7 @@ $lang = array_merge($lang, array(
 	'AUGENFARBE'               	=> 'Augenfarbe',
 	'BESONDERE_MERKMALE'       	=> 'Besondere Merkmale',
 
-	'ATTRIBUTE'                	=> 'Attribute',
+	'ATTRIBUTE'                	=> 'Fähigkeit',
 	'SPRACHE_TADSOWISCH'       	=> 'Sprache: Tadsowisch',
 	'SPRACHE_BAKIRISCH'        	=> 'Sprache: Bakirisch',
 	'SPRACHE_SURANISCH'        	=> 'Sprache: Suranisch',
@@ -61,11 +61,11 @@ $lang = array_merge($lang, array(
 	'MEDIZIN'                  	=> 'Medizin',
 	'UBERLEBENSKUNDE'          	=> 'Überlebenskunde',
 
-	'MANNLICH'                 	=> 'männlich',
-	'WEIBLICH'               	=> 'weiblich',
-	'FRT'						=> 'FRT',
-	'BAK'						=> 'BAK',
-	'SUR'						=> 'SUR',
+	'MANNLICH'                 	=> 'Männlich',
+	'WEIBLICH'               	=> 'Weiblich',
+	'FRT'						=> 'Tadsowien',
+	'BAK'						=> 'Bakirien',
+	'SUR'						=> 'Suranien',
 	'ORTHODOX'					=> 'Orthodox',
 	'MUSLIMISCH'				=> 'Muslimisch',
 	'ATHEISTISCH'				=> 'Atheistisch',
@@ -83,7 +83,7 @@ $lang = array_merge($lang, array(
 	'BLAUGRUN'					=> 'Blaugrün',
 	'BERNSTEIN'					=> 'Bernstein',
 	'NARBE'						=> 'Narbe',
-	'SCHMUCK'					=> 'Grau',
+	'SCHMUCK'					=> 'Schmuck',
 	'DEFORMIERUNG'				=> 'Deformierung',
-	'STARK_UBERGEWICHTIG'		=> 'stark Übergewichtig',
+	'STARK_UBERGEWICHTIG'		=> 'Stark Übergewichtig',
 ));
