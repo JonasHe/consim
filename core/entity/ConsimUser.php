@@ -23,22 +23,25 @@ class ConsimUser extends abstractEntity
     	'user_id'						=> 'integer',
       	'vorname'						=> 'string',
       	'nachname'						=> 'string',
-      	'geschlecht'					=> 'string',
-      	'geburtsland'					=> 'string',
-      	'religion'						=> 'string',
-      	'haarfarbe'						=> 'string',
-      	'augenfarbe'					=> 'string',
-      	'besondere_merkmale'			=> 'string',
+      	'geschlecht'					=> 'integer',
+      	'geburtsland'					=> 'integer',
+      	'religion'						=> 'integer',
+      	'haarfarbe'						=> 'integer',
+      	'augenfarbe'					=> 'integer',
+      	'besondere_merkmale'			=> 'integer',
       	'sprache_tadsowisch'			=> 'integer',
       	'sprache_bakirisch'				=> 'integer',
       	'sprache_suranisch'				=> 'integer',
       	'rhetorik'						=> 'integer',
+		'administration'				=> 'integer',
       	'wirtschaft'					=> 'integer',
       	'technik'						=> 'integer',
       	'nahkampf'						=> 'integer',
 		'schusswaffen'					=> 'integer',
+		'sprengmittel'					=> 'integer',
       	'militarkunde'					=> 'integer',
       	'spionage'						=> 'integer',
+		'schmuggel'						=> 'integer',
 		'medizin'						=> 'integer',
       	'uberlebenskunde'				=> 'integer',
 	);
@@ -52,12 +55,15 @@ class ConsimUser extends abstractEntity
       	'sprache_bakirisch',
       	'sprache_suranisch',
       	'rhetorik',
+		'administration',
       	'wirtschaft',
       	'technik',
       	'nahkampf',
 		'schusswaffen',
+		'sprengmittel',
       	'militarkunde',
       	'spionage',
+		'schmuggel',
 		'medizin',
       	'uberlebenskunde',
 	);
@@ -494,6 +500,29 @@ class ConsimUser extends abstractEntity
 		return $this->setInteger('rhetorik', $rhetorik, true, 100);
 	}
 
+	/**
+ 	* Get Administration
+ 	*
+ 	* @return string Administration
+ 	* @access public
+ 	*/
+ 	public function getAdministration()
+ 	{
+ 		return $this->getInteger($this->data['administration']);
+ 	}
+ 	/**
+ 	* Set Administration
+ 	*
+ 	* @param string $administration
+ 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+ 	* @access public
+ 	* @throws \consim\core\exception\unexpected_value
+ 	*/
+ 	public function setAdministration($administration)
+ 	{
+ 		return $this->setInteger('administration', $administration, true, 100);
+ 	}
+
    /**
 	* Get wirtschaft
 	*
@@ -586,6 +615,29 @@ class ConsimUser extends abstractEntity
 		return $this->setInteger('schusswaffen', $schusswaffen, true, 100);
 	}
 
+	/**
+	* Get Sprengmittel
+	*
+	* @return string Sprengmittel
+	* @access public
+	*/
+	public function getSprengmittel()
+	{
+		return $this->getInteger($this->data['sprengmittel']);
+	}
+	/**
+	* Set Sprengmittel
+	*
+	* @param string $sprengmittel
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setSprengmittel($sprengmittel)
+	{
+		return $this->setInteger('sprengmittel', $sprengmittel, true, 100);
+	}
+
    /**
 	* Get militarkunde
 	*
@@ -630,6 +682,29 @@ class ConsimUser extends abstractEntity
 	public function setSpionage($spionage)
 	{
 		return $this->setInteger('spionage', $spionage, true, 100);
+	}
+
+	/**
+	* Get Schmuggel
+	*
+	* @return string Schmuggel
+	* @access public
+	*/
+	public function getSchmuggel()
+	{
+		return $this->getInteger($this->data['schmuggel']);
+	}
+	/**
+	* Set Schmuggel
+	*
+	* @param string $schmuggel
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setSchmuggel($schmuggel)
+	{
+		return $this->setInteger('schmuggel', $schmuggel, true, 100);
 	}
 
 	/**
