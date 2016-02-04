@@ -180,7 +180,7 @@ abstract class abstractEntity
 		// Enforce a string
 		$varname = (string) $varname;
 		// If the data is less than 0, it's not unsigned and we'll throw an exception
-		if (($unsigned && $integer < 0) || ($integer >= $max_int))
+		if (($unsigned && $integer < 0) || ($integer > $max_int))
 		{
 			throw new \consim\core\exception\out_of_bounds($integer);
 		}

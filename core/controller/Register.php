@@ -118,7 +118,7 @@ class Register
 					// Calling the set_$entity_function on the entity and passing it $consim_user
 					call_user_func_array(array($consim_user, 'set' . $entity_function), array($user_data));
 				}
-				catch (\phpbb\boardrules\exception\base $e)
+				catch (\consim\core\exception\base $e)
 				{
 					// Catch exceptions and add them to errors array
 					$errors[] = $e->get_message($this->user);
