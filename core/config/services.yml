@@ -2,6 +2,15 @@ imports:
     - { resource: tables.yml }
 
 services:
+    consim.core.listener:
+        class: consim\core\event\listener
+        arguments:
+            - @config
+            - @controller.helper
+            - @template
+            - @user
+        tags:
+            - { name: event.listener }
     consim.core.controller.Index:
         class: consim\core\controller\Index
         arguments:

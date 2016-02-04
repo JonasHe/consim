@@ -36,6 +36,10 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
+	//ConSim header
+	'CONSIM'					=> 'ConSim',
+	'CONSIM_TITLE'				=> 'ConSim',
+
 	'REGISTER'                 	=> 'ConSim - Registrierung',
 	'PERSON'                   	=> 'Charakterbeschreibung',
    	'VORNAME'                  	=> 'Vorname',
@@ -52,12 +56,15 @@ $lang = array_merge($lang, array(
 	'SPRACHE_BAKIRISCH'        	=> 'Sprache: Bakirisch',
 	'SPRACHE_SURANISCH'        	=> 'Sprache: Suranisch',
 	'RHETORIK'                 	=> 'Rhetorik',
+	'ADMINISTRATION'            => 'Administration',
 	'WIRTSCHAFT'               	=> 'Wirtschaft',
 	'TECHNIK'                  	=> 'Technik',
 	'NAHKAMPF'                 	=> 'Nahkampf',
 	'SCHUSSWAFFEN'             	=> 'Schusswaffen',
+	'SPRENGMITTEL'             	=> 'Sprengmittel',
     'MILITARKUNDE'             	=> 'Militärkunde',
 	'SPIONAGE'                 	=> 'Spionage',
+	'SCHMUGGEL'                 => 'Schmuggel',
 	'MEDIZIN'                  	=> 'Medizin',
 	'UBERLEBENSKUNDE'          	=> 'Überlebenskunde',
 
