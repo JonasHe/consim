@@ -87,7 +87,7 @@ class Index
 		$consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
 		// Is the form being submitted to us?
-		if ($this->request->is_set_post('submit'))
+		if ($this->request->is_set_post('delete'))
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
 				SET consim_register = 0

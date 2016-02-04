@@ -1,7 +1,7 @@
 consim_core_index:
-    pattern: /consim
+    pattern: /game
     defaults: { _controller: consim.core.controller.Index:display }
 
 consim_core_register:
-    pattern: /consim/register
+    pattern: /game/register
     defaults: { _controller: consim.core.controller.Register:display }
