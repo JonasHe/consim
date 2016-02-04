@@ -244,7 +244,7 @@ class ConsimUser extends abstractEntity
 	*/
 	public function setVorname($vorname)
 	{
-		return $this->setString('vorname', $vorname);
+		return $this->setString('vorname', $vorname, 255, 2);
 	}
 
    /**
@@ -267,7 +267,7 @@ class ConsimUser extends abstractEntity
 	*/
 	public function setNachname($nachname)
 	{
-		return $this->setString('nachname', $nachname);
+		return $this->setString('nachname', $nachname, 255, 2);
 	}
 
    /**
@@ -773,6 +773,12 @@ class ConsimUser extends abstractEntity
  	*/
 	private function setFigure($varname, $string)
 	{
+		//$string not empty
+		if(empty($string))
+		{
+			throw new \consim\core\exception\invalid_argument(array($varname, 'FIELD_MISSING'));
+		}
+
 		foreach($this->figure_data as $element)
 		{
 			//Stimmen die Werte überein?
@@ -783,6 +789,6 @@ class ConsimUser extends abstractEntity
 			}
 		}
 
-		throw new \consim\core\exception\unexpected_value(array($varname, 'ILLEGAL_CHARACTERS'));
+		throw new \consim\core\exception\invalid_argument(array($varname, 'ILLEGAL_CHARACTERS'));
 	}
 }

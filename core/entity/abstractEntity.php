@@ -135,17 +135,22 @@ abstract class abstractEntity
 	*
 	* @param string $varname Name of variable in data array
 	* @param string $string New value of $varname
-	* @param integer $characters Allowed number of characters; Default: 255
+	* @param integer $max_char Allowed number of characters; Default: 255
+	* @param integer $min_char Minimum number of characters; Default: 0
 	* @return page_interface $this object for chaining calls; load()->set()->save()
 	* @access protected
 	*/
-	protected function setString($varname, $string, $characters = 255)
+	protected function setString($varname, $string, $max_char = 255, $min_char = 0)
 	{
 		// Enforce a string
 		$string = (string) $string;
 		$varname = (string) $varname;
+		if (strlen($string) <= $min_char)
+		{
+			throw new \consim\core\exception\invalid_argument(array($varname, 'TOO_SHORT'));
+		}
 		// We limit the name length to $characters characters
-		if (truncate_string($string, $characters) != $string)
+		if (truncate_string($string, $max_char) != $string)
 		{
 			throw new \consim\core\exception\unexpected_value(array($varname, 'TOO_LONG'));
 		}

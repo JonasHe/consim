@@ -108,22 +108,7 @@ class Register
 			}
 
 			//Check die eingehenden request data
-			$data = $this->check_data($errors);
-
-			// Set the data in the entity
-			foreach ($data as $entity_function => $user_data)
-			{
-				try
-				{
-					// Calling the set_$entity_function on the entity and passing it $consim_user
-					call_user_func_array(array($consim_user, 'set' . $entity_function), array($user_data));
-				}
-				catch (\consim\core\exception\base $e)
-				{
-					// Catch exceptions and add them to errors array
-					$errors[] = $e->get_message($this->user);
-				}
-			}
+			$data = $this->check_data($errors, $consim_user);
 
 			// If no errors, process the form data
 			if (empty($errors))
@@ -178,10 +163,11 @@ class Register
 	* Prüfe die eingehenden Daten
 	*
 	* @param $errors Array
+	* @param $consim_user #consim.core.entity.ConsimUser-Object
 	* @return Array
 	* @access private
 	*/
-	private function check_data(&$errors)
+	private function check_data(&$errors, $consim_user)
 	{
 		$person = array(
 			'Vorname'						=> $this->request->variable('vorname', ''),
@@ -211,23 +197,30 @@ class Register
 	      	'Uberlebenskunde'				=> $this->request->variable('uberlebenskunde', 1),
 		);
 
-		//Prüfe, ob ein Element leer ist und werfe einen Fehler
-		foreach($person as $element => $wert)
-		{
-			if($wert == '')
-			{
-				$errors[] = $this->user->lang('INPUT_FEHLT', $element);
-			}
-		}
-
 		//Die Summe der Attribute darf einen bestimmten Wert nicht überschreiten
-		if(array_sum($attribute) > 20)
+		if(array_sum($attribute) > 50)
 		{
 			$errors[] = $this->user->lang('TOO_HIGH_ATTRIBUTE');
 		}
 
-		//Gebe beide Arrays als ein Array zurück
-		return array_merge($person, $attribute);
+		$data = array_merge($person, $attribute);
+
+		// Set the data in the entity
+		foreach ($data as $entity_function => $wert)
+		{
+			try
+			{
+				// Calling the set_$entity_function on the entity and passing it $consim_user
+				call_user_func_array(array($consim_user, 'set' . $entity_function), array($wert));
+			}
+			catch (\consim\core\exception\base $e)
+			{
+				// Catch exceptions and add them to errors array
+				$errors[] = $e->get_message($this->user);
+			}
+		}
+
+		return $data;
 	}
 
 	/**
@@ -259,9 +252,16 @@ class Register
 	{
 		foreach($figure as $element)
 		{
+			$selected = 0;
+			if ($this->request->variable($element->getBeschreibung(), '') == $element->getWert())
+			{
+				$selected = 1;
+			}
+
 			$select = array(
-				'NAME'	=> $this->user->lang($element->getTranslate()),
-				'WERT'	=> $element->getWert(),
+				'NAME'		=> $this->user->lang($element->getTranslate()),
+				'WERT'		=> $element->getWert(),
+				'SELECTED'	=> $selected,
 			);
 
 			$this->template->assign_block_vars($element->getBeschreibung(), $select);

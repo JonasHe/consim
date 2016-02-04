@@ -21,9 +21,9 @@
 				<dl>
 	               	<dt><label>{L_GESCHLECHT}</label></dt>
 	               	<dd><select name="geschlecht" id="geschlecht">
-							<option value="" selected="selected">Wähle...</option>
+							<option value="">Wähle...</option>
 							<!-- BEGIN geschlecht -->
-							<option value="{geschlecht.WERT}">{geschlecht.NAME}</option>
+								<option value="{geschlecht.WERT}" <!-- IF geschlecht.SELECTED -->selected="selected"<!-- ENDIF -->>{geschlecht.NAME}</option>
 							<!-- END geschlecht -->
 						</select>
 					</dd>
@@ -31,9 +31,9 @@
 				<dl>
 	               	<dt><label>{L_GEBURTSLAND}</label></dt>
 					<dd><select name="geburtsland" id="geburtsland">
-							<option value="" selected="selected">Wähle...</option>
+							<option value="">Wähle...</option>
 							<!-- BEGIN geburtsland -->
-							<option value="{geburtsland.WERT}">{geburtsland.NAME}</option>
+							<option value="{geburtsland.WERT}" <!-- IF geburtsland.SELECTED -->selected="selected"<!-- ENDIF -->>{geburtsland.NAME}</option>
 							<!-- END geburtsland -->
 						</select>
 					</dd>
@@ -41,9 +41,9 @@
 				<dl>
 	               	<dt><label>{L_RELIGION}</label></dt>
 					<dd><select name="religion" id="religion">
-							<option value="" selected="selected">Wähle...</option>
+							<option value="">Wähle...</option>
 							<!-- BEGIN religion -->
-							<option value="{religion.WERT}">{religion.NAME}</option>
+							<option value="{religion.WERT}" <!-- IF religion.SELECTED -->selected="selected"<!-- ENDIF -->>{religion.NAME}</option>
 							<!-- END religion -->
 						</select>
 					</dd>
@@ -51,9 +51,9 @@
 				<dl>
 	               	<dt><label>{L_HAARFARBE}</label></dt>
 					<dd><select name="haarfarbe" id="haarfarbe">
-							<option value="" selected="selected">Wähle...</option>
+							<option value="">Wähle...</option>
 							<!-- BEGIN haarfarbe -->
-							<option value="{haarfarbe.WERT}">{haarfarbe.NAME}</option>
+							<option value="{haarfarbe.WERT}" <!-- IF haarfarbe.SELECTED -->selected="selected"<!-- ENDIF -->>{haarfarbe.NAME}</option>
 							<!-- END haarfarbe -->
 						</select>
 					</dd>
@@ -61,9 +61,9 @@
 				<dl>
 	               	<dt><label>{L_AUGENFARBE}</label></dt>
 					<dd><select name="augenfarbe" id="augenfarbe">
-							<option value="" selected="selected">Wähle...</option>
+							<option value="">Wähle...</option>
 							<!-- BEGIN augenfarbe -->
-							<option value="{augenfarbe.WERT}">{augenfarbe.NAME}</option>
+							<option value="{augenfarbe.WERT}" <!-- IF augenfarbe.SELECTED -->selected="selected"<!-- ENDIF -->>{augenfarbe.NAME}</option>
 							<!-- END augenfarbe -->
 						</select>
 					</dd>
@@ -71,9 +71,9 @@
 				<dl>
 	               	<dt><label>{L_BESONDERE_MERKMALE}</label></dt>
 					<dd><select name="besondere_merkmale" id="besondere_merkmale">
-							<option value="" selected="selected">Wähle...</option>
+							<option value="">Wähle...</option>
 							<!-- BEGIN besondere_merkmale -->
-							<option value="{besondere_merkmale.WERT}">{besondere_merkmale.NAME}</option>
+							<option value="{besondere_merkmale.WERT}" <!-- IF besondere_merkmale.SELECTED -->selected="selected"<!-- ENDIF -->>{besondere_merkmale.NAME}</option>
 							<!-- END besondere_merkmale -->
 						</select>
 					</dd>
