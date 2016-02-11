@@ -35,10 +35,17 @@ if (empty($lang) || !is_array($lang))
 // ’ » “ ” …
 //
 
+/*
+* These are errors which can be triggered by sending invalid data to the
+* ConSim extension API.
+*/
 $lang = array_merge($lang, array(
-	'PERSON_ERSTELLEN'			=> 'Charakter erstellen',
-	'INPUT_FEHLT'				=> 'Das Feld "%s" ist leer.',
-	'TOO_HIGH_ATTRIBUTE'		=> 'Die Summe der Attribute ist zu hoch!',
-    'ERROR_ANONYMOUS'           => 'Fehlende Anmeldung',
-    'ANONYMOUS_EXPLAIN'         => 'Du musst dich in deinen Forenaccount anmelden, oder einen Forenaccount erstellen.',
+	'EXCEPTION_FIELD_MISSING'       => 'Erforderliches Feld fehlt',
+	'EXCEPTION_INVALID_ARGUMENT'	=> 'Ungültige Eingabe in `%1$s`. Grund: %2$s',
+	'EXCEPTION_OUT_OF_BOUNDS'		=> 'Feld `%1$s` enthält unzulässige Zeichen',
+	'EXCEPTION_TOO_LONG'			=> 'Eingabe zu lang.',
+	'EXCEPTION_TOO_SHORT'			=> 'Eingabe zu kurz.',
+	'EXCEPTION_NOT_UNIQUE'			=> 'Uneindeutige Eingabe. (Bezeichnung bereits vergeben)',
+	'EXCEPTION_UNEXPECTED_VALUE'	=> 'Unerwartete Zeichen in Feld `%1$s`. Grund: %2$s',
+	'EXCEPTION_ILLEGAL_CHARACTERS'	=> 'Eingabe enthält für dieses Feld nicht zulässige Zeichen.',
 ));

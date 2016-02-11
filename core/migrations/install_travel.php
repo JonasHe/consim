@@ -10,12 +10,12 @@
 
 namespace consim\core\migrations;
 
-class install_basics extends \phpbb\db\migration\migration
+class install_travel extends \phpbb\db\migration\migration
 {
 
 	static public function depends_on()
 	{
-		return array('\tacitus89\gamesmod\migrations\install_basics');
+		return array('\consim\core\migrations\install_basics');
 	}
 
 	/**
@@ -99,13 +99,13 @@ class install_basics extends \phpbb\db\migration\migration
     public function insert_locations()
 	{
 		$locations = array(
-            array('id' => 1, 'name' => 'Kubishevsk', 'types' => 2, 'province' => 1),
-            array('id' => 2, 'name' => 'SMTU 567-C', 'types' => 4, 'province' => 1),
-            array('id' => 3, 'name' => 'Astrakhan', 'types' => 2, 'province' => 1),
-            array('id' => 4, 'name' => 'Nobri', 'types' => 3, 'province' => 1),
-            array('id' => 5, 'name' => 'Zhitomsk', 'types' => 1, 'province' => 1),
-            array('id' => 6, 'name' => 'Alatyr', 'types' => 2, 'province' => 1),
-            array('id' => 7, 'name' => 'Grushevsk', 'types' => 2, 'province' => 1),
+            array('id' => 1, 'name' => 'Kubishevsk', 'type' => 2, 'province' => 1),
+            array('id' => 2, 'name' => 'SMTU 567-C', 'type' => 4, 'province' => 1),
+            array('id' => 3, 'name' => 'Astrakhan', 'type' => 2, 'province' => 1),
+            array('id' => 4, 'name' => 'Nobri', 'type' => 3, 'province' => 1),
+            array('id' => 5, 'name' => 'Zhitomsk', 'type' => 1, 'province' => 1),
+            array('id' => 6, 'name' => 'Alatyr', 'type' => 2, 'province' => 1),
+            array('id' => 7, 'name' => 'Grushevsk', 'type' => 2, 'province' => 1),
         );
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_locations', $locations);
 	}
@@ -138,20 +138,20 @@ class install_basics extends \phpbb\db\migration\migration
 
     public function insert_provinces()
 	{
-		$routes = array(
+		$provinces = array(
             array('id' => 1, 'name' => 'Isoria', 'country' => 1),
         );
-		$this->db->sql_multi_insert($this->table_prefix . 'consim_provinces', $routes);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_provinces', $provinces);
 	}
 
     public function insert_countries()
 	{
-		$routes = array(
+		$countries = array(
             array('id' => 1, 'name' => 'Bakirien'),
             array('id' => 2, 'name' => 'Tadsowien'),
             array('id' => 3, 'name' => 'Suranien'),
         );
-		$this->db->sql_multi_insert($this->table_prefix . 'consim_countries', $routes);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_countries', $countries);
 	}
 
 	/**

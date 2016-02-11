@@ -83,6 +83,15 @@ class Register
 			return;
 		}
 
+        // User is a guest
+        if ($this->user->data['user_id'] == ANONYMOUS)
+        {
+            // Set output vars for display in the template
+    		$this->template->assign_vars(array(
+    			'S_ANONYMOUS'				=> true,
+    		));
+        }
+
 		// Create a form key for preventing CSRF attacks
 		add_form_key('consim_register');
 

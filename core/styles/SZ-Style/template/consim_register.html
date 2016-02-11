@@ -1,4 +1,16 @@
 <!-- INCLUDE overall_header.html -->
+
+<!-- IF S_ANONYMOUS -->
+<h2>{L_REGISTER}</h2>
+<div class="panel">
+	<div class="inner">
+		<h2>{L_ERROR_ANONYMOUS}</h2>
+		<div class="content">
+            <p class="error">{L_ANONYMOUS_EXPLAIN}</p>
+        </div>
+	</div>
+</div>
+<!-- ELSE -->
 <form method="post" action="{U_ACTION}" id="post">
 
 <h2>{L_REGISTER}</h2>
@@ -163,5 +175,5 @@
 </div>
 
 </form>
-
+<!-- ENDIF -->
 <!-- INCLUDE overall_footer.html -->
