@@ -41,4 +41,5 @@ $lang = array_merge($lang, array(
 	'TOO_HIGH_ATTRIBUTE'		=> 'Die Summe der Attribute ist zu hoch!',
     'ERROR_ANONYMOUS'           => 'Fehlende Anmeldung',
     'ANONYMOUS_EXPLAIN'         => 'Du musst dich in deinen Forenaccount anmelden, oder einen Forenaccount erstellen.',
+    'FREIE_PUNKTE'               => 'Freie Fähigkeitspunkte',
 ));

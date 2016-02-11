@@ -1,3 +1,4 @@
+<!-- INCLUDECSS @consim_core/../theme/consim.css -->
 <!-- INCLUDE overall_header.html -->
 
 <!-- IF S_ANONYMOUS -->
@@ -97,8 +98,12 @@
 <div class="panel">
 	<div class="inner">
 		<h2>{L_ATTRIBUTE}</h2>
-		<div class="content">
+		<div class="content" id="attribute">
 			<fieldset>
+                <dl>
+	               	<dt><label class="bigger">{L_FREIE_PUNKTE}</label></dt>
+	               	<dd><span class="bigger bolder" id="free_points">{FREIE_PUNKTE}</span></dd>
+	            </dl>
 				<dl>
 	               	<dt><label>{L_SPRACHE_TADSOWISCH}</label></dt>
 	               	<dd><input class="inputbox autowidth" type="number" name="sprache_tadsowisch" id="sprache_tadsowisch" size="3" tabindex="11" value="{SPRACHE_TADSOWISCH}" max="100" min="1" /></dd>
@@ -176,4 +181,6 @@
 
 </form>
 <!-- ENDIF -->
+
+<!-- INCLUDEJS @consim_core/js/register.js -->
 <!-- INCLUDE overall_footer.html -->

@@ -37,6 +37,8 @@ class Register
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
+    const FREE_POINTS = 50;
+
 	/**
 	* Constructor
 	*
@@ -138,6 +140,7 @@ class Register
 			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
 
 			'U_ACTION'	=> $this->helper->route('consim_core_register'),
+            'FREIE_PUNKTE' => self::FREE_POINTS,
 
 			'VORNAME'						=> $this->request->variable('vorname', ''),
 	    	'NACHNAME'						=> $this->request->variable('nachname', ''),
@@ -207,7 +210,7 @@ class Register
 		);
 
 		//Die Summe der Attribute darf einen bestimmten Wert nicht überschreiten
-		if(array_sum($attribute) > 50)
+		if(array_sum($attribute) > FREE_POINTS)
 		{
 			$errors[] = $this->user->lang('TOO_HIGH_ATTRIBUTE');
 		}
