@@ -10,7 +10,7 @@
 
 namespace consim\core\migrations;
 
-class install_0_0_1 extends \phpbb\db\migration\migration
+class install_basics extends \phpbb\db\migration\migration
 {
 	var $consim_version = '0.0.1';
 
@@ -22,15 +22,6 @@ class install_0_0_1 extends \phpbb\db\migration\migration
 	static public function depends_on()
 	{
 		return array('\phpbb\db\migration\data\v310\dev');
-	}
-
-	public function update_data()
-	{
-		return array(
-			// Set the current version
-			array('config.add', array('consim_version', $this->consim_version)),
-			array('custom', array(array($this, 'insert_consim_figure'))),
-		);
 	}
 
 	/**
@@ -64,7 +55,7 @@ class install_0_0_1 extends \phpbb\db\migration\migration
 						'nahkampf'				=> array('UINT:3', 1),
 						'schusswaffen'			=> array('UINT:3', 1),
 						'sprengmittel'			=> array('UINT:3', 1),
-						'militarkunde'			=> array('UINT:3', 1),
+						'militarkunde'          => array('UINT:3', 1),
 						'spionage'				=> array('UINT:3', 1),
 						'schmuggel'				=> array('UINT:3', 1),
 						'medizin'				=> array('UINT:3', 1),
@@ -89,6 +80,21 @@ class install_0_0_1 extends \phpbb\db\migration\migration
 			),
 		);
 	}
+
+    /**
+    * Add or update data in the database
+    *
+    * @return array Array of table data
+    * @access public
+    */
+    public function update_data()
+    {
+        return array(
+            // Set the current version
+            array('config.add', array('consim_version', $this->consim_version)),
+            array('custom', array(array($this, 'insert_consim_figure'))),
+        );
+    }
 
 	public function insert_consim_figure()
 	{
