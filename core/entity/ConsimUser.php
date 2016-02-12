@@ -94,6 +94,9 @@ class ConsimUser extends abstractEntity
 	*/
 	protected $figure_data;
 
+    //extra language skill
+    const EXTRA_LANG = 25;
+
    /**
 	* Constructor
 	*
@@ -178,6 +181,17 @@ class ConsimUser extends abstractEntity
 		}
 
 		$this->data['user_id'] = $user_id;
+
+        //Add extra language skill
+        switch($this->data['geburtsland'])
+        {
+            case 'frt': $this->data['sprache_tadsowisch'] = $this->data['sprache_tadsowisch'] + self::EXTRA_LANG;
+            break;
+            case 'bak': $this->data['sprache_bakirisch'] = $this->data['sprache_bakirisch'] + self::EXTRA_LANG;
+            break;
+            case 'sur': $this->data['sprache_suranisch'] = $this->data['sprache_suranisch'] + self::EXTRA_LANG;
+            break;
+        }
 
 		// Insert the data to the database
 		$sql = 'INSERT INTO ' . $this->consim_user_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);

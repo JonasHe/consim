@@ -38,8 +38,10 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'PERSON_ERSTELLEN'			=> 'Charakter erstellen',
 	'INPUT_FEHLT'				=> 'Das Feld "%s" ist leer.',
-	'TOO_HIGH_ATTRIBUTE'		=> 'Die Summe der Attribute ist zu hoch!',
+	'TOO_HIGH_ATTRIBUTE'		=> 'Die Summe der Fähigkeitspunkte ist zu hoch!',
+    'TOO_LOW_ATTRIBUTE'         => 'Es sind noch freie Fähigkeitspunkte übrig!',
     'ERROR_ANONYMOUS'           => 'Fehlende Anmeldung',
     'ANONYMOUS_EXPLAIN'         => 'Du musst dich in deinen Forenaccount anmelden, oder einen Forenaccount erstellen.',
-    'FREIE_PUNKTE'               => 'Freie Fähigkeitspunkte',
+    'FREIE_PUNKTE'              => 'Freie Fähigkeitspunkte',
+    'ADD_25_LANG'               => '+ 25 sprachliche Fähigkeitspunkte',
 ));

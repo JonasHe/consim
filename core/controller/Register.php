@@ -38,6 +38,9 @@ class Register
 	protected $db;
 
     const FREE_POINTS = 50;
+    const DEFAULT_POINTS = 15;
+
+    protected $sum_skill = self::DEFAULT_POINTS;
 
 	/**
 	* Constructor
@@ -140,7 +143,7 @@ class Register
 			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
 
 			'U_ACTION'	=> $this->helper->route('consim_core_register'),
-            'FREIE_PUNKTE' => self::FREE_POINTS,
+            'FREIE_PUNKTE' => self::FREE_POINTS + self::DEFAULT_POINTS - $this->sum_skill,
 
 			'VORNAME'						=> $this->request->variable('vorname', ''),
 	    	'NACHNAME'						=> $this->request->variable('nachname', ''),
@@ -209,10 +212,18 @@ class Register
 	      	'Uberlebenskunde'				=> $this->request->variable('uberlebenskunde', 1),
 		);
 
+        $this->sum_skill = array_sum($attribute);
+
 		//Die Summe der Attribute darf einen bestimmten Wert nicht überschreiten
-		if(array_sum($attribute) > FREE_POINTS)
+		if($this->sum_skill > self::FREE_POINTS + self::DEFAULT_POINTS)
 		{
 			$errors[] = $this->user->lang('TOO_HIGH_ATTRIBUTE');
+		}
+
+        //Die Summe der Attribute darf einen bestimmten Wert nicht überschreiten
+		if($this->sum_skill < self::FREE_POINTS + self::DEFAULT_POINTS)
+		{
+			$errors[] = $this->user->lang('TOO_LOW_ATTRIBUTE');
 		}
 
 		$data = array_merge($person, $attribute);

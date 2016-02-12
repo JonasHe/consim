@@ -31,6 +31,32 @@ $(function() {
         }
 
 	});
+
+    //show info if site reloaded
+    add_25_lang($('#geburtsland').val());
+
+    //show info for extra skills
+	$('#geburtsland').on('change', function () {
+        add_25_lang($(this).val());
+	});
+
+    //function to show lang info
+    function add_25_lang(wert)
+    {
+        if(wert == 'frt') {
+            $('#lang_frt').show();
+            $('#lang_bak').hide();
+            $('#lang_sur').hide();
+        } else if (wert == 'bak') {
+            $('#lang_frt').hide();
+            $('#lang_bak').show();
+            $('#lang_sur').hide();
+        } else if (wert == 'sur') {
+            $('#lang_frt').hide();
+            $('#lang_bak').hide();
+            $('#lang_sur').show();
+        }
+    }
 });
 
 })(jQuery); // Avoid conflicts with other libraries
