@@ -86,6 +86,9 @@ class Index
 
 		$consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
+        $location = $this->container->get('consim.core.entity.Location')->load(4);
+        echo $location->getName();
+
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('delete'))
 		{

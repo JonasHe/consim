@@ -96,28 +96,6 @@ abstract class abstractEntity
 
 		return $this;
 	}
-	/**
-	* Insert the game for the first time
-	*
-	* Will throw an exception if the game was already inserted (call save() instead)
-	*
-	* @return game_interface $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\out_of_bounds
-	*/
-	//abstract public function insert();
-
-	/**
-	* Save the current settings to the database
-	*
-	* This must be called before closing or any changes will not be saved!
-	* If adding a game (saving for the first time), you must call insert() or an exeception will be thrown
-	*
-	* @return game_interface $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\out_of_bounds
-	*/
-	abstract public function save();
 
 	/**
 	* Get String for output

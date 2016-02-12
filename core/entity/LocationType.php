@@ -11,7 +11,7 @@ namespace consim\core\entity;
 /**
 * Entity for a single ressource
 */
-class ConsimFigure extends abstractEntity
+class LocationType extends abstractEntity
 {
 	/**
 	* All of fields of this objects
@@ -19,9 +19,7 @@ class ConsimFigure extends abstractEntity
 	**/
 	protected static $fields = array(
     	'id'						=> 'integer',
-      	'beschreibung'				=> 'string',
-      	'wert'						=> 'string',
-      	'translate'					=> 'string',
+      	'name'                      => 'string',
 	);
 
 	/**
@@ -40,19 +38,19 @@ class ConsimFigure extends abstractEntity
 	* The database table the consim user data are stored in
 	* @var string
 	*/
-	protected $consim_person_table;
+	protected $consim_location_type_table;
 
    /**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                   Database object
-	* @param string                               $consim_person_table  Name of the table used to store consim user data
+	* @param \phpbb\db\driver\driver_interface    $db                          Database object
+	* @param string                               $consim_location_type_table  Name of the table used to store data
 	* @access public
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_person_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_location_type_table)
 	{
 		$this->db = $db;
-		$this->consim_person_table = $consim_person_table;
+		$this->consim_location_type_table = $consim_location_type_table;
 	}
 
 	/**
@@ -65,8 +63,8 @@ class ConsimFigure extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT *
-			FROM ' . $this->consim_person_table . '
+		$sql = 'SELECT id, name
+			FROM ' . $this->consim_location_type_table . '
 			WHERE id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
@@ -101,7 +99,7 @@ class ConsimFigure extends abstractEntity
 		unset($this->data['id']);
 
 		// Insert the data to the database
-		$sql = 'INSERT INTO ' . $this->consim_person_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
+		$sql = 'INSERT INTO ' . $this->consim_location_type_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
         // Set the id using the id created by the SQL insert
@@ -128,7 +126,7 @@ class ConsimFigure extends abstractEntity
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
 
-		$sql = 'UPDATE ' . $this->consim_person_table . '
+		$sql = 'UPDATE ' . $this->consim_location_type_table . '
 			SET ' . $this->db->sql_build_array('UPDATE', $this->data) . '
 			WHERE id = ' . $this->getId();
 		$this->db->sql_query($sql);
@@ -147,36 +145,14 @@ class ConsimFigure extends abstractEntity
 		return $this->getInteger($this->data['id']);
 	}
 
-	/**
-	* Get Beschreibung
+    /**
+	* Get Name
 	*
-	* @return string Beschreibung
+	* @return string Name
 	* @access public
 	*/
-	public function getBeschreibung()
+	public function getName()
 	{
-		return $this->getString($this->data['beschreibung']);
-	}
-
-   /**
-	* Get Wert
-	*
-	* @return string Wert
-	* @access public
-	*/
-	public function getWert()
-	{
-		return $this->getString($this->data['wert']);
-	}
-
-   /**
-	* Get Translate
-	*
-	* @return string Translate
-	* @access public
-	*/
-	public function getTranslate()
-	{
-		return $this->getString($this->data['translate']);
+		return $this->getString($this->data['name']);
 	}
 }
