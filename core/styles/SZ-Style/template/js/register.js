@@ -6,7 +6,7 @@ $(function() {
 
     //speichert den alten Wert im aktivem Objekt.
     //bei mouseenter (focus functioniert nicht mit dem type=number)
-    $('#attribute .inputbox').mouseenter(function (element) {
+    $('#attribute .inputbox').on('mouseenter focus', function () {
 		$(this).data('oldVal', $(this).val());
 	});
 
