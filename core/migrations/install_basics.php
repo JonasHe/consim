@@ -60,6 +60,7 @@ class install_basics extends \phpbb\db\migration\migration
 						'schmuggel'				=> array('UINT:3', 1),
 						'medizin'				=> array('UINT:3', 1),
 						'uberlebenskunde'		=> array('UINT:3', 1),
+                        'location'              => array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('user_id'),
 				),

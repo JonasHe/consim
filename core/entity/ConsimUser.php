@@ -183,7 +183,7 @@ class ConsimUser extends abstractEntity
 		$this->data['user_id'] = $user_id;
 
         //Add extra language skill
-        switch($this->data['geburtsland'])
+        switch($this->figure_data[$this->data['geburtsland']]->getWert())
         {
             case 'frt': $this->data['sprache_tadsowisch'] = $this->data['sprache_tadsowisch'] + self::EXTRA_LANG;
             break;
@@ -287,12 +287,13 @@ class ConsimUser extends abstractEntity
    /**
 	* Get geschlecht
 	*
-	* @return string geschlecht
+	* @return object ConSimFigure
 	* @access public
 	*/
 	public function getGeschlecht()
 	{
-		return $this->getString($this->data['geschlecht']);
+		//return $this->getString($this->data['geschlecht']);
+        return $this->figure_data[$this->data['geschlecht']];
 	}
 	/**
 	* Set geschlecht
@@ -310,12 +311,13 @@ class ConsimUser extends abstractEntity
    /**
 	* Get geburtsland
 	*
-	* @return string geburtsland
+	* @return object ConSimFigure
 	* @access public
 	*/
 	public function getGeburtsland()
 	{
-		return $this->getString($this->data['geburtsland']);
+		//return $this->getString($this->data['geburtsland']);
+        return $this->figure_data[$this->data['geburtsland']];
 	}
 	/**
 	* Set geburtsland
@@ -333,12 +335,13 @@ class ConsimUser extends abstractEntity
    /**
 	* Get religion
 	*
-	* @return string religion
+	* @return object ConSimFigure
 	* @access public
 	*/
 	public function getReligion()
 	{
-		return $this->getString($this->data['religion']);
+		//return $this->getString($this->data['religion']);
+        return $this->figure_data[$this->data['religion']];
 	}
 	/**
 	* Set religion
@@ -356,12 +359,13 @@ class ConsimUser extends abstractEntity
    /**
 	* Get haarfarbe
 	*
-	* @return string religion
+	* @return object ConSimFigure
 	* @access public
 	*/
 	public function getHaarfarbe()
 	{
-		return $this->getString($this->data['haarfarbe']);
+		//return $this->getString($this->data['haarfarbe']);
+        return $this->figure_data[$this->data['religion']];
 	}
 	/**
 	* Set haarfarbe
@@ -379,12 +383,13 @@ class ConsimUser extends abstractEntity
    /**
 	* Get augenfarbe
 	*
-	* @return string augenfarbe
+	* @return object ConSimFigure
 	* @access public
 	*/
 	public function getAugenfarbe()
 	{
-		return $this->getString($this->data['augenfarbe']);
+		//return $this->getString($this->data['augenfarbe']);
+        return $this->figure_data[$this->data['augenfarbe']];
 	}
 	/**
 	* Set augenfarbe
@@ -402,12 +407,13 @@ class ConsimUser extends abstractEntity
    /**
 	* Get Besondere Merkmale
 	*
-	* @return string Besondere Merkmale
+	* @return object ConSimFigure
 	* @access public
 	*/
 	public function getBesondereMerkmale()
 	{
-		return $this->getString($this->data['besondere_merkmale']);
+		//return $this->getString($this->data['besondere_merkmale']);
+        return $this->figure_data[$this->data['besondere_merkmale']];
 	}
 	/**
 	* Set Besondere Merkmale

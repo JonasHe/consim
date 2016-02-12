@@ -84,7 +84,7 @@ class Register
 		if($this->user->data['consim_register'])
 		{
 			//Wenn ja, schicke ihn zum consim index
-			$this->helper->route('consim_core_index');
+			redirect($this->helper->route('consim_core_index'));
 			return;
 		}
 
@@ -122,7 +122,7 @@ class Register
 			}
 
 			//Check die eingehenden request data
-			$data = $this->check_data($errors, $consim_user);
+			$this->check_data($errors, $consim_user);
 
 			// If no errors, process the form data
 			if (empty($errors))
@@ -182,7 +182,7 @@ class Register
 	* @return Array
 	* @access private
 	*/
-	private function check_data(&$errors, $consim_user)
+	private function check_data(&$errors, &$consim_user)
 	{
 		$person = array(
 			'Vorname'						=> $this->request->variable('vorname', ''),
@@ -242,8 +242,6 @@ class Register
 				$errors[] = $e->get_message($this->user);
 			}
 		}
-
-		return $data;
 	}
 
 	/**
