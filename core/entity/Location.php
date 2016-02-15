@@ -51,12 +51,14 @@ class Location extends abstractEntity
     protected $consim_location_type_table;
     protected $consim_province_table;
 
-   /**
+    /**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                     Database object
-    * @param ContainerInterface                	$container       	Service container interface
-	* @param string                               $consim_location_table  Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface    $db                          Database object
+    * @param ContainerInterface                	  $container       	           Service container interface
+    * @param string                               $consim_location_table       Name of the table used to store data
+    * @param string                               $consim_location_type_table  Name of the table used to store data
+    * @param string                               $consim_province_table       Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
