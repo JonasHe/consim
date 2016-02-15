@@ -113,6 +113,7 @@ class TravelLocations
         foreach ($entities as $entity)
         {
             $select = array(
+                'ID'	     	=> $entity->getId(),
 				'NAME'	     	=> $entity->getName(),
                 'TYPE'  		=> $entity->getType(),
                 'PROVINCE'		=> $entity->getProvince(),
