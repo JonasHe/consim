@@ -87,7 +87,6 @@ class Index
 		$consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
         $location = $this->container->get('consim.core.entity.Location')->load(4);
-        echo $location->getName();
 
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('delete'))
@@ -107,6 +106,10 @@ class Index
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
+            'LOCATION'                      => $location->getName(),
+            'LOCATION_TYPE'                 => $location->getType()->getName(),
+            'PROVINCE'                      => $location->getProvince()->getName(),
+
 	    	'SPRACHE_TADSOWISCH'			=> $consim_user->getSpracheTadsowisch(),
 	    	'SPRACHE_BAKIRISCH'				=> $consim_user->getSpracheBakirisch(),
 	    	'SPRACHE_SURANISCH'				=> $consim_user->getSpracheSuranisch(),
