@@ -88,6 +88,8 @@ class Index
 
         $location = $this->container->get('consim.core.entity.Location')->load(4);
 
+        $this->container->get('consim.core.operators.TravelLocations')->setAllDestinationsToTemplate(4,$this->template);
+
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('delete'))
 		{
@@ -107,8 +109,9 @@ class Index
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
             'LOCATION'                      => $location->getName(),
-            'LOCATION_TYPE'                 => $location->getType()->getName(),
-            'PROVINCE'                      => $location->getProvince()->getName(),
+            'LOCATION_TYPE'                 => $location->getType(),
+            'PROVINCE'                      => $location->getProvince(),
+            'COUNTRY'                       => $location->getCountry(),
 
 	    	'SPRACHE_TADSOWISCH'			=> $consim_user->getSpracheTadsowisch(),
 	    	'SPRACHE_BAKIRISCH'				=> $consim_user->getSpracheBakirisch(),

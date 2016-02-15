@@ -6,8 +6,15 @@
     	<div class="inner">
             <div class="content">
                 <h2>{L_CURRENT_LOCATION}</h2>
-                <p>{LOCATION} ({LOCATION_TYPE}), {PROVINCE}</p>
-                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                <p>{LOCATION} ({LOCATION_TYPE}), {PROVINCE} in {COUNTRY}</p>
+                <br /><br />
+                <select name="destination" id="destination">
+                    <option value="">Wähle...</option>
+                    <!-- BEGIN destination -->
+                    <option value="">{destination.NAME} ({destination.TYPE}), {destination.PROVINCE} in {destination.COUNTRY}</option>
+                    <!-- END destination -->
+                </select>
+                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 <form method="post" action="{U_ACTION}" id="post">
                     <fieldset class="submit-buttons">
         				<input type="submit" tabindex="23" name="delete" class="button1" value="Profil löschen" />

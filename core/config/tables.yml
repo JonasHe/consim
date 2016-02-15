@@ -4,3 +4,5 @@ parameters:
     tables.consim.locations: %core.table_prefix%consim_locations
     tables.consim.location_types: %core.table_prefix%consim_location_types
     tables.consim.provinces: %core.table_prefix%consim_provinces
+    tables.consim.countries: %core.table_prefix%consim_countries
+    tables.consim.routes: %core.table_prefix%consim_routes

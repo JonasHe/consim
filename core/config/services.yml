@@ -31,6 +31,16 @@ services:
             - @template
             - @request
             - @dbal.conn
+    consim.core.operators.TravelLocations:
+        class: consim\core\operators\TravelLocations
+        arguments:
+            - @dbal.conn
+            - @service_container
+            - %tables.consim.routes%
+            - %tables.consim.locations%
+            - %tables.consim.location_types%
+            - %tables.consim.provinces%
+            - %tables.consim.countries%
     consim.core.entity.Province:
         class: consim\core\entity\Province
         scope: prototype # scope MUST be prototype for this to work!
@@ -48,10 +58,10 @@ services:
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
-            - @service_container
             - %tables.consim.locations%
             - %tables.consim.location_types%
             - %tables.consim.provinces%
+            - %tables.consim.countries%
     consim.core.entity.ConsimUser:
         class: consim\core\entity\ConsimUser
         scope: prototype # scope MUST be prototype for this to work!

@@ -8,8 +8,6 @@
 
 namespace consim\core\entity;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 /**
 * Entity for a single ressource
 */
@@ -22,8 +20,9 @@ class Location extends abstractEntity
 	protected static $fields = array(
     	'id'						=> 'integer',
       	'name'                      => 'string',
-      	'type'						=> 'integer',
-      	'province'					=> 'integer',
+      	'type'						=> 'string',
+      	'province'					=> 'string',
+        'country'					=> 'string',
 	);
 
 	/**
@@ -31,17 +30,12 @@ class Location extends abstractEntity
 	**/
 	protected static $validate_unsigned = array(
       	'id',
-        'type',
-        'province',
 	);
 
 	protected $data;
 
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
-
-    /** @var ContainerInterface */
-	protected $container;
 
 	/**
 	* The database table the consim user data are stored in
@@ -50,6 +44,7 @@ class Location extends abstractEntity
 	protected $consim_location_table;
     protected $consim_location_type_table;
     protected $consim_province_table;
+    protected $consim_country_table;
 
     /**
 	* Constructor
@@ -59,19 +54,20 @@ class Location extends abstractEntity
     * @param string                               $consim_location_table       Name of the table used to store data
     * @param string                               $consim_location_type_table  Name of the table used to store data
     * @param string                               $consim_province_table       Name of the table used to store data
+    * @param string                               $consim_country_table        Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
-                                ContainerInterface $container,
                                 $consim_location_table,
                                 $consim_location_type_table,
-                                $consim_province_table)
+                                $consim_province_table,
+                                $consim_country_table)
 	{
 		$this->db = $db;
-        $this->container = $container;
 		$this->consim_location_table = $consim_location_table;
         $this->consim_location_type_table = $consim_location_type_table;
         $this->consim_province_table = $consim_province_table;
+        $this->consim_country_table = $consim_country_table;
 	}
 
 	/**
@@ -84,40 +80,27 @@ class Location extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT l.id, l.name, t.id AS t_id, t.name AS t_name, p.id AS p_id, p.name AS p_name, p.country AS p_country
+		$sql = 'SELECT l.id, l.name, t.name AS type, p.name AS province, c.name AS country
 			FROM ' . $this->consim_location_table . ' l
             LEFT JOIN ' . $this->consim_location_type_table . ' t ON l.type = t.id
             LEFT JOIN ' . $this->consim_province_table . ' p ON l.province = p.id
+            LEFT JOIN ' . $this->consim_country_table . ' c ON p.country = c.id
 			WHERE l.id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
-		$local_data = $this->db->sql_fetchrow($result);
+		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		if ($local_data === false)
+		if ($row === false)
 		{
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
 
-        //Declare LocationType
-        $type = array(
-            'id'        => $local_data['t_id'],
-            'name'      => $local_data['t_name'],
-        );
-        $type = $this->container->get('consim.core.entity.LocationType')->import($type);
-
-        //Declare Province
-        $province = array(
-            'id'        => $local_data['p_id'],
-            'name'      => $local_data['p_name'],
-            'country'   => $local_data['p_country'],
-        );
-        $province = $this->container->get('consim.core.entity.Province')->import($province);
-
         $this->data = array(
-            'id'        => $local_data['id'],
-            'name'      => $local_data['name'],
-            'type'      => $type,
-            'province'  => $province,
+            'id'        => $row['id'],
+            'name'      => $row['name'],
+            'type'      => $row['type'],
+            'province'  => $row['province'],
+            'country'   => $row['country'],
         );
 
 		return $this;
@@ -146,9 +129,9 @@ class Location extends abstractEntity
 	}
 
     /**
-	* Get Type
+	* Get Name of Type
 	*
-	* @return object LocationType
+	* @return string Type
 	* @access public
 	*/
 	public function getType()
@@ -157,13 +140,24 @@ class Location extends abstractEntity
 	}
 
     /**
-	* Get Province
+	* Get Name of Province
 	*
-	* @return object Province
+	* @return string Province
 	* @access public
 	*/
 	public function getProvince()
 	{
 		return $this->data['province'];
+	}
+
+    /**
+	* Get Name of Province
+	*
+	* @return string Province
+	* @access public
+	*/
+	public function getCountry()
+	{
+		return $this->data['country'];
 	}
 }
