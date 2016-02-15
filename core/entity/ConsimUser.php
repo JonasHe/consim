@@ -44,6 +44,7 @@ class ConsimUser extends abstractEntity
 		'schmuggel'						=> 'integer',
 		'medizin'						=> 'integer',
       	'uberlebenskunde'				=> 'integer',
+        'location'                      => 'integer',
 	);
 
 	/**
@@ -66,6 +67,7 @@ class ConsimUser extends abstractEntity
 		'schmuggel',
 		'medizin',
       	'uberlebenskunde',
+        'location',
 	);
 
 	protected $data;
@@ -763,7 +765,7 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set uberlebenskunde
 	*
-	* @param string $spionage
+	* @param string $uberlebenskunde
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
@@ -772,6 +774,45 @@ class ConsimUser extends abstractEntity
 	{
 		return $this->setInteger('uberlebenskunde', $uberlebenskunde, true, 100);
 	}
+
+    /**
+   * Get location
+   *
+   * @return id location
+   * @access public
+   */
+   public function getLocation()
+   {
+       return $this->getInteger($this->data['location']);
+   }
+   /**
+   * Set location
+   * Check if the new Location valid!
+   *
+   * @param int $location
+   * @return ConsimUser $this object for chaining calls; load()->set()->save()
+   * @access public
+   * @throws \consim\core\exception\unexpected_value
+   */
+   public function setLocation($location)
+   {
+       $sql = 'SELECT id
+           FROM phpbb_consim_routes
+           WHERE (start_id = '. (int) $location .' AND end_id = '. $this->data['location'] .')
+                 OR (start_id = '. $this->data['location'] .' AND end_id = '. (int) $location .')';
+       $result = $this->db->sql_query($sql);
+       $row = $this->db->sql_fetchrow($result);
+       $this->db->sql_freeresult($result);
+
+       if ($row === false)
+       {
+           throw new \consim\core\exception\invalid_argument(array($varname, 'ILLEGAL_CHARACTERS'));
+       }
+
+       $this->data['location'] = $location;
+
+       return this;
+   }
 
 	/**
  	* Get Data from Figure
