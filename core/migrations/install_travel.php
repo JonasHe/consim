@@ -30,7 +30,7 @@ class install_travel extends \phpbb\db\migration\migration
 			'add_tables'		=> array(
 				$this->table_prefix . 'consim_locations'	=> array(
 					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', NULL, 'auto_increment'),
+						'id'                    => array('UINT:8', 0),
 						'name'            		=> array('VCHAR:255', ''),
 						'type'                  => array('UINT:8', 0),
                         'province'              => array('UINT:8', 0),
@@ -49,7 +49,7 @@ class install_travel extends \phpbb\db\migration\migration
 				),
                 $this->table_prefix . 'consim_routes'	=> array(
 					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', NULL, 'auto_increment'),
+						'id'                    => array('UINT:8', 0),
 						'start_id'            	=> array('UINT:8', 0),
                         'end_id'                => array('UINT:8', 0),
                         'time'                  => array('UINT:8', 0),
@@ -164,8 +164,8 @@ class install_travel extends \phpbb\db\migration\migration
 	{
         return array(
 			'drop_tables'		=> array(
-				$this->table_prefix . 'consim_location',
-				$this->table_prefix . 'consim_location_type',
+				$this->table_prefix . 'consim_locations',
+				$this->table_prefix . 'consim_location_types',
                 $this->table_prefix . 'consim_routes',
                 $this->table_prefix . 'consim_provinces',
                 $this->table_prefix . 'consim_countries',
