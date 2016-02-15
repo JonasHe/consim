@@ -806,7 +806,7 @@ class ConsimUser extends abstractEntity
 
        if ($row === false)
        {
-           throw new \consim\core\exception\invalid_argument(array($varname, 'ILLEGAL_CHARACTERS'));
+           throw new \consim\core\exception\invalid_argument(array($location, 'ILLEGAL_CHARACTERS'));
        }
 
        $this->data['location'] = $location;
