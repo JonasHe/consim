@@ -86,11 +86,12 @@ class Index
 
 		$consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
-        $location = $this->container->get('consim.core.entity.Location')->load(4);
+        $location = $this->container->get('consim.core.entity.Location')->load($consim_user->getLocation());
 
-        $this->container->get('consim.core.operators.TravelLocations')->setAllDestinationsToTemplate(4,$this->template);
+        $this->container->get('consim.core.operators.TravelLocations')->setAllDestinationsToTemplate($consim_user->getLocation(),$this->template);
 
 		// Is the form being submitted to us?
+        // Delete UserProfile
 		if ($this->request->is_set_post('delete'))
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
@@ -104,6 +105,17 @@ class Index
 
 			//Leite den User weiter zum Consim Register
 			redirect($this->helper->route('consim_core_register'));
+		}
+
+        // Is the form being submitted to us?
+        // Change UserLocation
+		if ($this->request->is_set_post('travel'))
+		{
+			$consim_user->setLocation($this->request->variable('destination', 0));
+            $consim_user->save();
+
+			//Reload the Consim Index
+			redirect($this->helper->route('consim_core_index'));
 		}
 
 		// Set output vars for display in the template

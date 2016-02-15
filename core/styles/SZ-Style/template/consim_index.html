@@ -8,16 +8,21 @@
                 <h2>{L_CURRENT_LOCATION}</h2>
                 <p>{LOCATION} ({LOCATION_TYPE}), {PROVINCE} in {COUNTRY}</p>
                 <br /><br />
+                <form method="post" action="{U_ACTION}" id="post">
                 <select name="destination" id="destination">
                     <option value="">Wähle...</option>
                     <!-- BEGIN destination -->
-                    <option value="">{destination.NAME} ({destination.TYPE}), {destination.PROVINCE} in {destination.COUNTRY}</option>
+                    <option value="{destination.ID}">{destination.NAME} ({destination.TYPE}), {destination.PROVINCE} in {destination.COUNTRY}</option>
                     <!-- END destination -->
                 </select>
+                    <fieldset class="submit-buttons">
+        				<input type="submit" tabindex="1" name="travel" class="button1" value="Reisen" />
+        			</fieldset>
+                </form>
                 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 <form method="post" action="{U_ACTION}" id="post">
                     <fieldset class="submit-buttons">
-        				<input type="submit" tabindex="23" name="delete" class="button1" value="Profil löschen" />
+        				<input type="submit" tabindex="2" name="delete" class="button1" value="Profil löschen" />
         			</fieldset>
                 </form>
             </div>
