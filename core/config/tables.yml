@@ -6,3 +6,4 @@ parameters:
     tables.consim.provinces: %core.table_prefix%consim_provinces
     tables.consim.countries: %core.table_prefix%consim_countries
     tables.consim.routes: %core.table_prefix%consim_routes
+    tables.consim.actions: %core.table_prefix%consim_actions

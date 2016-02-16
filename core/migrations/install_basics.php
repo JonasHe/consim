@@ -73,6 +73,20 @@ class install_basics extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
+                $this->table_prefix . 'consim_actions' => array(
+					'COLUMNS'		=> array(
+						'id'					=> array('UINT:8', null, 'auto_increment'),
+						'user_id'         		=> array('UINT:8', 0),
+						'type'					=> array('VCHAR:1', ''),
+						'time'				    => array('UINT:8', 0),
+                        'status'                => array('BOOL', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+                    'KEYS'			=> array(
+						'time'            => array('INDEX', 'time'),
+                        'status'          => array('INDEX', 'status'),
+					),
+				),
 			),
 			'add_columns'		=> array(
 				$this->table_prefix . 'users'		=> array(
