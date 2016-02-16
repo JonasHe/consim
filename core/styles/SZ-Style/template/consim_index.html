@@ -1,12 +1,13 @@
-<!-- INCLUDE overall_header.html -->
 <!-- INCLUDE consim_header.html -->
 
-<div style="float:left;width:60%;">
-    <div class="panel" style="margin: 0 10px">
+<div class="field_center">
+    <div class="panel">
     	<div class="inner">
             <div class="content">
-                <h2>{L_CURRENT_LOCATION}</h2>
-                <p>{LOCATION} ({LOCATION_TYPE}), {PROVINCE} in {COUNTRY}</p>
+                <h2>{LOCATION} ({LOCATION_TYPE}), {L_PROVINCE} {PROVINCE} ({COUNTRY})</h2>
+                <p class="location_desc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+                <div class="location_image"><img src="http://localhost/phpbb3.1/ext/consim/core/images/stadt.png" width="200"/></div>
+                <br class="clear" />
                 <br /><br />
                 <form method="post" action="{U_ACTION}" id="post">
                 <select name="destination" id="destination">

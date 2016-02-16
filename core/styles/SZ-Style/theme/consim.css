@@ -13,3 +13,37 @@
 .green {
     color: green;
 }
+
+.field_left {
+    float:left;
+    width:20%;
+}
+
+.field_center {
+    float:left;
+    width:60%;
+}
+
+.field_right {
+    float:right;
+    width:20%;
+}
+
+.field_center .panel {
+    margin: 0 10px;
+}
+
+.location_image {
+    float:right;
+    width:35%;
+    text-align:center;
+}
+
+.location_desc {
+    float:left;
+    width:65%;
+}
+
+.clear {
+    clear:both;
+}

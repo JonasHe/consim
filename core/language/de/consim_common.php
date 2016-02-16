@@ -96,5 +96,5 @@ $lang = array_merge($lang, array(
 	'DEFORMIERUNG'				=> 'Deformierung',
 	'STARK_UBERGEWICHTIG'		=> 'Stark Übergewichtig',
 
-    'CURRENT_LOCATION'          => 'Aktueller Standort',
+    'PROVINCE'                  => 'Provinz',
 ));
