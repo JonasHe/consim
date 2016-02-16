@@ -41,6 +41,12 @@ services:
             - %tables.consim.location_types%
             - %tables.consim.provinces%
             - %tables.consim.countries%
+    consim.core.operators.ActionLists:
+        class: consim\core\operators\ActionLists
+        arguments:
+            - @dbal.conn
+            - @service_container
+            - %tables.consim.actions%
     consim.core.entity.Action:
         class: consim\core\entity\Action
         scope: prototype # scope MUST be prototype for this to work!
