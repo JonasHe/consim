@@ -56,7 +56,7 @@ class ActionLists
 
         $sql = 'SELECT id, user_id, type, time, status
             FROM ' . $this->consim_action_table . '
-			WHERE time <= ' . time();
+			WHERE time <= '. time() .' AND status = 0';
 		$result = $this->db->sql_query($sql);
 
         while($row = $this->db->sql_fetchrow($result))
