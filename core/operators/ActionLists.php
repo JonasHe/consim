@@ -26,6 +26,7 @@ class ActionLists
 	* @var string
 	*/
     protected $consim_action_table;
+    protected $consim_travel_table;
 
     /**
  	* Constructor
@@ -33,15 +34,18 @@ class ActionLists
  	* @param \phpbb\db\driver\driver_interface    $db                          Database object
     * @param ContainerInterface                	  $container       	           Service container interface
     * @param string                               $consim_action_table         Name of the table used to store data
+    * @param string                               $consim_travel_table         Name of the table used to store data
  	* @access public
  	*/
  	public function __construct(\phpbb\db\driver\driver_interface $db,
                                 ContainerInterface $container,
-                                $consim_action_table)
+                                $consim_action_table,
+                                $consim_travel_table)
  	{
         $this->db = $db;
         $this->container = $container;
         $this->consim_action_table = $consim_action_table;
+        $this->consim_travel_table = $consim_travel_table;
  	}
 
     /**
@@ -50,22 +54,44 @@ class ActionLists
 	* @return array Array of Action
 	* @access public
 	*/
-	public function getAllFinishedActions()
+	public function finishedActions()
 	{
-        $entities = array();
-
-        $sql = 'SELECT id, user_id, type, time, status
-            FROM ' . $this->consim_action_table . '
-			WHERE time <= '. time() .' AND status = 0';
+        $sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
+                       t.start_location, t.end_location
+            FROM ' . $this->consim_action_table . ' a
+            LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
+			WHERE a.endtime <= '. time() .' AND a.status = 0';
 		$result = $this->db->sql_query($sql);
 
         while($row = $this->db->sql_fetchrow($result))
         {
-            $entities[] = $this->container->get('consim.core.entity.Action')->import($row);
+            if($row['start_location'] != NULL)
+            {
+                $entity = $this->container->get('consim.core.entity.Travel')->import($row)->done();
+            }
         }
         $this->db->sql_freeresult($result);
+    }
 
-		return $entities;
+    /**
+	* Get current action from user
+	*
+    * @param int $user_id User ID
+	* @return Object Travel
+	* @access public
+	*/
+	public function getCurrentActionFromUser($user_id)
+	{
+        $sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
+                       t.start_location, t.end_location
+            FROM ' . $this->consim_action_table . ' a
+            LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
+			WHERE user_id = ' . (int) $user_id .' AND status = 0';
+        $result = $this->db->sql_query($sql);
+		$row = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		return $this->container->get('consim.core.entity.Travel')->import($row);
     }
 
     /**
