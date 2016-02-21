@@ -129,6 +129,10 @@ ul.travellist dd.action {
     width: 20%;
 }
 
+ul.travellist dd.action a.button2 {
+    vertical-align: baseline;
+}
+
 #consim_darkenwrapper {
     display: none;
     position: relative;

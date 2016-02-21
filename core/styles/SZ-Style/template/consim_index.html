@@ -49,7 +49,7 @@
 
 <br style="clear:both" />
 
-<!--<form method="post" action="{U_ACTION}" id="post"> -->
+
 <div id="travel_popup" class="consim_popup">
 	<a href="#" class="popup_close"></a>
 	<h2 class="popup_title">Reisen</h2>
@@ -57,6 +57,7 @@
         <p>
             <img src="http://localhost/phpbb3.1/ext/consim/core/images/map.png" width="750"  height="350"/>
         </p>
+        <form method="post" action="{U_ACTION}" id="post">
         <ul class="travellist">
             <!-- BEGIN destination -->
             <li>
@@ -65,14 +66,14 @@
                     <dd class="travelprovince">{destination.PROVINCE}</dd>
                     <dd class="travelcountry">{destination.COUNTRY}</dd>
                     <dd class="traveltime">{destination.TIME}test</dd>
-                    <dd class="action"><a name="travel" class="button2" style="vertical-align: baseline;" />Reisen</a></dd>
+                    <dd class="action"><a href="{destination.ACTION}" name="travel" class="button2">Reisen</a></dd>
                 </dl>
             </li>
             <!-- END destination -->
         </ul>
+        </form>
     </div>
 </div>
-<!--</form>-->
 
 <!-- INCLUDE overall_footer.html -->
 

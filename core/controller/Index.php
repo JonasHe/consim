@@ -88,7 +88,7 @@ class Index
 
         $location = $this->container->get('consim.core.entity.Location')->load($consim_user->getLocation());
 
-        $this->container->get('consim.core.operators.TravelLocations')->setAllDestinationsToTemplate($consim_user->getLocation(),$this->template);
+        $this->container->get('consim.core.operators.TravelLocations')->setAllDestinationsToTemplate($consim_user->getLocation(),$this->template, $this->helper);
 
 		// Is the form being submitted to us?
         // Delete UserProfile
@@ -105,17 +105,6 @@ class Index
 
 			//Leite den User weiter zum Consim Register
 			redirect($this->helper->route('consim_core_register'));
-		}
-
-        // Is the form being submitted to us?
-        // Change UserLocation
-		if ($this->request->is_set_post('travel'))
-		{
-			$consim_user->setLocation($this->request->variable('destination', 0));
-            $consim_user->save();
-
-			//Reload the Consim Index
-			redirect($this->helper->route('consim_core_index'));
 		}
 
 		// Set output vars for display in the template
@@ -144,5 +133,25 @@ class Index
 
 		// Send all data to the template file
 		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
+	}
+
+	public function travel($travel_id)
+	{
+        if (!$this->is_valid($travel_id) || !check_link_hash($this->request->variable('hash', ''), 'travel_' . $travel_id))
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
+
+        $consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
+		$consim_user->setLocation($travel_id);
+        $consim_user->save();
+
+		//Reload the Consim Index
+		redirect($this->helper->route('consim_core_index'));
+    }
+
+    protected function is_valid($value)
+	{
+		return !empty($value) && preg_match('/^\w+$/', $value);
 	}
 }

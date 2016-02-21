@@ -106,18 +106,18 @@ class TravelLocations
 	* @param object $template
 	* @access public
 	*/
-	public function setAllDestinationsToTemplate($start, $template)
+	public function setAllDestinationsToTemplate($start, $template, $helper)
 	{
         $entities = $this->getAllDestinations($start);
 
         foreach ($entities as $entity)
         {
             $select = array(
-                'ID'	     	=> $entity->getId(),
 				'NAME'	     	=> $entity->getName(),
                 'TYPE'  		=> $entity->getType(),
                 'PROVINCE'		=> $entity->getProvince(),
                 'COUNTRY'		=> $entity->getCountry(),
+                'ACTION'  		=> $helper->route('consim_core_travel', array('travel_id' => $entity->getId(), 'hash' => generate_link_hash("travel_".$entity->getId()))),
 			);
 
             $template->assign_block_vars('destination', $select);
