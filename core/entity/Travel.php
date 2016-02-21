@@ -51,6 +51,7 @@ class Travel extends Action
 	*/
 	protected $consim_action_table;
     protected $consim_travel_table;
+    protected $consim_user_table;
 
     /**
 	* Constructor
@@ -58,13 +59,15 @@ class Travel extends Action
 	* @param \phpbb\db\driver\driver_interface    $db                          Database object
     * @param string                               $consim_action_table         Name of the table used to store data
     * @param string                               $consim_travel_table         Name of the table used to store data
+    * @param string                               $consim_user_table           Name of the table used to store data
 	* @access public
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_action_table, $consim_travel_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_action_table, $consim_travel_table, $consim_user_table)
 	{
 		$this->db = $db;
 		$this->consim_action_table = $consim_action_table;
         $this->consim_travel_table = $consim_travel_table;
+        $this->consim_user_table = $consim_user_table;
 	}
 
     /**
@@ -115,6 +118,12 @@ class Travel extends Action
 
         // Insert the data to the database
 		$sql = 'INSERT INTO ' . $this->consim_action_table . ' ' . $this->db->sql_build_array('INSERT', $action);
+		$this->db->sql_query($sql);
+
+        //User is now active
+        $sql = 'UPDATE ' . $this->consim_user_table . '
+			SET active = 1
+			WHERE user_id = ' . $this->data['user_id'];
 		$this->db->sql_query($sql);
 
 		return $this;
@@ -173,5 +182,34 @@ class Travel extends Action
 	public function getStatus()
 	{
 		return $this->getInteger($this->data['status']);
+	}
+
+    /**
+	* Travel done
+	*
+	* @return Action $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function done()
+	{
+        if($this->data['endtime'] > time() || $this->data['status'] === 1)
+        {
+            throw new \consim\core\exception\out_of_bounds($integer);
+        }
+
+        //User is free
+        $sql = 'UPDATE ' . $this->consim_action_table . '
+			SET status = 1
+			WHERE id = ' . $this->data['id'];
+		$this->db->sql_query($sql);
+
+        //User is free and at the new location
+        $sql = 'UPDATE ' . $this->consim_user_table . '
+			SET active = 0, location = '. $this->data['end_location'] .'
+			WHERE user_id = ' . $this->data['user_id'];
+		$this->db->sql_query($sql);
+
+		return $this;
 	}
 }

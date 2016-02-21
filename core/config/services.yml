@@ -83,6 +83,7 @@ services:
             - @dbal.conn
             - %tables.consim.actions%
             - %tables.consim.travels%
+            - %tables.consim.user%
 
     consim.core.entity.Action:
         class: consim\core\entity\Action
