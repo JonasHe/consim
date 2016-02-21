@@ -62,7 +62,7 @@ class install_travel extends \phpbb\db\migration\migration
 				),
                 $this->table_prefix . 'consim_travels'	=> array(
 					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', 0),
+						'id'                    => array('UINT:8', NULL, 'auto_increment'),
 						'start_location'        => array('UINT:8', 0),
                         'end_location'          => array('UINT:8', 0),
 					),
