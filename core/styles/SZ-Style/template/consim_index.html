@@ -52,9 +52,11 @@
 <!--<form method="post" action="{U_ACTION}" id="post"> -->
 <div id="travel_popup" class="consim_popup">
 	<a href="#" class="popup_close"></a>
-	<h3 class="alert_title">Reisen</h3>
-    <p class="alert_text">
-        <img src="http://localhost/phpbb3.1/ext/consim/core/images/map.png" width="600" /><br />
+	<h2 class="popup_title">Reisen</h2>
+    <div class="popup_text">
+        <p>
+            <img src="http://localhost/phpbb3.1/ext/consim/core/images/map.png" width="750"  height="350"/>
+        </p>
         <ul class="travellist">
             <!-- BEGIN destination -->
             <li>
@@ -68,7 +70,7 @@
             </li>
             <!-- END destination -->
         </ul>
-    </p>
+    </div>
 </div>
 <!--</form>-->
 
@@ -76,20 +78,6 @@
 
 <script type="text/javascript">
 // <![CDATA[
-    /*
-    $("input[name='travel']").click(function () {
-        if (!$('#darkenwrapper').is(':visible')) {
-    		$('#darkenwrapper').fadeIn(100);
-    	}
-        $('#travel_popup').show();
-    });
-    /*
-    $(".popup_close").click(function() {
-        $(this).parent().hide();
-        return false;
-    });
-    */
-
 (function($) {  // Avoid conflicts with other libraries
 
     'use strict';
@@ -101,7 +89,7 @@
     	ESC: 27
     };
 
-    var $dark = $('#darkenwrapper');
+    var $dark = $('#consim_darkenwrapper');
     var consim = {};
     consim.popupTime = 100;
 

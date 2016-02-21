@@ -129,18 +129,36 @@ ul.travellist dd.action {
     width: 20%;
 }
 
+#consim_darkenwrapper {
+    display: none;
+    position: relative;
+    z-index: 44;
+}
+
+#consim_darken {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    z-index: 45;
+    background-color: #000000;
+}
+
 .consim_popup {
     border: 1px solid #380d0d;
     background-color: #decba4;
     display: none;
     left: 0;
     padding: 0 25px 20px 25px;
-    position: fixed;
+    position: absolute;
     right: 0;
-    top: 150px;
+    top: 50px;
     z-index: 50;
-    width: 620px;
+    width: 750px;
     margin: 0 auto;
+    box-shadow: 0px 0px 8px 4px #000000;
 }
 
 .consim_popup .popup_close {
@@ -153,4 +171,37 @@ ul.travellist dd.action {
     background: transparent url("./images/popup_close.png") 0 0 no-repeat;
     margin-top: -7px;
     margin-right: -31px;
+}
+
+.consim_popup .popup_close:hover {
+	background-position: 0 -16px;
+}
+
+.consim_popup p {
+	margin: 8px 0;
+	padding-bottom: 8px;
+}
+
+.consim_popup label {
+	display: block;
+	margin: 8px 0;
+	padding-bottom: 8px;
+}
+
+.consim_popup div.popup_text > p,
+.consim_popup div.popup_text > label,
+.consim_popup div.popup_text > select,
+.consim_popup div.popup_text > textarea,
+.consim_popup div.popup_text > input {
+	font-size: 1.1em;
+}
+
+.consim_popup h2 {
+    font-weight: normal;
+    border-bottom: 1px solid #380d0d;
+    font-size: 1.6em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.5em;
+    color: #000;
 }
