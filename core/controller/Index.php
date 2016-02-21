@@ -37,6 +37,11 @@ class Index
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
+    /**
+    * Class-Variables
+    **/
+    protected $consim_user;
+
 	/**
 	* Constructor
 	*
@@ -84,13 +89,14 @@ class Index
 		// Add language file
 		$this->user->add_lang_ext('consim/core', 'consim_common');
 
-		$consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
+        //Check all finished Actions
+        $this->container->get('consim.core.operators.ActionLists')->finishedActions();
 
-        $location = $this->container->get('consim.core.entity.Location')->load($consim_user->getLocation());
+        //Get the ConSim-User
+		$this->consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
-        $this->container->get('consim.core.operators.RouteLocations')->setAllDestinationsToTemplate($consim_user->getLocation(),$this->template, $this->helper);
 
-		// Is the form being submitted to us?
+        // Is the form being submitted to us?
         // Delete UserProfile
 		if ($this->request->is_set_post('delete'))
 		{
@@ -107,31 +113,70 @@ class Index
 			redirect($this->helper->route('consim_core_register'));
 		}
 
-		// Set output vars for display in the template
-		$this->template->assign_vars(array(
-            'LOCATION'                      => $location->getName(),
-            'LOCATION_TYPE'                 => $location->getType(),
-            'PROVINCE'                      => $location->getProvince(),
-            'COUNTRY'                       => $location->getCountry(),
+        //Infos for Overall
+        $this->showOverAllInfo();
 
-	    	'SPRACHE_TADSOWISCH'			=> $consim_user->getSpracheTadsowisch(),
-	    	'SPRACHE_BAKIRISCH'				=> $consim_user->getSpracheBakirisch(),
-	    	'SPRACHE_SURANISCH'				=> $consim_user->getSpracheSuranisch(),
-	    	'RHETORIK'						=> $consim_user->getRhetorik(),
-	    	'WIRTSCHAFT'					=> $consim_user->getWirtschaft(),
-            'ADMINISTRATION'				=> $consim_user->getAdministration(),
-	      	'TECHNIK'						=> $consim_user->getTechnik(),
-	      	'NAHKAMPF'						=> $consim_user->getNahkampf(),
-			'SCHUSSWAFFEN'					=> $consim_user->getSchusswaffen(),
-            'SPRENGMITTEL'					=> $consim_user->getSprengmittel(),
-	      	'MILITARKUNDE'					=> $consim_user->getMilitarkunde(),
-	      	'SPIONAGE'						=> $consim_user->getSpionage(),
-            'SCHMUGGEL'					    => $consim_user->getSchmuggel(),
-			'MEDIZIN'						=> $consim_user->getMedizin(),
-	      	'UBERLEBENSKUNDE'				=> $consim_user->getUberlebenskunde(),
+        //Is User active?
+        if($this->consim_user->getActive())
+        {
+            return $this->showTraveling();
+        }
+        else
+        {
+            return $this->showLocation();
+        }
+	}
+
+    private function showTraveling()
+    {
+        // Set output vars for display in the template
+		$this->template->assign_vars(array(
+            'S_TRAVELING'                   => true,
 		));
 
 		// Send all data to the template file
 		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
-	}
+    }
+
+    private function showLocation()
+    {
+        //Create the Travelpopup
+        $this->container->get('consim.core.operators.RouteLocations')->setAllDestinationsToTemplate($this->consim_user->getLocation(),$this->template, $this->helper);
+
+        $location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocation());
+
+        // Set output vars for display in the template
+		$this->template->assign_vars(array(
+            'S_LOCATION'                    => true,
+            'LOCATION'                      => $location->getName(),
+            'LOCATION_TYPE'                 => $location->getType(),
+            'PROVINCE'                      => $location->getProvince(),
+            'COUNTRY'                       => $location->getCountry(),
+		));
+
+		// Send all data to the template file
+		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
+    }
+
+    private function showOverAllInfo()
+    {
+        // Set output vars for display in the template
+		$this->template->assign_vars(array(
+	    	'SPRACHE_TADSOWISCH'			=> $this->consim_user->getSpracheTadsowisch(),
+	    	'SPRACHE_BAKIRISCH'				=> $this->consim_user->getSpracheBakirisch(),
+	    	'SPRACHE_SURANISCH'				=> $this->consim_user->getSpracheSuranisch(),
+	    	'RHETORIK'						=> $this->consim_user->getRhetorik(),
+	    	'WIRTSCHAFT'					=> $this->consim_user->getWirtschaft(),
+            'ADMINISTRATION'				=> $this->consim_user->getAdministration(),
+	      	'TECHNIK'						=> $this->consim_user->getTechnik(),
+	      	'NAHKAMPF'						=> $this->consim_user->getNahkampf(),
+			'SCHUSSWAFFEN'					=> $this->consim_user->getSchusswaffen(),
+            'SPRENGMITTEL'					=> $this->consim_user->getSprengmittel(),
+	      	'MILITARKUNDE'					=> $this->consim_user->getMilitarkunde(),
+	      	'SPIONAGE'						=> $this->consim_user->getSpionage(),
+            'SCHMUGGEL'					    => $this->consim_user->getSchmuggel(),
+			'MEDIZIN'						=> $this->consim_user->getMedizin(),
+	      	'UBERLEBENSKUNDE'				=> $this->consim_user->getUberlebenskunde(),
+		));
+    }
 }
