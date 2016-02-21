@@ -161,6 +161,7 @@ class install_basics extends \phpbb\db\migration\migration
 			'drop_tables'		=> array(
 				$this->table_prefix . 'consim_user',
 				$this->table_prefix . 'consim_figure',
+                $this->table_prefix . 'consim_actions',
 			),
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users' => array('consim_register'),
