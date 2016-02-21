@@ -83,8 +83,20 @@ class Action
         {
             throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
         }
-		$consim_user->setLocation($travel_id);
-        $consim_user->save();
+
+        //Get Infos about the Route
+        $route = $this->container->get('consim.core.entity.Route')->load($consim_user->getLocation(), $travel_id);
+
+        //Add new Travel Action
+        $consim_user = $this->container->get('consim.core.entity.Travel')
+                                       ->insert($consim_user->getUserId(),
+                                                time(),
+                                                (time() + $route->getTime()),
+                                                $consim_user->getLocation(),
+                                                $travel_id);
+
+		//$consim_user->setLocation($travel_id);
+        //$consim_user->save();
 
 		//Reload the Consim Index
 		redirect($this->helper->route('consim_core_index'));
