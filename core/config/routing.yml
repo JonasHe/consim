@@ -3,8 +3,8 @@ consim_core_index:
     defaults: { _controller: consim.core.controller.Index:display }
 
 consim_core_travel:
-    pattern: /game/travel/{travel_id}
-    defaults: { _controller: consim.core.controller.Index:travel, travel_id: 0 }
+    pattern: /game/action/travel/{travel_id}
+    defaults: { _controller: consim.core.controller.Action:travel, travel_id: 0 }
     requirements:
         travel_id: \w+
 

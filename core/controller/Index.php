@@ -88,7 +88,7 @@ class Index
 
         $location = $this->container->get('consim.core.entity.Location')->load($consim_user->getLocation());
 
-        $this->container->get('consim.core.operators.TravelLocations')->setAllDestinationsToTemplate($consim_user->getLocation(),$this->template, $this->helper);
+        $this->container->get('consim.core.operators.RouteLocations')->setAllDestinationsToTemplate($consim_user->getLocation(),$this->template, $this->helper);
 
 		// Is the form being submitted to us?
         // Delete UserProfile
@@ -135,7 +135,7 @@ class Index
 		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
 	}
 
-	public function travel($travel_id)
+	public function traveling($travel_id)
 	{
         if (!$this->is_valid($travel_id) || !check_link_hash($this->request->variable('hash', ''), 'travel_' . $travel_id))
 		{
