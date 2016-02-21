@@ -71,9 +71,9 @@ class TravelLocations
 	{
         $entities = array();
 
-		$sql = 'SELECT l.id, l.name, t.name AS type, p.name AS province, c.name AS country
+		$sql = 'SELECT l.id, l.name, t.name AS type, p.name AS province, c.name AS country, r.time
             FROM phpbb_consim_routes r
-			LEFT JOIN ' . $this->consim_location_table . ' l ON (r.start_id = l.id AND r.start_id <> '. $start .') OR (r.end_id = l.id AND r.end_id <> '. $start .')
+			LEFT JOIN ' . $this->consim_location_table . ' l ON (r.start_id = l.id AND r.start_id <> '. (int) $start .') OR (r.end_id = l.id AND r.end_id <> '. (int) $start .')
             LEFT JOIN ' . $this->consim_location_type_table . ' t ON l.type = t.id
             LEFT JOIN ' . $this->consim_province_table . ' p ON l.province = p.id
             LEFT JOIN ' . $this->consim_country_table . ' c ON p.country = c.id
@@ -88,8 +88,9 @@ class TravelLocations
                 'type'      => $row['type'],
                 'province'  => $row['province'],
                 'country'   => $row['country'],
+                'time'      => $row['time'],
             );
-            $data = $this->container->get('consim.core.entity.Location')->import($data);
+            $data = $this->container->get('consim.core.entity.RouteLocation')->import($data);
 
             $entities[] = $data;
         }
@@ -117,6 +118,7 @@ class TravelLocations
                 'TYPE'  		=> $entity->getType(),
                 'PROVINCE'		=> $entity->getProvince(),
                 'COUNTRY'		=> $entity->getCountry(),
+                'TIME'          => gmdate('i:s', $entity->getTime()),
                 'ACTION'  		=> $helper->route('consim_core_travel', array('travel_id' => $entity->getId(), 'hash' => generate_link_hash("travel_".$entity->getId()))),
 			);
 

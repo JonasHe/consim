@@ -59,12 +59,16 @@ services:
         arguments:
             - @dbal.conn
             - %tables.consim.provinces%
-    consim.core.entity.LocationType:
-        class: consim\core\entity\LocationType
+    consim.core.entity.RouteLocation:
+        class: consim\core\entity\RouteLocation
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
+            - %tables.consim.routes%
+            - %tables.consim.locations%
             - %tables.consim.location_types%
+            - %tables.consim.provinces%
+            - %tables.consim.countries%
     consim.core.entity.Location:
         class: consim\core\entity\Location
         scope: prototype # scope MUST be prototype for this to work!
@@ -74,6 +78,12 @@ services:
             - %tables.consim.location_types%
             - %tables.consim.provinces%
             - %tables.consim.countries%
+    consim.core.entity.LocationType:
+        class: consim\core\entity\LocationType
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.location_types%
     consim.core.entity.ConsimUser:
         class: consim\core\entity\ConsimUser
         scope: prototype # scope MUST be prototype for this to work!
