@@ -134,24 +134,4 @@ class Index
 		// Send all data to the template file
 		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
 	}
-
-	public function traveling($travel_id)
-	{
-        if (!$this->is_valid($travel_id) || !check_link_hash($this->request->variable('hash', ''), 'travel_' . $travel_id))
-		{
-			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
-		}
-
-        $consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
-		$consim_user->setLocation($travel_id);
-        $consim_user->save();
-
-		//Reload the Consim Index
-		redirect($this->helper->route('consim_core_index'));
-    }
-
-    protected function is_valid($value)
-	{
-		return !empty($value) && preg_match('/^\w+$/', $value);
-	}
 }
