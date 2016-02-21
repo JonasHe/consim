@@ -20,8 +20,8 @@ class Action extends abstractEntity
 	protected static $fields = array(
     	'id'						=> 'integer',
       	'user_id'                   => 'integer',
-      	'type'						=> 'string',
-      	'time'					    => 'integer',
+      	'starttime'				    => 'integer',
+        'endtime'				    => 'integer',
         'status'					=> 'boolean',
 	);
 
@@ -31,7 +31,8 @@ class Action extends abstractEntity
 	protected static $validate_unsigned = array(
       	'id',
         'user_id',
-        'time',
+        'starttime',
+        'endtime',
 	);
 
 	protected $data;
@@ -69,9 +70,9 @@ class Action extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT id, user_id, type, time, status
+		$sql = 'SELECT id, user_id, starttime, endtime, status
 			FROM ' . $this->consim_action_table . '
-			WHERE l.id = ' . (int) $id;
+			WHERE id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -120,51 +121,51 @@ class Action extends abstractEntity
 	}
 
     /**
-	* Get Type
-	*
-	* @return string Type
-	* @access public
-	*/
-	public function getType()
-	{
-		return $this->getString($this->data['type']);
-	}
-
-    /**
-	* Set Type
-	*
-	* @param string $type
-	* @return Action $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setType($type)
-	{
-		return $this->setString('type', $type, 1, 1);
-	}
-
-    /**
 	* Get Start Time
 	*
-	* @return int Time
+	* @return int Starttime
 	* @access public
 	*/
-	public function getTime()
+	public function getStartTime()
 	{
-		return $this->getInteger($this->data['time']);
+		return $this->getInteger($this->data['starttime']);
 	}
 
     /**
-	* Set Time
+	* Set StartTime
 	*
-	* @param int $time
+	* @param int $starttime
 	* @return Action $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setTime($time)
+	public function setStartTime($starttime)
 	{
-		return $this->setInteger('time', $time);
+		return $this->setInteger('starttime', $starttime);
+	}
+
+    /**
+	* Get End Time
+	*
+	* @return int Endtime
+	* @access public
+	*/
+	public function getEndTime()
+	{
+		return $this->getInteger($this->data['endtime']);
+	}
+
+    /**
+	* Set EndTime
+	*
+	* @param int $endtime
+	* @return Action $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setEndTime($endtime)
+	{
+		return $this->setInteger('endtime', $endtime);
 	}
 
     /**
