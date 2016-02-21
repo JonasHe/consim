@@ -34,8 +34,8 @@ services:
             - @request
             - @dbal.conn
 
-    consim.core.operators.TravelLocations:
-        class: consim\core\operators\TravelLocations
+    consim.core.operators.RouteLocations:
+        class: consim\core\operators\RouteLocations
         arguments:
             - @dbal.conn
             - @service_container

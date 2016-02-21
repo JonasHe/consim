@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
 * Operator for all locations, that you can travel
 */
-class TravelLocations
+class RouteLocations
 {
     /** @var \phpbb\db\driver\driver_interface */
 	protected $db;
