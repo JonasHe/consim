@@ -45,6 +45,7 @@ class ConsimUser extends abstractEntity
 		'medizin'						=> 'integer',
       	'uberlebenskunde'				=> 'integer',
         'location'                      => 'integer',
+        'active'                        => 'bool'
 	);
 
 	/**
@@ -68,6 +69,7 @@ class ConsimUser extends abstractEntity
 		'medizin',
       	'uberlebenskunde',
         'location',
+        'active',
 	);
 
 	protected $data;
@@ -813,6 +815,29 @@ class ConsimUser extends abstractEntity
 
        return this;
    }
+
+   /**
+	* If user active?
+	*
+	* @return bool active
+	* @access public
+	*/
+	public function getActive()
+	{
+		return $this->getInteger($this->data['active']);
+	}
+	/**
+	* Set Active
+	*
+	* @param bool $uberlebenskunde
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setActive($active)
+	{
+		return $this->setInteger('active', $active, true, 1);
+	}
 
 	/**
  	* Get Data from Figure

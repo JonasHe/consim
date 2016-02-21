@@ -61,6 +61,7 @@ class install_basics extends \phpbb\db\migration\migration
 						'medizin'				=> array('UINT:3', 1),
 						'uberlebenskunde'		=> array('UINT:3', 1),
                         'location'              => array('UINT:8', 4),
+                        'active'                => array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('user_id'),
 				),
