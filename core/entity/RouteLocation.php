@@ -53,7 +53,6 @@ class RouteLocation extends Location
 	* Constructor
 	*
 	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-    * @param ContainerInterface                	  $container       	           Service container interface
     * @param string                               $consim_route_table          Name of the table used to store data
     * @param string                               $consim_location_table       Name of the table used to store data
     * @param string                               $consim_location_type_table  Name of the table used to store data
@@ -87,7 +86,7 @@ class RouteLocation extends Location
 	public function load($start)
 	{
 		$sql = 'SELECT l.id, l.name, t.name AS type, p.name AS province, c.name AS country, r.time
-            FROM phpbb_consim_routes r
+            FROM ' . $this->consim_route_table . ' r
             LEFT JOIN ' . $this->consim_location_table . ' l ON (r.start_id = l.id AND r.start_id <> '. (int) $start .') OR (r.end_id = l.id AND r.end_id <> '. (int) $start .')
             LEFT JOIN ' . $this->consim_location_type_table . ' t ON l.type = t.id
             LEFT JOIN ' . $this->consim_province_table . ' p ON l.province = p.id
