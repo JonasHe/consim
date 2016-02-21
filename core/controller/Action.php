@@ -69,12 +69,20 @@ class Action
 
 	public function travel($travel_id)
 	{
+        //Check the request
         if (!$this->is_valid($travel_id) || !check_link_hash($this->request->variable('hash', ''), 'travel_' . $travel_id))
 		{
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
+        //Load ConsimUser
         $consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
+
+        //Check, if user not active
+        if($consim_user->getActive())
+        {
+            throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+        }
 		$consim_user->setLocation($travel_id);
         $consim_user->save();
 
