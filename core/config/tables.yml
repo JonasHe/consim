@@ -7,3 +7,4 @@ parameters:
     tables.consim.countries: %core.table_prefix%consim_countries
     tables.consim.routes: %core.table_prefix%consim_routes
     tables.consim.actions: %core.table_prefix%consim_actions
+    tables.consim.travels: %core.table_prefix%consim_travels
