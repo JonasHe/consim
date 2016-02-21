@@ -75,15 +75,18 @@ class install_basics extends \phpbb\db\migration\migration
 				),
                 $this->table_prefix . 'consim_actions' => array(
 					'COLUMNS'		=> array(
-						'id'					=> array('UINT:8', null, 'auto_increment'),
+						'id'					=> array('UINT:8', NULL, 'auto_increment'),
 						'user_id'         		=> array('UINT:8', 0),
-						'type'					=> array('VCHAR:1', ''),
-						'time'				    => array('UINT:8', 0),
+						'starttime'				=> array('UINT:8', 0),
+                        'endtime'               => array('TIMESTAMP', 0),
+                        'travel_id'             => array('UINT:8', 0),
                         'status'                => array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
                     'KEYS'			=> array(
-						'time'            => array('INDEX', 'time'),
+						'starttime'       => array('INDEX', 'starttime'),
+                        'endtime'         => array('INDEX', 'endtime'),
+                        'travel_id'       => array('INDEX', 'travel_id'),
                         'status'          => array('INDEX', 'status'),
 					),
 				),
