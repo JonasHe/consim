@@ -50,8 +50,7 @@ class Action extends abstractEntity
 	* Constructor
 	*
 	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-    * @param ContainerInterface                	  $container       	           Service container interface
-    * @param string                               $consim_action_table       Name of the table used to store data
+    * @param string                               $consim_action_table         Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_action_table)
@@ -108,19 +107,6 @@ class Action extends abstractEntity
 	}
 
     /**
-	* Set User ID
-	*
-	* @param int $user_id
-	* @return Action $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setUserId($user_id)
-	{
-		return $this->setInteger('user_id', $user_id);
-	}
-
-    /**
 	* Get Start Time
 	*
 	* @return int Starttime
@@ -129,19 +115,6 @@ class Action extends abstractEntity
 	public function getStartTime()
 	{
 		return $this->getInteger($this->data['starttime']);
-	}
-
-    /**
-	* Set StartTime
-	*
-	* @param int $starttime
-	* @return Action $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setStartTime($starttime)
-	{
-		return $this->setInteger('starttime', $starttime);
 	}
 
     /**
@@ -156,19 +129,6 @@ class Action extends abstractEntity
 	}
 
     /**
-	* Set EndTime
-	*
-	* @param int $endtime
-	* @return Action $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setEndTime($endtime)
-	{
-		return $this->setInteger('endtime', $endtime);
-	}
-
-    /**
 	* Get Status
 	*
 	* @return int Status
@@ -177,18 +137,5 @@ class Action extends abstractEntity
 	public function getStatus()
 	{
 		return $this->getInteger($this->data['status']);
-	}
-
-    /**
-	* Set Status
-	*
-	* @param int $status
-	* @return Action $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setStatus($status)
-	{
-		return $this->setInteger('status', $status);
 	}
 }
