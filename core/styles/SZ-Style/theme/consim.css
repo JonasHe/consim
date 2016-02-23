@@ -219,6 +219,7 @@ ul.travellist dd.action a.button2 {
 .travel img {
     width: 200px;
     height: 200px;
+    border: 1px solid #000000;
 }
 
 .travel_location {
