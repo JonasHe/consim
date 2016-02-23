@@ -119,7 +119,13 @@ class Index
         //Is User active?
         if($this->consim_user->getActive())
         {
-            return $this->showTraveling();
+            //get current action
+            $action = $this->container->get('consim.core.operators.ActionLists')->getCurrentActionFromUser($this->user->data['user_id']);
+            //Is User traveling?
+            if($action instanceof \consim\core\entity\TravelLocation)
+            {
+                return $this->showTraveling($action);
+            }
         }
         else
         {

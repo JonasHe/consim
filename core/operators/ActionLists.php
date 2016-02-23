@@ -82,16 +82,21 @@ class ActionLists
 	*/
 	public function getCurrentActionFromUser($user_id)
 	{
-        $sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
-                       t.start_location, t.end_location
+        $action = false;
+
+        $sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.travel_id, a.status
             FROM ' . $this->consim_action_table . ' a
-            LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
 			WHERE user_id = ' . (int) $user_id .' AND status = 0';
         $result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		return $this->container->get('consim.core.entity.Travel')->import($row);
+        if($row['travel_id'] > 0 )
+        {
+            $action = $this->container->get('consim.core.entity.TravelLocation')->load($row['id']);
+        }
+
+		return $action;
     }
 
     /**
