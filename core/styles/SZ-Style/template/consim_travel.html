@@ -3,10 +3,24 @@
 <div class="field_center">
     <div class="panel">
     	<div class="inner">
-            <div class="content">
+            <div class="content travel">
                 <h2>{L_TRAVELING}</h2>
                 <div class="inner">
-                    Du reist gerade irgendwo hin...
+                    <div class="travel_location">
+                        <h3>{START_LOCATION_TYPE} {START_LOCATION_NAME}, {START_LOCATION_PROVINCE} ({START_LOCATION_COUNTRY})</h3>
+                        <img src="http://localhost/phpbb3.1/ext/consim/core/images/stadt.png" />
+                        <p>Abreisezeit: {START_TIME}</p>
+                    </div>
+                    <div class="travel_middle">
+                        <div id="countdown" class="countdown">{COUNTDOWN}</div>
+                        <div style="font-size:5em;">&#8694;</div>
+                    </div>
+                    <div class="travel_location">
+                        <h3>{END_LOCATION_TYPE} {END_LOCATION_NAME}, {END_LOCATION_PROVINCE} ({END_LOCATION_COUNTRY})</h3>
+                        <img src="http://localhost/phpbb3.1/ext/consim/core/images/stadt.png" />
+                        <p>Ankunftszeit: {END_TIME}</p>
+                    </div>
+
                 </div>
             </div>
         </div>

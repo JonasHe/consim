@@ -209,3 +209,27 @@ ul.travellist dd.action a.button2 {
     padding-bottom: 0.5em;
     color: #000;
 }
+
+.travel #countdown {
+    font-size: 3em;
+    line-height: 3em;
+    color: #340C0C;
+}
+
+.travel img {
+    width: 200px;
+    height: 200px;
+}
+
+.travel_location {
+    float: left;
+    width: 40%;
+    text-align: center;
+}
+
+.travel_middle {
+    float: left;
+    width: 20%;
+    text-align: center;
+    padding-top: 50px;
+}

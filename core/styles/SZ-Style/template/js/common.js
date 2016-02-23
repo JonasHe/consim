@@ -69,8 +69,36 @@
     	$(document).off('keydown.consim.popup');
     };
 
+    //COUNTDOWN
+    consim.countdown = function($id) {
+        var time = $($id).text().split(':');
+        var min = time[0];
+        var sec = time[1];
+        var timer = setInterval(function() {
+            sec = --sec;
+            //Output
+            if(sec < 10) {
+                $($id).text(min + ':' + "0" + sec);
+            } else {
+                $($id).text(min + ':' + sec);
+            }
+            //Min to sec
+            if(sec == 0 && min > 0) {
+                sec = 60;
+                --min;
+            } else if (sec == 0) {
+                clearInterval(timer);
+                location.reload();
+            }
+        }, 1000);
+    }
 
     $("input[name='travel']").click(function () {
         alert = consim.popup();
     });
+
+    if($('#countdown').length) {
+        consim.countdown($('#countdown'));
+    }
+
 })(jQuery); // Avoid conflicts with other libraries
