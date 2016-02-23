@@ -104,8 +104,8 @@ class TravelLocation extends Travel
 	{
 		$sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
                        t.start_location, t.end_location,
-                       l1.name AS startName, tp1,name AS startType, p1.name as startProvince, c1.name as startCountry
-                       l2.name AS endName, tp2,name AS endType, p2.name as endProvince, c2.name as endCountry
+                       l1.id AS startId, l1.name AS startName, tp1.name AS startType, p1.name as startProvince, c1.name as startCountry,
+                       l2.id AS endId, l2.name AS endName, tp2.name AS endType, p2.name as endProvince, c2.name as endCountry
             FROM ' . $this->consim_action_table . ' a
             LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
             LEFT JOIN ' . $this->consim_location_table . ' l1 ON l1.id = t.start_location
@@ -117,7 +117,7 @@ class TravelLocation extends Travel
             LEFT JOIN ' . $this->consim_location_type_table . ' tp2 ON l2.type = tp2.id
             LEFT JOIN ' . $this->consim_province_table . ' p2 ON l2.province = p2.id
             LEFT JOIN ' . $this->consim_country_table . ' c2 ON p2.country = c2.id
-			WHERE a.id = '. (int) $start;
+			WHERE a.id = '. (int) $id;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -136,6 +136,7 @@ class TravelLocation extends Travel
         );
 
         $start_location = array(
+            'id'        => $row['startId'],
             'name'      => $row['startName'],
             'type'      => $row['startType'],
             'province'  => $row['startProvince'],
@@ -144,6 +145,7 @@ class TravelLocation extends Travel
         $this->data['start_location'] = $this->container->get('consim.core.entity.Location')->import($start_location);
 
         $end_location = array(
+            'id'        => $row['endId'],
             'name'      => $row['endName'],
             'type'      => $row['endType'],
             'province'  => $row['endProvince'],
