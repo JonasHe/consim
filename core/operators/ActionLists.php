@@ -26,7 +26,6 @@ class ActionLists
 	* @var string
 	*/
     protected $consim_action_table;
-    protected $consim_travel_table;
 
     /**
  	* Constructor
@@ -45,7 +44,6 @@ class ActionLists
         $this->db = $db;
         $this->container = $container;
         $this->consim_action_table = $consim_action_table;
-        $this->consim_travel_table = $consim_travel_table;
  	}
 
     /**

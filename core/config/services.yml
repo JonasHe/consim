@@ -62,7 +62,6 @@ services:
             - @dbal.conn
             - @service_container
             - %tables.consim.actions%
-            - %tables.consim.travels%
 
     consim.core.entity.TravelLocation:
         class: consim\core\entity\TravelLocation
