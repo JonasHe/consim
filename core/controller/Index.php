@@ -131,11 +131,10 @@ class Index
     {
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
-            'S_TRAVELING'                   => true,
 		));
 
 		// Send all data to the template file
-		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
+		return $this->helper->render('consim_travel.html', $this->user->lang('INDEX'));
     }
 
     private function showLocation()
@@ -147,7 +146,6 @@ class Index
 
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
-            'S_LOCATION'                    => true,
             'LOCATION'                      => $location->getName(),
             'LOCATION_TYPE'                 => $location->getType(),
             'PROVINCE'                      => $location->getProvince(),
