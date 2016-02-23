@@ -97,4 +97,5 @@ $lang = array_merge($lang, array(
 	'STARK_UBERGEWICHTIG'		=> 'Stark Übergewichtig',
 
     'PROVINCE'                  => 'Provinz',
+    'TRAVELING'                 => 'Reisen',
 ));
