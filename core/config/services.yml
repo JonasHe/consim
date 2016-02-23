@@ -64,8 +64,8 @@ services:
             - %tables.consim.actions%
             - %tables.consim.travels%
 
-    consim.core.entity.RouteLocation:
-        class: consim\core\entity\RouteLocation
+    consim.core.entity.TravelLocation:
+        class: consim\core\entity\TravelLocation
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
