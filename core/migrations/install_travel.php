@@ -83,6 +83,21 @@ class install_travel extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
+                $this->table_prefix . 'consim_buildings'	=> array(
+					'COLUMNS'      => array(
+						'id'                    => array('UINT:8', 0),
+						'name'            		=> array('VCHAR:255', ''),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
+                $this->table_prefix . 'consim_location_buildings'	=> array(
+					'COLUMNS'      => array(
+						'id'                    => array('UINT:8', NULL, 'auto_increment'),
+						'city_id'          		=> array('UINT:8', 0),
+                        'building_id'           => array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
             ),
         );
 	}
@@ -178,6 +193,8 @@ class install_travel extends \phpbb\db\migration\migration
                 $this->table_prefix . 'consim_travels',
                 $this->table_prefix . 'consim_provinces',
                 $this->table_prefix . 'consim_countries',
+                $this->table_prefix . 'consim_buildings',
+                $this->table_prefix . 'consim_location_buildings',
 			),
 		);
 	}

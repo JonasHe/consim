@@ -2,17 +2,17 @@ consim_core_index:
     pattern: /game
     defaults: { _controller: consim.core.controller.Index:display }
 
-consim_core_city:
-    pattern: /game/city/{city_id}
-    defaults: { _controller: consim.core.controller.Index:showCity, city_id: 0 }
+consim_core_location:
+    pattern: /game/location/{location_id}
+    defaults: { _controller: consim.core.controller.Index:showLocation, location_id: 0 }
     requirements:
-        city_id: \w+
+        location_id: \w+
 
-consim_core_city_building:
-    pattern: /game/city/{city_id}/building/{building_id}
-    defaults: { _controller: consim.core.controller.Index:showCityBuilding, city_id: 0, building_id: 0 }
+consim_core_location_building:
+    pattern: /game/location/{location_id}/building/{building_id}
+    defaults: { _controller: consim.core.controller.Index:showLocationBuilding, location_id: 0, building_id: 0 }
     requirements:
-        city_id: \w+
+        location_id: \w+
         building_id: \w+
 
 consim_core_travel:

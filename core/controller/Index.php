@@ -198,14 +198,14 @@ class Index
 		));
     }
 
-    public function showCity($city_id)
+    public function showLocation($location_id)
     {
 
         // Send all data to the template file
 		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
     }
 
-    public function showCityBuilding($city_id, $building_id)
+    public function showLocationBuilding($location_id, $building_id)
     {
 
         // Send all data to the template file
