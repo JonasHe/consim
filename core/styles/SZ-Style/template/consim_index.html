@@ -32,9 +32,11 @@
                     </li>
                 </ul>
                 <br /><br />
+                <!-- IF CAN_TRAVEL -->
                 <fieldset>
                     <input type="submit" tabindex="1" name="travel" class="button1" value="Reisen" />
                 </fieldset>
+                <!-- ENDIF -->
 
                 <br /><br /><br /><br /><br />
                 <form method="post" action="{U_ACTION}" id="post">
@@ -62,7 +64,7 @@
             <!-- BEGIN destination -->
             <li>
                 <dl>
-                    <dt class="travelname">{destination.NAME} ({destination.TYPE})</dt>
+                    <dt class="travelname"><a href="{destination.URL}">{destination.NAME} ({destination.TYPE})</a></dt>
                     <dd class="travelprovince">{destination.PROVINCE}</dd>
                     <dd class="travelcountry">{destination.COUNTRY}</dd>
                     <dd class="traveltime">{destination.TIME}</dd>

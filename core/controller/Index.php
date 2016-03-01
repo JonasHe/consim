@@ -157,15 +157,23 @@ class Index
 		return $this->helper->render('consim_travel.html', $this->user->lang('INDEX'));
     }
 
-    private function showLocation()
+    public function showLocation($location_id = 0)
     {
-        //Create the Travelpopup
-        $this->container->get('consim.core.operators.RouteLocations')->setAllDestinationsToTemplate($this->consim_user->getLocation(),$this->template, $this->helper);
-
-        $location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocation());
+        //location from location_id or from position of user?
+        if($location_id === 0)
+        {
+            $location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocation());
+            //Create the Travelpopup
+            $this->container->get('consim.core.operators.RouteLocations')->setAllDestinationsToTemplate($this->consim_user->getLocation(),$this->template, $this->helper);
+        }
+        else
+        {
+            $location = $this->container->get('consim.core.entity.Location')->load($location_id);
+        }
 
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
+            'CAN_TRAVEL'                    => ($location_id === 0)? TRUE : FALSE,
             'LOCATION'                      => $location->getName(),
             'LOCATION_TYPE'                 => $location->getType(),
             'PROVINCE'                      => $location->getProvince(),
@@ -174,6 +182,13 @@ class Index
 
 		// Send all data to the template file
 		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
+    }
+
+    public function showLocationBuilding($location_id, $building_id)
+    {
+
+        // Send all data to the template file
+        return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
     }
 
     private function showOverAllInfo()
@@ -196,19 +211,5 @@ class Index
 			'MEDIZIN'						=> $this->consim_user->getMedizin(),
 	      	'UBERLEBENSKUNDE'				=> $this->consim_user->getUberlebenskunde(),
 		));
-    }
-
-    public function showLocation($location_id)
-    {
-
-        // Send all data to the template file
-		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
-    }
-
-    public function showLocationBuilding($location_id, $building_id)
-    {
-
-        // Send all data to the template file
-		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
     }
 }
