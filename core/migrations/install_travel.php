@@ -93,7 +93,8 @@ class install_travel extends \phpbb\db\migration\migration
                 $this->table_prefix . 'consim_location_buildings'	=> array(
 					'COLUMNS'      => array(
 						'id'                    => array('UINT:8', NULL, 'auto_increment'),
-						'city_id'          		=> array('UINT:8', 0),
+                        'name'                  => array('VCHAR:255', ''),
+						'location_id'        	=> array('UINT:8', 0),
                         'building_id'           => array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
@@ -116,6 +117,8 @@ class install_travel extends \phpbb\db\migration\migration
             array('custom', array(array($this, 'insert_routes'))),
             array('custom', array(array($this, 'insert_provinces'))),
             array('custom', array(array($this, 'insert_countries'))),
+            array('custom', array(array($this, 'insert_buildings'))),
+            array('custom', array(array($this, 'insert_location_buildings'))),
         );
     }
 
@@ -175,6 +178,26 @@ class install_travel extends \phpbb\db\migration\migration
             array('id' => 3, 'name' => 'Suranien'),
         );
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_countries', $countries);
+	}
+
+    public function insert_buildings()
+	{
+		$buildings = array(
+            array('id' => 1, 'name' => 'Lokale Administration'),
+            array('id' => 2, 'name' => 'Industriekombinat'),
+            array('id' => 3, 'name' => 'Bordell'),
+        );
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_buildings', $buildings);
+	}
+
+    public function insert_location_buildings()
+	{
+		$location_buildings = array(
+            array('id' => 1, 'name' => '', 'location_id' => 4, 'building_id' => 1),
+            array('id' => 2, 'name' => 'Rotstahl', 'location_id' => 4, 'building_id' => 2),
+            array('id' => 3, 'name' => 'Tretmine', 'location_id' => 4, 'building_id' => 3),
+        );
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_location_buildings', $location_buildings);
 	}
 
 	/**
