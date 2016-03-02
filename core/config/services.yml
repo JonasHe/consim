@@ -46,7 +46,7 @@ services:
             - @dbal.conn
 
     consim.core.operators.Locations:
-        class: consim\core\operators\RouteLocations
+        class: consim\core\operators\Locations
         arguments:
             - @dbal.conn
             - @service_container
@@ -55,6 +55,8 @@ services:
             - %tables.consim.location_types%
             - %tables.consim.provinces%
             - %tables.consim.countries%
+            - %tables.consim.buildings%
+            - %tables.consim.location_buildings%
 
     consim.core.operators.ActionLists:
         class: consim\core\operators\ActionLists

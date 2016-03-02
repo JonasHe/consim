@@ -30,7 +30,8 @@
 }
 
 .field_center .panel {
-    margin: 0 10px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .content .location_image {
@@ -86,7 +87,7 @@ ul.buildinglist dd.action {
     width:30%;
 }
 
-ul.buildinglist a {
+ul.buildinglist a.button2 {
     vertical-align: baseline;
 }
 

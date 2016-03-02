@@ -160,21 +160,40 @@ class Index
         //must be an integer
         $location_id = (int) $location_id;
 
+        $location = $this->container->get('consim.core.entity.Location');
+        $location_op = $this->container->get('consim.core.operators.Locations');
+
         //location from location_id or from position of user?
         if($location_id == 0)
         {
-            $location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocation());
+            $location_id = $this->consim_user->getLocation();
+
             //Create the Travelpopup
-            $this->container->get('consim.core.operators.Locations')->setAllDestinationsToTemplate($this->consim_user->getLocation(),$this->template, $this->helper);
+            $location_op->setAllRouteDestinationsToTemplate($location_id, $this->template, $this->helper);
         }
-        else
+
+        $location->load($location_id);
+        $buildings = $location_op->getAllBuildings($location_id);
+
+        //Put all Buildings in the Template
+        foreach ($buildings as $entity)
         {
-            $location = $this->container->get('consim.core.entity.Location')->load($location_id);
+            $building = array(
+				'NAME'	     	=> ($entity->getName() != '')? '"' . $entity->getName() . '"' : '',
+                'TYPE'  		=> $entity->getType(),
+                'URL'           => $this->helper->route('consim_core_location_building',
+                                                    array(
+                                                        'location_id' => $location_id,
+                                                        'building_id' => $entity->getId()
+                                                    )),
+			);
+
+            $this->template->assign_block_vars('buildings', $building);
         }
 
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
-            'CAN_TRAVEL'                    => ($location_id === 0)? TRUE : FALSE,
+            'CAN_TRAVEL'                    => ($location_id === $this->consim_user->getLocation())? TRUE : FALSE,
             'LOCATION'                      => $location->getName(),
             'LOCATION_TYPE'                 => $location->getType(),
             'PROVINCE'                      => $location->getProvince(),

@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
 * Operator for all locations, that you can travel
 */
-class RouteLocations
+class Locations
 {
     /** @var \phpbb\db\driver\driver_interface */
 	protected $db;
@@ -30,17 +30,21 @@ class RouteLocations
     protected $consim_location_type_table;
     protected $consim_province_table;
     protected $consim_country_table;
+    protected $consim_building_table;
+    protected $consim_location_building_table;
 
     /**
  	* Constructor
  	*
- 	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-    * @param ContainerInterface                	  $container       	           Service container interface
-    * @param string                               $consim_route_table          Name of the table used to store data
- 	* @param string                               $consim_location_table       Name of the table used to store data
-    * @param string                               $consim_location_type_table  Name of the table used to store data
-    * @param string                               $consim_province_table       Name of the table used to store data
-    * @param string                               $consim_country_table        Name of the table used to store data
+ 	* @param \phpbb\db\driver\driver_interface    $db                               Database object
+    * @param ContainerInterface                	  $container       	                Service container interface
+    * @param string                               $consim_route_table               Name of the table used to store data
+ 	* @param string                               $consim_location_table            Name of the table used to store data
+    * @param string                               $consim_location_type_table       Name of the table used to store data
+    * @param string                               $consim_province_table            Name of the table used to store data
+    * @param string                               $consim_country_table             Name of the table used to store data
+    * @param string                               $consim_building_table            Name of the table used to store data
+    * @param string                               $consim_location_building_table   Name of the table used to store data
  	* @access public
  	*/
  	public function __construct(\phpbb\db\driver\driver_interface $db,
@@ -49,7 +53,9 @@ class RouteLocations
                                 $consim_location_table,
                                 $consim_location_type_table,
                                 $consim_province_table,
-                                $consim_country_table)
+                                $consim_country_table,
+                                $consim_building_table,
+                                $consim_location_building_table)
  	{
         $this->db = $db;
         $this->container = $container;
@@ -58,7 +64,35 @@ class RouteLocations
         $this->consim_location_type_table = $consim_location_type_table;
         $this->consim_province_table = $consim_province_table;
         $this->consim_country_table = $consim_country_table;
+        $this->consim_building_table = $consim_building_table;
+        $this->consim_location_building_table = $consim_location_building_table;
  	}
+
+    /**
+	* Get all buildings in the location
+	*
+	* @param int $location_id Location ID
+	* @return array Array of LocationBuilding-Entity
+	* @access public
+	*/
+	public function getAllBuildings($location_id)
+	{
+        $entities = array();
+
+        $sql = 'SELECT lb.id, lb.name, b.name AS type
+			FROM ' . $this->consim_location_building_table . ' lb
+            LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
+			WHERE lb.location_id = ' . (int) $location_id;
+		$result = $this->db->sql_query($sql);
+
+        while($row = $this->db->sql_fetchrow($result))
+        {
+            $entities[] = $this->container->get('consim.core.entity.LocationBuilding')->import($row);
+        }
+        $this->db->sql_freeresult($result);
+
+		return $entities;
+	}
 
     /**
 	* Get all destination, which can be arrive at the start location
@@ -67,7 +101,7 @@ class RouteLocations
 	* @return array Array of location Entity
 	* @access public
 	*/
-	public function getAllDestinations($start)
+	public function getAllRouteDestinations($start)
 	{
         $entities = array();
 
@@ -107,9 +141,9 @@ class RouteLocations
 	* @param object $template
 	* @access public
 	*/
-	public function setAllDestinationsToTemplate($start, $template, $helper)
+	public function setAllRouteDestinationsToTemplate($start, $template, $helper)
 	{
-        $entities = $this->getAllDestinations($start);
+        $entities = $this->getAllRouteDestinations($start);
 
         foreach ($entities as $entity)
         {
