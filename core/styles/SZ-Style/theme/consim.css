@@ -86,6 +86,10 @@ ul.buildinglist dd.action {
     width:30%;
 }
 
+ul.buildinglist a {
+    vertical-align: baseline;
+}
+
 ul.travellist {
     display: block;
     list-style-type: none;
