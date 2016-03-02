@@ -165,7 +165,7 @@ class Index
         {
             $location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocation());
             //Create the Travelpopup
-            $this->container->get('consim.core.operators.RouteLocations')->setAllDestinationsToTemplate($this->consim_user->getLocation(),$this->template, $this->helper);
+            $this->container->get('consim.core.operators.Locations')->setAllDestinationsToTemplate($this->consim_user->getLocation(),$this->template, $this->helper);
         }
         else
         {
