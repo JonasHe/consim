@@ -98,4 +98,6 @@ $lang = array_merge($lang, array(
 
     'PROVINCE'                  => 'Provinz',
     'TRAVELING'                 => 'Reisen',
+    'BUILDING'                  => 'Gebäude',
+    'BACK_TO'                   => 'Zurück nach'
 ));
