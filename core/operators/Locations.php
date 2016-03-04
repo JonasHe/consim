@@ -31,7 +31,7 @@ class Locations
     protected $consim_province_table;
     protected $consim_country_table;
     protected $consim_building_table;
-    protected $consim_location_building_table;
+    protected $consim_building_type_table;
 
     /**
  	* Constructor
@@ -55,7 +55,7 @@ class Locations
                                 $consim_province_table,
                                 $consim_country_table,
                                 $consim_building_table,
-                                $consim_location_building_table)
+                                $consim_building_type_table)
  	{
         $this->db = $db;
         $this->container = $container;
@@ -65,7 +65,7 @@ class Locations
         $this->consim_province_table = $consim_province_table;
         $this->consim_country_table = $consim_country_table;
         $this->consim_building_table = $consim_building_table;
-        $this->consim_location_building_table = $consim_location_building_table;
+        $this->consim_building_type_table = $consim_building_type_table;
  	}
 
     /**
@@ -80,14 +80,14 @@ class Locations
         $entities = array();
 
         $sql = 'SELECT lb.id, lb.name, b.name AS type
-			FROM ' . $this->consim_location_building_table . ' lb
-            LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
+			FROM ' . $this->consim_building_table . ' lb
+            LEFT JOIN ' . $this->consim_building_type_table . ' b ON lb.type_id = b.id
 			WHERE lb.location_id = ' . (int) $location_id;
 		$result = $this->db->sql_query($sql);
 
         while($row = $this->db->sql_fetchrow($result))
         {
-            $entities[] = $this->container->get('consim.core.entity.LocationBuilding')->import($row);
+            $entities[] = $this->container->get('consim.core.entity.Building')->import($row);
         }
         $this->db->sql_freeresult($result);
 
@@ -113,6 +113,7 @@ class Locations
             LEFT JOIN ' . $this->consim_province_table . ' p ON l.province_id = p.id
             LEFT JOIN ' . $this->consim_country_table . ' c ON p.country_id = c.id
 			WHERE r.start_location_id = ' . (int) $start .' OR r.end_location_id = '. (int) $start;
+            echo $sql;
 		$result = $this->db->sql_query($sql);
 
         while($row = $this->db->sql_fetchrow($result))

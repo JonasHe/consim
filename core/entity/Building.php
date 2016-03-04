@@ -11,7 +11,7 @@ namespace consim\core\entity;
 /**
 * Entity for a single ressource
 */
-class LocationBuilding extends abstractEntity
+class Building extends abstractEntity
 {
 	/**
 	* All of fields of this objects
@@ -53,11 +53,11 @@ class LocationBuilding extends abstractEntity
     */
     public function __construct(\phpbb\db\driver\driver_interface $db,
                                 $consim_building_table,
-                                $consim_location_building_table)
+                                $consim_building_type_table)
     {
         $this->db = $db;
         $this->consim_building_table = $consim_building_table;
-        $this->consim_location_building_table = $consim_location_building_table;
+        $this->consim_building_type_table = $consim_building_type_table;
     }
 
     /**
@@ -71,8 +71,8 @@ class LocationBuilding extends abstractEntity
 	public function load($id)
 	{
 		$sql = 'SELECT lb.id, lb.name, b.name AS type
-			FROM ' . $this->consim_location_building_table . ' lb
-            LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
+			FROM ' . $this->consim_building_table . ' lb
+            LEFT JOIN ' . $this->consim_building_type_table . ' b ON lb.type_id = b.id
 			WHERE lb.id = ' . (int) $id;
             echo $sql;
 		$result = $this->db->sql_query($sql);

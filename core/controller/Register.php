@@ -274,18 +274,18 @@ class Register
 		foreach($figure as $element)
 		{
 			$selected = 0;
-			if ($this->request->variable($element->getDescription(), '') == $element->getValue())
+			if ($this->request->variable($element->getGroups(), '') == $element->getValue())
 			{
 				$selected = 1;
 			}
 
 			$select = array(
-				'NAME'		=> $this->user->lang($element->getTranslate()),
+				'NAME'		=> $element->getName(),
 				'WERT'		=> $element->getValue(),
 				'SELECTED'	=> $selected,
 			);
 
-			$this->template->assign_block_vars($element->getDescription(), $select);
+			$this->template->assign_block_vars($element->getGroups(), $select);
 		}
 	}
 

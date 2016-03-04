@@ -85,19 +85,19 @@ class install_travel extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
-                $this->table_prefix . 'consim_buildings'	=> array(
+                $this->table_prefix . 'consim_building_types'	=> array(
 					'COLUMNS'      => array(
 						'id'                    => array('UINT:8', 0),
 						'name'            		=> array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
-                $this->table_prefix . 'consim_location_buildings'	=> array(
+                $this->table_prefix . 'consim_buildings'	=> array(
 					'COLUMNS'      => array(
 						'id'                    => array('UINT:8', 0),
                         'name'                  => array('VCHAR:255', ''),
+                        'type_id'               => array('UINT:8', 0),
 						'location_id'        	=> array('UINT:8', 0),
-                        'building_id'           => array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
@@ -124,8 +124,8 @@ class install_travel extends \phpbb\db\migration\migration
             array('custom', array(array($this, 'insert_routes'))),
             array('custom', array(array($this, 'insert_provinces'))),
             array('custom', array(array($this, 'insert_countries'))),
+            array('custom', array(array($this, 'insert_building_types'))),
             array('custom', array(array($this, 'insert_buildings'))),
-            array('custom', array(array($this, 'insert_location_buildings'))),
         );
     }
 
@@ -173,12 +173,14 @@ class install_travel extends \phpbb\db\migration\migration
 
     public function insert_location_types()
 	{
+        global $user;
+
 		$types = array(
-            array('id' => 1, 'name' => 'Kleinstadt'),
-            array('id' => 2, 'name' => 'Stadt'),
-            array('id' => 3, 'name' => 'Hauptstadt'),
-            array('id' => 4, 'name' => 'Industriebezirk'),
-            array('id' => 5, 'name' => 'Militärischer Sperrbereich'),
+            array('id' => 1, 'name' => $user->lang('TOWN')),
+            array('id' => 2, 'name' => $user->lang('CITY')),
+            array('id' => 3, 'name' => $user->lang('CAPITAL')),
+            array('id' => 4, 'name' => $user->lang('INDUSTRY_AREA')),
+            array('id' => 5, 'name' => $user->lang('MILITARY_AREA')),
         );
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_location_types', $types);
 	}
@@ -208,40 +210,48 @@ class install_travel extends \phpbb\db\migration\migration
 
     public function insert_provinces()
 	{
+        global $user;
+
 		$provinces = array(
-            array('id' => 1, 'name' => 'Isoria', 'country_id' => 1),
+            array('id' => 1, 'name' => $user->lang('ISORIA'), 'country_id' => 1),
         );
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_provinces', $provinces);
 	}
 
     public function insert_countries()
 	{
+        global $user;
+
 		$countries = array(
-            array('id' => 1, 'name' => 'Bakirien'),
-            array('id' => 2, 'name' => 'Tadsowien'),
-            array('id' => 3, 'name' => 'Suranien'),
+            array('id' => 1, 'name' => $user->lang('BAKIRIEN')),
+            array('id' => 2, 'name' => $user->lang('TADSOWIEN')),
+            array('id' => 3, 'name' => $user->lang('SURANIEN')),
         );
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_countries', $countries);
 	}
 
-    public function insert_buildings()
+    public function insert_building_types()
 	{
+        global $user;
+
 		$buildings = array(
-            array('id' => 1, 'name' => 'Lokale Administration'),
-            array('id' => 2, 'name' => 'Industriekombinat'),
-            array('id' => 3, 'name' => 'Bordell'),
+            array('id' => 1, 'name' => $user->lang('LOCAL_ADMINISTRATION')),
+            array('id' => 2, 'name' => $user->lang('INDUSTRY')),
+            array('id' => 3, 'name' => $user->lang('BROTHEL')),
         );
-		$this->db->sql_multi_insert($this->table_prefix . 'consim_buildings', $buildings);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_building_types', $buildings);
 	}
 
-    public function insert_location_buildings()
+    public function insert_buildings()
 	{
+        global $user;
+
 		$location_buildings = array(
-            array('id' => 1, 'name' => '', 'location_id' => 4, 'building_id' => 1),
-            array('id' => 2, 'name' => 'Rotstahl', 'location_id' => 4, 'building_id' => 2),
-            array('id' => 3, 'name' => 'Tretmine', 'location_id' => 4, 'building_id' => 3),
+            array('id' => 1, 'name' => '', 'type_id' => 1, 'location_id' => 1),
+            array('id' => 2, 'name' => $user->lang('ROTSTAHL'), 'type_id' => 2, 'location_id' => 1),
+            array('id' => 3, 'name' => $user->lang('TRETMINE'), 'type_id' => 3, 'location_id' => 1),
         );
-		$this->db->sql_multi_insert($this->table_prefix . 'consim_location_buildings', $location_buildings);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_buildings', $location_buildings);
 	}
 
 	/**
@@ -261,7 +271,7 @@ class install_travel extends \phpbb\db\migration\migration
                 $this->table_prefix . 'consim_provinces',
                 $this->table_prefix . 'consim_countries',
                 $this->table_prefix . 'consim_buildings',
-                $this->table_prefix . 'consim_location_buildings',
+                $this->table_prefix . 'consim_building_types',
 			),
 		);
 	}

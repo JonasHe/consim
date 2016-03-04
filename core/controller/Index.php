@@ -167,7 +167,6 @@ class Index
         if($location_id == 0)
         {
             $location_id = $this->consim_user->getLocationId();
-
             //Create the Travelpopup
             $location_op->setAllRouteDestinationsToTemplate($location_id, $this->template, $this->helper);
         }
@@ -180,7 +179,7 @@ class Index
             $building = array(
 				'NAME'	     	=> ($entity->getName() != '')? '"' . $entity->getName() . '"' : '',
                 'TYPE'  		=> $entity->getType(),
-                'URL'           => $this->helper->route('consim_core_location_building',
+                'URL'           => $this->helper->route('consim_core_building',
                                                     array(
                                                         'location_id' => $location_id,
                                                         'building_id' => $entity->getId()
@@ -194,7 +193,7 @@ class Index
 		$this->template->assign_vars(array(
             'CAN_TRAVEL'                    => ($location_id === $this->consim_user->getLocationId())? TRUE : FALSE,
             'LOCATION'                      => $location->getName(),
-            'LOCATION_DESC'                  => $location->getDescription(),
+            'LOCATION_DESC'                 => $location->getDescription(),
             'LOCATION_IMAGE'                => $location->getImage(),
             'LOCATION_TYPE'                 => $location->getType(),
             'PROVINCE'                      => $location->getProvince(),
@@ -225,7 +224,7 @@ class Index
         }
 
         $location = $this->container->get('consim.core.entity.Location')->load($location_id);
-        $building = $this->container->get('consim.core.entity.LocationBuilding')->load($building_id);
+        $building = $this->container->get('consim.core.entity.Building')->load($building_id);
 
         // Set output vars for display in the template
 		$this->template->assign_vars(array(

@@ -153,7 +153,7 @@ class ConsimUser extends abstractEntity
 	*/
 	private function figure_load()
 	{
-		$sql = 'SELECT id, description, value, translate
+		$sql = 'SELECT id, groups, value, name
 			FROM ' . $this->consim_person_table;
 		$result = $this->db->sql_query($sql);
 		while($row = $this->db->sql_fetchrow($result))
@@ -868,7 +868,7 @@ class ConsimUser extends abstractEntity
 		foreach($this->figure_data as $element)
 		{
 			//Stimmen die Werte überein?
-			if($element->getValue() == $string && $varname == $element->getDescription())
+			if($element->getValue() == $string && $varname == $element->getGroups())
 			{
 				//Setze ID
 				return $this->setInteger($varname . '_id', $element->getId());

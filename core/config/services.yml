@@ -56,7 +56,7 @@ services:
             - %tables.consim.provinces%
             - %tables.consim.countries%
             - %tables.consim.buildings%
-            - %tables.consim.location_buildings%
+            - %tables.consim.building_types%
 
     consim.core.operators.ActionLists:
         class: consim\core\operators\ActionLists
@@ -66,13 +66,13 @@ services:
             - %tables.consim.actions%
             - %tables.consim.travels%
 
-    consim.core.entity.LocationBuilding:
-        class: consim\core\entity\LocationBuilding
+    consim.core.entity.Building:
+        class: consim\core\entity\Building
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
             - %tables.consim.buildings%
-            - %tables.consim.location_buildings%
+            - %tables.consim.building_types%
 
     consim.core.entity.TravelLocation:
         class: consim\core\entity\TravelLocation

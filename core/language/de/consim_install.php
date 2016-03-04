@@ -36,6 +36,35 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
+    //Figure
+    'MANNLICH'              => 'Männlich',
+    'WEIBLICH'              => 'Weiblich',
+    'FRT'					=> 'Tadsowien',
+    'BAK'					=> 'Bakirien',
+    'SUR'					=> 'Suranien',
+    'ORTHODOX'				=> 'Orthodox',
+    'KATHOLISCH'			=> 'Katholisch',
+    'MUSLIMISCH'			=> 'Muslimisch',
+    'ATHEISTISCH'			=> 'Atheistisch',
+    'SCHWARZ'				=> 'Schwarz',
+    'ROT'					=> 'Rot',
+    'HELLBRAUN'				=> 'Hellbraun',
+    'DUNKELBRAUN'			=> 'Dunkelbraun',
+    'BLOND'					=> 'Blond',
+    'DUNKELBLOND'			=> 'Dunkelblond',
+    'GRUN'					=> 'Grün',
+    'GRAU'					=> 'Grau',
+    'BRAUN'					=> 'Braun',
+    'GRUNBRAUN'				=> 'Grünbraun',
+    'BLAU'					=> 'Blau',
+    'BLAUGRUN'				=> 'Blaugrün',
+    'BERNSTEIN'				=> 'Bernstein',
+    'KEINE'					=> 'Keine',
+    'NARBE'					=> 'Narbe',
+    'SCHMUCK'				=> 'Schmuck',
+    'DEFORMIERUNG'			=> 'Deformierung',
+    'STARK_UBERGEWICHTIG'	=> 'Stark Übergewichtig',
+
 	//Locations
     'NOBRI'                 => 'Nobri',
 	'NOBRI_DESC'            => 'Nobri ist die jüngste und kleinste unter den Provinzhauptstädten der Volksrepublik Bakirien mit ca. 385.000 Einwohnern, erst im Jahr 1984 wurde die Stadt auf die Initiative der regionalen Kommunistischen Partei gegründet und bildete seitdem das Zentrum der Provinz Isoria. '
@@ -77,5 +106,29 @@ $lang = array_merge($lang, array(
     'PKD_74_DESC'           => '',
     'SMTU_567_C'            => 'SMTU 567-C',
     'SMTU_567_C_DESC'       => '',
+
+    //LocationTypes
+    'TOWN'                  => 'Kleinstadt',
+    'CITY'                  => 'Stadt',
+    'CAPITAL'               => 'Hauptstadt',
+    'INDUSTRY_AREA'         => 'Industriebezirk',
+    'MILITARY_AREA'         => 'Militärischer Sperrbereich',
+
+    //Provinces
+    'ISORIA'                => 'Isoria',
+
+    //Countries
+    'BAKIRIEN'              => 'Bakirien',
+    'TADSOWIEN'             => 'Tadsowien',
+    'SURANIEN'              => 'Suranien',
+
+    //BuildingTypes
+    'LOCAL_ADMINISTRATION'  => 'Lokale Administration',
+    'INDUSTRY'              => 'Industriekombinat',
+    'BROTHEL'               => 'Bordell',
+
+    //Buildings
+    'ROTSTAHL'              => 'Rotstahl',
+    'TRETMINE'              => 'Tretmine',
 
 ));
