@@ -171,7 +171,6 @@ class Index
             //Create the Travelpopup
             $location_op->setAllRouteDestinationsToTemplate($location_id, $this->template, $this->helper);
         }
-
         $location->load($location_id);
         $buildings = $location_op->getAllBuildings($location_id);
 
@@ -195,6 +194,8 @@ class Index
 		$this->template->assign_vars(array(
             'CAN_TRAVEL'                    => ($location_id === $this->consim_user->getLocationId())? TRUE : FALSE,
             'LOCATION'                      => $location->getName(),
+            'LOCATION_DESC'                  => $location->getDescription(),
+            'LOCATION_IMAGE'                => $location->getImage(),
             'LOCATION_TYPE'                 => $location->getType(),
             'PROVINCE'                      => $location->getProvince(),
             'COUNTRY'                       => $location->getCountry(),

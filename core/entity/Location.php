@@ -20,6 +20,8 @@ class Location extends abstractEntity
 	protected static $fields = array(
     	'id'						=> 'integer',
       	'name'                      => 'string',
+        'description'               => 'string',
+        'image'                     => 'string',
       	'type'						=> 'string',
       	'province'					=> 'string',
         'country'					=> 'string',
@@ -80,28 +82,20 @@ class Location extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT l.id, l.name, t.name AS type, p.name AS province, c.name AS country
+		$sql = 'SELECT l.id, l.name, l.description, l.image, t.name AS type, p.name AS province, c.name AS country
 			FROM ' . $this->consim_location_table . ' l
             LEFT JOIN ' . $this->consim_location_type_table . ' t ON l.type_id = t.id
             LEFT JOIN ' . $this->consim_province_table . ' p ON l.province_id = p.id
             LEFT JOIN ' . $this->consim_country_table . ' c ON p.country_id = c.id
 			WHERE l.id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
-		$row = $this->db->sql_fetchrow($result);
+		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
-
-		if ($row === false)
+        
+		if ($this->data === false)
 		{
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
-
-        $this->data = array(
-            'id'        => $row['id'],
-            'name'      => $row['name'],
-            'type'      => $row['type'],
-            'province'  => $row['province'],
-            'country'   => $row['country'],
-        );
 
 		return $this;
 	}
@@ -126,6 +120,28 @@ class Location extends abstractEntity
 	public function getName()
 	{
 		return $this->getString($this->data['name']);
+	}
+
+    /**
+	* Get Description
+	*
+	* @return string Description
+	* @access public
+	*/
+	public function getDescription()
+	{
+		return $this->getString($this->data['description']);
+	}
+
+    /**
+	* Get Image
+	*
+	* @return string Image
+	* @access public
+	*/
+	public function getImage()
+	{
+		return $this->getString($this->data['image']);
 	}
 
     /**
