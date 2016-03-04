@@ -82,8 +82,8 @@ class Location extends abstractEntity
 	{
 		$sql = 'SELECT l.id, l.name, t.name AS type, p.name AS province, c.name AS country
 			FROM ' . $this->consim_location_table . ' l
-            LEFT JOIN ' . $this->consim_location_type_table . ' t ON l.type = t.id
-            LEFT JOIN ' . $this->consim_province_table . ' p ON l.province = p.id
+            LEFT JOIN ' . $this->consim_location_type_table . ' t ON l.type_id = t.id
+            LEFT JOIN ' . $this->consim_province_table . ' p ON l.province_id = p.id
             LEFT JOIN ' . $this->consim_country_table . ' c ON p.country = c.id
 			WHERE l.id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);

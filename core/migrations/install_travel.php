@@ -32,12 +32,12 @@ class install_travel extends \phpbb\db\migration\migration
 					'COLUMNS'      => array(
 						'id'                    => array('UINT:8', 0),
 						'name'            		=> array('VCHAR:255', ''),
-						'type'                  => array('UINT:8', 0),
-                        'province'              => array('UINT:8', 0),
+						'type_id'               => array('UINT:8', 0),
+                        'province_id'           => array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
                     'KEYS'			=> array(
-						'type'		          => array('INDEX', 'type'),
+						'type_id'		        => array('INDEX', 'type'),
 					),
 				),
                 $this->table_prefix . 'consim_location_types'	=> array(
@@ -125,13 +125,13 @@ class install_travel extends \phpbb\db\migration\migration
     public function insert_locations()
 	{
 		$locations = array(
-            array('id' => 1, 'name' => 'Kubishevsk', 'type' => 2, 'province' => 1),
-            array('id' => 2, 'name' => 'SMTU 567-C', 'type' => 4, 'province' => 1),
-            array('id' => 3, 'name' => 'Astrakhan', 'type' => 2, 'province' => 1),
-            array('id' => 4, 'name' => 'Nobri', 'type' => 3, 'province' => 1),
-            array('id' => 5, 'name' => 'Zhitomsk', 'type' => 1, 'province' => 1),
-            array('id' => 6, 'name' => 'Alatyr', 'type' => 2, 'province' => 1),
-            array('id' => 7, 'name' => 'Grushevsk', 'type' => 2, 'province' => 1),
+            array('id' => 1, 'name' => 'Kubishevsk', 'type_id' => 2, 'province_id' => 1),
+            array('id' => 2, 'name' => 'SMTU 567-C', 'type_id' => 4, 'province_id' => 1),
+            array('id' => 3, 'name' => 'Astrakhan', 'type_id' => 2, 'province_id' => 1),
+            array('id' => 4, 'name' => 'Nobri', 'type_id' => 3, 'province_id' => 1),
+            array('id' => 5, 'name' => 'Zhitomsk', 'type_id' => 1, 'province_id' => 1),
+            array('id' => 6, 'name' => 'Alatyr', 'type_id' => 2, 'province_id' => 1),
+            array('id' => 7, 'name' => 'Grushevsk', 'type_id' => 2, 'province_id' => 1),
         );
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_locations', $locations);
 	}
