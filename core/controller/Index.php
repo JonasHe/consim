@@ -166,7 +166,7 @@ class Index
         $location_op = $this->container->get('consim.core.operators.Locations');
 
         //location from location_id or from position of user?
-        if($location_id == 0)
+        if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
         {
             $location_id = $this->consim_user->getLocationId();
             //Create the Travelpopup
