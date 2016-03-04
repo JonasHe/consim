@@ -23,12 +23,12 @@ class ConsimUser extends abstractEntity
     	'user_id'						=> 'integer',
       	'vorname'						=> 'string',
       	'nachname'						=> 'string',
-      	'geschlecht'					=> 'integer',
-      	'geburtsland'					=> 'integer',
-      	'religion'						=> 'integer',
-      	'haarfarbe'						=> 'integer',
-      	'augenfarbe'					=> 'integer',
-      	'besondere_merkmale'			=> 'integer',
+      	'geschlecht_id'					=> 'integer',
+      	'geburtsland_id'				=> 'integer',
+      	'religion_id'					=> 'integer',
+      	'haarfarbe_id'					=> 'integer',
+      	'augenfarbe_id'					=> 'integer',
+      	'besondere_merkmale_id'			=> 'integer',
       	'sprache_tadsowisch'			=> 'integer',
       	'sprache_bakirisch'				=> 'integer',
       	'sprache_suranisch'				=> 'integer',
@@ -44,7 +44,7 @@ class ConsimUser extends abstractEntity
 		'schmuggel'						=> 'integer',
 		'medizin'						=> 'integer',
       	'uberlebenskunde'				=> 'integer',
-        'location'                      => 'integer',
+        'location_id'                   => 'integer',
         'active'                        => 'bool'
 	);
 
@@ -68,7 +68,7 @@ class ConsimUser extends abstractEntity
 		'schmuggel',
 		'medizin',
       	'uberlebenskunde',
-        'location',
+        'location_id',
         'active',
 	);
 
@@ -153,7 +153,7 @@ class ConsimUser extends abstractEntity
 	*/
 	private function figure_load()
 	{
-		$sql = 'SELECT id, beschreibung, wert, translate
+		$sql = 'SELECT id, description, value, translate
 			FROM ' . $this->consim_person_table;
 		$result = $this->db->sql_query($sql);
 		while($row = $this->db->sql_fetchrow($result))
@@ -187,7 +187,7 @@ class ConsimUser extends abstractEntity
 		$this->data['user_id'] = $user_id;
 
         //Add extra language skill
-        switch($this->figure_data[$this->data['geburtsland']]->getWert())
+        switch($this->figure_data[$this->data['geburtsland_id']]->getValue())
         {
             case 'frt': $this->data['sprache_tadsowisch'] = $this->data['sprache_tadsowisch'] + self::EXTRA_LANG;
             break;
@@ -297,7 +297,7 @@ class ConsimUser extends abstractEntity
 	public function getGeschlecht()
 	{
 		//return $this->getString($this->data['geschlecht']);
-        return $this->figure_data[$this->data['geschlecht']];
+        return $this->figure_data[$this->data['geschlecht_id']];
 	}
 	/**
 	* Set geschlecht
@@ -321,7 +321,7 @@ class ConsimUser extends abstractEntity
 	public function getGeburtsland()
 	{
 		//return $this->getString($this->data['geburtsland']);
-        return $this->figure_data[$this->data['geburtsland']];
+        return $this->figure_data[$this->data['geburtsland_id']];
 	}
 	/**
 	* Set geburtsland
@@ -345,7 +345,7 @@ class ConsimUser extends abstractEntity
 	public function getReligion()
 	{
 		//return $this->getString($this->data['religion']);
-        return $this->figure_data[$this->data['religion']];
+        return $this->figure_data[$this->data['religion_id']];
 	}
 	/**
 	* Set religion
@@ -369,7 +369,7 @@ class ConsimUser extends abstractEntity
 	public function getHaarfarbe()
 	{
 		//return $this->getString($this->data['haarfarbe']);
-        return $this->figure_data[$this->data['religion']];
+        return $this->figure_data[$this->data['religion_id']];
 	}
 	/**
 	* Set haarfarbe
@@ -393,7 +393,7 @@ class ConsimUser extends abstractEntity
 	public function getAugenfarbe()
 	{
 		//return $this->getString($this->data['augenfarbe']);
-        return $this->figure_data[$this->data['augenfarbe']];
+        return $this->figure_data[$this->data['augenfarbe_id']];
 	}
 	/**
 	* Set augenfarbe
@@ -417,7 +417,7 @@ class ConsimUser extends abstractEntity
 	public function getBesondereMerkmale()
 	{
 		//return $this->getString($this->data['besondere_merkmale']);
-        return $this->figure_data[$this->data['besondere_merkmale']];
+        return $this->figure_data[$this->data['besondere_merkmale_id']];
 	}
 	/**
 	* Set Besondere Merkmale
@@ -783,9 +783,9 @@ class ConsimUser extends abstractEntity
    * @return id location
    * @access public
    */
-   public function getLocation()
+   public function getLocationId()
    {
-       return $this->getInteger($this->data['location']);
+       return $this->getInteger($this->data['location_id']);
    }
    /**
    * Set location
@@ -796,22 +796,22 @@ class ConsimUser extends abstractEntity
    * @access public
    * @throws \consim\core\exception\unexpected_value
    */
-   public function setLocation($location)
+   public function setLocation($location_id)
    {
        $sql = 'SELECT id
            FROM phpbb_consim_routes
-           WHERE (start_id = '. (int) $location .' AND end_id = '. $this->data['location'] .')
-                 OR (start_id = '. $this->data['location'] .' AND end_id = '. (int) $location .')';
+           WHERE (start_location_id = '. (int) $location_id .' AND end_location_id = '. $this->data['location_id'] .')
+                 OR (start_location_id = '. $this->data['location_id'] .' AND end_location_id = '. (int) $location_id .')';
        $result = $this->db->sql_query($sql);
        $row = $this->db->sql_fetchrow($result);
        $this->db->sql_freeresult($result);
 
        if ($row === false)
        {
-           throw new \consim\core\exception\invalid_argument(array($location, 'ILLEGAL_CHARACTERS'));
+           throw new \consim\core\exception\invalid_argument(array($location_id, 'ILLEGAL_CHARACTERS'));
        }
 
-       $this->data['location'] = $location;
+       $this->data['location_id'] = $location_id;
 
        return this;
    }
@@ -862,16 +862,16 @@ class ConsimUser extends abstractEntity
 		//$string not empty
 		if(empty($string))
 		{
-			throw new \consim\core\exception\invalid_argument(array($varname, 'FIELD_MISSING'));
+			throw new \consim\core\exception\invalid_argument(array($string, 'FIELD_MISSING'));
 		}
 
 		foreach($this->figure_data as $element)
 		{
 			//Stimmen die Werte überein?
-			if($element->getWert() == $string && $varname == $element->getBeschreibung())
+			if($element->getValue() == $string && $varname == $element->getDescription())
 			{
 				//Setze ID
-				return $this->setInteger($varname, $element->getId());
+				return $this->setInteger($varname . '_id', $element->getId());
 			}
 		}
 

@@ -37,8 +37,6 @@ class TravelLocation extends Travel
         'user_id',
         'starttime',
         'endtime',
-        'start_location',
-        'end_location',
 	);
 
 	protected $data;
@@ -103,20 +101,20 @@ class TravelLocation extends Travel
 	public function load($id)
 	{
 		$sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
-                       t.start_location, t.end_location,
+                       t.start_location_id, t.end_location_id,
                        l1.id AS startId, l1.name AS startName, tp1.name AS startType, p1.name as startProvince, c1.name as startCountry,
                        l2.id AS endId, l2.name AS endName, tp2.name AS endType, p2.name as endProvince, c2.name as endCountry
             FROM ' . $this->consim_action_table . ' a
             LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
-            LEFT JOIN ' . $this->consim_location_table . ' l1 ON l1.id = t.start_location
-            LEFT JOIN ' . $this->consim_location_type_table . ' tp1 ON l1.type = tp1.id
-            LEFT JOIN ' . $this->consim_province_table . ' p1 ON l1.province = p1.id
-            LEFT JOIN ' . $this->consim_country_table . ' c1 ON p1.country = c1.id
+            LEFT JOIN ' . $this->consim_location_table . ' l1 ON l1.id = t.start_location_id
+            LEFT JOIN ' . $this->consim_location_type_table . ' tp1 ON l1.type_id = tp1.id
+            LEFT JOIN ' . $this->consim_province_table . ' p1 ON l1.province_id = p1.id
+            LEFT JOIN ' . $this->consim_country_table . ' c1 ON p1.country_id = c1.id
 
-            LEFT JOIN ' . $this->consim_location_table . ' l2 ON l2.id = t.end_location
-            LEFT JOIN ' . $this->consim_location_type_table . ' tp2 ON l2.type = tp2.id
-            LEFT JOIN ' . $this->consim_province_table . ' p2 ON l2.province = p2.id
-            LEFT JOIN ' . $this->consim_country_table . ' c2 ON p2.country = c2.id
+            LEFT JOIN ' . $this->consim_location_table . ' l2 ON l2.id = t.end_location_id
+            LEFT JOIN ' . $this->consim_location_type_table . ' tp2 ON l2.type_id = tp2.id
+            LEFT JOIN ' . $this->consim_province_table . ' p2 ON l2.province_id = p2.id
+            LEFT JOIN ' . $this->consim_country_table . ' c2 ON p2.country_id = c2.id
 			WHERE a.id = '. (int) $id;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);

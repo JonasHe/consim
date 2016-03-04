@@ -166,7 +166,7 @@ class Index
         //location from location_id or from position of user?
         if($location_id == 0)
         {
-            $location_id = $this->consim_user->getLocation();
+            $location_id = $this->consim_user->getLocationId();
 
             //Create the Travelpopup
             $location_op->setAllRouteDestinationsToTemplate($location_id, $this->template, $this->helper);
@@ -193,7 +193,7 @@ class Index
 
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
-            'CAN_TRAVEL'                    => ($location_id === $this->consim_user->getLocation())? TRUE : FALSE,
+            'CAN_TRAVEL'                    => ($location_id === $this->consim_user->getLocationId())? TRUE : FALSE,
             'LOCATION'                      => $location->getName(),
             'LOCATION_TYPE'                 => $location->getType(),
             'PROVINCE'                      => $location->getProvince(),

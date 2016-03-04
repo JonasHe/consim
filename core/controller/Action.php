@@ -85,7 +85,7 @@ class Action
         }
 
         //Get Infos about the Route
-        $route = $this->container->get('consim.core.entity.Route')->load($consim_user->getLocation(), $travel_id);
+        $route = $this->container->get('consim.core.entity.Route')->load($consim_user->getLocationId(), $travel_id);
 
         $now = time();
         //Add new Travel Action
@@ -93,7 +93,7 @@ class Action
                                        ->insert($consim_user->getUserId(),
                                                 $now,
                                                 ($now + $route->getTime()),
-                                                $consim_user->getLocation(),
+                                                $consim_user->getLocationId(),
                                                 $travel_id);
 
 		//$consim_user->setLocation($travel_id);
