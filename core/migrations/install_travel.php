@@ -62,7 +62,7 @@ class install_travel extends \phpbb\db\migration\migration
 				),
                 $this->table_prefix . 'consim_travels'	=> array(
 					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', NULL, 'auto_increment'),
+						'id'                    => array('UINT:8', 'auto_increment'),
 						'start_location_id'     => array('UINT:8', 0),
                         'end_location_id'       => array('UINT:8', 0),
 					),
@@ -72,7 +72,7 @@ class install_travel extends \phpbb\db\migration\migration
 					'COLUMNS'      => array(
 						'id'                    => array('UINT:8', 0),
 						'name'            		=> array('VCHAR:255', ''),
-                        'country'               => array('UINT:8', 0),
+                        'country_id'            => array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
@@ -165,7 +165,7 @@ class install_travel extends \phpbb\db\migration\migration
     public function insert_provinces()
 	{
 		$provinces = array(
-            array('id' => 1, 'name' => 'Isoria', 'country' => 1),
+            array('id' => 1, 'name' => 'Isoria', 'country_id' => 1),
         );
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_provinces', $provinces);
 	}
