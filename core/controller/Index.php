@@ -41,6 +41,7 @@ class Index
     * Class-Variables
     **/
     protected $consim_user;
+    protected $consim_user_location;
 
 	/**
 	* Constructor
@@ -168,12 +169,15 @@ class Index
         //location from location_id or from position of user?
         if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
         {
-            $location_id = $this->consim_user->getLocationId();
+            $location = $this->consim_user_location;
             //Create the Travelpopup
-            $location_op->setAllRouteDestinationsToTemplate($location_id, $this->template, $this->helper);
+            $location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
         }
-        $location->load($location_id);
-        $buildings = $location_op->getAllBuildings($location_id);
+        else
+        {
+            $location->load($location_id);
+        }
+        $buildings = $location_op->getAllBuildings($location->getId());
 
         //Put all Buildings in the Template
         foreach ($buildings as $entity)
@@ -183,7 +187,7 @@ class Index
                 'TYPE'  		=> $entity->getType(),
                 'URL'           => $this->helper->route('consim_core_building',
                                                     array(
-                                                        'location_id' => $location_id,
+                                                        'location_id' => $location->getId(),
                                                         'building_id' => $entity->getId()
                                                     )),
 			);
@@ -193,7 +197,7 @@ class Index
 
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
-            'CAN_TRAVEL'                    => ($location_id === $this->consim_user->getLocationId())? TRUE : FALSE,
+            'CAN_TRAVEL'                    => ($location->getId() === $this->consim_user->getLocationId())? TRUE : FALSE,
             'LOCATION'                      => $location->getName(),
             'LOCATION_DESC'                 => $location->getDescription(),
             'LOCATION_IMAGE'                => $location->getImage(),
@@ -264,8 +268,12 @@ class Index
         //Get the ConSim-User
 		$this->consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
+        //Get User-Location
+        $this->consim_user_location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocationId());
+
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
+            //Attribute
 	    	'SPRACHE_TADSOWISCH'			=> $this->consim_user->getSpracheTadsowisch(),
 	    	'SPRACHE_BAKIRISCH'				=> $this->consim_user->getSpracheBakirisch(),
 	    	'SPRACHE_SURANISCH'				=> $this->consim_user->getSpracheSuranisch(),
@@ -281,6 +289,14 @@ class Index
             'SCHMUGGEL'					    => $this->consim_user->getSchmuggel(),
 			'MEDIZIN'						=> $this->consim_user->getMedizin(),
 	      	'UBERLEBENSKUNDE'				=> $this->consim_user->getUberlebenskunde(),
+
+            //Informations for current location and time
+            'TIME'                          => date("d.m.Y - H:i:s", time()),
+            'USER_LOCATION'                 => $this->consim_user_location->getName(),
+            'USER_LOCATION_TYPE'            => $this->consim_user_location->getType(),
+            'USER_LOCATION_URL'             => $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
+            'USER_PROVINCE'                 => $this->consim_user_location->getProvince(),
+            'USER_COUNTRY'                  => $this->consim_user_location->getCountry(),
 		));
     }
 }
