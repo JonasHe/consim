@@ -102,8 +102,10 @@ class TravelLocation extends Travel
 	{
 		$sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
                        t.start_location_id, t.end_location_id,
-                       l1.id AS startId, l1.name AS startName, tp1.name AS startType, p1.name as startProvince, c1.name as startCountry,
-                       l2.id AS endId, l2.name AS endName, tp2.name AS endType, p2.name as endProvince, c2.name as endCountry
+                       l1.id AS startId, l1.name AS startName, l1.description AS startDesc, l1.image AS startImage,
+                            tp1.name AS startType, p1.name as startProvince, c1.name as startCountry,
+                       l2.id AS endId, l2.name AS endName, l2.description AS endDesc, l2.image AS endImage,
+                            tp2.name AS endType, p2.name as endProvince, c2.name as endCountry
             FROM ' . $this->consim_action_table . ' a
             LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
             LEFT JOIN ' . $this->consim_location_table . ' l1 ON l1.id = t.start_location_id
@@ -134,20 +136,24 @@ class TravelLocation extends Travel
         );
 
         $start_location = array(
-            'id'        => $row['startId'],
-            'name'      => $row['startName'],
-            'type'      => $row['startType'],
-            'province'  => $row['startProvince'],
-            'country'   => $row['startCountry'],
+            'id'            => $row['startId'],
+            'name'          => $row['startName'],
+            'description'   => $row['startDesc'],
+            'image'         => $row['startImage'],
+            'type'          => $row['startType'],
+            'province'      => $row['startProvince'],
+            'country'       => $row['startCountry'],
         );
         $this->data['start_location'] = $this->container->get('consim.core.entity.Location')->import($start_location);
 
         $end_location = array(
-            'id'        => $row['endId'],
-            'name'      => $row['endName'],
-            'type'      => $row['endType'],
-            'province'  => $row['endProvince'],
-            'country'   => $row['endCountry'],
+            'id'            => $row['endId'],
+            'name'          => $row['endName'],
+            'description'   => $row['endDesc'],
+            'image'         => $row['endImage'],
+            'type'          => $row['endType'],
+            'province'      => $row['endProvince'],
+            'country'       => $row['endCountry'],
         );
         $this->data['end_location'] = $this->container->get('consim.core.entity.Location')->import($end_location);
 

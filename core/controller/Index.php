@@ -132,11 +132,13 @@ class Index
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
             'START_LOCATION_NAME'       => $travel->getStartLocation()->getName(),
+            'START_LOCATION_IMAGE'      => $travel->getStartLocation()->getImage(),
             'START_LOCATION_TYPE'       => $travel->getStartLocation()->getType(),
             'START_LOCATION_PROVINCE'   => $travel->getStartLocation()->getProvince(),
             'START_LOCATION_COUNTRY'    => $travel->getStartLocation()->getCountry(),
             'START_TIME'                => date("d.m.Y - H:i:s", $travel->getStartTime()),
             'END_LOCATION_NAME'         => $travel->getEndLocation()->getName(),
+            'END_LOCATION_IMAGE'        => $travel->getEndLocation()->getImage(),
             'END_LOCATION_TYPE'         => $travel->getEndLocation()->getType(),
             'END_LOCATION_PROVINCE'     => $travel->getEndLocation()->getProvince(),
             'END_LOCATION_COUNTRY'      => $travel->getEndLocation()->getCountry(),

@@ -92,7 +92,8 @@ class Action
         $consim_user = $this->container->get('consim.core.entity.Travel')
                                        ->insert($consim_user->getUserId(),
                                                 $now,
-                                                ($now + $route->getTime()),
+                                                //TODO: Removed division 10!
+                                                ($now + ($route->getTime()/10)),
                                                 $consim_user->getLocationId(),
                                                 $travel_id);
 

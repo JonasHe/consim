@@ -113,7 +113,6 @@ class Locations
             LEFT JOIN ' . $this->consim_province_table . ' p ON l.province_id = p.id
             LEFT JOIN ' . $this->consim_country_table . ' c ON p.country_id = c.id
 			WHERE r.start_location_id = ' . (int) $start .' OR r.end_location_id = '. (int) $start;
-            echo $sql;
 		$result = $this->db->sql_query($sql);
 
         while($row = $this->db->sql_fetchrow($result))
