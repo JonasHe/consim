@@ -65,7 +65,7 @@ class ActionLists
 
         while($row = $this->db->sql_fetchrow($result))
         {
-            if($row['start_location'] != NULL)
+            if($row['start_location_id'] != NULL)
             {
                 $entity = $this->container->get('consim.core.entity.Travel')->import($row)->done();
             }

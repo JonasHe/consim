@@ -153,7 +153,7 @@ class ConsimUser extends abstractEntity
 	*/
 	private function figure_load()
 	{
-		$sql = 'SELECT id, beschreibung, wert, translate
+		$sql = 'SELECT id, description, value, translate
 			FROM ' . $this->consim_person_table;
 		$result = $this->db->sql_query($sql);
 		while($row = $this->db->sql_fetchrow($result))
@@ -187,7 +187,7 @@ class ConsimUser extends abstractEntity
 		$this->data['user_id'] = $user_id;
 
         //Add extra language skill
-        switch($this->figure_data[$this->data['geburtsland']]->getWert())
+        switch($this->figure_data[$this->data['geburtsland_id']]->getValue())
         {
             case 'frt': $this->data['sprache_tadsowisch'] = $this->data['sprache_tadsowisch'] + self::EXTRA_LANG;
             break;

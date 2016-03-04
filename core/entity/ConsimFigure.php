@@ -19,7 +19,7 @@ class ConsimFigure extends abstractEntity
 	**/
 	protected static $fields = array(
     	'id'						=> 'integer',
-      	'desc'				        => 'string',
+      	'description'    	        => 'string',
       	'value'						=> 'string',
       	'translate'					=> 'string',
 	);
@@ -65,7 +65,7 @@ class ConsimFigure extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT id, desc, value, translate
+		$sql = 'SELECT id, description, value, translate
 			FROM ' . $this->consim_person_table . '
 			WHERE id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
@@ -155,7 +155,7 @@ class ConsimFigure extends abstractEntity
 	*/
 	public function getDescription()
 	{
-		return $this->getString($this->data['desc']);
+		return $this->getString($this->data['description']);
 	}
 
    /**
