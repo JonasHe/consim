@@ -783,7 +783,7 @@ class ConsimUser extends abstractEntity
    * @return id location
    * @access public
    */
-   public function getLocation()
+   public function getLocationId()
    {
        return $this->getInteger($this->data['location_id']);
    }
@@ -796,22 +796,22 @@ class ConsimUser extends abstractEntity
    * @access public
    * @throws \consim\core\exception\unexpected_value
    */
-   public function setLocation($location)
+   public function setLocation($location_id)
    {
        $sql = 'SELECT id
            FROM phpbb_consim_routes
-           WHERE (start_id = '. (int) $location .' AND end_id = '. $this->data['location_id'] .')
-                 OR (start_id = '. $this->data['location_id'] .' AND end_id = '. (int) $location .')';
+           WHERE (start_location_id = '. (int) $location_id .' AND end_location_id = '. $this->data['location_id'] .')
+                 OR (start_location_id = '. $this->data['location_id'] .' AND end_location_id = '. (int) $location_id .')';
        $result = $this->db->sql_query($sql);
        $row = $this->db->sql_fetchrow($result);
        $this->db->sql_freeresult($result);
 
        if ($row === false)
        {
-           throw new \consim\core\exception\invalid_argument(array($location, 'ILLEGAL_CHARACTERS'));
+           throw new \consim\core\exception\invalid_argument(array($location_id, 'ILLEGAL_CHARACTERS'));
        }
 
-       $this->data['location_id'] = $location;
+       $this->data['location_id'] = $location_id;
 
        return this;
    }

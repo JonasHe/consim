@@ -33,6 +33,7 @@ class Action extends abstractEntity
         'user_id',
         'starttime',
         'endtime',
+        'status',
 	);
 
 	protected $data;

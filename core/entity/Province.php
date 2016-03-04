@@ -20,7 +20,7 @@ class Province extends abstractEntity
 	protected static $fields = array(
     	'id'						=> 'integer',
       	'name'                      => 'string',
-        'country'                   => 'integer',
+        'country_id'                => 'integer',
 	);
 
 	/**
@@ -28,7 +28,7 @@ class Province extends abstractEntity
 	**/
 	protected static $validate_unsigned = array(
       	'id',
-        'country',
+        'country_id',
 	);
 
 	protected $data;

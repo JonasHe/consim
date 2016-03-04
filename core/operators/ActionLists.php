@@ -57,7 +57,7 @@ class ActionLists
 	public function finishedActions()
 	{
         $sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
-                       t.start_location, t.end_location
+                       t.start_location_id, t.end_location_id
             FROM ' . $this->consim_action_table . ' a
             LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
 			WHERE a.endtime <= '. time() .' AND a.status = 0';
@@ -97,31 +97,6 @@ class ActionLists
         }
 
 		return $action;
-    }
-
-    /**
-	* Get actions from user
-	*
-    * @param int $user_id User ID
-	* @return array Array of Action
-	* @access public
-	*/
-	public function getActionsFromUser($user_id)
-	{
-        $entities = array();
-
-        $sql = 'SELECT id, user_id, type, time, status
-            FROM ' . $this->consim_action_table . '
-			WHERE user_id = ' . (int) $user_id;
-		$result = $this->db->sql_query($sql);
-
-        while($row = $this->db->sql_fetchrow($result))
-        {
-            $entities[] = $this->container->get('consim.core.entity.Action')->import($row);
-        }
-        $this->db->sql_freeresult($result);
-
-		return $entities;
     }
 
 }
