@@ -868,7 +868,7 @@ class ConsimUser extends abstractEntity
 		foreach($this->figure_data as $element)
 		{
 			//Stimmen die Werte überein?
-			if($element->getWert() == $string && $varname == $element->getBeschreibung())
+			if($element->getValue() == $string && $varname == $element->getDescription())
 			{
 				//Setze ID
 				return $this->setInteger($varname . '_id', $element->getId());
