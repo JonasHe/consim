@@ -50,21 +50,21 @@ class install_travel extends \phpbb\db\migration\migration
                 $this->table_prefix . 'consim_routes'	=> array(
 					'COLUMNS'      => array(
 						'id'                    => array('UINT:8', 0),
-						'start_id'            	=> array('UINT:8', 0),
-                        'end_id'                => array('UINT:8', 0),
+						'start_location_id'     => array('UINT:8', 0),
+                        'end_location_id'       => array('UINT:8', 0),
                         'time'                  => array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
                     'KEYS'			=> array(
-						'start_id'        => array('INDEX', 'start_id'),
-                        'end_id'		  => array('INDEX', 'end_id'),
+						'start_location_id'     => array('INDEX', 'start_location_id'),
+                        'end_location_id'       => array('INDEX', 'end_location_id'),
 					),
 				),
                 $this->table_prefix . 'consim_travels'	=> array(
 					'COLUMNS'      => array(
 						'id'                    => array('UINT:8', NULL, 'auto_increment'),
-						'start_location'        => array('UINT:8', 0),
-                        'end_location'          => array('UINT:8', 0),
+						'start_location_id'     => array('UINT:8', 0),
+                        'end_location_id'       => array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
@@ -150,14 +150,14 @@ class install_travel extends \phpbb\db\migration\migration
     public function insert_routes()
 	{
 		$routes = array(
-            array('id' => 1, 'start_id' => 1, 'end_id' => 2, 'time' => 60),
-            array('id' => 2, 'start_id' => 2, 'end_id' => 3, 'time' => 240),
-            array('id' => 3, 'start_id' => 3, 'end_id' => 4, 'time' => 480),
-            array('id' => 4, 'start_id' => 1, 'end_id' => 4, 'time' => 120),
-            array('id' => 5, 'start_id' => 4, 'end_id' => 5, 'time' => 30),
-            array('id' => 6, 'start_id' => 5, 'end_id' => 6, 'time' => 240),
-            array('id' => 7, 'start_id' => 6, 'end_id' => 7, 'time' => 540),
-            array('id' => 8, 'start_id' => 7, 'end_id' => 4, 'time' => 180),
+            array('id' => 1, 'start_location_id' => 1, 'end_location_id' => 2, 'time' => 60),
+            array('id' => 2, 'start_location_id' => 2, 'end_location_id' => 3, 'time' => 240),
+            array('id' => 3, 'start_location_id' => 3, 'end_location_id' => 4, 'time' => 480),
+            array('id' => 4, 'start_location_id' => 1, 'end_location_id' => 4, 'time' => 120),
+            array('id' => 5, 'start_location_id' => 4, 'end_location_id' => 5, 'time' => 30),
+            array('id' => 6, 'start_location_id' => 5, 'end_location_id' => 6, 'time' => 240),
+            array('id' => 7, 'start_location_id' => 6, 'end_location_id' => 7, 'time' => 540),
+            array('id' => 8, 'start_location_id' => 7, 'end_location_id' => 4, 'time' => 180),
         );
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_routes', $routes);
 	}

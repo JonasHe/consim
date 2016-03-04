@@ -23,8 +23,8 @@ class Travel extends Action
       	'user_id'                   => 'integer',
       	'starttime'				    => 'integer',
         'endtime'				    => 'integer',
-        'start_location'            => 'integer',
-        'end_location'              => 'integer',
+        'start_location_id'         => 'integer',
+        'end_location_id'           => 'integer',
         'status'					=> 'boolean',
 	);
 
@@ -36,8 +36,9 @@ class Travel extends Action
         'user_id',
         'starttime',
         'endtime',
-        'start_location',
-        'end_location',
+        'start_location_id',
+        'end_location_id',
+        'status',
 	);
 
 	protected $data;
@@ -79,13 +80,13 @@ class Travel extends Action
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
-	public function insert($user_id, $starttime, $endtime, $start_location, $end_location)
+	public function insert($user_id, $starttime, $endtime, $start_location_id, $end_location_id)
 	{
         $this->setInteger('user_id', $user_id);
         $this->setInteger('starttime', $starttime);
         $this->setInteger('endtime', $endtime);
-        $this->setInteger('start_location', $start_location);
-        $this->setInteger('end_location', $end_location);
+        $this->setInteger('start_location_id', $start_location_id);
+        $this->setInteger('end_location_id', $end_location_id);
 
 
         if (!empty($this->data['id']))
@@ -97,9 +98,10 @@ class Travel extends Action
 		// Make extra sure there is no id set
 		unset($this->data['id']);
 
+        //TODO: Hmmm why???
         $travel = array(
-            'start_location'            => $this->data['start_location'],
-            'end_location'              => $this->data['end_location'],
+            'start_location_id'          => $this->data['start_location_id'],
+            'end_location_id'            => $this->data['end_location_id'],
         );
 
 		// Insert the data to the database
@@ -206,7 +208,7 @@ class Travel extends Action
 
         //User is free and at the new location
         $sql = 'UPDATE ' . $this->consim_user_table . '
-			SET active = 0, location = '. $this->data['end_location'] .'
+			SET active = 0, location_id = '. $this->data['end_location_id'] .'
 			WHERE user_id = ' . $this->data['user_id'];
 		$this->db->sql_query($sql);
 
