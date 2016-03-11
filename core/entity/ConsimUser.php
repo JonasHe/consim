@@ -72,31 +72,21 @@ class ConsimUser extends abstractEntity
         'active',
 	);
 
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
 	/** @var ContainerInterface */
 	protected $container;
 
-	/**
+    /**
 	* The database table the consim user data are stored in
 	* @var string
 	*/
 	protected $consim_user_table;
-
-	/**
-	* The database table the person data are stored in
-	* @var string
-	*/
-	protected $consim_person_table;
+    protected $consim_person_table;
 
 	/**
 	* Variable to save the data from person table
 	* @var array
 	*/
-	protected $figure_data;
+	private $figure_data;
 
     //extra language skill
     const EXTRA_LANG = 25;
@@ -445,14 +435,14 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Sprache Tadsowisch
 	*
-	* @param string $sprache_tadsowisch
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSpracheTadsowisch($sprache_tadsowisch)
+	public function setSpracheTadsowisch($level)
 	{
-		return $this->setInteger('sprache_tadsowisch', $sprache_tadsowisch, true, 100);
+		return $this->setInteger('sprache_tadsowisch', $level, true, 100);
 	}
 
    /**
@@ -473,9 +463,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSpracheBakirisch($sprache_bakirisch)
+	public function setSpracheBakirisch($level)
 	{
-		return $this->setInteger('sprache_bakirisch', $sprache_bakirisch, true, 100);
+		return $this->setInteger('sprache_bakirisch', $level, true, 100);
 	}
 
    /**
@@ -496,9 +486,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSpracheSuranisch($sprache_suranisch)
+	public function setSpracheSuranisch($level)
 	{
-		return $this->setInteger('sprache_suranisch', $sprache_suranisch, true, 100);
+		return $this->setInteger('sprache_suranisch', $level, true, 100);
 	}
 
    /**
@@ -519,9 +509,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setRhetorik($rhetorik)
+	public function setRhetorik($level)
 	{
-		return $this->setInteger('rhetorik', $rhetorik, true, 100);
+		return $this->setInteger('rhetorik', $level, true, 100);
 	}
 
 	/**
@@ -542,9 +532,9 @@ class ConsimUser extends abstractEntity
  	* @access public
  	* @throws \consim\core\exception\unexpected_value
  	*/
- 	public function setAdministration($administration)
+ 	public function setAdministration($level)
  	{
- 		return $this->setInteger('administration', $administration, true, 100);
+ 		return $this->setInteger('administration', $level, true, 100);
  	}
 
    /**
@@ -565,9 +555,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setWirtschaft($wirtschaft)
+	public function setWirtschaft($level)
 	{
-		return $this->setInteger('wirtschaft', $wirtschaft, true, 100);
+		return $this->setInteger('wirtschaft', $level, true, 100);
 	}
 
    /**
@@ -588,9 +578,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setTechnik($technik)
+	public function setTechnik($level)
 	{
-		return $this->setInteger('technik', $technik, true, 100);
+		return $this->setInteger('technik', $level, true, 100);
 	}
 
    /**
@@ -611,9 +601,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setNahkampf($nahkampf)
+	public function setNahkampf($level)
 	{
-		return $this->setInteger('nahkampf', $nahkampf, true, 100);
+		return $this->setInteger('nahkampf', $level, true, 100);
 	}
 
 	/**
@@ -634,9 +624,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSchusswaffen($schusswaffen)
+	public function setSchusswaffen($level)
 	{
-		return $this->setInteger('schusswaffen', $schusswaffen, true, 100);
+		return $this->setInteger('schusswaffen', $level, true, 100);
 	}
 
 	/**
@@ -657,9 +647,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSprengmittel($sprengmittel)
+	public function setSprengmittel($level)
 	{
-		return $this->setInteger('sprengmittel', $sprengmittel, true, 100);
+		return $this->setInteger('sprengmittel', $level, true, 100);
 	}
 
    /**
@@ -680,9 +670,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setMilitarkunde($militarkunde)
+	public function setMilitarkunde($level)
 	{
-		return $this->setInteger('militarkunde', $militarkunde, true, 100);
+		return $this->setInteger('militarkunde', $level, true, 100);
 	}
 
    /**
@@ -703,9 +693,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSpionage($spionage)
+	public function setSpionage($level)
 	{
-		return $this->setInteger('spionage', $spionage, true, 100);
+		return $this->setInteger('spionage', $level, true, 100);
 	}
 
 	/**
@@ -726,9 +716,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSchmuggel($schmuggel)
+	public function setSchmuggel($level)
 	{
-		return $this->setInteger('schmuggel', $schmuggel, true, 100);
+		return $this->setInteger('schmuggel', $level, true, 100);
 	}
 
 	/**
@@ -749,9 +739,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setMedizin($medizin)
+	public function setMedizin($level)
 	{
-		return $this->setInteger('medizin', $medizin, true, 100);
+		return $this->setInteger('medizin', $level, true, 100);
 	}
 
    /**
@@ -772,9 +762,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setUberlebenskunde($uberlebenskunde)
+	public function setUberlebenskunde($level)
 	{
-		return $this->setInteger('uberlebenskunde', $uberlebenskunde, true, 100);
+		return $this->setInteger('uberlebenskunde', $level, true, 100);
 	}
 
     /**
@@ -829,13 +819,14 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Active
 	*
-	* @param bool $uberlebenskunde
+	* @param bool $active
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
 	public function setActive($active)
 	{
+        $acitve = (int) $active;
 		return $this->setInteger('active', $active, true, 1);
 	}
 

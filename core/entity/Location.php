@@ -34,11 +34,6 @@ class Location extends abstractEntity
       	'id',
 	);
 
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
 	/**
 	* The database table the consim user data are stored in
 	* @var string
@@ -91,7 +86,7 @@ class Location extends abstractEntity
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
-        
+
 		if ($this->data === false)
 		{
 			throw new \consim\core\exception\out_of_bounds('id');
@@ -152,7 +147,7 @@ class Location extends abstractEntity
 	*/
 	public function getType()
 	{
-		return $this->data['type'];
+		return $this->getString($this->data['type']);
 	}
 
     /**
@@ -163,7 +158,7 @@ class Location extends abstractEntity
 	*/
 	public function getProvince()
 	{
-		return $this->data['province'];
+		return $this->getString($this->data['province']);
 	}
 
     /**
@@ -174,6 +169,6 @@ class Location extends abstractEntity
 	*/
 	public function getCountry()
 	{
-		return $this->data['country'];
+		return $this->getString($this->data['country']);
 	}
 }

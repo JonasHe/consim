@@ -33,12 +33,6 @@ class Route extends abstractEntity
         'end_location_id',
         'time',
 	);
-
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
 	/**
 	* The database table the consim user data are stored in
 	* @var string

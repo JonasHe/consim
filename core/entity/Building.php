@@ -30,11 +30,6 @@ class Building extends abstractEntity
       	'id',
 	);
 
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
 	/**
 	* The database table the consim user data are stored in
 	* @var string

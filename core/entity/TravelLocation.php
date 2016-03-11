@@ -39,11 +39,6 @@ class TravelLocation extends Travel
         'endtime',
 	);
 
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
     /** @var ContainerInterface */
 	protected $container;
 
@@ -51,8 +46,6 @@ class TravelLocation extends Travel
 	* The database table the consim user data are stored in
 	* @var string
 	*/
-    protected $consim_action_table;
-    protected $consim_travel_table;
 	protected $consim_location_table;
     protected $consim_location_type_table;
     protected $consim_province_table;
@@ -179,9 +172,9 @@ class TravelLocation extends Travel
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setStartLocation($location_data)
+	public function setStartLocation($location)
 	{
-        $this->data['start_location'] = $this->container->get('consim.core.entity.Location')->import($location_data);
+        $this->data['start_location'] = $this->container->get('consim.core.entity.Location')->import($location);
 		return $this;
 	}
 
@@ -204,9 +197,9 @@ class TravelLocation extends Travel
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setEndLocation($location_data)
+	public function setEndLocation($location)
 	{
-        $this->data['end_location'] = $this->container->get('consim.core.entity.Location')->import($location_data);
+        $this->data['end_location'] = $this->container->get('consim.core.entity.Location')->import($location);
 		return $this;
 	}
 

@@ -34,20 +34,11 @@ class RouteLocation extends Location
         'time',
 	);
 
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
 	/**
 	* The database table the consim user data are stored in
 	* @var string
 	*/
     protected $consim_route_table;
-	protected $consim_location_table;
-    protected $consim_location_type_table;
-    protected $consim_province_table;
-    protected $consim_country_table;
 
     /**
 	* Constructor

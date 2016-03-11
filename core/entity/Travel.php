@@ -41,16 +41,10 @@ class Travel extends Action
         'status',
 	);
 
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
 	/**
 	* The database table the consim user data are stored in
 	* @var string
 	*/
-	protected $consim_action_table;
     protected $consim_travel_table;
     protected $consim_user_table;
 
@@ -70,6 +64,11 @@ class Travel extends Action
         $this->consim_travel_table = $consim_travel_table;
         $this->consim_user_table = $consim_user_table;
 	}
+
+    /**
+    * Don't load this Entity
+    */
+    public function load() {}
 
     /**
 	* Insert the Data for the first time
@@ -129,61 +128,6 @@ class Travel extends Action
 		$this->db->sql_query($sql);
 
 		return $this;
-	}
-
-    /**
-	* Get ID
-	*
-	* @return int ID
-	* @access public
-	*/
-	public function getId()
-	{
-		return $this->getInteger($this->data['id']);
-	}
-
-    /**
-	* Get User ID
-	*
-	* @return int UserID
-	* @access public
-	*/
-	public function getUserId()
-	{
-		return $this->getInteger($this->data['user_id']);
-	}
-
-    /**
-	* Get Starttime
-	*
-	* @return int Starttime
-	* @access public
-	*/
-	public function getStartTime()
-	{
-		return $this->getInteger($this->data['starttime']);
-	}
-
-    /**
-	* Get Endtime
-	*
-	* @return int Endtime
-	* @access public
-	*/
-	public function getEndTime()
-	{
-		return $this->getInteger($this->data['endtime']);
-	}
-
-    /**
-	* Get Status
-	*
-	* @return bool Status
-	* @access public
-	*/
-	public function getStatus()
-	{
-		return $this->getInteger($this->data['status']);
 	}
 
     /**
