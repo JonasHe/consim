@@ -19,8 +19,11 @@ class Register
     /** @var \phpbb\config\config */
 	protected $config;
 
+    /** @var ContainerInterface */
+    protected $container;
+
 	/** @var \phpbb\controller\helper */
-	protected $controller_helper;
+	protected $helper;
 
 	/** @var ContainerInterface */
 	protected $container;

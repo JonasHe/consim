@@ -19,11 +19,11 @@ class Index
     /** @var \phpbb\config\config */
 	protected $config;
 
-	/** @var \phpbb\controller\helper */
-	protected $controller_helper;
+    /** @var ContainerInterface */
+    protected $container;
 
-	/** @var ContainerInterface */
-	protected $container;
+	/** @var \phpbb\controller\helper */
+	protected $helper;
 
 	/** @var \phpbb\user */
 	protected $user;
@@ -36,12 +36,6 @@ class Index
 
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
-
-    /**
-    * Class-Variables
-    **/
-    protected $consim_user;
-    protected $consim_user_location;
 
 	/**
 	* Constructor
