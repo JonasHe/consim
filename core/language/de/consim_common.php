@@ -68,6 +68,14 @@ $lang = array_merge($lang, array(
 	'MEDIZIN'                  	=> 'Medizin',
 	'UBERLEBENSKUNDE'          	=> 'Überlebenskunde',
 
+    'INVENTORY'                 => 'Inventar',
+    'BAK_RUBEL'                 => 'Bakirischer Rubel',
+    'BAK_RUBEL_ABBR'            => 'BR',
+    'SUR_DINAR'                 => 'Suranischer Dinar',
+    'SUR_DINAR_ABBR'            => 'SD',
+    'FRT_DOLLAR'                => 'Tadsowischer Dollar',
+    'FRT_DOLLAR_ABBR'           => 'TD',
+
     'PROVINCE'                  => 'Provinz',
     'TRAVELING'                 => 'Reisen',
     'BUILDING'                  => 'Gebäude',

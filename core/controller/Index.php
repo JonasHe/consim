@@ -283,6 +283,9 @@ class Index
             'SCHMUGGEL'					    => $this->consim_user->getSchmuggel(),
 			'MEDIZIN'						=> $this->consim_user->getMedizin(),
 	      	'UBERLEBENSKUNDE'				=> $this->consim_user->getUberlebenskunde(),
+            'BAK_RUBEL'                     => $this->consim_user->getBakRubel(),
+            'SUR_DINAR'                     => $this->consim_user->getSurDinar(),
+            'FRT_DOLLAR'                    => $this->consim_user->getFrtDollar(),
 
             //Informations for current location and time
             'TIME'                          => date("d.m.Y - H:i:s", time()),

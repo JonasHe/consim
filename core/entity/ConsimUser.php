@@ -744,7 +744,7 @@ class ConsimUser extends abstractEntity
 		return $this->setInteger('medizin', $level, true, 100);
 	}
 
-   /**
+    /**
 	* Get uberlebenskunde
 	*
 	* @return string uberlebenskunde
@@ -765,6 +765,75 @@ class ConsimUser extends abstractEntity
 	public function setUberlebenskunde($level)
 	{
 		return $this->setInteger('uberlebenskunde', $level, true, 100);
+	}
+
+    /**
+	* Get Bakirischer Rubel
+	*
+	* @return string Bakirischer Rubel
+	* @access public
+	*/
+	public function getBakRubel()
+	{
+		return $this->getInteger($this->data['bak_rubel']);
+	}
+	/**
+	* Set Bakirischer Rubel
+	*
+	* @param string $rubel
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setBakRubel($rubel)
+	{
+		return $this->setInteger('bak_rubel', $rubel);
+	}
+
+    /**
+	* Get Suranischer Dinar
+	*
+	* @return string Suranischer Dinar
+	* @access public
+	*/
+	public function getSurDinar()
+	{
+		return $this->getInteger($this->data['sur_dinar']);
+	}
+	/**
+	* Set Suranischer Dinar
+	*
+	* @param string $dinar
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setSurDinar($dinar)
+	{
+		return $this->setInteger('sur_dinar', $dinar);
+	}
+
+    /**
+	* Get Tadsowischer Dollar
+	*
+	* @return string Tadsowischer Dollar
+	* @access public
+	*/
+	public function getFrtDollar()
+	{
+		return $this->getInteger($this->data['frt_dollar']);
+	}
+	/**
+	* Set Tadsowischer Dollar
+	*
+	* @param string $dollar
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setFrtDollar($dollar)
+	{
+		return $this->setInteger('frt_dollar', $dollar);
 	}
 
     /**

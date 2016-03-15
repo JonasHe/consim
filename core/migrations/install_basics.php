@@ -60,10 +60,16 @@ class install_basics extends \phpbb\db\migration\migration
 						'schmuggel'				=> array('UINT:3', 1),
 						'medizin'				=> array('UINT:3', 1),
 						'uberlebenskunde'		=> array('UINT:3', 1),
+                        'bak_rubel'             => array('UINT:8', 0),
+                        'sur_dinar'             => array('UINT:8', 0),
+                        'frt_dollar'            => array('UINT:8', 0),
                         'location_id'           => array('UINT:8', 1),
                         'active'                => array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('user_id'),
+                    'KEYS'			=> array(
+						'location_id'     => array('INDEX', 'location_id'),
+					),
 				),
 				$this->table_prefix . 'consim_figure' => array(
 					'COLUMNS'		=> array(
