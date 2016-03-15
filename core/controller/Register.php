@@ -25,9 +25,6 @@ class Register
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 
-	/** @var ContainerInterface */
-	protected $container;
-
 	/** @var \phpbb\user */
 	protected $user;
 
