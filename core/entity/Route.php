@@ -19,8 +19,8 @@ class Route extends abstractEntity
 	**/
 	protected static $fields = array(
     	'id'					=> 'integer',
-      	'start_id'              => 'integer',
-        'end_id'                => 'integer',
+      	'start_location_id'     => 'integer',
+        'end_location_id'       => 'integer',
         'time'                  => 'integer',
 	);
 
@@ -29,8 +29,8 @@ class Route extends abstractEntity
 	**/
 	protected static $validate_unsigned = array(
       	'id',
-        'start_id',
-        'end_id',
+        'start_location_id',
+        'end_location_id',
         'time',
 	);
 
@@ -69,10 +69,10 @@ class Route extends abstractEntity
 	*/
 	public function load($start, $end)
 	{
-		$sql = 'SELECT id, start_id, end_id, time
+		$sql = 'SELECT id, start_location_id, end_location_id, time
 			FROM ' . $this->consim_route_table . '
-			WHERE start_id = '. (int) $start .' AND end_id = '. (int) $end .'
-               OR start_id = '. (int) $end.' AND end_id = '. (int) $start;
+			WHERE start_location_id = '. (int) $start .' AND end_location_id = '. (int) $end .'
+               OR start_location_id = '. (int) $end.' AND end_location_id = '. (int) $start;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -102,9 +102,9 @@ class Route extends abstractEntity
 	* @return int ID
 	* @access public
 	*/
-	public function getStartId()
+	public function getStartLocationId()
 	{
-		return $this->getInteger($this->data['start_id']);
+		return $this->getInteger($this->data['start_location_id']);
 	}
 
     /**
@@ -113,9 +113,9 @@ class Route extends abstractEntity
 	* @return int ID
 	* @access public
 	*/
-	public function getEndId()
+	public function getEndLocationId()
 	{
-		return $this->getInteger($this->data['end_id']);
+		return $this->getInteger($this->data['end_location_id']);
 	}
 
     /**

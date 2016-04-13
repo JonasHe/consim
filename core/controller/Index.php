@@ -70,6 +70,9 @@ class Index
 		$this->template = $template;
 		$this->request = $request;
 		$this->db = $db;
+
+        //Starting with the init
+        $this->init();
 	}
 
 	/**
@@ -80,22 +83,6 @@ class Index
 	*/
 	public function display()
 	{
-		if($this->user->data['consim_register'] == 0)
-		{
-			redirect($this->helper->route('consim_core_register'));
-			return;
-		}
-
-		// Add language file
-		$this->user->add_lang_ext('consim/core', 'consim_common');
-
-        //Check all finished Actions
-        $this->container->get('consim.core.operators.ActionLists')->finishedActions();
-
-        //Get the ConSim-User
-		$this->consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
-
-
         // Is the form being submitted to us?
         // Delete UserProfile
 		if ($this->request->is_set_post('delete'))
@@ -112,9 +99,6 @@ class Index
 			//Leite den User weiter zum Consim Register
 			redirect($this->helper->route('consim_core_register'));
 		}
-
-        //Infos for Overall
-        $this->showOverAllInfo();
 
         //Is User active?
         if($this->consim_user->getActive())
@@ -133,6 +117,13 @@ class Index
         }
 	}
 
+    /**
+	* Display all traveling routes
+	*
+    * @param \consim\core\entity\TravelLocation $travel
+	* @return null
+	* @access private
+	*/
     private function showTraveling($travel)
     {
         $now = time();
@@ -157,15 +148,52 @@ class Index
 		return $this->helper->render('consim_travel.html', $this->user->lang('INDEX'));
     }
 
-    private function showLocation()
+    /**
+	* Display a location
+	*
+    * @param int $location_id
+	* @return null
+	* @access public
+	*/
+    public function showLocation($location_id = 0)
     {
-        //Create the Travelpopup
-        $this->container->get('consim.core.operators.RouteLocations')->setAllDestinationsToTemplate($this->consim_user->getLocation(),$this->template, $this->helper);
+        //must be an integer
+        $location_id = (int) $location_id;
 
-        $location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocation());
+        $location = $this->container->get('consim.core.entity.Location');
+        $location_op = $this->container->get('consim.core.operators.Locations');
+
+        //location from location_id or from position of user?
+        if($location_id == 0)
+        {
+            $location_id = $this->consim_user->getLocationId();
+
+            //Create the Travelpopup
+            $location_op->setAllRouteDestinationsToTemplate($location_id, $this->template, $this->helper);
+        }
+
+        $location->load($location_id);
+        $buildings = $location_op->getAllBuildings($location_id);
+
+        //Put all Buildings in the Template
+        foreach ($buildings as $entity)
+        {
+            $building = array(
+				'NAME'	     	=> ($entity->getName() != '')? '"' . $entity->getName() . '"' : '',
+                'TYPE'  		=> $entity->getType(),
+                'URL'           => $this->helper->route('consim_core_location_building',
+                                                    array(
+                                                        'location_id' => $location_id,
+                                                        'building_id' => $entity->getId()
+                                                    )),
+			);
+
+            $this->template->assign_block_vars('buildings', $building);
+        }
 
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
+            'CAN_TRAVEL'                    => ($location_id === $this->consim_user->getLocationId())? TRUE : FALSE,
             'LOCATION'                      => $location->getName(),
             'LOCATION_TYPE'                 => $location->getType(),
             'PROVINCE'                      => $location->getProvince(),
@@ -176,8 +204,64 @@ class Index
 		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
     }
 
-    private function showOverAllInfo()
+    /**
+	* Display a building in a location
+	*
+    * @param int $location_id
+    * @param int $building_id
+	* @return null
+	* @access public
+	*/
+    public function showLocationBuilding($location_id, $building_id)
     {
+        //must be an integer
+        $location_id = (int) $location_id;
+        $building_id = (int) $building_id;
+
+        if($location_id === 0 || $building_id === 0)
+        {
+            redirect($this->helper->route('consim_core_location', array('location_id' => $location_id)));
+        }
+
+        $location = $this->container->get('consim.core.entity.Location')->load($location_id);
+        $building = $this->container->get('consim.core.entity.LocationBuilding')->load($building_id);
+
+        // Set output vars for display in the template
+		$this->template->assign_vars(array(
+            'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+            'BUILDING_TYP'          => $building->getType(),
+            'LOCATION'              => $location->getName(),
+            'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
+		));
+
+        // Send all data to the template file
+        return $this->helper->render('consim_building.html', $this->user->lang('INDEX'));
+    }
+
+    /**
+	* Initiated all important variable
+    * and check if it a consim-user
+	*
+	* @return null
+	* @access private
+	*/
+    private function init()
+    {
+        if($this->user->data['consim_register'] == 0)
+		{
+			redirect($this->helper->route('consim_core_register'));
+			return;
+		}
+
+        // Add language file
+		$this->user->add_lang_ext('consim/core', 'consim_common');
+
+        //Check all finished Actions
+        $this->container->get('consim.core.operators.ActionLists')->finishedActions();
+
+        //Get the ConSim-User
+		$this->consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
+
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
 	    	'SPRACHE_TADSOWISCH'			=> $this->consim_user->getSpracheTadsowisch(),

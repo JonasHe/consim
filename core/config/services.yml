@@ -45,8 +45,8 @@ services:
             - @request
             - @dbal.conn
 
-    consim.core.operators.RouteLocations:
-        class: consim\core\operators\RouteLocations
+    consim.core.operators.Locations:
+        class: consim\core\operators\Locations
         arguments:
             - @dbal.conn
             - @service_container
@@ -55,6 +55,8 @@ services:
             - %tables.consim.location_types%
             - %tables.consim.provinces%
             - %tables.consim.countries%
+            - %tables.consim.buildings%
+            - %tables.consim.location_buildings%
 
     consim.core.operators.ActionLists:
         class: consim\core\operators\ActionLists
@@ -63,6 +65,14 @@ services:
             - @service_container
             - %tables.consim.actions%
             - %tables.consim.travels%
+
+    consim.core.entity.LocationBuilding:
+        class: consim\core\entity\LocationBuilding
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.buildings%
+            - %tables.consim.location_buildings%
 
     consim.core.entity.TravelLocation:
         class: consim\core\entity\TravelLocation

@@ -87,28 +87,20 @@ class RouteLocation extends Location
 	{
 		$sql = 'SELECT l.id, l.name, t.name AS type, p.name AS province, c.name AS country, r.time
             FROM ' . $this->consim_route_table . ' r
-            LEFT JOIN ' . $this->consim_location_table . ' l ON (r.start_id = l.id AND r.start_id <> '. (int) $start .') OR (r.end_id = l.id AND r.end_id <> '. (int) $start .')
-            LEFT JOIN ' . $this->consim_location_type_table . ' t ON l.type = t.id
-            LEFT JOIN ' . $this->consim_province_table . ' p ON l.province = p.id
-            LEFT JOIN ' . $this->consim_country_table . ' c ON p.country = c.id
-			WHERE r.start_id = ' . (int) $start .' OR r.end_id = '. (int) $start;
+            LEFT JOIN ' . $this->consim_location_table . ' l ON (r.start_location_id = l.id AND r.start_location_id <> '. (int) $start .')
+                                                                OR (r.end_location_id = l.id AND r.end_location_id <> '. (int) $start .')
+            LEFT JOIN ' . $this->consim_location_type_table . ' t ON l.type_id = t.id
+            LEFT JOIN ' . $this->consim_province_table . ' p ON l.province_id = p.id
+            LEFT JOIN ' . $this->consim_country_table . ' c ON p.country_id = c.id
+			WHERE r.start_location_id = ' . (int) $start .' OR r.end_location_id = '. (int) $start;
 		$result = $this->db->sql_query($sql);
-		$row = $this->db->sql_fetchrow($result);
+		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		if ($row === false)
+		if ($this->data === false)
 		{
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
-
-        $this->data = array(
-            'id'        => $row['id'],
-            'name'      => $row['name'],
-            'type'      => $row['type'],
-            'province'  => $row['province'],
-            'country'   => $row['country'],
-            'time'      => $row['time'],
-        );
 
 		return $this;
 	}

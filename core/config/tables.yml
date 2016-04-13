@@ -8,3 +8,5 @@ parameters:
     tables.consim.routes: %core.table_prefix%consim_routes
     tables.consim.actions: %core.table_prefix%consim_actions
     tables.consim.travels: %core.table_prefix%consim_travels
+    tables.consim.buildings: %core.table_prefix%consim_buildings
+    tables.consim.location_buildings: %core.table_prefix%consim_location_buildings
