@@ -20,6 +20,7 @@ class LocationBuilding extends abstractEntity
 	protected static $fields = array(
     	'id'           => 'integer',
       	'name'         => 'string',
+		'description'  => 'string',
         'type'         => 'string',
 	);
 
@@ -70,7 +71,7 @@ class LocationBuilding extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT lb.id, lb.name, b.name AS type
+		$sql = 'SELECT lb.id, lb.name, lb.description, b.name AS type
 			FROM ' . $this->consim_location_building_table . ' lb
             LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
 			WHERE lb.id = ' . (int) $id;
@@ -107,6 +108,17 @@ class LocationBuilding extends abstractEntity
 	public function getName()
 	{
 		return $this->getString($this->data['name']);
+	}
+	
+	/**
+	* Get Building Description
+	*
+	* @return string building description
+	* @access public
+	*/
+	public function getDescription()
+	{
+		return $this->getString($this->data['description']);
 	}
 
     /**

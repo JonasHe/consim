@@ -229,6 +229,7 @@ class Index
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
             'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+            'BUILDING_DESCRIPTION'  => ($building->getDescription() != '')? '' . $building->getDescription() . '' : '',
             'BUILDING_TYP'          => $building->getType(),
             'LOCATION'              => $location->getName(),
             'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
