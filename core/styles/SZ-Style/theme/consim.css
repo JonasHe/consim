@@ -312,18 +312,7 @@ ul.travellist dd.action a.button2 {
 	content: ' +++ ';
 }
 
-.marquee {
-    margin: 0 auto;
-    overflow: hidden;
-    white-space: nowrap;
-    animation: marquee 50s linear infinite;
-}
-
-.marquee:hover {
-    animation-play-state: paused
-}
-
-@keyframes marquee {
-    0%   { text-indent: 27.5em }
-    100% { text-indent: -250em }
+.panel-news {
+    background-color: #ffffff;
+    padding: 0px;
 }

@@ -126,8 +126,8 @@ class News
 	    	'S_NEWSTICKER'					=> ($channel['id']) ? true : false,
 	    	'CHANNEL'						=> $channel['name'].' '.date('H:i'),
 			'VREFRESH'						=> $channel['vRefresh'],
-			'BACKGROUND'					=> $channel['background'],
-			'COLOR'							=> $channel['color'],
+			'CHANNEL_BACKGROUND'			=> $channel['background'],
+			'CHANNEL_COLOR'					=> $channel['color'],
 		));
 	}
 	

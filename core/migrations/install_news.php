@@ -30,7 +30,7 @@ class install_news extends \phpbb\db\migration\migration
 			'add_tables'		=> array(
 				$this->table_prefix . 'consim_news'	=> array(
 					'COLUMNS'      => array(
-						'news_id'               => array('UINT:8', 0),
+						'news_id'               => array('UINT:8', NULL, 'auto_increment'),
 						'channel_id'            => array('UINT:8', 0),
 						'topic_id'            	=> array('UINT:8', 0),
 						'content'            	=> array('VCHAR:255', ''),
@@ -42,7 +42,7 @@ class install_news extends \phpbb\db\migration\migration
 				),
 				$this->table_prefix . 'consim_news_channel'	=> array(
 					'COLUMNS'      => array(
-						'channel_id'            => array('UINT:8', 0),
+						'channel_id'            => array('UINT:8', NULL, 'auto_increment'),
 						'group_id'            	=> array('UINT:8', 0),
 						'channel_name'          => array('VCHAR:255', ''),
 						'vRefresh'            	=> array('UINT:1', 0),
@@ -53,7 +53,7 @@ class install_news extends \phpbb\db\migration\migration
 				),
                 $this->table_prefix . 'consim_news_topics'	=> array(
 					'COLUMNS'      => array(
-						'topic_id'              => array('UINT:8', 0),
+						'topic_id'              => array('UINT:8', NULL, 'auto_increment'),
 						'topic_name'            => array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> array('topic_id'),
