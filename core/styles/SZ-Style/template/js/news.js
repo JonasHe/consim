@@ -1,4 +1,34 @@
 (function($) {
+    $.fn.liScroll = function(settings) { // Funktion fuer horizontales scrollen
+		settings = jQuery.extend({
+			travelocity: 0.07
+		}, settings);		
+		return this.each(function(){
+			var $strip = jQuery(this);
+			var stripWidth = 1;
+			$strip.find("li.newsticker-item").each(function(i){
+			stripWidth += jQuery(this, i).outerWidth(true); // thanks to Michael Haszprunar and Fabien Volpi
+			});							
+			var containerWidth = $strip.parent().width();
+			$strip.width(stripWidth);			
+			var totalTravel = stripWidth+containerWidth;
+			var defTiming = totalTravel/settings.travelocity;	// thanks to Scott Waye		
+			function scrollnews(spazio, tempo){
+			$strip.animate({left: '-='+ spazio}, tempo, "linear", function(){$strip.css("left", containerWidth); scrollnews(totalTravel, defTiming);});
+			}
+			scrollnews(totalTravel, defTiming);				
+			$strip.hover(function(){
+			jQuery(this).stop();
+			},
+			function(){
+			var offset = jQuery(this).offset();
+			var residualSpace = offset.left + stripWidth;
+			var residualTime = residualSpace/settings.travelocity;
+			scrollnews(residualSpace, residualTime);
+			});			
+		});	
+	};
+    
     $.fn.newsticker = function(opts) {
         // default configuration
         var config = $.extend({}, {
@@ -39,7 +69,7 @@
             };
 
             function vRefresh(){
-                if(config.vRefresh){
+                if(config.vRefresh == 1){
 					$('.topic').css('display', 'inline');
                     setInterval(function(){
                         if (!stop){
@@ -68,7 +98,7 @@
                 }
                 else{
 					$frame.addClass('oneline');
-					$frame.addClass('marquee');
+					$frame.liScroll();
                 }
             };
 
@@ -82,6 +112,6 @@
     };
 	$('.newsticker').newsticker({
 		height: 30, //default: 30
-		vRefresh: 1
+		vRefresh: $('.vRefresh').html(),
 	});
 })(jQuery);
