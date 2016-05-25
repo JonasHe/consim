@@ -94,6 +94,7 @@ class install_travel extends \phpbb\db\migration\migration
 					'COLUMNS'      => array(
 						'id'                    => array('UINT:8', 0),
                         'name'                  => array('VCHAR:255', ''),
+						'description'			=> array('TEXT', ''),
 						'location_id'        	=> array('UINT:8', 0),
                         'building_id'           => array('UINT:8', 0),
 					),
@@ -193,9 +194,9 @@ class install_travel extends \phpbb\db\migration\migration
     public function insert_location_buildings()
 	{
 		$location_buildings = array(
-            array('id' => 1, 'name' => '', 'location_id' => 4, 'building_id' => 1),
-            array('id' => 2, 'name' => 'Rotstahl', 'location_id' => 4, 'building_id' => 2),
-            array('id' => 3, 'name' => 'Tretmine', 'location_id' => 4, 'building_id' => 3),
+            array('id' => 1, 'name' => '', 'description' => '', 'location_id' => 4, 'building_id' => 1),
+            array('id' => 2, 'name' => 'Rotstahl', 'description' => '', 'location_id' => 4, 'building_id' => 2),
+            array('id' => 3, 'name' => 'Tretmine', 'description' => '', 'location_id' => 4, 'building_id' => 3),
         );
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_location_buildings', $location_buildings);
 	}

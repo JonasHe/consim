@@ -229,6 +229,7 @@ class Index
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
             'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+            'BUILDING_DESCRIPTION'  => ($building->getDescription() != '')? '' . $building->getDescription() . '' : '',
             'BUILDING_TYP'          => $building->getType(),
             'LOCATION'              => $location->getName(),
             'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
@@ -262,6 +263,9 @@ class Index
         //Get the ConSim-User
 		$this->consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
+        //Get the newsticker
+		$this->container->get('consim.core.controller.News')->fetchNews();
+        
         // Set output vars for display in the template
 		$this->template->assign_vars(array(
 	    	'SPRACHE_TADSOWISCH'			=> $this->consim_user->getSpracheTadsowisch(),
