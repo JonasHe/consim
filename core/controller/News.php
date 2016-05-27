@@ -217,10 +217,10 @@ class News
 			if (empty($errors))
 			{
 				$news_channel->setGroupId($this->request->variable('group',2))->
-					setChannelName($this->request->variable('name',''))->
+					setChannelName($this->request->variable('name','',true))->
 					setvRefresh($this->request->variable('vrefresh',0))->
-					setBackground($this->request->variable('background',''))->
-					setBorder($this->request->variable('border',''))->insert();
+					setBackground($this->request->variable('background','',true))->
+					setBorder($this->request->variable('border','',true))->insert();
 				redirect(build_url(array("action")));
 			}
 		}
@@ -270,10 +270,10 @@ class News
 			if (empty($errors))
 			{
 				$news_channel->setId($id)->setGroupId($this->request->variable('group',2))->
-					setChannelName($this->request->variable('name',''))->
+					setChannelName($this->request->variable('name','',true))->
 					setvRefresh($this->request->variable('vrefresh',0))->
-					setBackground($this->request->variable('background',''))->
-					setBorder($this->request->variable('border',''))->save();
+					setBackground($this->request->variable('background','',true))->
+					setBorder($this->request->variable('border','',true))->save();
 				redirect(build_url(array("action","channel_id")));
 			}
 		}
@@ -367,7 +367,7 @@ class News
 			{
 				$news->setChannelId($this->request->variable('channel',0))->
 					setTopicId($this->request->variable('topic',0))->
-					setContent($this->request->variable('content',''))->insert();
+					setContent($this->request->variable('content','',true))->insert();
 				redirect(build_url(array("action","news_id")));
 			}
 		}
@@ -430,7 +430,7 @@ class News
 			{
 				$news->setId($id)->setChannelId($this->request->variable('channel',0))->
 					setTopicId($this->request->variable('topic',0))->
-					setContent($this->request->variable('content',''))->save();
+					setContent($this->request->variable('content','',true))->save();
 				redirect(build_url(array("action","news_id")));
 			}
 		}
@@ -511,7 +511,7 @@ class News
 	*/
 	public function topic_add()
 	{
-		$this->container->get('consim.core.entity.NewsTopics')->setTopicName($this->request->variable('topicTitle',''))->insert();
+		$this->container->get('consim.core.entity.NewsTopics')->setTopicName($this->request->variable('topicTitle','',true))->insert();
 	}
 	
 	/**
@@ -523,7 +523,7 @@ class News
 	*/
 	public function topic_edit($id)
 	{
-		$this->container->get('consim.core.entity.NewsTopics')->setTopicName($this->request->variable('title',''))->setId($id)->save();
+		$this->container->get('consim.core.entity.NewsTopics')->setTopicName($this->request->variable('title','',true))->setId($id)->save();
 	}
 	
 	/**
