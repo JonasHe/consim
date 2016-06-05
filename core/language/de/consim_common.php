@@ -100,5 +100,4 @@ $lang = array_merge($lang, array(
 	'TRAVELING'					=> 'Reisen',
 	'BUILDING'					=> 'Gebäude',
 	'BACK_TO'					=> 'Zurück nach',
-	dasd
 ));

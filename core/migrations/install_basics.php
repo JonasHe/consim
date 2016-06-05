@@ -33,7 +33,7 @@ class install_basics extends \phpbb\db\migration\migration
 	public function update_schema()
 	{
 		return array(
-			'add_tables'		=> array(
+			'add_tables' => array(
 				$this->table_prefix . 'consim_user'	=> array(
 					'COLUMNS'		=> array(
 						'user_id'				=> array('UINT:8', 0),
@@ -85,15 +85,15 @@ class install_basics extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
-						'starttime'       => array('INDEX', 'starttime'),
-						'endtime'         => array('INDEX', 'endtime'),
-						'travel_id'       => array('INDEX', 'travel_id'),
-						'status'          => array('INDEX', 'status'),
+						'starttime'				=> array('INDEX', 'starttime'),
+						'endtime'				=> array('INDEX', 'endtime'),
+						'travel_id'				=> array('INDEX', 'travel_id'),
+						'status'				=> array('INDEX', 'status'),
 					),
 				),
 			),
-			'add_columns'		=> array(
-				$this->table_prefix . 'users'		=> array(
+			'add_columns' => array(
+				$this->table_prefix . 'users' => array(
 						'consim_register'		=> array('BOOL', 0),
 				),
 			),

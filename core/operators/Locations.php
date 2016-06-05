@@ -79,7 +79,7 @@ class Locations
 	{
 		$entities = array();
 
-		$sql = 'SELECT lb.id, lb.name, b.name AS type
+		$sql = 'SELECT lb.id, lb.name, lb.description, b.name AS type
 			FROM ' . $this->consim_location_building_table . ' lb
 			LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
 			WHERE lb.location_id = ' . (int) $location_id;

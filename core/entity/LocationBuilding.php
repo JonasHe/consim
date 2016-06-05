@@ -67,7 +67,7 @@ class LocationBuilding extends abstractEntity
 	* @param int $id user identifier
 	* @return object $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\user\exception\out_of_bounds
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function load($id)
 	{
