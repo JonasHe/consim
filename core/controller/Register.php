@@ -52,7 +52,7 @@ class Register
 	* @param \phpbb\template\template           $template       Template object
 	* @param \phpbb\request\request         	$request        Request object
 	* @param \phpbb\db\driver\driver_interface	$db             Database object
-	* @return \consim\core\controller\index
+	* @return \consim\core\controller\Register
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -178,8 +178,8 @@ class Register
 	* Prüfe die eingehenden Daten
 	*
 	* @param $errors Array
-	* @param $consim_user #consim.core.entity.ConsimUser-Object
-	* @return Array
+	* @param $consim_user consim.core.entity.ConsimUser -Object
+	* @return null
 	* @access private
 	*/
 	private function check_data(&$errors, &$consim_user)

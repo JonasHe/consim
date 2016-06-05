@@ -72,7 +72,7 @@ class Locations
 	* Get all buildings in the location
 	*
 	* @param int $location_id Location ID
-	* @return array Array of LocationBuilding-Entity
+	* @return \consim\core\entity\Building[] Array of LocationBuilding-Entity
 	* @access public
 	*/
 	public function getAllBuildings($location_id)
