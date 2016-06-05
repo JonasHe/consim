@@ -18,11 +18,11 @@ class NewsChannel extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'channel_id'				=> 'integer',
-      	'group_id'				    => 'integer',
-        'channel_name'				=> 'string',
-        'vRefresh'                  => 'integer',
-        'background_color'          => 'string',
+		'channel_id'				=> 'integer',
+		'group_id'				    => 'integer',
+		'channel_name'				=> 'string',
+		'vRefresh'                  => 'integer',
+		'background_color'          => 'string',
 		'color'              		=> 'string',
 	);
 
@@ -30,9 +30,9 @@ class NewsChannel extends abstractEntity
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'channel_id',
-        'group_id',
-        'vRefresh',
+		'channel_id',
+		'group_id',
+		'vRefresh',
 	);
 
 	protected $data;
@@ -95,7 +95,7 @@ class NewsChannel extends abstractEntity
 	*/
 	public function insert()
 	{
-        if (!empty($this->data['channel_id']))
+		if (!empty($this->data['channel_id']))
 		{
 			// The data already exists
 			throw new \consim\core\exception\out_of_bounds('id');
@@ -108,7 +108,7 @@ class NewsChannel extends abstractEntity
 		$sql = 'INSERT INTO ' . $this->consim_channel_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
-        // Set the id using the id created by the SQL insert
+		// Set the id using the id created by the SQL insert
 		$this->data['channel_id'] = (int) $this->db->sql_nextid();
 
 		return $this;
@@ -208,7 +208,7 @@ class NewsChannel extends abstractEntity
 		return $this->setInteger('group_id',$id);
 	}
 
-    /**
+	/**
 	* Get Name
 	*
 	* @return string Name

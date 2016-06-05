@@ -54,8 +54,8 @@ class News
 	public function __construct(\phpbb\config\config $config,
 								ContainerInterface $container,
 								\phpbb\controller\helper $helper,
-                               	\phpbb\user $user,
-                               	\phpbb\template\template $template,
+								\phpbb\user $user,
+								\phpbb\template\template $template,
 								\phpbb\request\request $request,
 								\phpbb\db\driver\driver_interface $db)
 	{
@@ -123,8 +123,8 @@ class News
 		
 		// Pass the channel data to the template
 		$this->template->assign_vars(array(
-	    	'S_NEWSTICKER'					=> ($channel['id']) ? true : false,
-	    	'CHANNEL'						=> $channel['name'].' '.date('H:i'),
+			'S_NEWSTICKER'					=> ($channel['id']) ? true : false,
+			'CHANNEL'						=> $channel['name'].' '.date('H:i'),
 			'VREFRESH'						=> $channel['vRefresh'],
 			'CHANNEL_BACKGROUND'			=> $channel['background'],
 			'CHANNEL_COLOR'					=> $channel['color'],

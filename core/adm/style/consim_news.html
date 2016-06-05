@@ -2,155 +2,155 @@
 <!-- IF S_ERROR --><p class="error">{ERROR_MSG}</p><!-- ENDIF -->
 
 <!-- IF S_OVERVIEW -->
-    <div class="left_column" style="float: left; width: 49%;">
-        <h1>{L_ALL_CHANNEL}</h1>
-        <table>
-            <thead>
-                <tr>
-                    <td>{L_CHANNEL}</td>
-                    <td>{L_GROUP}</td>
-                    <td>{L_VREFRESH}</td>
-                    <td><a href="{ADDCHANNEL}">{L_ADD_CHANNEL}</a></td>
-                </tr>
-            </thead>
-            <!-- BEGIN allChannels -->
-            <tr>
-                <td>{allChannels.CHANNELNAME}</td>
-                <td>{allChannels.GROUP}</td>
-                <td><!-- IF {allChannels:VREFRESH} == 1 -->{L_YES}<!-- ELSE -->{L_NO}<!-- ENDIF --></td>
-                <td><a href="{allChannels.EDITCHANNEL}">{L_EDIT_CHANNEL}</a></td>
-            </tr>
-            <!-- END allChannels -->
-        </table>
-    </div>
-    <div class="right_column" style="float: right; width: 49%;">
-        <h1>{L_ALL_TOPICS}</h1>
-        <table>
-            <thead>
-                <tr>
-                    <td>{L_TOPIC}</td>
-                    <form action="{U_ACTION}" method="POST">
-                        <td><input type="text" name="topicTitle"></td>
-                        <td><input type="submit" value="{L_ADD_TOPIC}" name="addTopic"></td>
-                    </form>
-                </tr>
-            </thead>
-            <!-- BEGIN allTopics -->
-            <tr>
-                <form action="{U_ACTION}" method="POST">
-                    <td><input type="text" name="title" value="{allTopics.NAME}"></td>
-                    <td><input type="hidden" name="topic_id" value="{allTopics.TOPICID}"><input type="submit" value="{L_SAVE}" name="updateTopic"></td>
-                    <td><a href="{allTopics.DELETETOPIC}">{L_DELETE_TOPIC}</a></td>
-                </form>
-            </tr>
-            <!-- END allTopics -->
-        </table>
-    </div>
-    <br class="clear" style="clear: both;">
-    <h1>{L_ALL_NEWS}</h1>
-    <table>
-        <thead>
-            <tr>
-                <td>{L_NEWS_CONTENT}</td>
-                <td>{L_CHANNEL}</td>
-                <td>{L_NEWS_TOPIC}</td>
-                <td><a href="{ADDNEWS}">{L_ADD_NEWS}</a></td>
-            </tr>
-        </thead>
-        <!-- BEGIN allNews -->
-        <tr>
-            <td>{allNews.CONTENT}</td>
-            <td>{allNews.CHANNEL}</td>
-            <td>{allNews.TOPIC}</td>
-            <td><a href="{allNews.EDITNEWS}">{L_EDIT_NEWS}</a></td>
-        </tr>
-        <!-- END allNews -->
-    </table>
+	<div class="left_column" style="float: left; width: 49%;">
+		<h1>{L_ALL_CHANNEL}</h1>
+		<table>
+			<thead>
+				<tr>
+					<td>{L_CHANNEL}</td>
+					<td>{L_GROUP}</td>
+					<td>{L_VREFRESH}</td>
+					<td><a href="{ADDCHANNEL}">{L_ADD_CHANNEL}</a></td>
+				</tr>
+			</thead>
+			<!-- BEGIN allChannels -->
+			<tr>
+				<td>{allChannels.CHANNELNAME}</td>
+				<td>{allChannels.GROUP}</td>
+				<td><!-- IF {allChannels:VREFRESH} == 1 -->{L_YES}<!-- ELSE -->{L_NO}<!-- ENDIF --></td>
+				<td><a href="{allChannels.EDITCHANNEL}">{L_EDIT_CHANNEL}</a></td>
+			</tr>
+			<!-- END allChannels -->
+		</table>
+	</div>
+	<div class="right_column" style="float: right; width: 49%;">
+		<h1>{L_ALL_TOPICS}</h1>
+		<table>
+			<thead>
+				<tr>
+					<td>{L_TOPIC}</td>
+					<form action="{U_ACTION}" method="POST">
+						<td><input type="text" name="topicTitle"></td>
+						<td><input type="submit" value="{L_ADD_TOPIC}" name="addTopic"></td>
+					</form>
+				</tr>
+			</thead>
+			<!-- BEGIN allTopics -->
+			<tr>
+				<form action="{U_ACTION}" method="POST">
+					<td><input type="text" name="title" value="{allTopics.NAME}"></td>
+					<td><input type="hidden" name="topic_id" value="{allTopics.TOPICID}"><input type="submit" value="{L_SAVE}" name="updateTopic"></td>
+					<td><a href="{allTopics.DELETETOPIC}">{L_DELETE_TOPIC}</a></td>
+				</form>
+			</tr>
+			<!-- END allTopics -->
+		</table>
+	</div>
+	<br class="clear" style="clear: both;">
+	<h1>{L_ALL_NEWS}</h1>
+	<table>
+		<thead>
+			<tr>
+				<td>{L_NEWS_CONTENT}</td>
+				<td>{L_CHANNEL}</td>
+				<td>{L_NEWS_TOPIC}</td>
+				<td><a href="{ADDNEWS}">{L_ADD_NEWS}</a></td>
+			</tr>
+		</thead>
+		<!-- BEGIN allNews -->
+		<tr>
+			<td>{allNews.CONTENT}</td>
+			<td>{allNews.CHANNEL}</td>
+			<td>{allNews.TOPIC}</td>
+			<td><a href="{allNews.EDITNEWS}">{L_EDIT_NEWS}</a></td>
+		</tr>
+		<!-- END allNews -->
+	</table>
 <!-- ENDIF -->
 <!-- IF S_ADD_CHANNEL || S_EDIT_CHANNEL -->
-    <h1><!-- IF S_ADD_CHANNEL -->{L_ADD_CHANNEL}<!-- ELSE -->{L_EDIT_CHANNEL}<!-- ENDIF --></h1>
-    <form action="{U_ACTION}" method="POST">
-       <fieldset>
-            <dl><dt><label for="name">{L_CHANNEL_NAME}</label></dt>
-                <dd>
-                    <input type="text" name="name" value="{NAME}">
-                </dd>
-            </dl>
-             <dl><dt><label for="name">{L_VREFRESH}</label></dt>
-                <dd>
-                    <input type="radio" name="vrefresh" value="1" <!-- IF VREF_YES -->checked="checked"<!-- ENDIF -->>{L_YES}
-                </dd>
-                 <dd>
-                    <input type="radio" name="vrefresh" value="0"<!-- IF VREF_NO -->checked="checked"<!-- ENDIF -->>{L_NO}
-                </dd>
-            </dl>
-            <dl>
-			    <dt><label for="group">{L_GROUPS_ALLOWED}</label></dt>
-                <dd>
-                    <select name="group" size="1">
-                        <option value="2">{L_G_REGISTERED}</option>
-                        <!-- BEGIN allUsers -->
-                            <option value="{allUsers.GROUPID}" <!-- IF allUsers.GROUPID == GID -->selected="selected"<!-- ENDIF --> >{allUsers.GROUPNAME}</option>
-                        <!-- END allUsers -->
-                    </select>
-                </dd>
-		    </dl>
-            <dl><dt><label for="name">{L_CHANNEL_COLOR}</label></dt>
-                <dd>
-			        <input name="border" type="text" value="{COLOR}" id="border" size="6" maxlength="6" />
-			        <!-- IF COLOR -->&nbsp;<span style="background-color: #{COLOR}">&nbsp; &nbsp;</span><!-- ENDIF -->&nbsp;&nbsp;<span>
-			        [ <a href="#" id="color_palette_toggle">{L_COLOUR_SWATCH}</a> ]</span>
-			        <div id="color_palette_placeholder" style="display: none;" data-orientation="h" data-height="12" data-width="15" data-target="#border"></div>
-		        </dd>
-            </dl>
-            <dl><dt><label for="name">{L_CHANNEL_BACKGROUND}</label></dt>
-                <dd>
-			        <input name="background" type="text" id="background" value="{BACKGROUND}"/>
-		        </dd>
-            </dl>
-            <!-- IF S_DELETE --><a href="{DELETE}">{L_DELETE_CHANNEL}<!-- ENDIF-->
-            <p class="quick">
-                <input type="submit" value="{L_SUBMIT}" name="addChannel">
-            </p>
-	    </fieldset>
-        {S_FORM_TOKEN}
-    </form>
+	<h1><!-- IF S_ADD_CHANNEL -->{L_ADD_CHANNEL}<!-- ELSE -->{L_EDIT_CHANNEL}<!-- ENDIF --></h1>
+	<form action="{U_ACTION}" method="POST">
+	   <fieldset>
+			<dl><dt><label for="name">{L_CHANNEL_NAME}</label></dt>
+				<dd>
+					<input type="text" name="name" value="{NAME}">
+				</dd>
+			</dl>
+			 <dl><dt><label for="name">{L_VREFRESH}</label></dt>
+				<dd>
+					<input type="radio" name="vrefresh" value="1" <!-- IF VREF_YES -->checked="checked"<!-- ENDIF -->>{L_YES}
+				</dd>
+				 <dd>
+					<input type="radio" name="vrefresh" value="0"<!-- IF VREF_NO -->checked="checked"<!-- ENDIF -->>{L_NO}
+				</dd>
+			</dl>
+			<dl>
+				<dt><label for="group">{L_GROUPS_ALLOWED}</label></dt>
+				<dd>
+					<select name="group" size="1">
+						<option value="2">{L_G_REGISTERED}</option>
+						<!-- BEGIN allUsers -->
+							<option value="{allUsers.GROUPID}" <!-- IF allUsers.GROUPID == GID -->selected="selected"<!-- ENDIF --> >{allUsers.GROUPNAME}</option>
+						<!-- END allUsers -->
+					</select>
+				</dd>
+			</dl>
+			<dl><dt><label for="name">{L_CHANNEL_COLOR}</label></dt>
+				<dd>
+					<input name="border" type="text" value="{COLOR}" id="border" size="6" maxlength="6" />
+					<!-- IF COLOR -->&nbsp;<span style="background-color: #{COLOR}">&nbsp; &nbsp;</span><!-- ENDIF -->&nbsp;&nbsp;<span>
+					[ <a href="#" id="color_palette_toggle">{L_COLOUR_SWATCH}</a> ]</span>
+					<div id="color_palette_placeholder" style="display: none;" data-orientation="h" data-height="12" data-width="15" data-target="#border"></div>
+				</dd>
+			</dl>
+			<dl><dt><label for="name">{L_CHANNEL_BACKGROUND}</label></dt>
+				<dd>
+					<input name="background" type="text" id="background" value="{BACKGROUND}"/>
+				</dd>
+			</dl>
+			<!-- IF S_DELETE --><a href="{DELETE}">{L_DELETE_CHANNEL}<!-- ENDIF-->
+			<p class="quick">
+				<input type="submit" value="{L_SUBMIT}" name="addChannel">
+			</p>
+		</fieldset>
+		{S_FORM_TOKEN}
+	</form>
 <!-- ENDIF -->
 <!-- IF S_ADD_NEWS || S_EDIT_NEWS -->
-      <h1><!-- IF S_ADD_CHANNEL -->{L_ADD_NEWS}<!-- ELSE -->{L_EDIT_NEWS}<!-- ENDIF --></h1>
-    <form action="{U_ACTION}" method="POST">
-       <fieldset>
-            <dl><dt><label for="content">{L_NEWS_CONTENT}</label></dt>
-                <dd>
-                    <textarea name="content">{CONTENT}</textarea>
-                </dd>
-            </dl>
-            <dl>
-			    <dt><label for="channel">{L_CHANNEL}</label></dt>
-                <dd>
-                    <select name="channel" size="1">
-                        <!-- BEGIN allChannels -->
-                            <option value="{allChannels.CHANNELID}" <!-- IF allChannels.CHANNELID == CID -->selected="selected"<!-- ENDIF --> >{allChannels.NAME}</option>
-                        <!-- END allChannels -->
-                    </select>
-                </dd>
-		    </dl>
-            <dl>
-                 <dt><label for="topic">{L_TOPIC}</label></dt>
-                <dd>
-                    <select name="topic" size="1">
-                        <!-- BEGIN allTopics -->
-                            <option value="{allTopics.TOPICID}" <!-- IF allTopics.TOPICID == TID -->selected="selected"<!-- ENDIF --> >{allTopics.NAME}</option>
-                        <!-- END allTopics -->
-                    </select>
-                </dd>
-		    </dl>
-            <!-- IF S_DELETE --><a href="{DELETE}">{L_DELETE_NEWS}<!-- ENDIF-->
-            <p class="quick">
-                <input type="submit" value="{L_SUBMIT}" name="addNews">
-            </p>
-	    </fieldset>
-        {S_FORM_TOKEN}
-    </form>
+	  <h1><!-- IF S_ADD_CHANNEL -->{L_ADD_NEWS}<!-- ELSE -->{L_EDIT_NEWS}<!-- ENDIF --></h1>
+	<form action="{U_ACTION}" method="POST">
+	   <fieldset>
+			<dl><dt><label for="content">{L_NEWS_CONTENT}</label></dt>
+				<dd>
+					<textarea name="content">{CONTENT}</textarea>
+				</dd>
+			</dl>
+			<dl>
+				<dt><label for="channel">{L_CHANNEL}</label></dt>
+				<dd>
+					<select name="channel" size="1">
+						<!-- BEGIN allChannels -->
+							<option value="{allChannels.CHANNELID}" <!-- IF allChannels.CHANNELID == CID -->selected="selected"<!-- ENDIF --> >{allChannels.NAME}</option>
+						<!-- END allChannels -->
+					</select>
+				</dd>
+			</dl>
+			<dl>
+				 <dt><label for="topic">{L_TOPIC}</label></dt>
+				<dd>
+					<select name="topic" size="1">
+						<!-- BEGIN allTopics -->
+							<option value="{allTopics.TOPICID}" <!-- IF allTopics.TOPICID == TID -->selected="selected"<!-- ENDIF --> >{allTopics.NAME}</option>
+						<!-- END allTopics -->
+					</select>
+				</dd>
+			</dl>
+			<!-- IF S_DELETE --><a href="{DELETE}">{L_DELETE_NEWS}<!-- ENDIF-->
+			<p class="quick">
+				<input type="submit" value="{L_SUBMIT}" name="addNews">
+			</p>
+		</fieldset>
+		{S_FORM_TOKEN}
+	</form>
 <!-- ENDIF -->
 <!-- INCLUDE overall_footer.html -->

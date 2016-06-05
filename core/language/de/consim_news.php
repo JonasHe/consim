@@ -36,13 +36,13 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'ADD_NEWS'                  => 'News hinzuf&uuml;gen',
+	'ADD_NEWS'					=> 'News hinzuf&uuml;gen',
 	'ADD_CHANNEL'				=> 'Kanal hinzuf&uuml;gen',
 	'ADD_TOPIC'					=> 'Themenbereich hinzufügen',
 	'ALL_CHANNEL'				=> 'Alle Kan&auml;le',
 	'ALL_NEWS'					=> 'Alle Neuigkeiten',
 	'ALL_TOPICS'				=> 'Alle Themenbereiche',
-	'CHANNEL'			        => 'Kanal',
+	'CHANNEL'					=> 'Kanal',
 	'CHANNEL_BACKGROUND'		=> 'Hintergrund des Kanals',
 	'CHANNEL_COLOR'				=> 'Schriftfarbe des Kanals',
 	'CHANNEL_NAME'				=> 'Name des Kanals',
@@ -53,7 +53,7 @@ $lang = array_merge($lang, array(
 	'DELETE_NEWS'				=> 'Neuigkeit l&ouml;schen',
 	'DELETE_TOPIC'				=> 'Themenbereich l&ouml;schen',
 	'EDIT_CHANNEL'				=> 'Kanal bearbeiten',
-	'EDIT_NEWS'		            => 'News bearbeiten',
+	'EDIT_NEWS'					=> 'News bearbeiten',
 	'GROUPS_ALLOWED'			=> 'Folgende Gruppe kann den Kanal sehen',
 	'NEWS_CONTENT'				=> 'Inhalt',
 	'NEWS_TOPIC'				=> 'Themenbereich',

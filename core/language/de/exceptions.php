@@ -40,7 +40,7 @@ if (empty($lang) || !is_array($lang))
 * ConSim extension API.
 */
 $lang = array_merge($lang, array(
-	'EXCEPTION_FIELD_MISSING'       => 'Erforderliches Feld fehlt',
+	'EXCEPTION_FIELD_MISSING'		=> 'Erforderliches Feld fehlt',
 	'EXCEPTION_INVALID_ARGUMENT'	=> 'Ungültige Eingabe in `%1$s`. Grund: %2$s',
 	'EXCEPTION_OUT_OF_BOUNDS'		=> 'Feld `%1$s` enthält unzulässige Zeichen',
 	'EXCEPTION_TOO_LONG'			=> 'Eingabe zu lang.',

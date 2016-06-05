@@ -26,7 +26,7 @@ class install_news extends \phpbb\db\migration\migration
 	*/
 	public function update_schema()
 	{
-        return array(
+		return array(
 			'add_tables'		=> array(
 				$this->table_prefix . 'consim_news'	=> array(
 					'COLUMNS'      => array(
@@ -36,7 +36,7 @@ class install_news extends \phpbb\db\migration\migration
 						'content'            	=> array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> array('news_id'),
-                    'KEYS'			=> array(
+					'KEYS'			=> array(
 						'channel_id'			=> array('INDEX', 'channel_id'),
 					),
 				),
@@ -51,27 +51,27 @@ class install_news extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('channel_id'),
 				),
-                $this->table_prefix . 'consim_news_topics'	=> array(
+				$this->table_prefix . 'consim_news_topics'	=> array(
 					'COLUMNS'      => array(
 						'topic_id'              => array('UINT:8', NULL, 'auto_increment'),
 						'topic_name'            => array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> array('topic_id'),
 				),
-            ),
-        );
+			),
+		);
 	}
 
-    /**
-    * Add or update data in the database
-    *
-    * @return array Array of table data
-    * @access public
-    */
-    public function update_data()
-    {
-        return array();
-    }
+	/**
+	* Add or update data in the database
+	*
+	* @return array Array of table data
+	* @access public
+	*/
+	public function update_data()
+	{
+		return array();
+	}
 
 	/**
 	* Drop columns
@@ -81,11 +81,11 @@ class install_news extends \phpbb\db\migration\migration
 	*/
 	public function revert_schema()
 	{
-        return array(
+		return array(
 			'drop_tables'		=> array(
 				$this->table_prefix . 'consim_news',
 				$this->table_prefix . 'consim_news_channel',
-                $this->table_prefix . 'consim_news_topics',
+				$this->table_prefix . 'consim_news_topics',
 			),
 		);
 	}

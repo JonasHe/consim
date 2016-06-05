@@ -18,15 +18,15 @@ class LocationType extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'id'						=> 'integer',
-      	'name'                      => 'string',
+		'id'						=> 'integer',
+		'name'                      => 'string',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'id',
+		'id',
 	);
 
 	protected $data;
@@ -89,7 +89,7 @@ class LocationType extends abstractEntity
 	*/
 	public function insert()
 	{
-        if (!empty($this->data['id']))
+		if (!empty($this->data['id']))
 		{
 			// The data already exists
 			throw new \consim\core\exception\out_of_bounds('id');
@@ -102,7 +102,7 @@ class LocationType extends abstractEntity
 		$sql = 'INSERT INTO ' . $this->consim_location_type_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
-        // Set the id using the id created by the SQL insert
+		// Set the id using the id created by the SQL insert
 		$this->data['id'] = (int) $this->db->sql_nextid();
 
 		return $this;
@@ -145,7 +145,7 @@ class LocationType extends abstractEntity
 		return $this->getInteger($this->data['id']);
 	}
 
-    /**
+	/**
 	* Get Name
 	*
 	* @return string Name

@@ -18,17 +18,17 @@ class LocationBuilding extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'id'           => 'integer',
-      	'name'         => 'string',
+		'id'           => 'integer',
+		'name'         => 'string',
 		'description'  => 'string',
-        'type'         => 'string',
+		'type'         => 'string',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'id',
+		'id',
 	);
 
 	protected $data;
@@ -40,28 +40,28 @@ class LocationBuilding extends abstractEntity
 	* The database table the consim user data are stored in
 	* @var string
 	*/
-    protected $consim_building_table;
-    protected $consim_location_building_table;
+	protected $consim_building_table;
+	protected $consim_location_building_table;
 
-    /**
-    * Constructor
-    *
-    * @param \phpbb\db\driver\driver_interface    $db                               Database object
-    * @param ContainerInterface                	  $container       	                Service container interface
-    * @param string                               $consim_building_table            Name of the table used to store data
-    * @param string                               $consim_location_building_table    Name of the table used to store data
-    * @access public
-    */
-    public function __construct(\phpbb\db\driver\driver_interface $db,
-                                $consim_building_table,
-                                $consim_location_building_table)
-    {
-        $this->db = $db;
-        $this->consim_building_table = $consim_building_table;
-        $this->consim_location_building_table = $consim_location_building_table;
-    }
+	/**
+	* Constructor
+	*
+	* @param \phpbb\db\driver\driver_interface    $db                               Database object
+	* @param ContainerInterface                	  $container       	                Service container interface
+	* @param string                               $consim_building_table            Name of the table used to store data
+	* @param string                               $consim_location_building_table    Name of the table used to store data
+	* @access public
+	*/
+	public function __construct(\phpbb\db\driver\driver_interface $db,
+								$consim_building_table,
+								$consim_location_building_table)
+	{
+		$this->db = $db;
+		$this->consim_building_table = $consim_building_table;
+		$this->consim_location_building_table = $consim_location_building_table;
+	}
 
-    /**
+	/**
 	* Load the data from the database for this object
 	*
 	* @param int $id user identifier
@@ -73,9 +73,9 @@ class LocationBuilding extends abstractEntity
 	{
 		$sql = 'SELECT lb.id, lb.name, lb.description, b.name AS type
 			FROM ' . $this->consim_location_building_table . ' lb
-            LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
+			LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
 			WHERE lb.id = ' . (int) $id;
-            echo $sql;
+			echo $sql;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -99,7 +99,7 @@ class LocationBuilding extends abstractEntity
 		return $this->getInteger($this->data['id']);
 	}
 
-    /**
+	/**
 	* Get Building Name
 	*
 	* @return string building name
@@ -121,7 +121,7 @@ class LocationBuilding extends abstractEntity
 		return $this->getString($this->data['description']);
 	}
 
-    /**
+	/**
 	* Get Name of Building Type
 	*
 	* @return string Name of building type

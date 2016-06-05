@@ -7,8 +7,8 @@
 	<div class="inner">
 		<h2>{L_ERROR_ANONYMOUS}</h2>
 		<div class="content">
-            <p class="error">{L_ANONYMOUS_EXPLAIN}</p>
-        </div>
+			<p class="error">{L_ANONYMOUS_EXPLAIN}</p>
+		</div>
 	</div>
 </div>
 <!-- ELSE -->
@@ -22,27 +22,27 @@
 
 			<!-- IF S_ERROR --><p class="error">{ERROR_MSG}</p><!-- ENDIF -->
 
-	         <fieldset>
-	            <dl>
-	               	<dt><label>{L_VORNAME}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="vorname" id="vorname" size="50" tabindex="3" value="{VORNAME}" /></dd>
-	            </dl>
-	            <dl>
-	               	<dt><label>{L_NACHNAME}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="text" name="nachname" id="nachname" size="50" tabindex="4" value="{NACHNAME}" /></dd>
-	            </dl>
+			 <fieldset>
 				<dl>
-	               	<dt><label>{L_GESCHLECHT}</label></dt>
-	               	<dd><select name="geschlecht" id="geschlecht">
+					<dt><label>{L_VORNAME}</label></dt>
+					<dd><input class="inputbox autowidth" type="text" name="vorname" id="vorname" size="50" tabindex="3" value="{VORNAME}" /></dd>
+				</dl>
+				<dl>
+					<dt><label>{L_NACHNAME}</label></dt>
+					<dd><input class="inputbox autowidth" type="text" name="nachname" id="nachname" size="50" tabindex="4" value="{NACHNAME}" /></dd>
+				</dl>
+				<dl>
+					<dt><label>{L_GESCHLECHT}</label></dt>
+					<dd><select name="geschlecht" id="geschlecht">
 							<option value="">Wähle...</option>
 							<!-- BEGIN geschlecht -->
 								<option value="{geschlecht.WERT}" <!-- IF geschlecht.SELECTED -->selected="selected"<!-- ENDIF -->>{geschlecht.NAME}</option>
 							<!-- END geschlecht -->
 						</select>
 					</dd>
-	            </dl>
+				</dl>
 				<dl>
-	               	<dt><label>{L_GEBURTSLAND}</label></dt>
+					<dt><label>{L_GEBURTSLAND}</label></dt>
 					<dd><select name="geburtsland" id="geburtsland">
 							<option value="">Wähle...</option>
 							<!-- BEGIN geburtsland -->
@@ -50,9 +50,9 @@
 							<!-- END geburtsland -->
 						</select>
 					</dd>
-	            </dl>
+				</dl>
 				<dl>
-	               	<dt><label>{L_RELIGION}</label></dt>
+					<dt><label>{L_RELIGION}</label></dt>
 					<dd><select name="religion" id="religion">
 							<option value="">Wähle...</option>
 							<!-- BEGIN religion -->
@@ -60,9 +60,9 @@
 							<!-- END religion -->
 						</select>
 					</dd>
-	            </dl>
+				</dl>
 				<dl>
-	               	<dt><label>{L_HAARFARBE}</label></dt>
+					<dt><label>{L_HAARFARBE}</label></dt>
 					<dd><select name="haarfarbe" id="haarfarbe">
 							<option value="">Wähle...</option>
 							<!-- BEGIN haarfarbe -->
@@ -70,9 +70,9 @@
 							<!-- END haarfarbe -->
 						</select>
 					</dd>
-	            </dl>
+				</dl>
 				<dl>
-	               	<dt><label>{L_AUGENFARBE}</label></dt>
+					<dt><label>{L_AUGENFARBE}</label></dt>
 					<dd><select name="augenfarbe" id="augenfarbe">
 							<option value="">Wähle...</option>
 							<!-- BEGIN augenfarbe -->
@@ -80,9 +80,9 @@
 							<!-- END augenfarbe -->
 						</select>
 					</dd>
-	            </dl>
+				</dl>
 				<dl>
-	               	<dt><label>{L_BESONDERE_MERKMALE}</label></dt>
+					<dt><label>{L_BESONDERE_MERKMALE}</label></dt>
 					<dd><select name="besondere_merkmale" id="besondere_merkmale">
 							<option value="">Wähle...</option>
 							<!-- BEGIN besondere_merkmale -->
@@ -90,7 +90,7 @@
 							<!-- END besondere_merkmale -->
 						</select>
 					</dd>
-	            </dl>
+				</dl>
 			</fieldset>
 		</div>
 	</div>
@@ -100,81 +100,81 @@
 		<h2>{L_ATTRIBUTE}</h2>
 		<div class="content" id="attribute">
 			<fieldset>
-                <dl>
-	               	<dt><label class="bigger">{L_FREIE_PUNKTE}</label></dt>
-	               	<dd><span class="bigger bolder" id="free_points">{FREIE_PUNKTE}</span></dd>
-	            </dl>
 				<dl>
-	               	<dt><label>{L_SPRACHE_TADSOWISCH}</label></dt>
-	               	<dd>
-                        <input class="inputbox autowidth" type="number" name="sprache_tadsowisch" id="sprache_tadsowisch" size="3" tabindex="11" value="{SPRACHE_TADSOWISCH}" max="100" min="1" />
-                        <span id="lang_frt" class="bolder" style="display:none;">{L_ADD_25_LANG}</span>
-                    </dd>
-	            </dl>
+					<dt><label class="bigger">{L_FREIE_PUNKTE}</label></dt>
+					<dd><span class="bigger bolder" id="free_points">{FREIE_PUNKTE}</span></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_SPRACHE_BAKIRISCH}</label></dt>
-	               	<dd>
-                        <input class="inputbox autowidth" type="number" name="sprache_bakirisch" id="sprache_bakirisch" size="3" tabindex="12" value="{SPRACHE_BAKIRISCH}" max="100" min="1" />
-                        <span id="lang_bak" class="bolder" style="display:none;">{L_ADD_25_LANG}</span>
-                    </dd>
-	            </dl>
+					<dt><label>{L_SPRACHE_TADSOWISCH}</label></dt>
+					<dd>
+						<input class="inputbox autowidth" type="number" name="sprache_tadsowisch" id="sprache_tadsowisch" size="3" tabindex="11" value="{SPRACHE_TADSOWISCH}" max="100" min="1" />
+						<span id="lang_frt" class="bolder" style="display:none;">{L_ADD_25_LANG}</span>
+					</dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_SPRACHE_SURANISCH}</label></dt>
-	               	<dd>
-                        <input class="inputbox autowidth" type="number" name="sprache_suranisch" id="sprache_suranisch" size="3" tabindex="13" value="{SPRACHE_SURANISCH}" max="100" min="1" />
-                        <span id="lang_sur" class="bolder" style="display:none;">{L_ADD_25_LANG}</span>
-                    </dd>
-	            </dl>
+					<dt><label>{L_SPRACHE_BAKIRISCH}</label></dt>
+					<dd>
+						<input class="inputbox autowidth" type="number" name="sprache_bakirisch" id="sprache_bakirisch" size="3" tabindex="12" value="{SPRACHE_BAKIRISCH}" max="100" min="1" />
+						<span id="lang_bak" class="bolder" style="display:none;">{L_ADD_25_LANG}</span>
+					</dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_RHETORIK}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="rhetorik" id="rhetorik" size="3" tabindex="14" value="{RHETORIK}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_SPRACHE_SURANISCH}</label></dt>
+					<dd>
+						<input class="inputbox autowidth" type="number" name="sprache_suranisch" id="sprache_suranisch" size="3" tabindex="13" value="{SPRACHE_SURANISCH}" max="100" min="1" />
+						<span id="lang_sur" class="bolder" style="display:none;">{L_ADD_25_LANG}</span>
+					</dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_WIRTSCHAFT}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="wirtschaft" id="wirtschaft" size="3" tabindex="15" value="{WIRTSCHAFT}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_RHETORIK}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="rhetorik" id="rhetorik" size="3" tabindex="14" value="{RHETORIK}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_ADMINISTRATION}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="administration" id="administration" size="3" tabindex="16" value="{ADMINISTRATION}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_WIRTSCHAFT}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="wirtschaft" id="wirtschaft" size="3" tabindex="15" value="{WIRTSCHAFT}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_TECHNIK}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="technik" id="technik" size="3" tabindex="17" value="{TECHNIK}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_ADMINISTRATION}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="administration" id="administration" size="3" tabindex="16" value="{ADMINISTRATION}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_NAHKAMPF}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="nahkampf" id="nahkampf" size="3" tabindex="18" value="{NAHKAMPF}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_TECHNIK}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="technik" id="technik" size="3" tabindex="17" value="{TECHNIK}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_SCHUSSWAFFEN}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="schusswaffen" id="schusswaffen" size="3" tabindex="19" value="{SCHUSSWAFFEN}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_NAHKAMPF}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="nahkampf" id="nahkampf" size="3" tabindex="18" value="{NAHKAMPF}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_SPRENGMITTEL}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="sprengmittel" id="sprengmittel" size="3" tabindex="20" value="{SPRENGMITTEL}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_SCHUSSWAFFEN}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="schusswaffen" id="schusswaffen" size="3" tabindex="19" value="{SCHUSSWAFFEN}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_MILITARKUNDE}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="militarkunde" id="militarkunde" size="3" tabindex="21" value="{MILITARKUNDE}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_SPRENGMITTEL}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="sprengmittel" id="sprengmittel" size="3" tabindex="20" value="{SPRENGMITTEL}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_SPIONAGE}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="spionage" id="spionage" size="3" tabindex="22" value="{SPIONAGE}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_MILITARKUNDE}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="militarkunde" id="militarkunde" size="3" tabindex="21" value="{MILITARKUNDE}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_SCHMUGGEL}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="schmuggel" id="schmuggel" size="3" tabindex="23" value="{SCHMUGGEL}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_SPIONAGE}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="spionage" id="spionage" size="3" tabindex="22" value="{SPIONAGE}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_MEDIZIN}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="medizin" id="medizin" size="3" tabindex="24" value="{MEDIZIN}" max="100" min="1" /></dd>
-	            </dl>
+					<dt><label>{L_SCHMUGGEL}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="schmuggel" id="schmuggel" size="3" tabindex="23" value="{SCHMUGGEL}" max="100" min="1" /></dd>
+				</dl>
 				<dl>
-	               	<dt><label>{L_UBERLEBENSKUNDE}</label></dt>
-	               	<dd><input class="inputbox autowidth" type="number" name="uberlebenskunde" id="uberlebenskunde" size="3" tabindex="25" value="{UBERLEBENSKUNDE}" max="100" min="1" /></dd>
-	            </dl>
-        	</fieldset>
-	 	</div>
+					<dt><label>{L_MEDIZIN}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="medizin" id="medizin" size="3" tabindex="24" value="{MEDIZIN}" max="100" min="1" /></dd>
+				</dl>
+				<dl>
+					<dt><label>{L_UBERLEBENSKUNDE}</label></dt>
+					<dd><input class="inputbox autowidth" type="number" name="uberlebenskunde" id="uberlebenskunde" size="3" tabindex="25" value="{UBERLEBENSKUNDE}" max="100" min="1" /></dd>
+				</dl>
+			</fieldset>
+		</div>
 	</div>
 </div>
 <div class="panel">

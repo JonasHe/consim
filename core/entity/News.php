@@ -18,18 +18,18 @@ class News extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'news_id'					=> 'integer',
-      	'channel_id'				=> 'integer',
+		'news_id'					=> 'integer',
+		'channel_id'				=> 'integer',
 		'topic_id'					=> 'integer',
-        'content'					=> 'string',
+		'content'					=> 'string',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'news_id',
-        'channel_id',
+		'news_id',
+		'channel_id',
 		'topic_id',
 	);
 
@@ -93,7 +93,7 @@ class News extends abstractEntity
 	*/
 	public function insert()
 	{
-        if (!empty($this->data['news_id']))
+		if (!empty($this->data['news_id']))
 		{
 			// The data already exists
 			throw new \consim\core\exception\out_of_bounds('id');
@@ -106,7 +106,7 @@ class News extends abstractEntity
 		$sql = 'INSERT INTO ' . $this->consim_news_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
-        // Set the id using the id created by the SQL insert
+		// Set the id using the id created by the SQL insert
 		$this->data['news_id'] = (int) $this->db->sql_nextid();
 
 		return $this;
@@ -229,7 +229,7 @@ class News extends abstractEntity
 		return $this->setInteger('topic_id',$id);
 	}
 	
-    /**
+	/**
 	* Get News Content
 	*
 	* @return string Content

@@ -18,17 +18,17 @@ class ConsimFigure extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'id'						=> 'integer',
-      	'description'    	        => 'string',
-      	'value'						=> 'string',
-      	'translate'					=> 'string',
+		'id'						=> 'integer',
+		'description'    	        => 'string',
+		'value'						=> 'string',
+		'translate'					=> 'string',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'id',
+		'id',
 	);
 
 	protected $data;
@@ -91,7 +91,7 @@ class ConsimFigure extends abstractEntity
 	*/
 	public function insert()
 	{
-        if (!empty($this->data['id']))
+		if (!empty($this->data['id']))
 		{
 			// The data already exists
 			throw new \consim\core\exception\out_of_bounds('id');
@@ -104,7 +104,7 @@ class ConsimFigure extends abstractEntity
 		$sql = 'INSERT INTO ' . $this->consim_person_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
-        // Set the id using the id created by the SQL insert
+		// Set the id using the id created by the SQL insert
 		$this->data['id'] = (int) $this->db->sql_nextid();
 
 		return $this;

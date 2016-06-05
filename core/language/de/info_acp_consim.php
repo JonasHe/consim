@@ -36,7 +36,7 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'CONSIM_TITLE'			        => 'ConSim',
-    'CONSIM_NEWS'                   => 'ConSim News',
+	'CONSIM_TITLE'					=> 'ConSim',
+	'CONSIM_NEWS'					=> 'ConSim News',
 	'ACP_CAT_CONSIM'				=> 'ConSim',
 ));

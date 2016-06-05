@@ -80,7 +80,7 @@ class core_module
 				}
 				
 				// Return to stop execution of this script 
- 				return; 
+				return;
 			break;
 		}
 		$this->page_title = $user->lang['CONSIM_TITLE'];

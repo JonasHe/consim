@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 */
 class Action
 {
-    /** @var \phpbb\config\config */
+	/** @var \phpbb\config\config */
 	protected $config;
 
 	/** @var \phpbb\controller\helper */
@@ -53,8 +53,8 @@ class Action
 	public function __construct(\phpbb\config\config $config,
 								ContainerInterface $container,
 								\phpbb\controller\helper $helper,
-                               	\phpbb\user $user,
-                               	\phpbb\template\template $template,
+								\phpbb\user $user,
+								\phpbb\template\template $template,
 								\phpbb\request\request $request,
 								\phpbb\db\driver\driver_interface $db)
 	{
@@ -69,41 +69,41 @@ class Action
 
 	public function travel($travel_id)
 	{
-        //Check the request
-        if (!$this->is_valid($travel_id) || !check_link_hash($this->request->variable('hash', ''), 'travel_' . $travel_id))
+		//Check the request
+		if (!$this->is_valid($travel_id) || !check_link_hash($this->request->variable('hash', ''), 'travel_' . $travel_id))
 		{
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
-        //Load ConsimUser
-        $consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
+		//Load ConsimUser
+		$consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
-        //Check, if user not active
-        if($consim_user->getActive())
-        {
-            throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
-        }
+		//Check, if user not active
+		if($consim_user->getActive())
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
 
-        //Get Infos about the Route
-        $route = $this->container->get('consim.core.entity.Route')->load($consim_user->getLocationId(), $travel_id);
+		//Get Infos about the Route
+		$route = $this->container->get('consim.core.entity.Route')->load($consim_user->getLocationId(), $travel_id);
 
-        $now = time();
-        //Add new Travel Action
-        $consim_user = $this->container->get('consim.core.entity.Travel')
-                                       ->insert($consim_user->getUserId(),
-                                                $now,
-                                                ($now + $route->getTime()),
-                                                $consim_user->getLocationId(),
-                                                $travel_id);
+		$now = time();
+		//Add new Travel Action
+		$consim_user = $this->container->get('consim.core.entity.Travel')
+									   ->insert($consim_user->getUserId(),
+												$now,
+												($now + $route->getTime()),
+												$consim_user->getLocationId(),
+												$travel_id);
 
 		//$consim_user->setLocation($travel_id);
-        //$consim_user->save();
+		//$consim_user->save();
 
 		//Reload the Consim Index
 		redirect($this->helper->route('consim_core_index'));
-    }
+	}
 
-    protected function is_valid($value)
+	protected function is_valid($value)
 	{
 		return !empty($value) && preg_match('/^\w+$/', $value);
 	}

@@ -18,15 +18,15 @@ class NewsTopics extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'topic_id'					=> 'integer',
-      	'topic_name'					=> 'string',
+		'topic_id'					=> 'integer',
+		'topic_name'					=> 'string',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'topic_id',
+		'topic_id',
 	);
 
 	protected $data;
@@ -89,7 +89,7 @@ class NewsTopics extends abstractEntity
 	*/
 	public function insert()
 	{
-        if (!empty($this->data['topic_id']))
+		if (!empty($this->data['topic_id']))
 		{
 			// The data already exists
 			throw new \consim\core\exception\out_of_bounds('id');
@@ -102,7 +102,7 @@ class NewsTopics extends abstractEntity
 		$sql = 'INSERT INTO ' . $this->consim_news_topics_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
-        // Set the id using the id created by the SQL insert
+		// Set the id using the id created by the SQL insert
 		$this->data['topic_id'] = (int) $this->db->sql_nextid();
 
 		return $this;
@@ -178,7 +178,7 @@ class NewsTopics extends abstractEntity
 		return $this->setInteger('topic_id',$id);
 	}
 	
-    /**
+	/**
 	* Get News Content
 	*
 	* @return string Content

@@ -18,17 +18,17 @@ class Province extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'id'						=> 'integer',
-      	'name'                      => 'string',
-        'country_id'                => 'integer',
+		'id'						=> 'integer',
+		'name'                      => 'string',
+		'country_id'                => 'integer',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'id',
-        'country_id',
+		'id',
+		'country_id',
 	);
 
 	protected $data;
@@ -91,7 +91,7 @@ class Province extends abstractEntity
 	*/
 	public function insert()
 	{
-        if (!empty($this->data['id']))
+		if (!empty($this->data['id']))
 		{
 			// The data already exists
 			throw new \consim\core\exception\out_of_bounds('id');
@@ -104,7 +104,7 @@ class Province extends abstractEntity
 		$sql = 'INSERT INTO ' . $this->consim_province_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
-        // Set the id using the id created by the SQL insert
+		// Set the id using the id created by the SQL insert
 		$this->data['id'] = (int) $this->db->sql_nextid();
 
 		return $this;
@@ -147,7 +147,7 @@ class Province extends abstractEntity
 		return $this->getInteger($this->data['id']);
 	}
 
-    /**
+	/**
 	* Get Name
 	*
 	* @return string Name
