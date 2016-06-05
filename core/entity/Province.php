@@ -18,17 +18,17 @@ class Province extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'id'						=> 'integer',
-      	'name'                      => 'string',
-        'country_id'                => 'integer',
+		'id'						=> 'integer',
+		'name'                      => 'string',
+		'country_id'                => 'integer',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'id',
-        'country_id',
+		'id',
+		'country_id',
 	);
 
 	/**
@@ -86,7 +86,7 @@ class Province extends abstractEntity
 		return $this->getInteger($this->data['id']);
 	}
 
-    /**
+	/**
 	* Get Name
 	*
 	* @return string Name

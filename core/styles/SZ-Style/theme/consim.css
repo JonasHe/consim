@@ -1,195 +1,195 @@
 .bolder {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .bigger {
-    font-size: 1.3em;
+	font-size: 1.3em;
 }
 
 .red {
-    color: #340C0C;
+	color: #340C0C;
 }
 
 .green {
-    color: green;
+	color: green;
 }
 
 .field_top {
-    text-align: right;
-    padding-bottom: 5px;
+	text-align: right;
+	padding-bottom: 5px;
 }
 
 .field_top p {
-    margin-top: 5px;
-    margin-bottom: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 .field_left {
-    float:left;
-    width:20%;
+	float:left;
+	width:20%;
 }
 
 .field_center {
-    float:left;
-    width:60%;
+	float:left;
+	width:60%;
 }
 
 .field_right {
-    float:right;
-    width:20%;
+	float:right;
+	width:20%;
 }
 
 .field_center .panel {
-    margin-left: 15px;
-    margin-right: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
 }
 
 .content .location_image {
-    float:right;
-    width:40%;
-    text-align:center;
+	float:right;
+	width:40%;
+	text-align:center;
 }
 
 .content .location_image img {
-    width: 200px;
-    height: 200px;
-    border: 1px solid #000000;
+	width: 200px;
+	height: 200px;
+	border: 1px solid #000000;
 }
 
 .content .location_desc {
-    float: left;
-    width: 60%;
+	float: left;
+	width: 60%;
 }
 
 ul.buildinglist {
-    display: block;
-    list-style-type: none;
-    margin: 0;
-    font-size: 1.2em;
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	font-size: 1.2em;
 }
 
 ul.buildinglist li {
-    display: block;
-    list-style-type: none;
-    margin: 5px 0;
-    padding: 2px 10px;
-    border: 1px solid #000;
-    line-height: 2.2em;
-    background-color: #D1BF8B;
-    border-radius: 7px;width:300px;
+	display: block;
+	list-style-type: none;
+	margin: 5px 0;
+	padding: 2px 10px;
+	border: 1px solid #000;
+	line-height: 2.2em;
+	background-color: #D1BF8B;
+	border-radius: 7px;width:300px;
 }
 
 ul.buildinglist li dl {
-    padding:0;
-    overflow: hidden;
+	padding:0;
+	overflow: hidden;
 }
 
 ul.buildinglist dd, ul.buildinglist dt {
-    display: block;
-    float: left;
+	display: block;
+	float: left;
 }
 
 ul.buildinglist dt.building {
-    width: 70%;
+	width: 70%;
 }
 
 ul.buildinglist dd.action {
-    width:30%;
+	width:30%;
 }
 
 ul.buildinglist a.button2 {
-    vertical-align: baseline;
+	vertical-align: baseline;
 }
 
 ul.travellist {
-    display: block;
-    list-style-type: none;
-    margin: 0;
-    font-size: 1.2em;
-    border: 1px solid #000000;
-    background-color: #340C0C;
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	font-size: 1.2em;
+	border: 1px solid #000000;
+	background-color: #340C0C;
 }
 
 ul.travellist li {
-    display: block;
-    list-style-type: none;
-    margin: 5px;
-    padding: 1px;
-    text-align: center;
-    line-height: 2.2em;
-    background-color: #D1BF8B;
-    border: 1px solid #000;
-    border-radius: 7px;
+	display: block;
+	list-style-type: none;
+	margin: 5px;
+	padding: 1px;
+	text-align: center;
+	line-height: 2.2em;
+	background-color: #D1BF8B;
+	border: 1px solid #000;
+	border-radius: 7px;
 }
 
 ul.travellist li dl {
-    padding: 0;
-    overflow: hidden;
+	padding: 0;
+	overflow: hidden;
 }
 
 ul.travellist dd, ul.travellist dt {
-    display: block;
-    float: left;
+	display: block;
+	float: left;
 }
 
 ul.travellist dt.travelname {
-    width: 33%;
+	width: 33%;
 }
 
 ul.travellist dd.travelprovince, ul.travellist dd.travelcountry, ul.travellist dd.traveltime {
-    width: 15%;
+	width: 15%;
 }
 
 ul.travellist dd.action {
-    width: 20%;
+	width: 20%;
 }
 
 ul.travellist dd.action a.button2 {
-    vertical-align: baseline;
+	vertical-align: baseline;
 }
 
 #consim_darkenwrapper {
-    display: none;
-    position: relative;
-    z-index: 44;
+	display: none;
+	position: relative;
+	z-index: 44;
 }
 
 #consim_darken {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.5;
-    z-index: 45;
-    background-color: #000000;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.5;
+	z-index: 45;
+	background-color: #000000;
 }
 
 .consim_popup {
-    border: 1px solid #380d0d;
-    background-color: #decba4;
-    display: none;
-    left: 0;
-    padding: 0 25px 20px 25px;
-    position: absolute;
-    right: 0;
-    top: 50px;
-    z-index: 50;
-    width: 750px;
-    margin: 0 auto;
-    box-shadow: 0px 0px 8px 4px #000000;
+	border: 1px solid #380d0d;
+	background-color: #decba4;
+	display: none;
+	left: 0;
+	padding: 0 25px 20px 25px;
+	position: absolute;
+	right: 0;
+	top: 50px;
+	z-index: 50;
+	width: 750px;
+	margin: 0 auto;
+	box-shadow: 0px 0px 8px 4px #000000;
 }
 
 .consim_popup .popup_close {
-    display: block;
-    float: right;
-    width: 16px;
-    height: 16px;
-    overflow: hidden;
-    text-decoration: none !important;
-    background: transparent url("./images/popup_close.png") 0 0 no-repeat;
-    margin-top: -7px;
-    margin-right: -31px;
+	display: block;
+	float: right;
+	width: 16px;
+	height: 16px;
+	overflow: hidden;
+	text-decoration: none !important;
+	background: transparent url("./images/popup_close.png") 0 0 no-repeat;
+	margin-top: -7px;
+	margin-right: -31px;
 }
 
 .consim_popup .popup_close:hover {
@@ -216,36 +216,36 @@ ul.travellist dd.action a.button2 {
 }
 
 .consim_popup h2 {
-    font-weight: normal;
-    border-bottom: 1px solid #380d0d;
-    font-size: 1.6em;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
-    padding-bottom: 0.5em;
-    color: #000;
+	font-weight: normal;
+	border-bottom: 1px solid #380d0d;
+	font-size: 1.6em;
+	margin-top: 1em;
+	margin-bottom: 0.5em;
+	padding-bottom: 0.5em;
+	color: #000;
 }
 
 .travel #countdown {
-    font-size: 3em;
-    line-height: 3em;
-    color: #340C0C;
+	font-size: 3em;
+	line-height: 3em;
+	color: #340C0C;
 }
 
 .travel img {
-    width: 200px;
-    height: 200px;
-    border: 1px solid #000000;
+	width: 200px;
+	height: 200px;
+	border: 1px solid #000000;
 }
 
 .travel_location {
-    float: left;
-    width: 40%;
-    text-align: center;
+	float: left;
+	width: 40%;
+	text-align: center;
 }
 
 .travel_middle {
-    float: left;
-    width: 20%;
-    text-align: center;
-    padding-top: 50px;
+	float: left;
+	width: 20%;
+	text-align: center;
+	padding-top: 50px;
 }

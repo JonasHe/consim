@@ -15,40 +15,40 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 */
 class ActionLists
 {
-    /** @var \phpbb\db\driver\driver_interface */
+	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
-    /** @var ContainerInterface */
+	/** @var ContainerInterface */
 	protected $container;
 
-    /**
+	/**
 	* The database table the consim user data are stored in
 	* @var string
 	*/
-    protected $consim_action_table;
-    protected $consim_travel_table;
+	protected $consim_action_table;
+	protected $consim_travel_table;
 
-    /**
- 	* Constructor
- 	*
- 	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-    * @param ContainerInterface                	  $container       	           Service container interface
-    * @param string                               $consim_action_table         Name of the table used to store data
-    * @param string                               $consim_travel_table         Name of the table used to store data
- 	* @access public
- 	*/
- 	public function __construct(\phpbb\db\driver\driver_interface $db,
-                                ContainerInterface $container,
-                                $consim_action_table,
-                                $consim_travel_table)
- 	{
-        $this->db = $db;
-        $this->container = $container;
-        $this->consim_action_table = $consim_action_table;
-        $this->consim_travel_table = $consim_travel_table;
- 	}
+	/**
+	* Constructor
+	*
+	* @param \phpbb\db\driver\driver_interface    $db                          Database object
+	* @param ContainerInterface                	  $container       	           Service container interface
+	* @param string                               $consim_action_table         Name of the table used to store data
+	* @param string                               $consim_travel_table         Name of the table used to store data
+	* @access public
+	*/
+	public function __construct(\phpbb\db\driver\driver_interface $db,
+								ContainerInterface $container,
+								$consim_action_table,
+								$consim_travel_table)
+	{
+		$this->db = $db;
+		$this->container = $container;
+		$this->consim_action_table = $consim_action_table;
+		$this->consim_travel_table = $consim_travel_table;
+	}
 
-    /**
+	/**
 	* Get all finished actions
 	*
 	* @return array Array of Action
@@ -56,47 +56,47 @@ class ActionLists
 	*/
 	public function finishedActions()
 	{
-        $sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
-                       t.start_location_id, t.end_location_id
-            FROM ' . $this->consim_action_table . ' a
-            LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
+		$sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
+					   t.start_location_id, t.end_location_id
+			FROM ' . $this->consim_action_table . ' a
+			LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
 			WHERE a.endtime <= '. time() .' AND a.status = 0';
 		$result = $this->db->sql_query($sql);
 
-        while($row = $this->db->sql_fetchrow($result))
-        {
-            if($row['start_location_id'] != NULL)
-            {
-                $entity = $this->container->get('consim.core.entity.Travel')->import($row)->done();
-            }
-        }
-        $this->db->sql_freeresult($result);
-    }
+		while($row = $this->db->sql_fetchrow($result))
+		{
+			if($row['start_location_id'] != NULL)
+			{
+				$entity = $this->container->get('consim.core.entity.Travel')->import($row)->done();
+			}
+		}
+		$this->db->sql_freeresult($result);
+	}
 
-    /**
+	/**
 	* Get current action from user
 	*
-    * @param int $user_id User ID
+	* @param int $user_id User ID
 	* @return Object Travel
 	* @access public
 	*/
 	public function getCurrentActionFromUser($user_id)
 	{
-        $action = false;
+		$action = false;
 
-        $sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.travel_id, a.status
-            FROM ' . $this->consim_action_table . ' a
+		$sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.travel_id, a.status
+			FROM ' . $this->consim_action_table . ' a
 			WHERE user_id = ' . (int) $user_id .' AND status = 0';
-        $result = $this->db->sql_query($sql);
+		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-        if($row['travel_id'] > 0 )
-        {
-            $action = $this->container->get('consim.core.entity.TravelLocation')->load($row['id']);
-        }
+		if($row['travel_id'] > 0 )
+		{
+			$action = $this->container->get('consim.core.entity.TravelLocation')->load($row['id']);
+		}
 
 		return $action;
-    }
+	}
 
 }

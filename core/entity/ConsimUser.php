@@ -20,67 +20,67 @@ class ConsimUser extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'user_id'						=> 'integer',
-      	'vorname'						=> 'string',
-      	'nachname'						=> 'string',
-      	'geschlecht_id'					=> 'integer',
-      	'geburtsland_id'				=> 'integer',
-      	'religion_id'					=> 'integer',
-      	'haarfarbe_id'					=> 'integer',
-      	'augenfarbe_id'					=> 'integer',
-      	'besondere_merkmale_id'			=> 'integer',
-      	'sprache_tadsowisch'			=> 'integer',
-      	'sprache_bakirisch'				=> 'integer',
-      	'sprache_suranisch'				=> 'integer',
-      	'rhetorik'						=> 'integer',
+		'user_id'						=> 'integer',
+		'vorname'						=> 'string',
+		'nachname'						=> 'string',
+		'geschlecht_id'					=> 'integer',
+		'geburtsland_id'				=> 'integer',
+		'religion_id'					=> 'integer',
+		'haarfarbe_id'					=> 'integer',
+		'augenfarbe_id'					=> 'integer',
+		'besondere_merkmale_id'			=> 'integer',
+		'sprache_tadsowisch'			=> 'integer',
+		'sprache_bakirisch'				=> 'integer',
+		'sprache_suranisch'				=> 'integer',
+		'rhetorik'						=> 'integer',
 		'administration'				=> 'integer',
-      	'wirtschaft'					=> 'integer',
-      	'technik'						=> 'integer',
-      	'nahkampf'						=> 'integer',
+		'wirtschaft'					=> 'integer',
+		'technik'						=> 'integer',
+		'nahkampf'						=> 'integer',
 		'schusswaffen'					=> 'integer',
 		'sprengmittel'					=> 'integer',
-      	'militarkunde'					=> 'integer',
-      	'spionage'						=> 'integer',
+		'militarkunde'					=> 'integer',
+		'spionage'						=> 'integer',
 		'schmuggel'						=> 'integer',
 		'medizin'						=> 'integer',
-      	'uberlebenskunde'				=> 'integer',
-        'location_id'                   => 'integer',
-        'active'                        => 'bool'
+		'uberlebenskunde'				=> 'integer',
+		'location_id'                   => 'integer',
+		'active'                        => 'bool'
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'user_id',
-      	'sprache_tadsowisch',
-      	'sprache_bakirisch',
-      	'sprache_suranisch',
-      	'rhetorik',
+		'user_id',
+		'sprache_tadsowisch',
+		'sprache_bakirisch',
+		'sprache_suranisch',
+		'rhetorik',
 		'administration',
-      	'wirtschaft',
-      	'technik',
-      	'nahkampf',
+		'wirtschaft',
+		'technik',
+		'nahkampf',
 		'schusswaffen',
 		'sprengmittel',
-      	'militarkunde',
-      	'spionage',
+		'militarkunde',
+		'spionage',
 		'schmuggel',
 		'medizin',
-      	'uberlebenskunde',
-        'location_id',
-        'active',
+		'uberlebenskunde',
+		'location_id',
+		'active',
 	);
 
 	/** @var ContainerInterface */
 	protected $container;
 
-    /**
+	/**
 	* The database table the consim user data are stored in
 	* @var string
 	*/
 	protected $consim_user_table;
-    protected $consim_person_table;
+	protected $consim_person_table;
 
 	/**
 	* Variable to save the data from person table
@@ -88,8 +88,8 @@ class ConsimUser extends abstractEntity
 	*/
 	private $figure_data;
 
-    //extra language skill
-    const EXTRA_LANG = 25;
+	//extra language skill
+	const EXTRA_LANG = 25;
 
    /**
 	* Constructor
@@ -147,10 +147,10 @@ class ConsimUser extends abstractEntity
 			FROM ' . $this->consim_person_table;
 		$result = $this->db->sql_query($sql);
 		while($row = $this->db->sql_fetchrow($result))
-        {
-            $figure_data[$row['id']] = $this->container->get('consim.core.entity.ConsimFigure')
+		{
+			$figure_data[$row['id']] = $this->container->get('consim.core.entity.ConsimFigure')
 									  ->import($row);
-        }
+		}
 		$this->db->sql_freeresult($result);
 
 		return $figure_data;
@@ -176,16 +176,16 @@ class ConsimUser extends abstractEntity
 
 		$this->data['user_id'] = $user_id;
 
-        //Add extra language skill
-        switch($this->figure_data[$this->data['geburtsland_id']]->getValue())
-        {
-            case 'frt': $this->data['sprache_tadsowisch'] = $this->data['sprache_tadsowisch'] + self::EXTRA_LANG;
-            break;
-            case 'bak': $this->data['sprache_bakirisch'] = $this->data['sprache_bakirisch'] + self::EXTRA_LANG;
-            break;
-            case 'sur': $this->data['sprache_suranisch'] = $this->data['sprache_suranisch'] + self::EXTRA_LANG;
-            break;
-        }
+		//Add extra language skill
+		switch($this->figure_data[$this->data['geburtsland_id']]->getValue())
+		{
+			case 'frt': $this->data['sprache_tadsowisch'] = $this->data['sprache_tadsowisch'] + self::EXTRA_LANG;
+			break;
+			case 'bak': $this->data['sprache_bakirisch'] = $this->data['sprache_bakirisch'] + self::EXTRA_LANG;
+			break;
+			case 'sur': $this->data['sprache_suranisch'] = $this->data['sprache_suranisch'] + self::EXTRA_LANG;
+			break;
+		}
 
 		// Insert the data to the database
 		$sql = 'INSERT INTO ' . $this->consim_user_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
@@ -287,7 +287,7 @@ class ConsimUser extends abstractEntity
 	public function getGeschlecht()
 	{
 		//return $this->getString($this->data['geschlecht']);
-        return $this->figure_data[$this->data['geschlecht_id']];
+		return $this->figure_data[$this->data['geschlecht_id']];
 	}
 	/**
 	* Set geschlecht
@@ -311,7 +311,7 @@ class ConsimUser extends abstractEntity
 	public function getGeburtsland()
 	{
 		//return $this->getString($this->data['geburtsland']);
-        return $this->figure_data[$this->data['geburtsland_id']];
+		return $this->figure_data[$this->data['geburtsland_id']];
 	}
 	/**
 	* Set geburtsland
@@ -335,7 +335,7 @@ class ConsimUser extends abstractEntity
 	public function getReligion()
 	{
 		//return $this->getString($this->data['religion']);
-        return $this->figure_data[$this->data['religion_id']];
+		return $this->figure_data[$this->data['religion_id']];
 	}
 	/**
 	* Set religion
@@ -359,7 +359,7 @@ class ConsimUser extends abstractEntity
 	public function getHaarfarbe()
 	{
 		//return $this->getString($this->data['haarfarbe']);
-        return $this->figure_data[$this->data['religion_id']];
+		return $this->figure_data[$this->data['religion_id']];
 	}
 	/**
 	* Set haarfarbe
@@ -383,7 +383,7 @@ class ConsimUser extends abstractEntity
 	public function getAugenfarbe()
 	{
 		//return $this->getString($this->data['augenfarbe']);
-        return $this->figure_data[$this->data['augenfarbe_id']];
+		return $this->figure_data[$this->data['augenfarbe_id']];
 	}
 	/**
 	* Set augenfarbe
@@ -407,7 +407,7 @@ class ConsimUser extends abstractEntity
 	public function getBesondereMerkmale()
 	{
 		//return $this->getString($this->data['besondere_merkmale']);
-        return $this->figure_data[$this->data['besondere_merkmale_id']];
+		return $this->figure_data[$this->data['besondere_merkmale_id']];
 	}
 	/**
 	* Set Besondere Merkmale
@@ -515,27 +515,27 @@ class ConsimUser extends abstractEntity
 	}
 
 	/**
- 	* Get Administration
- 	*
- 	* @return string Administration
- 	* @access public
- 	*/
- 	public function getAdministration()
- 	{
- 		return $this->getInteger($this->data['administration']);
- 	}
- 	/**
- 	* Set Administration
- 	*
- 	* @param string $administration
- 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
- 	* @access public
- 	* @throws \consim\core\exception\unexpected_value
- 	*/
- 	public function setAdministration($level)
- 	{
- 		return $this->setInteger('administration', $level, true, 100);
- 	}
+	* Get Administration
+	*
+	* @return string Administration
+	* @access public
+	*/
+	public function getAdministration()
+	{
+		return $this->getInteger($this->data['administration']);
+	}
+	/**
+	* Set Administration
+	*
+	* @param string $administration
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setAdministration($level)
+	{
+		return $this->setInteger('administration', $level, true, 100);
+	}
 
    /**
 	* Get wirtschaft
@@ -744,7 +744,7 @@ class ConsimUser extends abstractEntity
 		return $this->setInteger('medizin', $level, true, 100);
 	}
 
-    /**
+	/**
 	* Get uberlebenskunde
 	*
 	* @return string uberlebenskunde
@@ -767,7 +767,7 @@ class ConsimUser extends abstractEntity
 		return $this->setInteger('uberlebenskunde', $level, true, 100);
 	}
 
-    /**
+	/**
 	* Get Bakirischer Rubel
 	*
 	* @return string Bakirischer Rubel
@@ -790,7 +790,7 @@ class ConsimUser extends abstractEntity
 		return $this->setInteger('bak_rubel', $rubel);
 	}
 
-    /**
+	/**
 	* Get Suranischer Dinar
 	*
 	* @return string Suranischer Dinar
@@ -813,7 +813,7 @@ class ConsimUser extends abstractEntity
 		return $this->setInteger('sur_dinar', $dinar);
 	}
 
-    /**
+	/**
 	* Get Tadsowischer Dollar
 	*
 	* @return string Tadsowischer Dollar
@@ -836,7 +836,7 @@ class ConsimUser extends abstractEntity
 		return $this->setInteger('frt_dollar', $dollar);
 	}
 
-    /**
+	/**
    * Get location
    *
    * @return id location
@@ -844,7 +844,7 @@ class ConsimUser extends abstractEntity
    */
    public function getLocationId()
    {
-       return $this->getInteger($this->data['location_id']);
+	   return $this->getInteger($this->data['location_id']);
    }
    /**
    * Set location
@@ -857,22 +857,22 @@ class ConsimUser extends abstractEntity
    */
    public function setLocation($location_id)
    {
-       $sql = 'SELECT id
-           FROM phpbb_consim_routes
-           WHERE (start_location_id = '. (int) $location_id .' AND end_location_id = '. $this->data['location_id'] .')
-                 OR (start_location_id = '. $this->data['location_id'] .' AND end_location_id = '. (int) $location_id .')';
-       $result = $this->db->sql_query($sql);
-       $row = $this->db->sql_fetchrow($result);
-       $this->db->sql_freeresult($result);
+	   $sql = 'SELECT id
+		   FROM phpbb_consim_routes
+		   WHERE (start_location_id = '. (int) $location_id .' AND end_location_id = '. $this->data['location_id'] .')
+				 OR (start_location_id = '. $this->data['location_id'] .' AND end_location_id = '. (int) $location_id .')';
+	   $result = $this->db->sql_query($sql);
+	   $row = $this->db->sql_fetchrow($result);
+	   $this->db->sql_freeresult($result);
 
-       if ($row === false)
-       {
-           throw new \consim\core\exception\invalid_argument(array($location_id, 'ILLEGAL_CHARACTERS'));
-       }
+	   if ($row === false)
+	   {
+		   throw new \consim\core\exception\invalid_argument(array($location_id, 'ILLEGAL_CHARACTERS'));
+	   }
 
-       $this->data['location_id'] = $location_id;
+	   $this->data['location_id'] = $location_id;
 
-       return this;
+	   return this;
    }
 
    /**
@@ -895,28 +895,28 @@ class ConsimUser extends abstractEntity
 	*/
 	public function setActive($active)
 	{
-        $acitve = (int) $active;
+		$acitve = (int) $active;
 		return $this->setInteger('active', $active, true, 1);
 	}
 
 	/**
- 	* Get Data from Figure
- 	*
- 	* @return Array of ConSim-Figure objects
- 	* @access public
- 	*/
+	* Get Data from Figure
+	*
+	* @return Array of ConSim-Figure objects
+	* @access public
+	*/
 	public function getFigureData()
 	{
 		return $this->figure_data;
 	}
 
 	/**
- 	* Überprüft ob String auch im Figure existiert
+	* Überprüft ob String auch im Figure existiert
 	* und fügt die ID-Nr ein
- 	*
- 	* @return bool
- 	* @access private
- 	*/
+	*
+	* @return bool
+	* @access private
+	*/
 	private function setFigure($varname, $string)
 	{
 		//$string not empty

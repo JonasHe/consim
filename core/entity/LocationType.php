@@ -18,15 +18,15 @@ class LocationType extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'id'						=> 'integer',
-      	'name'                      => 'string',
+		'id'						=> 'integer',
+		'name'                      => 'string',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'id',
+		'id',
 	);
 
 	/**
@@ -84,7 +84,7 @@ class LocationType extends abstractEntity
 		return $this->getInteger($this->data['id']);
 	}
 
-    /**
+	/**
 	* Get Name
 	*
 	* @return string Name

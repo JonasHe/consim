@@ -16,11 +16,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 */
 class Register
 {
-    /** @var \phpbb\config\config */
+	/** @var \phpbb\config\config */
 	protected $config;
 
-    /** @var ContainerInterface */
-    protected $container;
+	/** @var ContainerInterface */
+	protected $container;
 
 	/** @var \phpbb\controller\helper */
 	protected $helper;
@@ -37,10 +37,10 @@ class Register
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
-    const FREE_POINTS = 50;
-    const DEFAULT_POINTS = 15;
+	const FREE_POINTS = 50;
+	const DEFAULT_POINTS = 15;
 
-    protected $sum_skill = self::DEFAULT_POINTS;
+	protected $sum_skill = self::DEFAULT_POINTS;
 
 	/**
 	* Constructor
@@ -58,8 +58,8 @@ class Register
 	public function __construct(\phpbb\config\config $config,
 								ContainerInterface $container,
 								\phpbb\controller\helper $helper,
-                               	\phpbb\user $user,
-                               	\phpbb\template\template $template,
+								\phpbb\user $user,
+								\phpbb\template\template $template,
 								\phpbb\request\request $request,
 								\phpbb\db\driver\driver_interface $db)
 	{
@@ -88,14 +88,14 @@ class Register
 			return;
 		}
 
-        // User is a guest
-        if ($this->user->data['user_id'] == ANONYMOUS)
-        {
-            // Set output vars for display in the template
-    		$this->template->assign_vars(array(
-    			'S_ANONYMOUS'				=> true,
-    		));
-        }
+		// User is a guest
+		if ($this->user->data['user_id'] == ANONYMOUS)
+		{
+			// Set output vars for display in the template
+			$this->template->assign_vars(array(
+				'S_ANONYMOUS'				=> true,
+			));
+		}
 
 		// Create a form key for preventing CSRF attacks
 		add_form_key('consim_register');
@@ -143,31 +143,31 @@ class Register
 			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
 
 			'U_ACTION'	=> $this->helper->route('consim_core_register'),
-            'FREIE_PUNKTE' => self::FREE_POINTS + self::DEFAULT_POINTS - $this->sum_skill,
+			'FREIE_PUNKTE' => self::FREE_POINTS + self::DEFAULT_POINTS - $this->sum_skill,
 
 			'VORNAME'						=> $this->request->variable('vorname', ''),
-	    	'NACHNAME'						=> $this->request->variable('nachname', ''),
-	    	'GESCHLECHT'					=> $this->request->variable('geschlecht', ''),
-	    	'GEBURTSLAND'					=> $this->request->variable('geburtsland', ''),
-	    	'RELIGION'						=> $this->request->variable('religion', ''),
-	    	'HAARFARBE'						=> $this->request->variable('haarfarbe', ''),
-	    	'AUGENFARBE'					=> $this->request->variable('augenfarbe', ''),
-	    	'BESONDERE_MERKMALE'			=> $this->request->variable('besondere_merkmale', ''),
-	    	'SPRACHE_TADSOWISCH'			=> $this->request->variable('sprache_tadsowisch', 1),
-	    	'SPRACHE_BAKIRISCH'				=> $this->request->variable('sprache_bakirisch', 1),
-	    	'SPRACHE_SURANISCH'				=> $this->request->variable('sprache_suranisch', 1),
-	    	'RHETORIK'						=> $this->request->variable('rhetorik', 1),
+			'NACHNAME'						=> $this->request->variable('nachname', ''),
+			'GESCHLECHT'					=> $this->request->variable('geschlecht', ''),
+			'GEBURTSLAND'					=> $this->request->variable('geburtsland', ''),
+			'RELIGION'						=> $this->request->variable('religion', ''),
+			'HAARFARBE'						=> $this->request->variable('haarfarbe', ''),
+			'AUGENFARBE'					=> $this->request->variable('augenfarbe', ''),
+			'BESONDERE_MERKMALE'			=> $this->request->variable('besondere_merkmale', ''),
+			'SPRACHE_TADSOWISCH'			=> $this->request->variable('sprache_tadsowisch', 1),
+			'SPRACHE_BAKIRISCH'				=> $this->request->variable('sprache_bakirisch', 1),
+			'SPRACHE_SURANISCH'				=> $this->request->variable('sprache_suranisch', 1),
+			'RHETORIK'						=> $this->request->variable('rhetorik', 1),
 			'ADMINISTRATION'				=> $this->request->variable('administration', 1),
-	    	'WIRTSCHAFT'					=> $this->request->variable('wirtschaft', 1),
-	      	'TECHNIK'						=> $this->request->variable('technik', 1),
-	      	'NAHKAMPF'						=> $this->request->variable('nahkampf', 1),
+			'WIRTSCHAFT'					=> $this->request->variable('wirtschaft', 1),
+			'TECHNIK'						=> $this->request->variable('technik', 1),
+			'NAHKAMPF'						=> $this->request->variable('nahkampf', 1),
 			'SCHUSSWAFFEN'					=> $this->request->variable('schusswaffen', 1),
 			'SPRENGMITTEL'					=> $this->request->variable('sprengmittel', 1),
-	      	'MILITARKUNDE'					=> $this->request->variable('militarkunde', 1),
-	      	'SPIONAGE'						=> $this->request->variable('spionage', 1),
+			'MILITARKUNDE'					=> $this->request->variable('militarkunde', 1),
+			'SPIONAGE'						=> $this->request->variable('spionage', 1),
 			'SCHMUGGEL'						=> $this->request->variable('schmuggel', 1),
 			'MEDIZIN'						=> $this->request->variable('medizin', 1),
-	      	'UBERLEBENSKUNDE'				=> $this->request->variable('uberlebenskunde', 1),
+			'UBERLEBENSKUNDE'				=> $this->request->variable('uberlebenskunde', 1),
 		));
 
 		// Send all data to the template file
@@ -186,33 +186,33 @@ class Register
 	{
 		$person = array(
 			'Vorname'						=> $this->request->variable('vorname', ''),
-	    	'Nachname'						=> $this->request->variable('nachname', ''),
-	    	'Geschlecht'					=> $this->request->variable('geschlecht', ''),
-	    	'Geburtsland'					=> $this->request->variable('geburtsland', ''),
-	    	'Religion'						=> $this->request->variable('religion', ''),
-	    	'Haarfarbe'						=> $this->request->variable('haarfarbe', ''),
-	    	'Augenfarbe'					=> $this->request->variable('augenfarbe', ''),
-	    	'BesondereMerkmale'				=> $this->request->variable('besondere_merkmale', ''),
+			'Nachname'						=> $this->request->variable('nachname', ''),
+			'Geschlecht'					=> $this->request->variable('geschlecht', ''),
+			'Geburtsland'					=> $this->request->variable('geburtsland', ''),
+			'Religion'						=> $this->request->variable('religion', ''),
+			'Haarfarbe'						=> $this->request->variable('haarfarbe', ''),
+			'Augenfarbe'					=> $this->request->variable('augenfarbe', ''),
+			'BesondereMerkmale'				=> $this->request->variable('besondere_merkmale', ''),
 		);
 		$attribute = array(
-	    	'SpracheTadsowisch'				=> $this->request->variable('sprache_tadsowisch', 1),
-	    	'SpracheBakirisch'				=> $this->request->variable('sprache_bakirisch', 1),
-	    	'SpracheSuranisch'				=> $this->request->variable('sprache_suranisch', 1),
-	    	'Rhetorik'						=> $this->request->variable('rhetorik', 1),
+			'SpracheTadsowisch'				=> $this->request->variable('sprache_tadsowisch', 1),
+			'SpracheBakirisch'				=> $this->request->variable('sprache_bakirisch', 1),
+			'SpracheSuranisch'				=> $this->request->variable('sprache_suranisch', 1),
+			'Rhetorik'						=> $this->request->variable('rhetorik', 1),
 			'Administration'				=> $this->request->variable('administration', 1),
-	    	'Wirtschaft'					=> $this->request->variable('wirtschaft', 1),
-	      	'Technik'						=> $this->request->variable('technik', 1),
-	      	'Nahkampf'						=> $this->request->variable('nahkampf', 1),
+			'Wirtschaft'					=> $this->request->variable('wirtschaft', 1),
+			'Technik'						=> $this->request->variable('technik', 1),
+			'Nahkampf'						=> $this->request->variable('nahkampf', 1),
 			'Schusswaffen'					=> $this->request->variable('schusswaffen', 1),
 			'Sprengmittel'					=> $this->request->variable('sprengmittel', 1),
-	      	'Militarkunde'					=> $this->request->variable('militarkunde', 1),
-	      	'Spionage'						=> $this->request->variable('spionage', 1),
+			'Militarkunde'					=> $this->request->variable('militarkunde', 1),
+			'Spionage'						=> $this->request->variable('spionage', 1),
 			'Schmuggel'						=> $this->request->variable('schmuggel', 1),
 			'Medizin'						=> $this->request->variable('medizin', 1),
-	      	'Uberlebenskunde'				=> $this->request->variable('uberlebenskunde', 1),
+			'Uberlebenskunde'				=> $this->request->variable('uberlebenskunde', 1),
 		);
 
-        $this->sum_skill = array_sum($attribute);
+		$this->sum_skill = array_sum($attribute);
 
 		//Die Summe der Attribute darf einen bestimmten Wert nicht überschreiten
 		if($this->sum_skill > self::FREE_POINTS + self::DEFAULT_POINTS)
@@ -220,7 +220,7 @@ class Register
 			$errors[] = $this->user->lang('TOO_HIGH_ATTRIBUTE');
 		}
 
-        //Die Summe der Attribute darf einen bestimmten Wert nicht überschreiten
+		//Die Summe der Attribute darf einen bestimmten Wert nicht überschreiten
 		if($this->sum_skill < self::FREE_POINTS + self::DEFAULT_POINTS)
 		{
 			$errors[] = $this->user->lang('TOO_LOW_ATTRIBUTE');

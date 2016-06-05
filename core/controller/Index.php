@@ -16,11 +16,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 */
 class Index
 {
-    /** @var \phpbb\config\config */
+	/** @var \phpbb\config\config */
 	protected $config;
 
-    /** @var ContainerInterface */
-    protected $container;
+	/** @var ContainerInterface */
+	protected $container;
 
 	/** @var \phpbb\controller\helper */
 	protected $helper;
@@ -53,8 +53,8 @@ class Index
 	public function __construct(\phpbb\config\config $config,
 								ContainerInterface $container,
 								\phpbb\controller\helper $helper,
-                               	\phpbb\user $user,
-                               	\phpbb\template\template $template,
+								\phpbb\user $user,
+								\phpbb\template\template $template,
 								\phpbb\request\request $request,
 								\phpbb\db\driver\driver_interface $db)
 	{
@@ -66,8 +66,8 @@ class Index
 		$this->request = $request;
 		$this->db = $db;
 
-        //Starting with the init
-        $this->init();
+		//Starting with the init
+		$this->init();
 	}
 
 	/**
@@ -78,8 +78,8 @@ class Index
 	*/
 	public function display()
 	{
-        // Is the form being submitted to us?
-        // Delete UserProfile
+		// Is the form being submitted to us?
+		// Delete UserProfile
 		if ($this->request->is_set_post('delete'))
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
@@ -95,205 +95,205 @@ class Index
 			redirect($this->helper->route('consim_core_register'));
 		}
 
-        //Is User active?
-        if($this->consim_user->getActive())
-        {
-            //get current action
-            $action = $this->container->get('consim.core.operators.ActionLists')->getCurrentActionFromUser($this->user->data['user_id']);
-            //Is User traveling?
-            if($action instanceof \consim\core\entity\TravelLocation)
-            {
-                return $this->showTraveling($action);
-            }
-        }
-        else
-        {
-            return $this->showLocation();
-        }
+		//Is User active?
+		if($this->consim_user->getActive())
+		{
+			//get current action
+			$action = $this->container->get('consim.core.operators.ActionLists')->getCurrentActionFromUser($this->user->data['user_id']);
+			//Is User traveling?
+			if($action instanceof \consim\core\entity\TravelLocation)
+			{
+				return $this->showTraveling($action);
+			}
+		}
+		else
+		{
+			return $this->showLocation();
+		}
 	}
 
-    /**
+	/**
 	* Display all traveling routes
 	*
-    * @param \consim\core\entity\TravelLocation $travel
+	* @param \consim\core\entity\TravelLocation $travel
 	* @return null
 	* @access private
 	*/
-    private function showTraveling($travel)
-    {
-        $now = time();
-        $time = $travel->getEndTime() - $now;
+	private function showTraveling($travel)
+	{
+		$now = time();
+		$time = $travel->getEndTime() - $now;
 
-        // Set output vars for display in the template
+		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-            'START_LOCATION_NAME'       => $travel->getStartLocation()->getName(),
-            'START_LOCATION_IMAGE'      => $travel->getStartLocation()->getImage(),
-            'START_LOCATION_TYPE'       => $travel->getStartLocation()->getType(),
-            'START_LOCATION_PROVINCE'   => $travel->getStartLocation()->getProvince(),
-            'START_LOCATION_COUNTRY'    => $travel->getStartLocation()->getCountry(),
-            'START_TIME'                => date("d.m.Y - H:i:s", $travel->getStartTime()),
-            'END_LOCATION_NAME'         => $travel->getEndLocation()->getName(),
-            'END_LOCATION_IMAGE'        => $travel->getEndLocation()->getImage(),
-            'END_LOCATION_TYPE'         => $travel->getEndLocation()->getType(),
-            'END_LOCATION_PROVINCE'     => $travel->getEndLocation()->getProvince(),
-            'END_LOCATION_COUNTRY'      => $travel->getEndLocation()->getCountry(),
-            'END_TIME'                  => date("d.m.Y - H:i:s", $travel->getEndTime()),
-            'COUNTDOWN'                 => date("i:s", $time),
+			'START_LOCATION_NAME'       => $travel->getStartLocation()->getName(),
+			'START_LOCATION_IMAGE'      => $travel->getStartLocation()->getImage(),
+			'START_LOCATION_TYPE'       => $travel->getStartLocation()->getType(),
+			'START_LOCATION_PROVINCE'   => $travel->getStartLocation()->getProvince(),
+			'START_LOCATION_COUNTRY'    => $travel->getStartLocation()->getCountry(),
+			'START_TIME'                => date("d.m.Y - H:i:s", $travel->getStartTime()),
+			'END_LOCATION_NAME'         => $travel->getEndLocation()->getName(),
+			'END_LOCATION_IMAGE'        => $travel->getEndLocation()->getImage(),
+			'END_LOCATION_TYPE'         => $travel->getEndLocation()->getType(),
+			'END_LOCATION_PROVINCE'     => $travel->getEndLocation()->getProvince(),
+			'END_LOCATION_COUNTRY'      => $travel->getEndLocation()->getCountry(),
+			'END_TIME'                  => date("d.m.Y - H:i:s", $travel->getEndTime()),
+			'COUNTDOWN'                 => date("i:s", $time),
 		));
 
 		// Send all data to the template file
 		return $this->helper->render('consim_travel.html', $this->user->lang('INDEX'));
-    }
+	}
 
-    /**
+	/**
 	* Display a location
 	*
-    * @param int $location_id
+	* @param int $location_id
 	* @return null
 	* @access public
 	*/
-    public function showLocation($location_id = 0)
-    {
-        //must be an integer
-        $location_id = (int) $location_id;
+	public function showLocation($location_id = 0)
+	{
+		//must be an integer
+		$location_id = (int) $location_id;
 
-        $location = $this->container->get('consim.core.entity.Location');
-        $location_op = $this->container->get('consim.core.operators.Locations');
+		$location = $this->container->get('consim.core.entity.Location');
+		$location_op = $this->container->get('consim.core.operators.Locations');
 
-        //location from location_id or from position of user?
-        if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
-        {
-            $location = $this->consim_user_location;
-            //Create the Travelpopup
-            $location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
-        }
-        else
-        {
-            $location->load($location_id);
-        }
-        $buildings = $location_op->getAllBuildings($location->getId());
+		//location from location_id or from position of user?
+		if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
+		{
+			$location = $this->consim_user_location;
+			//Create the Travelpopup
+			$location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
+		}
+		else
+		{
+			$location->load($location_id);
+		}
+		$buildings = $location_op->getAllBuildings($location->getId());
 
-        //Put all Buildings in the Template
-        foreach ($buildings as $entity)
-        {
-            $building = array(
+		//Put all Buildings in the Template
+		foreach ($buildings as $entity)
+		{
+			$building = array(
 				'NAME'	     	=> ($entity->getName() != '')? '"' . $entity->getName() . '"' : '',
-                'TYPE'  		=> $entity->getType(),
-                'URL'           => $this->helper->route('consim_core_building',
-                                                    array(
-                                                        'location_id' => $location->getId(),
-                                                        'building_id' => $entity->getId()
-                                                    )),
+				'TYPE'  		=> $entity->getType(),
+				'URL'           => $this->helper->route('consim_core_building',
+													array(
+														'location_id' => $location->getId(),
+														'building_id' => $entity->getId()
+													)),
 			);
 
-            $this->template->assign_block_vars('buildings', $building);
-        }
+			$this->template->assign_block_vars('buildings', $building);
+		}
 
-        // Set output vars for display in the template
+		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-            'CAN_TRAVEL'                    => ($location->getId() === $this->consim_user->getLocationId())? TRUE : FALSE,
-            'LOCATION'                      => $location->getName(),
-            'LOCATION_DESC'                 => $location->getDescription(),
-            'LOCATION_IMAGE'                => $location->getImage(),
-            'LOCATION_TYPE'                 => $location->getType(),
-            'PROVINCE'                      => $location->getProvince(),
-            'COUNTRY'                       => $location->getCountry(),
+			'CAN_TRAVEL'                    => ($location->getId() === $this->consim_user->getLocationId())? TRUE : FALSE,
+			'LOCATION'                      => $location->getName(),
+			'LOCATION_DESC'                 => $location->getDescription(),
+			'LOCATION_IMAGE'                => $location->getImage(),
+			'LOCATION_TYPE'                 => $location->getType(),
+			'PROVINCE'                      => $location->getProvince(),
+			'COUNTRY'                       => $location->getCountry(),
 		));
 
 		// Send all data to the template file
 		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
-    }
+	}
 
-    /**
+	/**
 	* Display a building in a location
 	*
-    * @param int $location_id
-    * @param int $building_id
+	* @param int $location_id
+	* @param int $building_id
 	* @return null
 	* @access public
 	*/
-    public function showLocationBuilding($location_id, $building_id)
-    {
-        //must be an integer
-        $location_id = (int) $location_id;
-        $building_id = (int) $building_id;
+	public function showLocationBuilding($location_id, $building_id)
+	{
+		//must be an integer
+		$location_id = (int) $location_id;
+		$building_id = (int) $building_id;
 
-        if($location_id === 0 || $building_id === 0)
-        {
-            redirect($this->helper->route('consim_core_location', array('location_id' => $location_id)));
-        }
+		if($location_id === 0 || $building_id === 0)
+		{
+			redirect($this->helper->route('consim_core_location', array('location_id' => $location_id)));
+		}
 
-        $location = $this->container->get('consim.core.entity.Location')->load($location_id);
-        $building = $this->container->get('consim.core.entity.Building')->load($building_id);
+		$location = $this->container->get('consim.core.entity.Location')->load($location_id);
+		$building = $this->container->get('consim.core.entity.Building')->load($building_id);
 
-        // Set output vars for display in the template
+		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-            'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
-            'BUILDING_TYP'          => $building->getType(),
-            'LOCATION'              => $location->getName(),
-            'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
+			'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+			'BUILDING_TYP'          => $building->getType(),
+			'LOCATION'              => $location->getName(),
+			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
 		));
 
-        // Send all data to the template file
-        return $this->helper->render('consim_building.html', $this->user->lang('INDEX'));
-    }
+		// Send all data to the template file
+		return $this->helper->render('consim_building.html', $this->user->lang('INDEX'));
+	}
 
-    /**
+	/**
 	* Initiated all important variable
-    * and check if it a consim-user
+	* and check if it a consim-user
 	*
 	* @return null
 	* @access private
 	*/
-    private function init()
-    {
-        if($this->user->data['consim_register'] == 0)
+	private function init()
+	{
+		if($this->user->data['consim_register'] == 0)
 		{
 			redirect($this->helper->route('consim_core_register'));
 			return;
 		}
 
-        // Add language file
+		// Add language file
 		$this->user->add_lang_ext('consim/core', 'consim_common');
 
-        //Check all finished Actions
-        $this->container->get('consim.core.operators.ActionLists')->finishedActions();
+		//Check all finished Actions
+		$this->container->get('consim.core.operators.ActionLists')->finishedActions();
 
-        //Get the ConSim-User
+		//Get the ConSim-User
 		$this->consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
-        //Get User-Location
-        $this->consim_user_location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocationId());
+		//Get User-Location
+		$this->consim_user_location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocationId());
 
-        // Set output vars for display in the template
+		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-            //Attribute
-	    	'SPRACHE_TADSOWISCH'			=> $this->consim_user->getSpracheTadsowisch(),
-	    	'SPRACHE_BAKIRISCH'				=> $this->consim_user->getSpracheBakirisch(),
-	    	'SPRACHE_SURANISCH'				=> $this->consim_user->getSpracheSuranisch(),
-	    	'RHETORIK'						=> $this->consim_user->getRhetorik(),
-	    	'WIRTSCHAFT'					=> $this->consim_user->getWirtschaft(),
-            'ADMINISTRATION'				=> $this->consim_user->getAdministration(),
-	      	'TECHNIK'						=> $this->consim_user->getTechnik(),
-	      	'NAHKAMPF'						=> $this->consim_user->getNahkampf(),
+			//Attribute
+			'SPRACHE_TADSOWISCH'			=> $this->consim_user->getSpracheTadsowisch(),
+			'SPRACHE_BAKIRISCH'				=> $this->consim_user->getSpracheBakirisch(),
+			'SPRACHE_SURANISCH'				=> $this->consim_user->getSpracheSuranisch(),
+			'RHETORIK'						=> $this->consim_user->getRhetorik(),
+			'WIRTSCHAFT'					=> $this->consim_user->getWirtschaft(),
+			'ADMINISTRATION'				=> $this->consim_user->getAdministration(),
+			'TECHNIK'						=> $this->consim_user->getTechnik(),
+			'NAHKAMPF'						=> $this->consim_user->getNahkampf(),
 			'SCHUSSWAFFEN'					=> $this->consim_user->getSchusswaffen(),
-            'SPRENGMITTEL'					=> $this->consim_user->getSprengmittel(),
-	      	'MILITARKUNDE'					=> $this->consim_user->getMilitarkunde(),
-	      	'SPIONAGE'						=> $this->consim_user->getSpionage(),
-            'SCHMUGGEL'					    => $this->consim_user->getSchmuggel(),
+			'SPRENGMITTEL'					=> $this->consim_user->getSprengmittel(),
+			'MILITARKUNDE'					=> $this->consim_user->getMilitarkunde(),
+			'SPIONAGE'						=> $this->consim_user->getSpionage(),
+			'SCHMUGGEL'					    => $this->consim_user->getSchmuggel(),
 			'MEDIZIN'						=> $this->consim_user->getMedizin(),
-	      	'UBERLEBENSKUNDE'				=> $this->consim_user->getUberlebenskunde(),
-            'BAK_RUBEL'                     => $this->consim_user->getBakRubel(),
-            'SUR_DINAR'                     => $this->consim_user->getSurDinar(),
-            'FRT_DOLLAR'                    => $this->consim_user->getFrtDollar(),
+			'UBERLEBENSKUNDE'				=> $this->consim_user->getUberlebenskunde(),
+			'BAK_RUBEL'                     => $this->consim_user->getBakRubel(),
+			'SUR_DINAR'                     => $this->consim_user->getSurDinar(),
+			'FRT_DOLLAR'                    => $this->consim_user->getFrtDollar(),
 
-            //Informations for current location and time
-            'TIME'                          => date("d.m.Y - H:i:s", time()),
-            'USER_LOCATION'                 => $this->consim_user_location->getName(),
-            'USER_LOCATION_TYPE'            => $this->consim_user_location->getType(),
-            'USER_LOCATION_URL'             => $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
-            'USER_PROVINCE'                 => $this->consim_user_location->getProvince(),
-            'USER_COUNTRY'                  => $this->consim_user_location->getCountry(),
+			//Informations for current location and time
+			'TIME'                          => date("d.m.Y - H:i:s", time()),
+			'USER_LOCATION'                 => $this->consim_user_location->getName(),
+			'USER_LOCATION_TYPE'            => $this->consim_user_location->getType(),
+			'USER_LOCATION_URL'             => $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
+			'USER_PROVINCE'                 => $this->consim_user_location->getProvince(),
+			'USER_COUNTRY'                  => $this->consim_user_location->getCountry(),
 		));
-    }
+	}
 }

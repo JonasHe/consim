@@ -60,14 +60,14 @@ class install_basics extends \phpbb\db\migration\migration
 						'schmuggel'				=> array('UINT:3', 1),
 						'medizin'				=> array('UINT:3', 1),
 						'uberlebenskunde'		=> array('UINT:3', 1),
-                        'bak_rubel'             => array('UINT:8', 0),
-                        'sur_dinar'             => array('UINT:8', 0),
-                        'frt_dollar'            => array('UINT:8', 0),
-                        'location_id'           => array('UINT:8', 1),
-                        'active'                => array('BOOL', 0),
+						'bak_rubel'             => array('UINT:8', 0),
+						'sur_dinar'             => array('UINT:8', 0),
+						'frt_dollar'            => array('UINT:8', 0),
+						'location_id'           => array('UINT:8', 1),
+						'active'                => array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('user_id'),
-                    'KEYS'			=> array(
+					'KEYS'			=> array(
 						'location_id'     => array('INDEX', 'location_id'),
 					),
 				),
@@ -80,21 +80,21 @@ class install_basics extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
-                $this->table_prefix . 'consim_actions' => array(
+				$this->table_prefix . 'consim_actions' => array(
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', NULL, 'auto_increment'),
 						'user_id'         		=> array('UINT:8', 0),
 						'starttime'				=> array('TIMESTAMP', 0),
-                        'endtime'               => array('TIMESTAMP', 0),
-                        'travel_id'             => array('UINT:8', 0),
-                        'status'                => array('BOOL', 0),
+						'endtime'               => array('TIMESTAMP', 0),
+						'travel_id'             => array('UINT:8', 0),
+						'status'                => array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
-                    'KEYS'			=> array(
+					'KEYS'			=> array(
 						'starttime'       => array('INDEX', 'starttime'),
-                        'endtime'         => array('INDEX', 'endtime'),
-                        'travel_id'       => array('INDEX', 'travel_id'),
-                        'status'          => array('INDEX', 'status'),
+						'endtime'         => array('INDEX', 'endtime'),
+						'travel_id'       => array('INDEX', 'travel_id'),
+						'status'          => array('INDEX', 'status'),
 					),
 				),
 			),
@@ -106,29 +106,29 @@ class install_basics extends \phpbb\db\migration\migration
 		);
 	}
 
-    /**
-    * Add or update data in the database
-    *
-    * @return array Array of table data
-    * @access public
-    */
-    public function update_data()
-    {
-        global $user;
+	/**
+	* Add or update data in the database
+	*
+	* @return array Array of table data
+	* @access public
+	*/
+	public function update_data()
+	{
+		global $user;
 
-        // Load the installation lang file
+		// Load the installation lang file
 		$user->add_lang_ext('consim/core', 'consim_install');
 
-        return array(
-            // Set the current version
-            array('config.add', array('consim_version', $this->consim_version)),
-            array('custom', array(array($this, 'insert_consim_figure'))),
-        );
-    }
+		return array(
+			// Set the current version
+			array('config.add', array('consim_version', $this->consim_version)),
+			array('custom', array(array($this, 'insert_consim_figure'))),
+		);
+	}
 
 	public function insert_consim_figure()
 	{
-        global $user;
+		global $user;
 
 		$figure_data = array(
 			  array('id' => '1','groups' => 'geschlecht','value' => 'm','name' => $user->lang('MANNLICH')),
@@ -174,7 +174,7 @@ class install_basics extends \phpbb\db\migration\migration
 			'drop_tables'		=> array(
 				$this->table_prefix . 'consim_user',
 				$this->table_prefix . 'consim_figure',
-                $this->table_prefix . 'consim_actions',
+				$this->table_prefix . 'consim_actions',
 			),
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users' => array('consim_register'),

@@ -18,20 +18,20 @@ class Route extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'id'					=> 'integer',
-      	'start_location_id'     => 'integer',
-        'end_location_id'       => 'integer',
-        'time'                  => 'integer',
+		'id'					=> 'integer',
+		'start_location_id'     => 'integer',
+		'end_location_id'       => 'integer',
+		'time'                  => 'integer',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'id',
-        'start_location_id',
-        'end_location_id',
-        'time',
+		'id',
+		'start_location_id',
+		'end_location_id',
+		'time',
 	);
 	/**
 	* The database table the consim user data are stored in
@@ -56,7 +56,7 @@ class Route extends abstractEntity
 	* Load the data from the database for this object
 	*
 	* @param int $start Start Location
-    * @param int $end End Location
+	* @param int $end End Location
 	* @return object $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\user\exception\out_of_bounds
@@ -66,7 +66,7 @@ class Route extends abstractEntity
 		$sql = 'SELECT id, start_location_id, end_location_id, time
 			FROM ' . $this->consim_route_table . '
 			WHERE start_location_id = '. (int) $start .' AND end_location_id = '. (int) $end .'
-               OR start_location_id = '. (int) $end.' AND end_location_id = '. (int) $start;
+			   OR start_location_id = '. (int) $end.' AND end_location_id = '. (int) $start;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -90,7 +90,7 @@ class Route extends abstractEntity
 		return $this->getInteger($this->data['id']);
 	}
 
-    /**
+	/**
 	* Get Start Location ID
 	*
 	* @return int ID
@@ -101,7 +101,7 @@ class Route extends abstractEntity
 		return $this->getInteger($this->data['start_location_id']);
 	}
 
-    /**
+	/**
 	* Get End Location ID
 	*
 	* @return int ID
@@ -112,7 +112,7 @@ class Route extends abstractEntity
 		return $this->getInteger($this->data['end_location_id']);
 	}
 
-    /**
+	/**
 	* Get Time
 	*
 	* @return int ID

@@ -18,17 +18,17 @@ class ConsimFigure extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'id'						=> 'integer',
-      	'groups'            	    => 'string',
-      	'value'						=> 'string',
-      	'name'				       	=> 'string',
+		'id'						=> 'integer',
+		'groups'            	    => 'string',
+		'value'						=> 'string',
+		'name'				       	=> 'string',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'id',
+		'id',
 	);
 
 	/**

@@ -114,9 +114,9 @@ abstract class abstractEntity
 		$string = (string) $string;
 		$varname = (string) $varname;
 
-        //Enforce a integer
-        $max_char = (integer) $max_char;
-        $min_char = (integer) $min_char;
+		//Enforce a integer
+		$max_char = (integer) $max_char;
+		$min_char = (integer) $min_char;
 
 		if (strlen($string) <= $min_char)
 		{
@@ -155,11 +155,11 @@ abstract class abstractEntity
 	{
 		// Enforce a integer
 		$integer = (integer) $integer;
-        $max_int = (integer) $max_int;
+		$max_int = (integer) $max_int;
 		// Enforce a string
 		$varname = (string) $varname;
-        // Enforce a bool
-        $unsigned = (boolean) $unsigned;
+		// Enforce a bool
+		$unsigned = (boolean) $unsigned;
 
 		// If the data is less than 0, it's not unsigned and we'll throw an exception
 		if (($unsigned && $integer < 0) || ($integer > $max_int))

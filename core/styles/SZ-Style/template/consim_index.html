@@ -1,57 +1,57 @@
 <!-- INCLUDE consim_header.html -->
 
 <div class="field_center">
-    <div class="panel">
-    	<div class="inner">
-            <div class="content">
-                <h2>{LOCATION} ({LOCATION_TYPE}), {L_PROVINCE} {PROVINCE} ({COUNTRY})</h2>
-                <div class="inner">
-                    <p class="location_desc">{LOCATION_DESC}</p>
-                    <div class="location_image"><img src="{BOARD_URL}ext/consim/core/images/{LOCATION_IMAGE}" /></div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="panel">
+		<div class="inner">
+			<div class="content">
+				<h2>{LOCATION} ({LOCATION_TYPE}), {L_PROVINCE} {PROVINCE} ({COUNTRY})</h2>
+				<div class="inner">
+					<p class="location_desc">{LOCATION_DESC}</p>
+					<div class="location_image"><img src="{BOARD_URL}ext/consim/core/images/{LOCATION_IMAGE}" /></div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div class="panel">
-    	<div class="inner">
-            <div class="content">
-                <h2>{L_BUILDINGS}</h2>
-                <div class="inner">
-                    <ul class="buildinglist">
-                    <!-- BEGIN buildings -->
-                        <li>
-                            <dl>
-                                <dt class="building">{buildings.TYPE} {buildings.NAME}</dt>
-                                <dd class="action"><a href="{buildings.URL}" class="button2">Betreten</a></dd>
-                            </dl>
-                        </li>
-                    <!-- END buildings -->
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="panel">
+		<div class="inner">
+			<div class="content">
+				<h2>{L_BUILDINGS}</h2>
+				<div class="inner">
+					<ul class="buildinglist">
+					<!-- BEGIN buildings -->
+						<li>
+							<dl>
+								<dt class="building">{buildings.TYPE} {buildings.NAME}</dt>
+								<dd class="action"><a href="{buildings.URL}" class="button2">Betreten</a></dd>
+							</dl>
+						</li>
+					<!-- END buildings -->
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- IF CAN_TRAVEL -->
-    <div class="panel">
-    	<div class="inner">
-            <fieldset class="submit-buttons">
-                <input type="submit" tabindex="1" name="travel" class="button1" value="Reisen" />
-            </fieldset>
-        </div>
-    </div>
-    <!-- ENDIF -->
+	<!-- IF CAN_TRAVEL -->
+	<div class="panel">
+		<div class="inner">
+			<fieldset class="submit-buttons">
+				<input type="submit" tabindex="1" name="travel" class="button1" value="Reisen" />
+			</fieldset>
+		</div>
+	</div>
+	<!-- ENDIF -->
 
-    <div class="panel">
-    	<div class="inner">
-            <form method="post" action="{U_ACTION}" id="post">
-                <fieldset class="submit-buttons">
-                    <input type="submit" tabindex="2" name="delete" class="button1" value="Profil löschen" />
-                </fieldset>
-            </form>
-        </div>
-    </div>
+	<div class="panel">
+		<div class="inner">
+			<form method="post" action="{U_ACTION}" id="post">
+				<fieldset class="submit-buttons">
+					<input type="submit" tabindex="2" name="delete" class="button1" value="Profil löschen" />
+				</fieldset>
+			</form>
+		</div>
+	</div>
 
 </div>
 
@@ -61,26 +61,26 @@
 <div id="travel_popup" class="consim_popup">
 	<a href="#" class="popup_close"></a>
 	<h2 class="popup_title">Reisen</h2>
-    <div class="popup_text">
-        <p>
-            <img src="{BOARD_URL}ext/consim/core/images/map.jpeg" width="750"  height="350"/>
-        </p>
-        <form method="post" action="{U_ACTION}" id="post">
-        <ul class="travellist">
-            <!-- BEGIN destination -->
-            <li>
-                <dl>
-                    <dt class="travelname"><a href="{destination.URL}">{destination.NAME} ({destination.TYPE})</a></dt>
-                    <dd class="travelprovince">{destination.PROVINCE}</dd>
-                    <dd class="travelcountry">{destination.COUNTRY}</dd>
-                    <dd class="traveltime">{destination.TIME}</dd>
-                    <dd class="action"><a href="{destination.ACTION}" name="travel" class="button2">Reisen</a></dd>
-                </dl>
-            </li>
-            <!-- END destination -->
-        </ul>
-        </form>
-    </div>
+	<div class="popup_text">
+		<p>
+			<img src="{BOARD_URL}ext/consim/core/images/map.jpeg" width="750"  height="350"/>
+		</p>
+		<form method="post" action="{U_ACTION}" id="post">
+		<ul class="travellist">
+			<!-- BEGIN destination -->
+			<li>
+				<dl>
+					<dt class="travelname"><a href="{destination.URL}">{destination.NAME} ({destination.TYPE})</a></dt>
+					<dd class="travelprovince">{destination.PROVINCE}</dd>
+					<dd class="travelcountry">{destination.COUNTRY}</dd>
+					<dd class="traveltime">{destination.TIME}</dd>
+					<dd class="action"><a href="{destination.ACTION}" name="travel" class="button2">Reisen</a></dd>
+				</dl>
+			</li>
+			<!-- END destination -->
+		</ul>
+		</form>
+	</div>
 </div>
 
 <!-- INCLUDE consim_footer.html -->

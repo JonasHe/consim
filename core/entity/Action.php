@@ -18,22 +18,22 @@ class Action extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-    	'id'						=> 'integer',
-      	'user_id'                   => 'integer',
-      	'starttime'				    => 'integer',
-        'endtime'				    => 'integer',
-        'status'					=> 'boolean',
+		'id'						=> 'integer',
+		'user_id'                   => 'integer',
+		'starttime'				    => 'integer',
+		'endtime'				    => 'integer',
+		'status'					=> 'boolean',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-      	'id',
-        'user_id',
-        'starttime',
-        'endtime',
-        'status',
+		'id',
+		'user_id',
+		'starttime',
+		'endtime',
+		'status',
 	);
 
 	/**
@@ -42,11 +42,11 @@ class Action extends abstractEntity
 	*/
 	protected $consim_action_table;
 
-    /**
+	/**
 	* Constructor
 	*
 	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-    * @param string                               $consim_action_table         Name of the table used to store data
+	* @param string                               $consim_action_table         Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_action_table)
@@ -91,7 +91,7 @@ class Action extends abstractEntity
 		return $this->getInteger($this->data['id']);
 	}
 
-    /**
+	/**
 	* Get User ID
 	*
 	* @return int User ID
@@ -102,7 +102,7 @@ class Action extends abstractEntity
 		return $this->getInteger($this->data['user_id']);
 	}
 
-    /**
+	/**
 	* Get Start Time
 	*
 	* @return int Starttime
@@ -113,7 +113,7 @@ class Action extends abstractEntity
 		return $this->getInteger($this->data['starttime']);
 	}
 
-    /**
+	/**
 	* Get End Time
 	*
 	* @return int Endtime
@@ -124,7 +124,7 @@ class Action extends abstractEntity
 		return $this->getInteger($this->data['endtime']);
 	}
 
-    /**
+	/**
 	* Get Status
 	*
 	* @return int Status

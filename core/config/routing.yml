@@ -1,26 +1,26 @@
 consim_core_index:
-    pattern: /game
+    path: /game
     defaults: { _controller: consim.core.controller.Index:display }
 
 consim_core_location:
-    pattern: /game/location/{location_id}
+    path: /game/location/{location_id}
     defaults: { _controller: consim.core.controller.Index:showLocation, location_id: 0 }
     requirements:
         location_id: \w+
 
 consim_core_building:
-    pattern: /game/location/{location_id}/building/{building_id}
+    path: /game/location/{location_id}/building/{building_id}
     defaults: { _controller: consim.core.controller.Index:showLocationBuilding, location_id: 0, building_id: 0 }
     requirements:
         location_id: \w+
         building_id: \w+
 
 consim_core_travel:
-    pattern: /game/action/travel/{travel_id}
+    path: /game/action/travel/{travel_id}
     defaults: { _controller: consim.core.controller.Action:travel, travel_id: 0 }
     requirements:
         travel_id: \w+
 
 consim_core_register:
-    pattern: /game/register
+    path: /game/register
     defaults: { _controller: consim.core.controller.Register:display }
