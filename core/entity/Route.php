@@ -19,9 +19,9 @@ class Route extends abstractEntity
 	**/
 	protected static $fields = array(
 		'id'					=> 'integer',
-		'start_location_id'     => 'integer',
-		'end_location_id'       => 'integer',
-		'time'                  => 'integer',
+		'start_location_id'		=> 'integer',
+		'end_location_id'		=> 'integer',
+		'time'					=> 'integer',
 	);
 
 	/**
@@ -42,8 +42,8 @@ class Route extends abstractEntity
    /**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-	* @param string                               $consim_location_type_table  Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db							Database object
+	* @param string								$consim_location_type_table	Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_route_table)
@@ -57,9 +57,9 @@ class Route extends abstractEntity
 	*
 	* @param int $start Start Location
 	* @param int $end End Location
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return Route $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\user\exception\out_of_bounds
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function load($start, $end)
 	{

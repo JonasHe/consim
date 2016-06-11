@@ -41,14 +41,14 @@ class News
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config               $config          	Config object
-	* @param \phpbb\controller\helper			$controller_helper	Controller helper object
-	* @param ContainerInterface                	$container       	Service container interface
-	* @param \phpbb\user                        $user            	User object
-	* @param \phpbb\template\template           $template        	Template object
-	* @param \phpbb\request\request         	$request        	Request object
-	* @param \phpbb\db\driver\driver_interface	$db             	Database object
-	* @return \consim\core\controller\news
+	* @param \phpbb\config\config				$config			Config object
+	* @param \phpbb\controller\helper			$helper			Controller helper object
+	* @param ContainerInterface					$container		Service container interface
+	* @param \phpbb\user						$user			User object
+	* @param \phpbb\template\template			$template		Template object
+	* @param \phpbb\request\request				$request		Request object
+	* @param \phpbb\db\driver\driver_interface	$db				Database object
+	* @return News
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -202,7 +202,8 @@ class News
 		$errors = array();
 
 		//get the consimUser Entity
-		$news_channel = $this->container->get('consim.core.entity.NewsChannel');
+		/** @var  \consim\core\entity\NewsChannel */
+		$news_channel = $this->container->get('consim.core.entity.news_channel');
 
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('addChannel'))
@@ -243,7 +244,7 @@ class News
 	/**
 	* Edit a channel
 	*
-	* @param int id The id of the news to be edited
+	* @param int $id The id of the news to be edited
 	* @return null
 	* @access public
 	*/
@@ -255,7 +256,7 @@ class News
 		$errors = array();
 
 		//get the consimUser Entity
-		$news_channel = $this->container->get('consim.core.entity.NewsChannel');
+		$news_channel = $this->container->get('consim.core.entity.news_channel');
 
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('addChannel'))
@@ -315,7 +316,7 @@ class News
 	/**
 	* Delete a channel
 	*
-	* @param int id The id of the news to be deleted
+	* @param int $id The id of the news to be deleted
 	* @return null
 	* @access public
 	*/
@@ -323,7 +324,7 @@ class News
 	{
 		if(confirm_box(true))
 		{
-			$this->container->get('consim.core.entity.NewsChannel')->setId($id)->delete();
+			$this->container->get('consim.core.entity.news_channel')->setId($id)->delete();
 		}
 		else
 		{
@@ -351,7 +352,7 @@ class News
 		$errors = array();
 
 		//get the consimUser Entity
-		$news = $this->container->get('consim.core.entity.News');
+		$news = $this->container->get('consim.core.entity.news');
 
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('addNews'))
@@ -402,7 +403,7 @@ class News
 	/**
 	* Edit a news
 	*
-	* @param int id The id of the news to be edited
+	* @param int $id The id of the news to be edited
 	* @return null
 	* @access public
 	*/
@@ -414,7 +415,7 @@ class News
 		$errors = array();
 
 		//get the consimUser Entity
-		$news = $this->container->get('consim.core.entity.News');
+		$news = $this->container->get('consim.core.entity.news');
 
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('addNews'))
@@ -481,7 +482,7 @@ class News
 	/**
 	* Delete a news
 	*
-	* @param int id The id of the news to be deleted
+	* @param int $id The id of the news to be deleted
 	* @return null
 	* @access public
 	*/
@@ -489,7 +490,7 @@ class News
 	{
 		if(confirm_box(true))
 		{
-			$this->container->get('consim.core.entity.News')->setId($id)->delete();
+			$this->container->get('consim.core.entity.news')->setId($id)->delete();
 		}
 		else
 		{
@@ -511,25 +512,25 @@ class News
 	*/
 	public function topic_add()
 	{
-		$this->container->get('consim.core.entity.NewsTopics')->setTopicName($this->request->variable('topicTitle','',true))->insert();
+		$this->container->get('consim.core.entity.news_topics')->setTopicName($this->request->variable('topicTitle','',true))->insert();
 	}
 	
 	/**
 	* Edit a topic
 	*
-	* @param int id The id of the news to be edited
+	* @param int $id The id of the news to be edited
 	* @return null
 	* @access public
 	*/
 	public function topic_edit($id)
 	{
-		$this->container->get('consim.core.entity.NewsTopics')->setTopicName($this->request->variable('title','',true))->setId($id)->save();
+		$this->container->get('consim.core.entity.news_topics')->setTopicName($this->request->variable('title','',true))->setId($id)->save();
 	}
 	
 	/**
 	* Delete a topic
 	*
-	* @param int id The id of the news to be deleted
+	* @param int $id The id of the news to be deleted
 	* @return null
 	* @access public
 	*/
@@ -537,7 +538,7 @@ class News
 	{
 		if(confirm_box(true))
 		{
-			$this->container->get('consim.core.entity.NewsTopics')->setId($id)->delete();
+			$this->container->get('consim.core.entity.news_topics')->setId($id)->delete();
 		}
 		else
 		{

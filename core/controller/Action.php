@@ -40,14 +40,14 @@ class Action
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config               $config          	Config object
-	* @param \phpbb\controller\helper			$controller_helper	Controller helper object
-	* @param ContainerInterface                	$container       	Service container interface
-	* @param \phpbb\user                        $user            	User object
-	* @param \phpbb\template\template           $template        	Template object
-	* @param \phpbb\request\request         	$request        	Request object
-	* @param \phpbb\db\driver\driver_interface	$db             	Database object
-	* @return \consim\core\controller\index
+	* @param \phpbb\config\config				$config				Config object
+	* @param \phpbb\controller\helper			$helper				Controller helper object
+	* @param ContainerInterface					$container			Service container interface
+	* @param \phpbb\user						$user				User object
+	* @param \phpbb\template\template			$template			Template object
+	* @param \phpbb\request\request				$request			Request object
+	* @param \phpbb\db\driver\driver_interface	$db					Database object
+	* @return \consim\core\controller\Action
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -76,7 +76,7 @@ class Action
 		}
 
 		//Load ConsimUser
-		$consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
+		$consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
 
 		//Check, if user not active
 		if($consim_user->getActive())
@@ -85,17 +85,17 @@ class Action
 		}
 
 		//Get Infos about the Route
-		$route = $this->container->get('consim.core.entity.Route')->load($consim_user->getLocationId(), $travel_id);
+		$route = $this->container->get('consim.core.entity.route')->load($consim_user->getLocationId(), $travel_id);
 
 		$now = time();
 		//Add new Travel Action
-		$consim_user = $this->container->get('consim.core.entity.Travel')
-									   ->insert($consim_user->getUserId(),
-												$now,
-												//TODO: Removed division 10!
-												($now + ($route->getTime()/10)),
-												$consim_user->getLocationId(),
-												$travel_id);
+		$this->container->get('consim.core.entity.travel')
+			 ->insert($consim_user->getUserId(),
+					$now,
+					//TODO: Removed division 10!
+					($now + ($route->getTime()/10)),
+					$consim_user->getLocationId(),
+					$travel_id);
 
 		//$consim_user->setLocation($travel_id);
 		//$consim_user->save();

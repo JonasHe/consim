@@ -18,10 +18,10 @@ class ConsimFigure extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-		'id'						=> 'integer',
-		'groups'            	    => 'string',
-		'value'						=> 'string',
-		'name'				       	=> 'string',
+		'id'				=> 'integer',
+		'groups'			=> 'string',
+		'value'				=> 'string',
+		'name'				=> 'string',
 	);
 
 	/**
@@ -40,8 +40,8 @@ class ConsimFigure extends abstractEntity
    /**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                   Database object
-	* @param string                               $consim_person_table  Name of the table used to store consim user data
+	* @param \phpbb\db\driver\driver_interface	$db						Database object
+	* @param string								$consim_person_table	Name of the table used to store consim user data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_person_table)
@@ -54,9 +54,9 @@ class ConsimFigure extends abstractEntity
 	* Load the data from the database for this object
 	*
 	* @param int $id user identifier
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return ConsimFigure $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\user\exception\out_of_bounds
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function load($id)
 	{

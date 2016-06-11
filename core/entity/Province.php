@@ -18,9 +18,9 @@ class Province extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-		'id'						=> 'integer',
-		'name'                      => 'string',
-		'country_id'                => 'integer',
+		'id'					=> 'integer',
+		'name'					=> 'string',
+		'country_id'			=> 'integer',
 	);
 
 	/**
@@ -40,8 +40,8 @@ class Province extends abstractEntity
    /**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                     Database object
-	* @param string                               $consim_province_table  Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db						Database object
+	* @param string								$consim_province_table	Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_province_table)
@@ -54,7 +54,7 @@ class Province extends abstractEntity
 	* Load the data from the database for this object
 	*
 	* @param int $id user identifier
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return Province $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/

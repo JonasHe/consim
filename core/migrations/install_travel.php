@@ -29,76 +29,76 @@ class install_travel extends \phpbb\db\migration\migration
 		return array(
 			'add_tables'		=> array(
 				$this->table_prefix . 'consim_locations'	=> array(
-					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', 0),
-						'name'            		=> array('VCHAR:255', ''),
-						'description'           => array('TEXT_UNI', ''),
-						'image'                 => array('VCHAR:255', ''),
-						'type_id'               => array('UINT:8', 0),
-						'province_id'           => array('UINT:8', 0),
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+						'description'			=> array('TEXT_UNI', ''),
+						'image'					=> array('VCHAR:255', ''),
+						'type_id'				=> array('UINT:8', 0),
+						'province_id'			=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
-						'type_id'		        => array('INDEX', 'type_id'),
+						'type_id'				=> array('INDEX', 'type_id'),
 					),
 				),
 				$this->table_prefix . 'consim_location_types'	=> array(
-					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', 0),
-						'name'            		=> array('VCHAR:255', ''),
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
 				$this->table_prefix . 'consim_routes'	=> array(
-					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', 0),
-						'start_location_id'     => array('UINT:8', 0),
-						'end_location_id'       => array('UINT:8', 0),
-						'time'                  => array('UINT:8', 0),
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'start_location_id'		=> array('UINT:8', 0),
+						'end_location_id'		=> array('UINT:8', 0),
+						'time'					=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
-						'start_id'     => array('INDEX', 'start_location_id'),
-						'end_id'       => array('INDEX', 'end_location_id'),
+						'start_id'		=> array('INDEX', 'start_location_id'),
+						'end_id'		=> array('INDEX', 'end_location_id'),
 					),
 				),
 				$this->table_prefix . 'consim_travels'	=> array(
-					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', NULL, 'auto_increment'),
-						'start_location_id'     => array('UINT:8', 0),
-						'end_location_id'       => array('UINT:8', 0),
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', NULL, 'auto_increment'),
+						'start_location_id'		=> array('UINT:8', 0),
+						'end_location_id'		=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
 				$this->table_prefix . 'consim_provinces'	=> array(
-					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', 0),
-						'name'            		=> array('VCHAR:255', ''),
-						'country_id'            => array('UINT:8', 0),
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+						'country_id'			=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
 				$this->table_prefix . 'consim_countries'	=> array(
-					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', 0),
-						'name'            		=> array('VCHAR:255', ''),
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
 				$this->table_prefix . 'consim_building_types'	=> array(
-					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', 0),
-						'name'            		=> array('VCHAR:255', ''),
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
 				$this->table_prefix . 'consim_buildings'	=> array(
-					'COLUMNS'      => array(
-						'id'                    => array('UINT:8', 0),
-						'name'                  => array('VCHAR:255', ''),
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
 						'description'			=> array('TEXT', ''),
-						'type_id'               => array('UINT:8', 0),
-						'location_id'        	=> array('UINT:8', 0),
+						'type_id'				=> array('UINT:8', 0),
+						'location_id'			=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
@@ -114,6 +114,7 @@ class install_travel extends \phpbb\db\migration\migration
 	*/
 	public function update_data()
 	{
+		/** @var \phpbb\user $user */
 		global $user;
 
 		// Load the installation lang file
@@ -132,6 +133,7 @@ class install_travel extends \phpbb\db\migration\migration
 
 	public function insert_locations()
 	{
+		/** @var \phpbb\user $user */
 		global $user;
 
 		$locations = array(
@@ -174,6 +176,7 @@ class install_travel extends \phpbb\db\migration\migration
 
 	public function insert_location_types()
 	{
+		/** @var \phpbb\user $user */
 		global $user;
 
 		$types = array(
@@ -211,6 +214,7 @@ class install_travel extends \phpbb\db\migration\migration
 
 	public function insert_provinces()
 	{
+		/** @var \phpbb\user $user */
 		global $user;
 
 		$provinces = array(
@@ -221,6 +225,7 @@ class install_travel extends \phpbb\db\migration\migration
 
 	public function insert_countries()
 	{
+		/** @var \phpbb\user $user */
 		global $user;
 
 		$countries = array(
@@ -233,6 +238,7 @@ class install_travel extends \phpbb\db\migration\migration
 
 	public function insert_building_types()
 	{
+		/** @var \phpbb\user $user */
 		global $user;
 
 		$buildings = array(
@@ -245,6 +251,7 @@ class install_travel extends \phpbb\db\migration\migration
 
 	public function insert_buildings()
 	{
+		/** @var \phpbb\user $user */
 		global $user;
 
 		$location_buildings = array(

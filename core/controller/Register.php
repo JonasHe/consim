@@ -9,6 +9,8 @@
 
 namespace consim\core\controller;
 
+use consim\core\entity\ConsimFigure;
+use consim\core\entity\ConsimUser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -45,13 +47,13 @@ class Register
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config               $config     	Config object
-	* @param \phpbb\controller\helper    		$helper			Controller helper object
-	* @param ContainerInterface                	$container      Service container interface
-	* @param \phpbb\user                        $user           User object
-	* @param \phpbb\template\template           $template       Template object
-	* @param \phpbb\request\request         	$request        Request object
-	* @param \phpbb\db\driver\driver_interface	$db             Database object
+	* @param \phpbb\config\config				$config			Config object
+	* @param \phpbb\controller\helper			$helper			Controller helper object
+	* @param ContainerInterface					$container		Service container interface
+	* @param \phpbb\user						$user			User object
+	* @param \phpbb\template\template			$template		Template object
+	* @param \phpbb\request\request				$request		Request object
+	* @param \phpbb\db\driver\driver_interface	$db				Database object
 	* @return \consim\core\controller\Register
 	* @access public
 	*/
@@ -85,7 +87,7 @@ class Register
 		{
 			//Wenn ja, schicke ihn zum consim index
 			redirect($this->helper->route('consim_core_index'));
-			return;
+			return null;
 		}
 
 		// User is a guest
@@ -106,10 +108,11 @@ class Register
 		$this->user->add_lang_ext('consim/core', 'consim_register');
 
 		// Create an array to collect errors that will be output to the user
+		/** @var string[] $errors */
 		$errors = array();
 
 		//get the consimUser Entity
-		$consim_user = $this->container->get('consim.core.entity.ConsimUser');
+		$consim_user = $this->container->get('consim.core.entity.consim_user');
 		$figure = $consim_user->getFigureData();
 
 		// Is the form being submitted to us?
@@ -177,8 +180,8 @@ class Register
 	/**
 	* Prüfe die eingehenden Daten
 	*
-	* @param $errors Array
-	* @param $consim_user consim.core.entity.ConsimUser -Object
+	* @param string[] $errors
+	* @param ConsimUser $consim_user
 	* @return null
 	* @access private
 	*/
@@ -248,7 +251,7 @@ class Register
 	* Speichere die ConSim daten
 	* und speichere den User als Consim register
 	*
-	* @param $consim_user Object
+	* @param ConsimUser $consim_user
 	* @return null
 	* @access private
 	*/
@@ -265,7 +268,7 @@ class Register
 	/**
 	* Erzeugt die Auswahl
 	*
-	* @param $figure Array
+	* @param ConsimFigure[] $figure
 	* @return null
 	* @access private
 	*/

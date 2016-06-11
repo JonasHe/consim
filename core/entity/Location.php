@@ -19,9 +19,9 @@ class Location extends abstractEntity
 	**/
 	protected static $fields = array(
 		'id'						=> 'integer',
-		'name'                      => 'string',
-		'description'               => 'string',
-		'image'                     => 'string',
+		'name'						=> 'string',
+		'description'				=> 'string',
+		'image'						=> 'string',
 		'type'						=> 'string',
 		'province'					=> 'string',
 		'country'					=> 'string',
@@ -46,12 +46,11 @@ class Location extends abstractEntity
 	/**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-	* @param ContainerInterface                	  $container       	           Service container interface
-	* @param string                               $consim_location_table       Name of the table used to store data
-	* @param string                               $consim_location_type_table  Name of the table used to store data
-	* @param string                               $consim_province_table       Name of the table used to store data
-	* @param string                               $consim_country_table        Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db								Database object
+	* @param string								$consim_location_table			Name of the table used to store data
+	* @param string								$consim_location_type_table		Name of the table used to store data
+	* @param string								$consim_province_table			Name of the table used to store data
+	* @param string								$consim_country_table			Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
@@ -71,8 +70,9 @@ class Location extends abstractEntity
 	* Load the data from the database for this object
 	*
 	* @param int $id user identifier
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return Location $this object for chaining calls; load()->set()->save()
 	* @access public
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function load($id)
 	{
@@ -117,7 +117,6 @@ class Location extends abstractEntity
 	}
 
 	/**
-<<<<<<< HEAD
 	* Get Description
 	*
 	* @return string Description
@@ -140,8 +139,6 @@ class Location extends abstractEntity
 	}
 
 	/**
-=======
->>>>>>> refs/remotes/origin/master
 	* Get Name of Type
 	*
 	* @return string Type

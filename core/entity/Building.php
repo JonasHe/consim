@@ -18,10 +18,10 @@ class Building extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-		'id'           => 'integer',
-		'name'         => 'string',
-		'description'  => 'string',
-		'type'         => 'string',
+		'id'			=> 'integer',
+		'name'			=> 'string',
+		'description'	=> 'string',
+		'type'			=> 'string',
 	);
 
 	/**
@@ -36,15 +36,14 @@ class Building extends abstractEntity
 	* @var string
 	*/
 	protected $consim_building_table;
-	protected $consim_location_building_table;
+	protected $consim_building_type_table;
 
 	/**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                               Database object
-	* @param ContainerInterface                	  $container       	                Service container interface
-	* @param string                               $consim_building_table            Name of the table used to store data
-	* @param string                               $consim_location_building_table    Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db								Database object
+	* @param string								$consim_building_table			Name of the table used to store data
+	* @param string								$consim_building_type_table		Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
@@ -60,7 +59,7 @@ class Building extends abstractEntity
 	* Load the data from the database for this object
 	*
 	* @param int $id user identifier
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return Building $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/

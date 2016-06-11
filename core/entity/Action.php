@@ -18,11 +18,11 @@ class Action extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-		'id'						=> 'integer',
-		'user_id'                   => 'integer',
-		'starttime'				    => 'integer',
-		'endtime'				    => 'integer',
-		'status'					=> 'boolean',
+		'id'					=> 'integer',
+		'user_id'				=> 'integer',
+		'starttime'				=> 'integer',
+		'endtime'				=> 'integer',
+		'status'				=> 'boolean',
 	);
 
 	/**
@@ -45,8 +45,8 @@ class Action extends abstractEntity
 	/**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-	* @param string                               $consim_action_table         Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db						Database object
+	* @param string								$consim_action_table	Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_action_table)
@@ -61,7 +61,7 @@ class Action extends abstractEntity
 	* @param int $id user identifier
 	* @return object $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\user\exception\out_of_bounds
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function load($id)
 	{

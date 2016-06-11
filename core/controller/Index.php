@@ -40,19 +40,23 @@ class Index
 	/**
 	* Class-Variables
 	**/
+	/** @var  \consim\core\entity\ConsimUser */
 	protected $consim_user;
+
+	/** @var  \consim\core\entity\Location */
+	protected $consim_user_location;
 
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config               $config          	Config object
-	* @param \phpbb\controller\helper			$controller_helper	Controller helper object
-	* @param ContainerInterface                	$container       	Service container interface
-	* @param \phpbb\user                        $user            	User object
-	* @param \phpbb\template\template           $template        	Template object
-	* @param \phpbb\request\request         	$request        	Request object
-	* @param \phpbb\db\driver\driver_interface	$db             	Database object
-	* @return \consim\core\controller\index
+	* @param \phpbb\config\config				$config			Config object
+	* @param ContainerInterface					$container		Service container interface
+	* @param \phpbb\controller\helper			$helper			Controller helper object
+	* @param \phpbb\user						$user			User object
+	* @param \phpbb\template\template			$template		Template object
+	* @param \phpbb\request\request				$request		Request object
+	* @param \phpbb\db\driver\driver_interface	$db				Database object
+	* @return \consim\core\controller\Index
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -93,7 +97,7 @@ class Index
 			$this->db->sql_query($sql);
 
 			$sql = 'DELETE FROM phpbb_consim_user
-				WHERE user_id = ' . $this->user->data['user_id'];
+				WHERE user_id = 2'. $this->user->data['user_id'];
 			$this->db->sql_query($sql);
 
 			//Leite den User weiter zum Consim Register
@@ -104,7 +108,7 @@ class Index
 		if($this->consim_user->getActive())
 		{
 			//get current action
-			$action = $this->container->get('consim.core.operators.ActionLists')->getCurrentActionFromUser($this->user->data['user_id']);
+			$action = $this->container->get('consim.core.operators.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
 			//Is User traveling?
 			if($action instanceof \consim\core\entity\TravelLocation)
 			{
@@ -115,6 +119,8 @@ class Index
 		{
 			return $this->showLocation();
 		}
+
+		return null;
 	}
 
 	/**
@@ -162,8 +168,8 @@ class Index
 		//must be an integer
 		$location_id = (int) $location_id;
 
-		$location = $this->container->get('consim.core.entity.Location');
-		$location_op = $this->container->get('consim.core.operators.Locations');
+		$location = $this->container->get('consim.core.entity.location');
+		$location_op = $this->container->get('consim.core.operators.locations');
 
 		//location from location_id or from position of user?
 		if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
@@ -228,8 +234,8 @@ class Index
 			redirect($this->helper->route('consim_core_location', array('location_id' => $location_id)));
 		}
 
-		$location = $this->container->get('consim.core.entity.Location')->load($location_id);
-		$building = $this->container->get('consim.core.entity.Building')->load($building_id);
+		$location = $this->container->get('consim.core.entity.location')->load($location_id);
+		$building = $this->container->get('consim.core.entity.building')->load($building_id);
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
@@ -263,16 +269,16 @@ class Index
 		$this->user->add_lang_ext('consim/core', 'consim_common');
 
 		//Check all finished Actions
-		$this->container->get('consim.core.operators.ActionLists')->finishedActions();
+		$this->container->get('consim.core.operators.action_lists')->finishedActions();
 
 		//Get the ConSim-User
-		$this->consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
+		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
 
 		//Get User-Location
-		$this->consim_user_location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocationId());
+		$this->consim_user_location = $this->container->get('consim.core.entity.location')->load($this->consim_user->getLocationId());
 
 		//Get the newsticker
-		$this->container->get('consim.core.controller.News')->fetchNews();
+		$this->container->get('consim.core.controller.news')->fetchNews();
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(

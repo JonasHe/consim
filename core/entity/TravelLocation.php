@@ -21,11 +21,11 @@ class TravelLocation extends Travel
 	**/
 	protected static $fields = array(
 		'id'						=> 'integer',
-		'user_id'                   => 'integer',
-		'starttime'				    => 'integer',
-		'endtime'				    => 'integer',
-		'start_location'            => 'setStartLocation',
-		'end_location'              => 'setEndLocation',
+		'user_id'					=> 'integer',
+		'starttime'					=> 'integer',
+		'endtime'					=> 'integer',
+		'start_location'			=> 'setStartLocation',
+		'end_location'				=> 'setEndLocation',
 		'status'					=> 'boolean',
 	);
 
@@ -61,14 +61,14 @@ class TravelLocation extends Travel
 	/**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-	* @param ContainerInterface                	  $container       	           Service container interface
-	* @param string                               $consim_action_table         Name of the table used to store data
-	* @param string                               $consim_travel_table         Name of the table used to store data
-	* @param string                               $consim_location_table       Name of the table used to store data
-	* @param string                               $consim_location_type_table  Name of the table used to store data
-	* @param string                               $consim_province_table       Name of the table used to store data
-	* @param string                               $consim_country_table        Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db							Database object
+	* @param ContainerInterface					$container					Service container interface
+	* @param string								$consim_action_table		Name of the table used to store data
+	* @param string								$consim_travel_table		Name of the table used to store data
+	* @param string								$consim_location_table		Name of the table used to store data
+	* @param string								$consim_location_type_table	Name of the table used to store data
+	* @param string								$consim_province_table		Name of the table used to store data
+	* @param string								$consim_country_table		Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
@@ -94,7 +94,7 @@ class TravelLocation extends Travel
 	* Load the data from the database for this object
 	*
 	* @param int $id travel action id
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return TravelLocation $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -144,7 +144,7 @@ class TravelLocation extends Travel
 			'province'		=> $row['startProvince'],
 			'country'		=> $row['startCountry'],
 		);
-		$this->data['start_location'] = $this->container->get('consim.core.entity.Location')->import($start_location);
+		$this->data['start_location'] = $this->container->get('consim.core.entity.location')->import($start_location);
 
 		$end_location = array(
 			'id'			=> $row['endId'],
@@ -155,7 +155,7 @@ class TravelLocation extends Travel
 			'province'		=> $row['endProvince'],
 			'country'		=> $row['endCountry'],
 		);
-		$this->data['end_location'] = $this->container->get('consim.core.entity.Location')->import($end_location);
+		$this->data['end_location'] = $this->container->get('consim.core.entity.location')->import($end_location);
 
 		return $this;
 	}
@@ -174,14 +174,14 @@ class TravelLocation extends Travel
 	/**
 	* Set Start Location
 	*
-	* @param int $location_data
-	* @return Action $this object for chaining calls; load()->set()->save()
+	* @param mixed[] $location_data
+	* @return TravelLocation $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
 	public function setStartLocation($location_data)
 	{
-		$this->data['start_location'] = $this->container->get('consim.core.entity.Location')->import($location_data);
+		$this->data['start_location'] = $this->container->get('consim.core.entity.location')->import($location_data);
 		return $this;
 	}
 
@@ -199,14 +199,14 @@ class TravelLocation extends Travel
 	/**
 	* Set End Location
 	*
-	* @param int $location_data
-	* @return Action $this object for chaining calls; load()->set()->save()
+	* @param mixed[] $location_data
+	* @return TravelLocation $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
 	public function setEndLocation($location_data)
 	{
-		$this->data['end_location'] = $this->container->get('consim.core.entity.Location')->import($location_data);
+		$this->data['end_location'] = $this->container->get('consim.core.entity.location')->import($location_data);
 		return $this;
 	}
 

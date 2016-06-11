@@ -16,16 +16,24 @@ class core_module
 
 	public function main($id, $mode)
 	{
+		/**
+		 * @var \Symfony\Component\DependencyInjection\ContainerInterface $phpbb_container
+		 * @var \phpbb\request\request $request
+		 * @var \phpbb\user $user
+		 * @var \phpbb\template\template $template
+		 */
 		global $phpbb_container, $request, $user, $template;
 
 		// Get an instance of the admin controller and set the template (we only need acp_rsp_user in this file)
-		$news_controller = $phpbb_container->get('consim.core.controller.News');
+		$news_controller = $phpbb_container->get('consim.core.controller.news');
 
 		// Requests
 		$action = $request->variable('action', '');
 		
 		// Load the module modes
 		$this->tpl_name = 'consim_news';
+		$this->page_title = $user->lang['CONSIM_TITLE'];
+
 		switch ($mode)
 		{
 			case 'news':
@@ -83,6 +91,5 @@ class core_module
 				return;
 			break;
 		}
-		$this->page_title = $user->lang['CONSIM_TITLE'];
 	}
 }

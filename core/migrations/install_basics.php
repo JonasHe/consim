@@ -55,46 +55,46 @@ class install_basics extends \phpbb\db\migration\migration
 						'nahkampf'				=> array('UINT:3', 1),
 						'schusswaffen'			=> array('UINT:3', 1),
 						'sprengmittel'			=> array('UINT:3', 1),
-						'militarkunde'          => array('UINT:3', 1),
+						'militarkunde'			=> array('UINT:3', 1),
 						'spionage'				=> array('UINT:3', 1),
 						'schmuggel'				=> array('UINT:3', 1),
 						'medizin'				=> array('UINT:3', 1),
 						'uberlebenskunde'		=> array('UINT:3', 1),
-						'bak_rubel'             => array('UINT:8', 0),
-						'sur_dinar'             => array('UINT:8', 0),
-						'frt_dollar'            => array('UINT:8', 0),
-						'location_id'           => array('UINT:8', 1),
-						'active'                => array('BOOL', 0),
+						'bak_rubel'				=> array('UINT:8', 0),
+						'sur_dinar'				=> array('UINT:8', 0),
+						'frt_dollar'			=> array('UINT:8', 0),
+						'location_id'			=> array('UINT:8', 1),
+						'active'				=> array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('user_id'),
 					'KEYS'			=> array(
-						'location_id'     => array('INDEX', 'location_id'),
+						'location_id'	=> array('INDEX', 'location_id'),
 					),
 				),
 				$this->table_prefix . 'consim_figure' => array(
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', 0),
-						'groups'                => array('VCHAR:255', ''),
+						'groups'				=> array('VCHAR:255', ''),
 						'value'					=> array('VCHAR:255', ''),
-						'name'			        => array('VCHAR:255', ''),
+						'name'					=> array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
 				$this->table_prefix . 'consim_actions' => array(
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', NULL, 'auto_increment'),
-						'user_id'         		=> array('UINT:8', 0),
+						'user_id'				=> array('UINT:8', 0),
 						'starttime'				=> array('TIMESTAMP', 0),
-						'endtime'               => array('TIMESTAMP', 0),
-						'travel_id'             => array('UINT:8', 0),
-						'status'                => array('BOOL', 0),
+						'endtime'				=> array('TIMESTAMP', 0),
+						'travel_id'				=> array('UINT:8', 0),
+						'status'				=> array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
-						'starttime'       => array('INDEX', 'starttime'),
-						'endtime'         => array('INDEX', 'endtime'),
-						'travel_id'       => array('INDEX', 'travel_id'),
-						'status'          => array('INDEX', 'status'),
+						'starttime'		=> array('INDEX', 'starttime'),
+						'endtime'		=> array('INDEX', 'endtime'),
+						'travel_id'		=> array('INDEX', 'travel_id'),
+						'status'		=> array('INDEX', 'status'),
 					),
 				),
 			),
@@ -114,6 +114,7 @@ class install_basics extends \phpbb\db\migration\migration
 	*/
 	public function update_data()
 	{
+		/** @var \phpbb\user $user */
 		global $user;
 
 		// Load the installation lang file
@@ -128,6 +129,7 @@ class install_basics extends \phpbb\db\migration\migration
 
 	public function insert_consim_figure()
 	{
+		/** @var \phpbb\user $user */
 		global $user;
 
 		$figure_data = array(

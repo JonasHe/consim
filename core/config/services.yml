@@ -12,7 +12,7 @@ services:
         tags:
             - { name: event.listener }
 
-    consim.core.controller.Index:
+    consim.core.controller.index:
         class: consim\core\controller\Index
         arguments:
             - @config
@@ -23,7 +23,7 @@ services:
             - @request
             - @dbal.conn
 
-    consim.core.controller.Action:
+    consim.core.controller.action:
         class: consim\core\controller\Action
         arguments:
             - @config
@@ -34,7 +34,7 @@ services:
             - @request
             - @dbal.conn
 
-    consim.core.controller.Register:
+    consim.core.controller.register:
         class: consim\core\controller\Register
         arguments:
             - @config
@@ -45,7 +45,7 @@ services:
             - @request
             - @dbal.conn
 
-    consim.core.controller.News:
+    consim.core.controller.news:
         class: consim\core\controller\News
         arguments:
             - @config
@@ -54,9 +54,9 @@ services:
             - @user
             - @template
             - @request
-            - @dbal.conn            
+            - @dbal.conn
 
-    consim.core.operators.Locations:
+    consim.core.operators.locations:
         class: consim\core\operators\Locations
         arguments:
             - @dbal.conn
@@ -69,7 +69,7 @@ services:
             - %tables.consim.buildings%
             - %tables.consim.building_types%
 
-    consim.core.operators.ActionLists:
+    consim.core.operators.action_lists:
         class: consim\core\operators\ActionLists
         arguments:
             - @dbal.conn
@@ -77,7 +77,7 @@ services:
             - %tables.consim.actions%
             - %tables.consim.travels%
 
-    consim.core.entity.Building:
+    consim.core.entity.building:
         class: consim\core\entity\Building
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
@@ -85,7 +85,7 @@ services:
             - %tables.consim.buildings%
             - %tables.consim.building_types%
 
-    consim.core.entity.TravelLocation:
+    consim.core.entity.travel_location:
         class: consim\core\entity\TravelLocation
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
@@ -98,7 +98,7 @@ services:
             - %tables.consim.provinces%
             - %tables.consim.countries%
 
-    consim.core.entity.Travel:
+    consim.core.entity.travel:
         class: consim\core\entity\Travel
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
@@ -107,28 +107,28 @@ services:
             - %tables.consim.travels%
             - %tables.consim.user%
 
-    consim.core.entity.Action:
+    consim.core.entity.action:
         class: consim\core\entity\Action
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
             - %tables.consim.actions%
 
-    consim.core.entity.Route:
+    consim.core.entity.route:
         class: consim\core\entity\Route
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
             - %tables.consim.routes%
 
-    consim.core.entity.Province:
+    consim.core.entity.province:
         class: consim\core\entity\Province
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
             - %tables.consim.provinces%
 
-    consim.core.entity.RouteLocation:
+    consim.core.entity.route_location:
         class: consim\core\entity\RouteLocation
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
@@ -139,7 +139,7 @@ services:
             - %tables.consim.provinces%
             - %tables.consim.countries%
 
-    consim.core.entity.Location:
+    consim.core.entity.location:
         class: consim\core\entity\Location
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
@@ -149,35 +149,35 @@ services:
             - %tables.consim.provinces%
             - %tables.consim.countries%
 
-    consim.core.entity.LocationType:
+    consim.core.entity.location_type:
         class: consim\core\entity\LocationType
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
             - %tables.consim.location_types%
             
-    consim.core.entity.News:
+    consim.core.entity.news:
         class: consim\core\entity\News
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
             - %tables.consim.news%
             
-    consim.core.entity.NewsChannel:
+    consim.core.entity.news_channel:
         class: consim\core\entity\NewsChannel
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
             - %tables.consim.news_channels%
             
-    consim.core.entity.NewsTopics:
+    consim.core.entity.news_topics:
         class: consim\core\entity\NewsTopics
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
             - %tables.consim.news_topics%
             
-    consim.core.entity.ConsimUser:
+    consim.core.entity.consim_user:
         class: consim\core\entity\ConsimUser
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
@@ -186,7 +186,7 @@ services:
             - %tables.consim.user%
             - %tables.consim.figure%
 
-    consim.core.entity.ConsimFigure:
+    consim.core.entity.consim_figure:
         class: consim\core\entity\ConsimFigure
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
