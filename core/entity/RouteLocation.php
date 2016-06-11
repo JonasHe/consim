@@ -18,12 +18,12 @@ class RouteLocation extends Location
 	*
 	**/
 	protected static $fields = array(
-		'id'						=> 'integer',
-		'name'                      => 'string',
-		'type'						=> 'string',
-		'province'					=> 'string',
-		'country'					=> 'string',
-		'time'                      => 'integer',
+		'id'					=> 'integer',
+		'name'					=> 'string',
+		'type'					=> 'string',
+		'province'				=> 'string',
+		'country'				=> 'string',
+		'time'					=> 'integer',
 	);
 
 	/**
@@ -33,11 +33,6 @@ class RouteLocation extends Location
 		'id',
 		'time',
 	);
-
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
 
 	/**
 	* The database table the consim user data are stored in
@@ -52,12 +47,12 @@ class RouteLocation extends Location
 	/**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-	* @param string                               $consim_route_table          Name of the table used to store data
-	* @param string                               $consim_location_table       Name of the table used to store data
-	* @param string                               $consim_location_type_table  Name of the table used to store data
-	* @param string                               $consim_province_table       Name of the table used to store data
-	* @param string                               $consim_country_table        Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db								Database object
+	* @param string								$consim_route_table				Name of the table used to store data
+	* @param string								$consim_location_table			Name of the table used to store data
+	* @param string								$consim_location_type_table		Name of the table used to store data
+	* @param string								$consim_province_table			Name of the table used to store data
+	* @param string								$consim_country_table			Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
@@ -79,7 +74,7 @@ class RouteLocation extends Location
 	* Load the data from the database for this object
 	*
 	* @param int $start Start Location
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return RouteLocation $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/

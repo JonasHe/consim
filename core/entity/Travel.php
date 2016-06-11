@@ -20,11 +20,11 @@ class Travel extends Action
 	**/
 	protected static $fields = array(
 		'id'						=> 'integer',
-		'user_id'                   => 'integer',
-		'starttime'				    => 'integer',
-		'endtime'				    => 'integer',
-		'start_location_id'         => 'integer',
-		'end_location_id'           => 'integer',
+		'user_id'					=> 'integer',
+		'starttime'					=> 'integer',
+		'endtime'					=> 'integer',
+		'start_location_id'			=> 'integer',
+		'end_location_id'			=> 'integer',
 		'status'					=> 'boolean',
 	);
 
@@ -41,11 +41,6 @@ class Travel extends Action
 		'status',
 	);
 
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
 	/**
 	* The database table the consim user data are stored in
 	* @var string
@@ -57,13 +52,16 @@ class Travel extends Action
 	/**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-	* @param string                               $consim_action_table         Name of the table used to store data
-	* @param string                               $consim_travel_table         Name of the table used to store data
-	* @param string                               $consim_user_table           Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db						Database object
+	* @param string								$consim_action_table	Name of the table used to store data
+	* @param string								$consim_travel_table	Name of the table used to store data
+	* @param string								$consim_user_table		Name of the table used to store data
 	* @access public
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_action_table, $consim_travel_table, $consim_user_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db,
+								$consim_action_table,
+								$consim_travel_table,
+								$consim_user_table)
 	{
 		$this->db = $db;
 		$this->consim_action_table = $consim_action_table;
@@ -72,11 +70,21 @@ class Travel extends Action
 	}
 
 	/**
+	* Don't load this Entity
+	*/
+	public function load() {}
+
+	/**
 	* Insert the Data for the first time
 	*
 	* Will throw an exception if the data was already inserted (call save() instead)
 	*
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @param int $user_id
+	* @param int $starttime
+	* @param int $endtime
+	* @param int $start_location_id
+	* @param int $end_location_id
+	* @return Travel $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -132,69 +140,15 @@ class Travel extends Action
 	}
 
 	/**
-	* Get ID
-	*
-	* @return int ID
-	* @access public
-	*/
-	public function getId()
-	{
-		return $this->getInteger($this->data['id']);
-	}
-
-	/**
-	* Get User ID
-	*
-	* @return int UserID
-	* @access public
-	*/
-	public function getUserId()
-	{
-		return $this->getInteger($this->data['user_id']);
-	}
-
-	/**
-	* Get Starttime
-	*
-	* @return int Starttime
-	* @access public
-	*/
-	public function getStartTime()
-	{
-		return $this->getInteger($this->data['starttime']);
-	}
-
-	/**
-	* Get Endtime
-	*
-	* @return int Endtime
-	* @access public
-	*/
-	public function getEndTime()
-	{
-		return $this->getInteger($this->data['endtime']);
-	}
-
-	/**
-	* Get Status
-	*
-	* @return bool Status
-	* @access public
-	*/
-	public function getStatus()
-	{
-		return $this->getInteger($this->data['status']);
-	}
-
-	/**
 	* Travel done
 	*
-	* @return Action $this object for chaining calls; load()->set()->save()
+	* @return Travel $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\core\exception\unexpected_value
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function done()
 	{
+		// TODO: WAS???
 		if($this->data['endtime'] > time() || $this->data['status'] === 1)
 		{
 			throw new \consim\core\exception\out_of_bounds($integer);

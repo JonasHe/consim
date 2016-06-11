@@ -19,11 +19,11 @@ class Index
 	/** @var \phpbb\config\config */
 	protected $config;
 
-	/** @var \phpbb\controller\helper */
-	protected $controller_helper;
-
 	/** @var ContainerInterface */
 	protected $container;
+
+	/** @var \phpbb\controller\helper */
+	protected $helper;
 
 	/** @var \phpbb\user */
 	protected $user;
@@ -40,19 +40,23 @@ class Index
 	/**
 	* Class-Variables
 	**/
+	/** @var  \consim\core\entity\ConsimUser */
 	protected $consim_user;
+
+	/** @var  \consim\core\entity\Location */
+	protected $consim_user_location;
 
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config               $config          	Config object
-	* @param \phpbb\controller\helper			$controller_helper	Controller helper object
-	* @param ContainerInterface                	$container       	Service container interface
-	* @param \phpbb\user                        $user            	User object
-	* @param \phpbb\template\template           $template        	Template object
-	* @param \phpbb\request\request         	$request        	Request object
-	* @param \phpbb\db\driver\driver_interface	$db             	Database object
-	* @return \consim\core\controller\index
+	* @param \phpbb\config\config				$config			Config object
+	* @param ContainerInterface					$container		Service container interface
+	* @param \phpbb\controller\helper			$helper			Controller helper object
+	* @param \phpbb\user						$user			User object
+	* @param \phpbb\template\template			$template		Template object
+	* @param \phpbb\request\request				$request		Request object
+	* @param \phpbb\db\driver\driver_interface	$db				Database object
+	* @return \consim\core\controller\Index
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -93,7 +97,7 @@ class Index
 			$this->db->sql_query($sql);
 
 			$sql = 'DELETE FROM phpbb_consim_user
-				WHERE user_id = ' . $this->user->data['user_id'];
+				WHERE user_id = 2'. $this->user->data['user_id'];
 			$this->db->sql_query($sql);
 
 			//Leite den User weiter zum Consim Register
@@ -104,7 +108,7 @@ class Index
 		if($this->consim_user->getActive())
 		{
 			//get current action
-			$action = $this->container->get('consim.core.operators.ActionLists')->getCurrentActionFromUser($this->user->data['user_id']);
+			$action = $this->container->get('consim.core.operators.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
 			//Is User traveling?
 			if($action instanceof \consim\core\entity\TravelLocation)
 			{
@@ -115,6 +119,8 @@ class Index
 		{
 			return $this->showLocation();
 		}
+
+		return null;
 	}
 
 	/**
@@ -132,11 +138,13 @@ class Index
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			'START_LOCATION_NAME'       => $travel->getStartLocation()->getName(),
+			'START_LOCATION_IMAGE'      => $travel->getStartLocation()->getImage(),
 			'START_LOCATION_TYPE'       => $travel->getStartLocation()->getType(),
 			'START_LOCATION_PROVINCE'   => $travel->getStartLocation()->getProvince(),
 			'START_LOCATION_COUNTRY'    => $travel->getStartLocation()->getCountry(),
 			'START_TIME'                => date("d.m.Y - H:i:s", $travel->getStartTime()),
 			'END_LOCATION_NAME'         => $travel->getEndLocation()->getName(),
+			'END_LOCATION_IMAGE'        => $travel->getEndLocation()->getImage(),
 			'END_LOCATION_TYPE'         => $travel->getEndLocation()->getType(),
 			'END_LOCATION_PROVINCE'     => $travel->getEndLocation()->getProvince(),
 			'END_LOCATION_COUNTRY'      => $travel->getEndLocation()->getCountry(),
@@ -160,20 +168,21 @@ class Index
 		//must be an integer
 		$location_id = (int) $location_id;
 
-		$location = $this->container->get('consim.core.entity.Location');
-		$location_op = $this->container->get('consim.core.operators.Locations');
+		$location = $this->container->get('consim.core.entity.location');
+		$location_op = $this->container->get('consim.core.operators.locations');
 
 		//location from location_id or from position of user?
-		if($location_id == 0)
+		if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
 		{
-			$location_id = $this->consim_user->getLocationId();
-
+			$location = $this->consim_user_location;
 			//Create the Travelpopup
-			$location_op->setAllRouteDestinationsToTemplate($location_id, $this->template, $this->helper);
+			$location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
 		}
-
-		$location->load($location_id);
-		$buildings = $location_op->getAllBuildings($location_id);
+		else
+		{
+			$location->load($location_id);
+		}
+		$buildings = $location_op->getAllBuildings($location->getId());
 
 		//Put all Buildings in the Template
 		foreach ($buildings as $entity)
@@ -181,9 +190,9 @@ class Index
 			$building = array(
 				'NAME'	     	=> ($entity->getName() != '')? '"' . $entity->getName() . '"' : '',
 				'TYPE'  		=> $entity->getType(),
-				'URL'           => $this->helper->route('consim_core_location_building',
+				'URL'           => $this->helper->route('consim_core_building',
 													array(
-														'location_id' => $location_id,
+														'location_id' => $location->getId(),
 														'building_id' => $entity->getId()
 													)),
 			);
@@ -193,8 +202,10 @@ class Index
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'CAN_TRAVEL'                    => ($location_id === $this->consim_user->getLocationId())? TRUE : FALSE,
+			'CAN_TRAVEL'                    => ($location->getId() === $this->consim_user->getLocationId())? TRUE : FALSE,
 			'LOCATION'                      => $location->getName(),
+			'LOCATION_DESC'                 => $location->getDescription(),
+			'LOCATION_IMAGE'                => $location->getImage(),
 			'LOCATION_TYPE'                 => $location->getType(),
 			'PROVINCE'                      => $location->getProvince(),
 			'COUNTRY'                       => $location->getCountry(),
@@ -223,8 +234,8 @@ class Index
 			redirect($this->helper->route('consim_core_location', array('location_id' => $location_id)));
 		}
 
-		$location = $this->container->get('consim.core.entity.Location')->load($location_id);
-		$building = $this->container->get('consim.core.entity.LocationBuilding')->load($building_id);
+		$location = $this->container->get('consim.core.entity.location')->load($location_id);
+		$building = $this->container->get('consim.core.entity.building')->load($building_id);
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
@@ -258,13 +269,16 @@ class Index
 		$this->user->add_lang_ext('consim/core', 'consim_common');
 
 		//Check all finished Actions
-		$this->container->get('consim.core.operators.ActionLists')->finishedActions();
+		$this->container->get('consim.core.operators.action_lists')->finishedActions();
 
 		//Get the ConSim-User
-		$this->consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
+		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
+
+		//Get User-Location
+		$this->consim_user_location = $this->container->get('consim.core.entity.location')->load($this->consim_user->getLocationId());
 
 		//Get the newsticker
-		$this->container->get('consim.core.controller.News')->fetchNews();
+		$this->container->get('consim.core.controller.news')->fetchNews();
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
@@ -283,6 +297,18 @@ class Index
 			'SCHMUGGEL'					    => $this->consim_user->getSchmuggel(),
 			'MEDIZIN'						=> $this->consim_user->getMedizin(),
 			'UBERLEBENSKUNDE'				=> $this->consim_user->getUberlebenskunde(),
+
+			'BAK_RUBEL'                     => $this->consim_user->getBakRubel(),
+			'SUR_DINAR'                     => $this->consim_user->getSurDinar(),
+			'FRT_DOLLAR'                    => $this->consim_user->getFrtDollar(),
+
+			//Informations for current location and time
+			'TIME'                          => date("d.m.Y - H:i:s", time()),
+			'USER_LOCATION'                 => $this->consim_user_location->getName(),
+			'USER_LOCATION_TYPE'            => $this->consim_user_location->getType(),
+			'USER_LOCATION_URL'             => $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
+			'USER_PROVINCE'                 => $this->consim_user_location->getProvince(),
+			'USER_COUNTRY'                  => $this->consim_user_location->getCountry(),
 		));
 	}
 }

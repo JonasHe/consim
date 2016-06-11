@@ -18,10 +18,10 @@ class ConsimFigure extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-		'id'						=> 'integer',
-		'description'    	        => 'string',
-		'value'						=> 'string',
-		'translate'					=> 'string',
+		'id'				=> 'integer',
+		'groups'			=> 'string',
+		'value'				=> 'string',
+		'name'				=> 'string',
 	);
 
 	/**
@@ -30,11 +30,6 @@ class ConsimFigure extends abstractEntity
 	protected static $validate_unsigned = array(
 		'id',
 	);
-
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
 
 	/**
 	* The database table the consim user data are stored in
@@ -45,8 +40,8 @@ class ConsimFigure extends abstractEntity
    /**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                   Database object
-	* @param string                               $consim_person_table  Name of the table used to store consim user data
+	* @param \phpbb\db\driver\driver_interface	$db						Database object
+	* @param string								$consim_person_table	Name of the table used to store consim user data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_person_table)
@@ -59,13 +54,13 @@ class ConsimFigure extends abstractEntity
 	* Load the data from the database for this object
 	*
 	* @param int $id user identifier
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return ConsimFigure $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\user\exception\out_of_bounds
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT id, description, value, translate
+		$sql = 'SELECT id, groups, value, name
 			FROM ' . $this->consim_person_table . '
 			WHERE id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
@@ -76,62 +71,6 @@ class ConsimFigure extends abstractEntity
 		{
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
-
-		return $this;
-	}
-
-	/**
-	* Insert the Data for the first time
-	*
-	* Will throw an exception if the data was already inserted (call save() instead)
-	*
-	* @return object $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\out_of_bounds
-	*/
-	public function insert()
-	{
-		if (!empty($this->data['id']))
-		{
-			// The data already exists
-			throw new \consim\core\exception\out_of_bounds('id');
-		}
-
-		// Make extra sure there is no id set
-		unset($this->data['id']);
-
-		// Insert the data to the database
-		$sql = 'INSERT INTO ' . $this->consim_person_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
-		$this->db->sql_query($sql);
-
-		// Set the id using the id created by the SQL insert
-		$this->data['id'] = (int) $this->db->sql_nextid();
-
-		return $this;
-	}
-
-	/**
-	* Save the current settings to the database
-	*
-	* This must be called before closing or any changes will not be saved!
-	* If adding a data (saving for the first time), you must call insert() or an exeception will be thrown
-	*
-	* @return object $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\out_of_bounds
-	*/
-	public function save()
-	{
-		if (empty($this->data['id']))
-		{
-			// The data does not exist
-			throw new \consim\core\exception\out_of_bounds('id');
-		}
-
-		$sql = 'UPDATE ' . $this->consim_person_table . '
-			SET ' . $this->db->sql_build_array('UPDATE', $this->data) . '
-			WHERE id = ' . $this->getId();
-		$this->db->sql_query($sql);
 
 		return $this;
 	}
@@ -148,14 +87,14 @@ class ConsimFigure extends abstractEntity
 	}
 
 	/**
-	* Get Description
+	* Get Groups
 	*
-	* @return string Description
+	* @return string Groups
 	* @access public
 	*/
-	public function getDescription()
+	public function getGroups()
 	{
-		return $this->getString($this->data['description']);
+		return $this->getString($this->data['groups']);
 	}
 
    /**
@@ -170,13 +109,13 @@ class ConsimFigure extends abstractEntity
 	}
 
    /**
-	* Get Translate
+	* Get Name
 	*
-	* @return string Translate
+	* @return string Name
 	* @access public
 	*/
-	public function getTranslate()
+	public function getName()
 	{
-		return $this->getString($this->data['translate']);
+		return $this->getString($this->data['name']);
 	}
 }

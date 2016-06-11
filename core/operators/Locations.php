@@ -8,6 +8,8 @@
 
 namespace consim\core\operators;
 
+use consim\core\entity\Building;
+use consim\core\entity\RouteLocation;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -31,20 +33,20 @@ class Locations
 	protected $consim_province_table;
 	protected $consim_country_table;
 	protected $consim_building_table;
-	protected $consim_location_building_table;
+	protected $consim_building_type_table;
 
 	/**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                               Database object
-	* @param ContainerInterface                	  $container       	                Service container interface
-	* @param string                               $consim_route_table               Name of the table used to store data
-	* @param string                               $consim_location_table            Name of the table used to store data
-	* @param string                               $consim_location_type_table       Name of the table used to store data
-	* @param string                               $consim_province_table            Name of the table used to store data
-	* @param string                               $consim_country_table             Name of the table used to store data
-	* @param string                               $consim_building_table            Name of the table used to store data
-	* @param string                               $consim_location_building_table   Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db								Database object
+	* @param ContainerInterface					$container						Service container interface
+	* @param string								$consim_route_table				Name of the table used to store data
+	* @param string								$consim_location_table			Name of the table used to store data
+	* @param string								$consim_location_type_table		Name of the table used to store data
+	* @param string								$consim_province_table			Name of the table used to store data
+	* @param string								$consim_country_table			Name of the table used to store data
+	* @param string								$consim_building_table			Name of the table used to store data
+	* @param string								$consim_building_type_table		Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
@@ -55,7 +57,7 @@ class Locations
 								$consim_province_table,
 								$consim_country_table,
 								$consim_building_table,
-								$consim_location_building_table)
+								$consim_building_type_table)
 	{
 		$this->db = $db;
 		$this->container = $container;
@@ -65,14 +67,14 @@ class Locations
 		$this->consim_province_table = $consim_province_table;
 		$this->consim_country_table = $consim_country_table;
 		$this->consim_building_table = $consim_building_table;
-		$this->consim_location_building_table = $consim_location_building_table;
+		$this->consim_building_type_table = $consim_building_type_table;
 	}
 
 	/**
 	* Get all buildings in the location
 	*
 	* @param int $location_id Location ID
-	* @return array Array of LocationBuilding-Entity
+	* @return Building[]
 	* @access public
 	*/
 	public function getAllBuildings($location_id)
@@ -80,14 +82,14 @@ class Locations
 		$entities = array();
 
 		$sql = 'SELECT lb.id, lb.name, lb.description, b.name AS type
-			FROM ' . $this->consim_location_building_table . ' lb
-			LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
+			FROM ' . $this->consim_building_table . ' lb
+			LEFT JOIN ' . $this->consim_building_type_table . ' b ON lb.type_id = b.id
 			WHERE lb.location_id = ' . (int) $location_id;
 		$result = $this->db->sql_query($sql);
 
 		while($row = $this->db->sql_fetchrow($result))
 		{
-			$entities[] = $this->container->get('consim.core.entity.LocationBuilding')->import($row);
+			$entities[] = $this->container->get('consim.core.entity.building')->import($row);
 		}
 		$this->db->sql_freeresult($result);
 
@@ -98,7 +100,7 @@ class Locations
 	* Get all destination, which can be arrive at the start location
 	*
 	* @param int $start start location
-	* @return array Array of location Entity
+	* @return RouteLocation[]
 	* @access public
 	*/
 	public function getAllRouteDestinations($start)
@@ -117,7 +119,7 @@ class Locations
 
 		while($row = $this->db->sql_fetchrow($result))
 		{
-			$entities[] = $this->container->get('consim.core.entity.RouteLocation')->import($row);
+			$entities[] = $this->container->get('consim.core.entity.route_location')->import($row);
 		}
 		$this->db->sql_freeresult($result);
 
@@ -128,8 +130,10 @@ class Locations
 	* Set all destination, which can be arrive at the start location
 	* as SELECT to template
 	*
-	* @param int $start start location
-	* @param object $template
+	* @param int						$start
+	* @param \phpbb\template\template	$template
+	* @param \phpbb\controller\helper	$helper
+	* return void
 	* @access public
 	*/
 	public function setAllRouteDestinationsToTemplate($start, $template, $helper)

@@ -55,40 +55,46 @@ class install_basics extends \phpbb\db\migration\migration
 						'nahkampf'				=> array('UINT:3', 1),
 						'schusswaffen'			=> array('UINT:3', 1),
 						'sprengmittel'			=> array('UINT:3', 1),
-						'militarkunde'          => array('UINT:3', 1),
+						'militarkunde'			=> array('UINT:3', 1),
 						'spionage'				=> array('UINT:3', 1),
 						'schmuggel'				=> array('UINT:3', 1),
 						'medizin'				=> array('UINT:3', 1),
 						'uberlebenskunde'		=> array('UINT:3', 1),
-						'location_id'           => array('UINT:8', 4),
-						'active'                => array('BOOL', 0),
+						'bak_rubel'				=> array('UINT:8', 0),
+						'sur_dinar'				=> array('UINT:8', 0),
+						'frt_dollar'			=> array('UINT:8', 0),
+						'location_id'			=> array('UINT:8', 1),
+						'active'				=> array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('user_id'),
+					'KEYS'			=> array(
+						'location_id'	=> array('INDEX', 'location_id'),
+					),
 				),
 				$this->table_prefix . 'consim_figure' => array(
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', 0),
-						'description'	        => array('VCHAR:255', ''),
+						'groups'				=> array('VCHAR:255', ''),
 						'value'					=> array('VCHAR:255', ''),
-						'translate'				=> array('VCHAR:255', ''),
+						'name'					=> array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
 				$this->table_prefix . 'consim_actions' => array(
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', NULL, 'auto_increment'),
-						'user_id'         		=> array('UINT:8', 0),
+						'user_id'				=> array('UINT:8', 0),
 						'starttime'				=> array('TIMESTAMP', 0),
-						'endtime'               => array('TIMESTAMP', 0),
-						'travel_id'             => array('UINT:8', 0),
-						'status'                => array('BOOL', 0),
+						'endtime'				=> array('TIMESTAMP', 0),
+						'travel_id'				=> array('UINT:8', 0),
+						'status'				=> array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
-						'starttime'				=> array('INDEX', 'starttime'),
-						'endtime'				=> array('INDEX', 'endtime'),
-						'travel_id'				=> array('INDEX', 'travel_id'),
-						'status'				=> array('INDEX', 'status'),
+						'starttime'		=> array('INDEX', 'starttime'),
+						'endtime'		=> array('INDEX', 'endtime'),
+						'travel_id'		=> array('INDEX', 'travel_id'),
+						'status'		=> array('INDEX', 'status'),
 					),
 				),
 			),
@@ -108,6 +114,12 @@ class install_basics extends \phpbb\db\migration\migration
 	*/
 	public function update_data()
 	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		// Load the installation lang file
+		$user->add_lang_ext('consim/core', 'consim_install');
+
 		return array(
 			// Set the current version
 			array('config.add', array('consim_version', $this->consim_version)),
@@ -117,34 +129,37 @@ class install_basics extends \phpbb\db\migration\migration
 
 	public function insert_consim_figure()
 	{
+		/** @var \phpbb\user $user */
+		global $user;
+
 		$figure_data = array(
-			  array('id' => '1','description' => 'geschlecht','value' => 'm','translate' => 'MANNLICH'),
-			  array('id' => '2','description' => 'geschlecht','value' => 'w','translate' => 'WEIBLICH'),
-			  array('id' => '3','description' => 'geburtsland','value' => 'frt','translate' => 'FRT'),
-			  array('id' => '4','description' => 'geburtsland','value' => 'bak','translate' => 'BAK'),
-			  array('id' => '5','description' => 'geburtsland','value' => 'sur','translate' => 'SUR'),
-			  array('id' => '6','description' => 'religion','value' => 'orthodox','translate' => 'ORTHODOX'),
-			  array('id' => '7','description' => 'religion','value' => 'katholisch','translate' => 'KATHOLISCH'),
-			  array('id' => '8','description' => 'religion','value' => 'muslimisch','translate' => 'MUSLIMISCH'),
-			  array('id' => '9','description' => 'religion','value' => 'atheistisch','translate' => 'ATHEISTISCH'),
-			  array('id' => '10','description' => 'haarfarbe','value' => 'schwarz','translate' => 'SCHWARZ'),
-			  array('id' => '11','description' => 'haarfarbe','value' => 'rot','translate' => 'ROT'),
-			  array('id' => '12','description' => 'haarfarbe','value' => 'hbraun','translate' => 'HELLBRAUN'),
-			  array('id' => '13','description' => 'haarfarbe','value' => 'dbraun','translate' => 'DUNKELBRAUN'),
-			  array('id' => '14','description' => 'haarfarbe','value' => 'blond','translate' => 'BLOND'),
-			  array('id' => '15','description' => 'haarfarbe','value' => 'dblond','translate' => 'DUNKELBLOND'),
-			  array('id' => '16','description' => 'augenfarbe','value' => 'grun','translate' => 'GRUN'),
-			  array('id' => '17','description' => 'augenfarbe','value' => 'grau','translate' => 'GRAU'),
-			  array('id' => '18','description' => 'augenfarbe','value' => 'braun','translate' => 'BRAUN'),
-			  array('id' => '19','description' => 'augenfarbe','value' => 'gbraun','translate' => 'GRUNBRAUN'),
-			  array('id' => '20','description' => 'augenfarbe','value' => 'blau','translate' => 'BLAU'),
-			  array('id' => '21','description' => 'augenfarbe','value' => 'blgrun','translate' => 'BLAUGRUN'),
-			  array('id' => '22','description' => 'augenfarbe','value' => 'bernstein','translate' => 'BERNSTEIN'),
-			  array('id' => '23','description' => 'besondere_merkmale','value' => 'keine','translate' => 'KEINE'),
-			  array('id' => '24','description' => 'besondere_merkmale','value' => 'narbe','translate' => 'NARBE'),
-			  array('id' => '25','description' => 'besondere_merkmale','value' => 'schmuck','translate' => 'SCHMUCK'),
-			  array('id' => '26','description' => 'besondere_merkmale','value' => 'deformierung','translate' => 'DEFORMIERUNG'),
-			  array('id' => '27','description' => 'besondere_merkmale','value' => 'stark_ubergewichtig','translate' => 'STARK_UBERGEWICHTIG'),
+			  array('id' => '1','groups' => 'geschlecht','value' => 'm','name' => $user->lang('MANNLICH')),
+			  array('id' => '2','groups' => 'geschlecht','value' => 'w','name' => $user->lang('WEIBLICH')),
+			  array('id' => '3','groups' => 'geburtsland','value' => 'frt','name' => $user->lang('FRT')),
+			  array('id' => '4','groups' => 'geburtsland','value' => 'bak','name' => $user->lang('BAK')),
+			  array('id' => '5','groups' => 'geburtsland','value' => 'sur','name' => $user->lang('SUR')),
+			  array('id' => '6','groups' => 'religion','value' => 'orthodox','name' => $user->lang('ORTHODOX')),
+			  array('id' => '7','groups' => 'religion','value' => 'katholisch','name' => $user->lang('KATHOLISCH')),
+			  array('id' => '8','groups' => 'religion','value' => 'muslimisch','name' => $user->lang('MUSLIMISCH')),
+			  array('id' => '9','groups' => 'religion','value' => 'atheistisch','name' => $user->lang('ATHEISTISCH')),
+			  array('id' => '10','groups' => 'haarfarbe','value' => 'schwarz','name' => $user->lang('SCHWARZ')),
+			  array('id' => '11','groups' => 'haarfarbe','value' => 'rot','name' => $user->lang('ROT')),
+			  array('id' => '12','groups' => 'haarfarbe','value' => 'hbraun','name' => $user->lang('HELLBRAUN')),
+			  array('id' => '13','groups' => 'haarfarbe','value' => 'dbraun','name' => $user->lang('DUNKELBRAUN')),
+			  array('id' => '14','groups' => 'haarfarbe','value' => 'blond','name' => $user->lang('BLOND')),
+			  array('id' => '15','groups' => 'haarfarbe','value' => 'dblond','name' => $user->lang('DUNKELBLOND')),
+			  array('id' => '16','groups' => 'augenfarbe','value' => 'grun','name' => $user->lang('GRUN')),
+			  array('id' => '17','groups' => 'augenfarbe','value' => 'grau','name' => $user->lang('GRAU')),
+			  array('id' => '18','groups' => 'augenfarbe','value' => 'braun','name' => $user->lang('BRAUN')),
+			  array('id' => '19','groups' => 'augenfarbe','value' => 'gbraun','name' => $user->lang('GRUNBRAUN')),
+			  array('id' => '20','groups' => 'augenfarbe','value' => 'blau','name' => $user->lang('BLAU')),
+			  array('id' => '21','groups' => 'augenfarbe','value' => 'blgrun','name' => $user->lang('BLAUGRUN')),
+			  array('id' => '22','groups' => 'augenfarbe','value' => 'bernstein','name' => $user->lang('BERNSTEIN')),
+			  array('id' => '23','groups' => 'besondere_merkmale','value' => 'keine','name' => $user->lang('KEINE')),
+			  array('id' => '24','groups' => 'besondere_merkmale','value' => 'narbe','name' => $user->lang('NARBE')),
+			  array('id' => '25','groups' => 'besondere_merkmale','value' => 'schmuck','name' => $user->lang('SCHMUCK')),
+			  array('id' => '26','groups' => 'besondere_merkmale','value' => 'deformierung','name' => $user->lang('DEFORMIERUNG')),
+			  array('id' => '27','groups' => 'besondere_merkmale','value' => 'stark_ubergewichtig','name' => $user->lang('STARK_UBERGEWICHTIG')),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_figure', $figure_data);
 	}

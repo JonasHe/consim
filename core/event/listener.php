@@ -30,10 +30,10 @@ class listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config        $config             Config object
-	* @param \phpbb\controller\helper    $controller_helper  Controller helper object
-	* @param \phpbb\template\template    $template           Template object
-	* @param \phpbb\user                 $user               User object
+	* @param \phpbb\config\config		$config				Config object
+	* @param \phpbb\controller\helper	$controller_helper	Controller helper object
+	* @param \phpbb\template\template	$template			Template object
+	* @param \phpbb\user				$user				User object
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,

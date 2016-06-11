@@ -39,10 +39,11 @@ abstract class abstractEntity
 	* Any existing data on this game is over-written.
 	* All data is validated and an exception is thrown if any data is invalid.
 	*
-	* @param array $data Data array, typically from the database
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @param mixed[] $data Data array, typically from the database
+	* @return self
 	* @access public
-	* @throws \consim\core\exception\base
+	* @throws \consim\core\exception\invalid_argument
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function import($data)
 	{
@@ -98,6 +99,7 @@ abstract class abstractEntity
 	{
 		return (isset($string)) ? (string) $string : '';
 	}
+
 	/**
 	* Set a string to data
 	*
@@ -105,14 +107,21 @@ abstract class abstractEntity
 	* @param string $string New value of $varname
 	* @param integer $max_char Allowed number of characters; Default: 255
 	* @param integer $min_char Minimum number of characters; Default: 0
-	* @return page_interface $this object for chaining calls; load()->set()->save()
+	* @return abstractEntity $this object for chaining calls; load()->set()->save()
 	* @access protected
+	* @throws \consim\core\exception\invalid_argument
+	* @throws \consim\core\exception\unexpected_value
 	*/
 	protected function setString($varname, $string, $max_char = 255, $min_char = 0)
 	{
 		// Enforce a string
 		$string = (string) $string;
 		$varname = (string) $varname;
+
+		//Enforce a integer
+		$max_char = (integer) $max_char;
+		$min_char = (integer) $min_char;
+
 		if (strlen($string) <= $min_char)
 		{
 			throw new \consim\core\exception\invalid_argument(array($varname, 'TOO_SHORT'));
@@ -143,15 +152,21 @@ abstract class abstractEntity
 	* @param string $varname Name of variable in data array
 	* @param integer $integer New value of $varname
 	* @param boolean $unsigned If must the integer unsigned?; Default: true
-	* @return page_interface $this object for chaining calls; load()->set()->save()
+	* @param int $max_int Maximum of Integer
+	* @return abstractEntity $this object for chaining calls; load()->set()->save()
 	* @access protected
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	protected function setInteger($varname, $integer, $unsigned = true, $max_int = PHP_INT_MAX)
 	{
 		// Enforce a integer
 		$integer = (integer) $integer;
+		$max_int = (integer) $max_int;
 		// Enforce a string
 		$varname = (string) $varname;
+		// Enforce a bool
+		$unsigned = (boolean) $unsigned;
+
 		// If the data is less than 0, it's not unsigned and we'll throw an exception
 		if (($unsigned && $integer < 0) || ($integer > $max_int))
 		{

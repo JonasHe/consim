@@ -18,8 +18,8 @@ class NewsTopics extends abstractEntity
 	*
 	**/
 	protected static $fields = array(
-		'topic_id'					=> 'integer',
-		'topic_name'					=> 'string',
+		'topic_id'				=> 'integer',
+		'topic_name'			=> 'string',
 	);
 
 	/**
@@ -43,8 +43,8 @@ class NewsTopics extends abstractEntity
    /**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                     Database object
-	* @param string                               $consim_province_table  Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db							Database object
+	* @param string								$consim_news_topics_table	Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_news_topics_table)
@@ -57,9 +57,9 @@ class NewsTopics extends abstractEntity
 	* Load the data from the database for this object
 	*
 	* @param int $id user identifier
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return NewsTopics $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\user\exception\out_of_bounds
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function load($id)
 	{
@@ -83,7 +83,7 @@ class NewsTopics extends abstractEntity
 	*
 	* Will throw an exception if the data was already inserted (call save() instead)
 	*
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return NewsTopics $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -114,7 +114,7 @@ class NewsTopics extends abstractEntity
 	* This must be called before closing or any changes will not be saved!
 	* If adding a data (saving for the first time), you must call insert() or an exeception will be thrown
 	*
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return NewsTopics $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -137,7 +137,7 @@ class NewsTopics extends abstractEntity
 	/**
 	* Delete the entry with the given Id
 	*
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return NewsTopics $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -170,7 +170,8 @@ class NewsTopics extends abstractEntity
 	/**
 	* Set News ID
 	*
-	* @return int ID
+	* @param int $id
+	* @return NewsTopics
 	* @access public
 	*/
 	public function setId($id)
@@ -193,7 +194,7 @@ class NewsTopics extends abstractEntity
 	* Set topic name
 	*
 	* @param string $topic
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @return NewsTopics $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/

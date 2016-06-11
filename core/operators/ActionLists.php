@@ -8,6 +8,7 @@
 
 namespace consim\core\operators;
 
+use consim\core\entity\TravelLocation;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -31,10 +32,10 @@ class ActionLists
 	/**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                          Database object
-	* @param ContainerInterface                	  $container       	           Service container interface
-	* @param string                               $consim_action_table         Name of the table used to store data
-	* @param string                               $consim_travel_table         Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db						Database object
+	* @param ContainerInterface					$container				Service container interface
+	* @param string								$consim_action_table	Name of the table used to store data
+	* @param string								$consim_travel_table	Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
@@ -51,7 +52,6 @@ class ActionLists
 	/**
 	* Get all finished actions
 	*
-	* @return array Array of Action
 	* @access public
 	*/
 	public function finishedActions()
@@ -67,7 +67,7 @@ class ActionLists
 		{
 			if($row['start_location_id'] != NULL)
 			{
-				$entity = $this->container->get('consim.core.entity.Travel')->import($row)->done();
+				$this->container->get('consim.core.entity.travel')->import($row)->done();
 			}
 		}
 		$this->db->sql_freeresult($result);
@@ -77,7 +77,7 @@ class ActionLists
 	* Get current action from user
 	*
 	* @param int $user_id User ID
-	* @return Object Travel
+	* @return TravelLocation
 	* @access public
 	*/
 	public function getCurrentActionFromUser($user_id)
@@ -93,7 +93,7 @@ class ActionLists
 
 		if($row['travel_id'] > 0 )
 		{
-			$action = $this->container->get('consim.core.entity.TravelLocation')->load($row['id']);
+			$action = $this->container->get('consim.core.entity.travel_location')->load($row['id']);
 		}
 
 		return $action;

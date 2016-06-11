@@ -44,8 +44,8 @@ class ConsimUser extends abstractEntity
 		'schmuggel'						=> 'integer',
 		'medizin'						=> 'integer',
 		'uberlebenskunde'				=> 'integer',
-		'location_id'                   => 'integer',
-		'active'                        => 'bool'
+		'location_id'					=> 'integer',
+		'active'						=> 'bool'
 	);
 
 	/**
@@ -72,11 +72,6 @@ class ConsimUser extends abstractEntity
 		'active',
 	);
 
-	protected $data;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
 	/** @var ContainerInterface */
 	protected $container;
 
@@ -85,18 +80,13 @@ class ConsimUser extends abstractEntity
 	* @var string
 	*/
 	protected $consim_user_table;
-
-	/**
-	* The database table the person data are stored in
-	* @var string
-	*/
 	protected $consim_person_table;
 
 	/**
 	* Variable to save the data from person table
-	* @var array
+	* @var ConsimFigure[]
 	*/
-	protected $figure_data;
+	private $figure_data;
 
 	//extra language skill
 	const EXTRA_LANG = 25;
@@ -104,9 +94,10 @@ class ConsimUser extends abstractEntity
    /**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface    $db                 Database object
-	* @param ContainerInterface                	  $container            Service container interface
-	* @param string                               $consim_user_table  Name of the table used to store consim user data
+	* @param \phpbb\db\driver\driver_interface	$db						Database object
+	* @param ContainerInterface					$container				Service container interface
+	* @param string								$consim_user_table		Name of the table used to store consim user
+	* @param string								$consim_person_table	Name of the table used to store consim person data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, ContainerInterface $container, $consim_user_table, $consim_person_table)
@@ -126,7 +117,7 @@ class ConsimUser extends abstractEntity
 	* @param int $user_id user identifier
 	* @return object $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\user\exception\out_of_bounds
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function load($user_id)
 	{
@@ -148,17 +139,19 @@ class ConsimUser extends abstractEntity
 	/**
 	* Load all data from the database from person table
 	*
-	* @return array with ConsimPerson Objects
+	* @return ConsimFigure[]
 	* @access private
 	*/
 	private function figure_load()
 	{
-		$sql = 'SELECT id, description, value, translate
+		$figure_data = array();
+
+		$sql = 'SELECT id, groups, value, name
 			FROM ' . $this->consim_person_table;
 		$result = $this->db->sql_query($sql);
 		while($row = $this->db->sql_fetchrow($result))
 		{
-			$figure_data[$row['id']] = $this->container->get('consim.core.entity.ConsimFigure')
+			$figure_data[$row['id']] = $this->container->get('consim.core.entity.consim_figure')
 									  ->import($row);
 		}
 		$this->db->sql_freeresult($result);
@@ -171,6 +164,7 @@ class ConsimUser extends abstractEntity
 	*
 	* Will throw an exception if the data was already inserted (call save() instead)
 	*
+	* @param int $user_id
 	* @return object $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
@@ -233,7 +227,7 @@ class ConsimUser extends abstractEntity
 	/**
 	* Get User ID
 	*
-	* @return string vorname
+	* @return int User ID
 	* @access public
 	*/
 	public function getUserId()
@@ -244,7 +238,7 @@ class ConsimUser extends abstractEntity
 	/**
 	* Get vorname
 	*
-	* @return string vorname
+	* @return string Vorname
 	* @access public
 	*/
 	public function getVorname()
@@ -266,7 +260,7 @@ class ConsimUser extends abstractEntity
 	}
 
    /**
-	* Get nachname
+	* Get Nachname
 	*
 	* @return string nachname
 	* @access public
@@ -291,7 +285,7 @@ class ConsimUser extends abstractEntity
    /**
 	* Get geschlecht
 	*
-	* @return object ConSimFigure
+	* @return ConsimFigure
 	* @access public
 	*/
 	public function getGeschlecht()
@@ -315,18 +309,17 @@ class ConsimUser extends abstractEntity
    /**
 	* Get geburtsland
 	*
-	* @return object ConSimFigure
+	* @return ConsimFigure
 	* @access public
 	*/
 	public function getGeburtsland()
 	{
-		//return $this->getString($this->data['geburtsland']);
 		return $this->figure_data[$this->data['geburtsland_id']];
 	}
 	/**
 	* Set geburtsland
 	*
-	* @param string $geschlecht
+	* @param string $geburtsland
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
@@ -339,7 +332,7 @@ class ConsimUser extends abstractEntity
    /**
 	* Get religion
 	*
-	* @return object ConSimFigure
+	* @return ConsimFigure
 	* @access public
 	*/
 	public function getReligion()
@@ -350,7 +343,7 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set religion
 	*
-	* @param string $geschlecht
+	* @param string $religion
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
@@ -363,7 +356,7 @@ class ConsimUser extends abstractEntity
    /**
 	* Get haarfarbe
 	*
-	* @return object ConSimFigure
+	* @return ConsimFigure
 	* @access public
 	*/
 	public function getHaarfarbe()
@@ -387,7 +380,7 @@ class ConsimUser extends abstractEntity
    /**
 	* Get augenfarbe
 	*
-	* @return object ConSimFigure
+	* @return ConsimFigure
 	* @access public
 	*/
 	public function getAugenfarbe()
@@ -411,7 +404,7 @@ class ConsimUser extends abstractEntity
    /**
 	* Get Besondere Merkmale
 	*
-	* @return object ConSimFigure
+	* @return ConsimFigure
 	* @access public
 	*/
 	public function getBesondereMerkmale()
@@ -435,7 +428,7 @@ class ConsimUser extends abstractEntity
    /**
 	* Get Sprache Tadsowisch
 	*
-	* @return string Sprache Tadsowisch
+	* @return int Sprache Tadsowisch
 	* @access public
 	*/
 	public function getSpracheTadsowisch()
@@ -445,20 +438,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Sprache Tadsowisch
 	*
-	* @param string $sprache_tadsowisch
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSpracheTadsowisch($sprache_tadsowisch)
+	public function setSpracheTadsowisch($level)
 	{
-		return $this->setInteger('sprache_tadsowisch', $sprache_tadsowisch, true, 100);
+		return $this->setInteger('sprache_tadsowisch', $level, true, 100);
 	}
 
    /**
 	* Get Sprache bakirisch
 	*
-	* @return string Sprache bakirisch
+	* @return int Sprache bakirisch
 	* @access public
 	*/
 	public function getSpracheBakirisch()
@@ -468,20 +461,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Sprache bakirisch
 	*
-	* @param string $sprache_bakirisch
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSpracheBakirisch($sprache_bakirisch)
+	public function setSpracheBakirisch($level)
 	{
-		return $this->setInteger('sprache_bakirisch', $sprache_bakirisch, true, 100);
+		return $this->setInteger('sprache_bakirisch', $level, true, 100);
 	}
 
    /**
 	* Get Sprache Suranisch
 	*
-	* @return string Sprache Suranisch
+	* @return int Sprache Suranisch
 	* @access public
 	*/
 	public function getSpracheSuranisch()
@@ -491,20 +484,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Sprache Suranisch
 	*
-	* @param string $sprache_suranisch
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSpracheSuranisch($sprache_suranisch)
+	public function setSpracheSuranisch($level)
 	{
-		return $this->setInteger('sprache_suranisch', $sprache_suranisch, true, 100);
+		return $this->setInteger('sprache_suranisch', $level, true, 100);
 	}
 
    /**
 	* Get rhetorik
 	*
-	* @return string rhetorik
+	* @return int rhetorik
 	* @access public
 	*/
 	public function getRhetorik()
@@ -514,20 +507,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set rhetorik
 	*
-	* @param string $rhetorik
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setRhetorik($rhetorik)
+	public function setRhetorik($level)
 	{
-		return $this->setInteger('rhetorik', $rhetorik, true, 100);
+		return $this->setInteger('rhetorik', $level, true, 100);
 	}
 
 	/**
 	* Get Administration
 	*
-	* @return string Administration
+	* @return int Administration
 	* @access public
 	*/
 	public function getAdministration()
@@ -537,20 +530,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Administration
 	*
-	* @param string $administration
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setAdministration($administration)
+	public function setAdministration($level)
 	{
-		return $this->setInteger('administration', $administration, true, 100);
+		return $this->setInteger('administration', $level, true, 100);
 	}
 
    /**
 	* Get wirtschaft
 	*
-	* @return string wirtschaft
+	* @return int wirtschaft
 	* @access public
 	*/
 	public function getWirtschaft()
@@ -560,20 +553,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set wirtschaft
 	*
-	* @param string $wirtschaft
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setWirtschaft($wirtschaft)
+	public function setWirtschaft($level)
 	{
-		return $this->setInteger('wirtschaft', $wirtschaft, true, 100);
+		return $this->setInteger('wirtschaft', $level, true, 100);
 	}
 
    /**
 	* Get technik
 	*
-	* @return string technik
+	* @return int technik
 	* @access public
 	*/
 	public function getTechnik()
@@ -583,20 +576,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set technik
 	*
-	* @param string $technik
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setTechnik($technik)
+	public function setTechnik($level)
 	{
-		return $this->setInteger('technik', $technik, true, 100);
+		return $this->setInteger('technik', $level, true, 100);
 	}
 
    /**
 	* Get nahkampf
 	*
-	* @return string nahkampf
+	* @return int nahkampf
 	* @access public
 	*/
 	public function getNahkampf()
@@ -606,20 +599,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set nahkampf
 	*
-	* @param string $nahkampf
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setNahkampf($nahkampf)
+	public function setNahkampf($level)
 	{
-		return $this->setInteger('nahkampf', $nahkampf, true, 100);
+		return $this->setInteger('nahkampf', $level, true, 100);
 	}
 
 	/**
 	* Get schusswaffen
 	*
-	* @return string schusswaffen
+	* @return int schusswaffen
 	* @access public
 	*/
 	public function getSchusswaffen()
@@ -629,20 +622,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set schusswaffen
 	*
-	* @param string $schusswaffen
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSchusswaffen($schusswaffen)
+	public function setSchusswaffen($level)
 	{
-		return $this->setInteger('schusswaffen', $schusswaffen, true, 100);
+		return $this->setInteger('schusswaffen', $level, true, 100);
 	}
 
 	/**
 	* Get Sprengmittel
 	*
-	* @return string Sprengmittel
+	* @return int Sprengmittel
 	* @access public
 	*/
 	public function getSprengmittel()
@@ -652,20 +645,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Sprengmittel
 	*
-	* @param string $sprengmittel
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSprengmittel($sprengmittel)
+	public function setSprengmittel($level)
 	{
-		return $this->setInteger('sprengmittel', $sprengmittel, true, 100);
+		return $this->setInteger('sprengmittel', $level, true, 100);
 	}
 
    /**
 	* Get militarkunde
 	*
-	* @return string militarkunde
+	* @return int militarkunde
 	* @access public
 	*/
 	public function getMilitarkunde()
@@ -675,20 +668,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set militarkunde
 	*
-	* @param string $militarkunde
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setMilitarkunde($militarkunde)
+	public function setMilitarkunde($level)
 	{
-		return $this->setInteger('militarkunde', $militarkunde, true, 100);
+		return $this->setInteger('militarkunde', $level, true, 100);
 	}
 
    /**
 	* Get spionage
 	*
-	* @return string spionage
+	* @return int spionage
 	* @access public
 	*/
 	public function getSpionage()
@@ -698,20 +691,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set militarkunde
 	*
-	* @param string $spionage
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSpionage($spionage)
+	public function setSpionage($level)
 	{
-		return $this->setInteger('spionage', $spionage, true, 100);
+		return $this->setInteger('spionage', $level, true, 100);
 	}
 
 	/**
 	* Get Schmuggel
 	*
-	* @return string Schmuggel
+	* @return int Schmuggel
 	* @access public
 	*/
 	public function getSchmuggel()
@@ -721,20 +714,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Schmuggel
 	*
-	* @param string $schmuggel
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setSchmuggel($schmuggel)
+	public function setSchmuggel($level)
 	{
-		return $this->setInteger('schmuggel', $schmuggel, true, 100);
+		return $this->setInteger('schmuggel', $level, true, 100);
 	}
 
 	/**
 	* Get Medizin
 	*
-	* @return string Medizin
+	* @return int Medizin
 	* @access public
 	*/
 	public function getMedizin()
@@ -744,20 +737,20 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Medizin
 	*
-	* @param string $medizin
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setMedizin($medizin)
+	public function setMedizin($level)
 	{
-		return $this->setInteger('medizin', $medizin, true, 100);
+		return $this->setInteger('medizin', $level, true, 100);
 	}
 
-   /**
+	/**
 	* Get uberlebenskunde
 	*
-	* @return string uberlebenskunde
+	* @return int uberlebenskunde
 	* @access public
 	*/
 	public function getUberlebenskunde()
@@ -767,20 +760,89 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set uberlebenskunde
 	*
-	* @param string $uberlebenskunde
+	* @param int $level
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setUberlebenskunde($uberlebenskunde)
+	public function setUberlebenskunde($level)
 	{
-		return $this->setInteger('uberlebenskunde', $uberlebenskunde, true, 100);
+		return $this->setInteger('uberlebenskunde', $level, true, 100);
+	}
+
+	/**
+	* Get Bakirischer Rubel
+	*
+	* @return int Bakirischer Rubel
+	* @access public
+	*/
+	public function getBakRubel()
+	{
+		return $this->getInteger($this->data['bak_rubel']);
+	}
+	/**
+	* Set Bakirischer Rubel
+	*
+	* @param int $rubel
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setBakRubel($rubel)
+	{
+		return $this->setInteger('bak_rubel', $rubel);
+	}
+
+	/**
+	* Get Suranischer Dinar
+	*
+	* @return string Suranischer Dinar
+	* @access public
+	*/
+	public function getSurDinar()
+	{
+		return $this->getInteger($this->data['sur_dinar']);
+	}
+	/**
+	* Set Suranischer Dinar
+	*
+	* @param string $dinar
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setSurDinar($dinar)
+	{
+		return $this->setInteger('sur_dinar', $dinar);
+	}
+
+	/**
+	* Get Tadsowischer Dollar
+	*
+	* @return string Tadsowischer Dollar
+	* @access public
+	*/
+	public function getFrtDollar()
+	{
+		return $this->getInteger($this->data['frt_dollar']);
+	}
+	/**
+	* Set Tadsowischer Dollar
+	*
+	* @param string $dollar
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setFrtDollar($dollar)
+	{
+		return $this->setInteger('frt_dollar', $dollar);
 	}
 
 	/**
    * Get location
    *
-   * @return id location
+   * @return int location_id
    * @access public
    */
    public function getLocationId()
@@ -791,10 +853,10 @@ class ConsimUser extends abstractEntity
    * Set location
    * Check if the new Location valid!
    *
-   * @param int $location
+   * @param int $location_id
    * @return ConsimUser $this object for chaining calls; load()->set()->save()
    * @access public
-   * @throws \consim\core\exception\unexpected_value
+   * @throws \consim\core\exception\invalid_argument
    */
    public function setLocation($location_id)
    {
@@ -813,13 +875,13 @@ class ConsimUser extends abstractEntity
 
 	   $this->data['location_id'] = $location_id;
 
-	   return this;
+	   return $this;
    }
 
    /**
 	* If user active?
 	*
-	* @return bool active
+	* @return int active
 	* @access public
 	*/
 	public function getActive()
@@ -829,7 +891,7 @@ class ConsimUser extends abstractEntity
 	/**
 	* Set Active
 	*
-	* @param bool $uberlebenskunde
+	* @param bool $active
 	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
@@ -842,7 +904,7 @@ class ConsimUser extends abstractEntity
 	/**
 	* Get Data from Figure
 	*
-	* @return Array of ConSim-Figure objects
+	* @return ConsimFigure[]
 	* @access public
 	*/
 	public function getFigureData()
@@ -851,12 +913,15 @@ class ConsimUser extends abstractEntity
 	}
 
 	/**
-	* Überprüft ob String auch im Figure existiert
-	* und fügt die ID-Nr ein
-	*
-	* @return bool
-	* @access private
-	*/
+	 * Überprüft ob String auch im Figure existiert
+	 * und fügt die ID-Nr ein
+	 *
+	 * @param string $varname
+	 * @param string $string
+	 * @return ConsimUser
+	 * @access private
+	 * @throws \consim\core\exception\invalid_argument
+	 **/
 	private function setFigure($varname, $string)
 	{
 		//$string not empty
@@ -868,7 +933,7 @@ class ConsimUser extends abstractEntity
 		foreach($this->figure_data as $element)
 		{
 			//Stimmen die Werte überein?
-			if($element->getValue() == $string && $varname == $element->getDescription())
+			if($element->getValue() == $string && $varname == $element->getGroups())
 			{
 				//Setze ID
 				return $this->setInteger($varname . '_id', $element->getId());

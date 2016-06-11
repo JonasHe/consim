@@ -9,7 +9,7 @@ parameters:
     tables.consim.actions: %core.table_prefix%consim_actions
     tables.consim.travels: %core.table_prefix%consim_travels
     tables.consim.buildings: %core.table_prefix%consim_buildings
-    tables.consim.location_buildings: %core.table_prefix%consim_location_buildings
+    tables.consim.building_types: %core.table_prefix%consim_building_types
     tables.consim.news: %core.table_prefix%consim_news
     tables.consim.news_channels: %core.table_prefix%consim_news_channel
     tables.consim.news_topics: %core.table_prefix%consim_news_topics
