@@ -19,9 +19,15 @@ class ConsimFigure extends abstractEntity
 	**/
 	protected static $fields = array(
 		'id'						=> 'integer',
+<<<<<<< HEAD
 		'groups'            	    => 'string',
 		'value'						=> 'string',
 		'name'				       	=> 'string',
+=======
+		'description'    	        => 'string',
+		'value'						=> 'string',
+		'translate'					=> 'string',
+>>>>>>> refs/remotes/origin/master
 	);
 
 	/**
@@ -76,6 +82,65 @@ class ConsimFigure extends abstractEntity
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	* Insert the Data for the first time
+	*
+	* Will throw an exception if the data was already inserted (call save() instead)
+	*
+	* @return object $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\out_of_bounds
+	*/
+	public function insert()
+	{
+		if (!empty($this->data['id']))
+		{
+			// The data already exists
+			throw new \consim\core\exception\out_of_bounds('id');
+		}
+
+		// Make extra sure there is no id set
+		unset($this->data['id']);
+
+		// Insert the data to the database
+		$sql = 'INSERT INTO ' . $this->consim_person_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
+		$this->db->sql_query($sql);
+
+		// Set the id using the id created by the SQL insert
+		$this->data['id'] = (int) $this->db->sql_nextid();
+
+		return $this;
+	}
+
+	/**
+	* Save the current settings to the database
+	*
+	* This must be called before closing or any changes will not be saved!
+	* If adding a data (saving for the first time), you must call insert() or an exeception will be thrown
+	*
+	* @return object $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\out_of_bounds
+	*/
+	public function save()
+	{
+		if (empty($this->data['id']))
+		{
+			// The data does not exist
+			throw new \consim\core\exception\out_of_bounds('id');
+		}
+
+		$sql = 'UPDATE ' . $this->consim_person_table . '
+			SET ' . $this->db->sql_build_array('UPDATE', $this->data) . '
+			WHERE id = ' . $this->getId();
+		$this->db->sql_query($sql);
+
+		return $this;
+	}
+
+	/**
+>>>>>>> refs/remotes/origin/master
 	* Get User ID
 	*
 	* @return int ID

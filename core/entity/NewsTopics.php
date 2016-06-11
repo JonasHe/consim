@@ -9,33 +9,36 @@
 namespace consim\core\entity;
 
 /**
-* Entity for a single ressource
+* Entity for news entries
 */
-class Province extends abstractEntity
+class NewsTopics extends abstractEntity
 {
 	/**
 	* All of fields of this objects
 	*
 	**/
 	protected static $fields = array(
-		'id'						=> 'integer',
-		'name'                      => 'string',
-		'country_id'                => 'integer',
+		'topic_id'					=> 'integer',
+		'topic_name'					=> 'string',
 	);
 
 	/**
 	* Some fields must be unsigned (>= 0)
 	**/
 	protected static $validate_unsigned = array(
-		'id',
-		'country_id',
+		'topic_id',
 	);
+
+	protected $data;
+
+	/** @var \phpbb\db\driver\driver_interface */
+	protected $db;
 
 	/**
 	* The database table the consim user data are stored in
 	* @var string
 	*/
-	protected $consim_province_table;
+	protected $consim_news_topics_table;
 
    /**
 	* Constructor
@@ -44,10 +47,10 @@ class Province extends abstractEntity
 	* @param string                               $consim_province_table  Name of the table used to store data
 	* @access public
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_province_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_news_topics_table)
 	{
 		$this->db = $db;
-		$this->consim_province_table = $consim_province_table;
+		$this->consim_news_topics_table = $consim_news_topics_table;
 	}
 
 	/**
@@ -60,9 +63,9 @@ class Province extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT id, name
-			FROM ' . $this->consim_province_table . '
-			WHERE id = ' . (int) $id;
+		$sql = 'SELECT topic_id, topic_name
+			FROM ' . $this->consim_news_topics_table . '
+			WHERE topic_id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -76,8 +79,6 @@ class Province extends abstractEntity
 	}
 
 	/**
-<<<<<<< HEAD
-=======
 	* Insert the Data for the first time
 	*
 	* Will throw an exception if the data was already inserted (call save() instead)
@@ -88,21 +89,21 @@ class Province extends abstractEntity
 	*/
 	public function insert()
 	{
-		if (!empty($this->data['id']))
+		if (!empty($this->data['topic_id']))
 		{
 			// The data already exists
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
 
 		// Make extra sure there is no id set
-		unset($this->data['id']);
-
+		unset($this->data['topic_id']);
+		
 		// Insert the data to the database
-		$sql = 'INSERT INTO ' . $this->consim_province_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
+		$sql = 'INSERT INTO ' . $this->consim_news_topics_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
 		// Set the id using the id created by the SQL insert
-		$this->data['id'] = (int) $this->db->sql_nextid();
+		$this->data['topic_id'] = (int) $this->db->sql_nextid();
 
 		return $this;
 	}
@@ -119,40 +120,85 @@ class Province extends abstractEntity
 	*/
 	public function save()
 	{
-		if (empty($this->data['id']))
+		if (empty($this->data['topic_id']))
 		{
 			// The data does not exist
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
 
-		$sql = 'UPDATE ' . $this->consim_province_table . '
+		$sql = 'UPDATE ' . $this->consim_news_topics_table . '
 			SET ' . $this->db->sql_build_array('UPDATE', $this->data) . '
-			WHERE id = ' . $this->getId();
+			WHERE topic_id = ' . $this->getId();
+		$this->db->sql_query($sql);
+
+		return $this;
+	}
+	
+	/**
+	* Delete the entry with the given Id
+	*
+	* @return object $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\out_of_bounds
+	*/
+	public function delete()
+	{
+		if (empty($this->data['topic_id']))
+		{
+			// The data does not exist
+			throw new \consim\core\exception\out_of_bounds('id');
+		}
+
+		$sql = 'DELETE FROM ' . $this->consim_news_topics_table . '
+			WHERE topic_id = ' . $this->getId();
 		$this->db->sql_query($sql);
 
 		return $this;
 	}
 
 	/**
->>>>>>> refs/remotes/origin/master
-	* Get User ID
+	* Get News ID
 	*
 	* @return int ID
 	* @access public
 	*/
 	public function getId()
 	{
-		return $this->getInteger($this->data['id']);
+		return $this->getInteger($this->data['topic_id']);
 	}
-
+	
 	/**
-	* Get Name
+	* Set News ID
 	*
-	* @return string Name
+	* @return int ID
 	* @access public
 	*/
-	public function getName()
+	public function setId($id)
 	{
-		return $this->getString($this->data['name']);
+		return $this->setInteger('topic_id',$id);
+	}
+	
+	/**
+	* Get News Content
+	*
+	* @return string Content
+	* @access public
+	*/
+	public function getTopicName()
+	{
+		return $this->getString($this->data['topic_name']);
+	}
+	
+	/**
+	* Set topic name
+	*
+	* @param string $topic
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
+	* @access public
+	* @throws \consim\core\exception\unexpected_value
+	*/
+	public function setTopicName($topic)
+	{
+		return $this->setString('topic_name', $topic, 255, 2);
 	}
 }

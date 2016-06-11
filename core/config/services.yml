@@ -45,6 +45,17 @@ services:
             - @request
             - @dbal.conn
 
+    consim.core.controller.News:
+        class: consim\core\controller\News
+        arguments:
+            - @config
+            - @service_container
+            - @controller.helper
+            - @user
+            - @template
+            - @request
+            - @dbal.conn            
+
     consim.core.operators.Locations:
         class: consim\core\operators\Locations
         arguments:
@@ -144,7 +155,28 @@ services:
         arguments:
             - @dbal.conn
             - %tables.consim.location_types%
-
+            
+    consim.core.entity.News:
+        class: consim\core\entity\News
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.news%
+            
+    consim.core.entity.NewsChannel:
+        class: consim\core\entity\NewsChannel
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.news_channels%
+            
+    consim.core.entity.NewsTopics:
+        class: consim\core\entity\NewsTopics
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.news_topics%
+            
     consim.core.entity.ConsimUser:
         class: consim\core\entity\ConsimUser
         scope: prototype # scope MUST be prototype for this to work!

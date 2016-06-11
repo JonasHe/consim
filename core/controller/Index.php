@@ -37,6 +37,14 @@ class Index
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
+<<<<<<< HEAD
+=======
+	/**
+	* Class-Variables
+	**/
+	protected $consim_user;
+
+>>>>>>> refs/remotes/origin/master
 	/**
 	* Constructor
 	*
@@ -127,13 +135,19 @@ class Index
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			'START_LOCATION_NAME'       => $travel->getStartLocation()->getName(),
+<<<<<<< HEAD
 			'START_LOCATION_IMAGE'      => $travel->getStartLocation()->getImage(),
+=======
+>>>>>>> refs/remotes/origin/master
 			'START_LOCATION_TYPE'       => $travel->getStartLocation()->getType(),
 			'START_LOCATION_PROVINCE'   => $travel->getStartLocation()->getProvince(),
 			'START_LOCATION_COUNTRY'    => $travel->getStartLocation()->getCountry(),
 			'START_TIME'                => date("d.m.Y - H:i:s", $travel->getStartTime()),
 			'END_LOCATION_NAME'         => $travel->getEndLocation()->getName(),
+<<<<<<< HEAD
 			'END_LOCATION_IMAGE'        => $travel->getEndLocation()->getImage(),
+=======
+>>>>>>> refs/remotes/origin/master
 			'END_LOCATION_TYPE'         => $travel->getEndLocation()->getType(),
 			'END_LOCATION_PROVINCE'     => $travel->getEndLocation()->getProvince(),
 			'END_LOCATION_COUNTRY'      => $travel->getEndLocation()->getCountry(),
@@ -161,6 +175,7 @@ class Index
 		$location_op = $this->container->get('consim.core.operators.Locations');
 
 		//location from location_id or from position of user?
+<<<<<<< HEAD
 		if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
 		{
 			$location = $this->consim_user_location;
@@ -172,6 +187,18 @@ class Index
 			$location->load($location_id);
 		}
 		$buildings = $location_op->getAllBuildings($location->getId());
+=======
+		if($location_id == 0)
+		{
+			$location_id = $this->consim_user->getLocationId();
+
+			//Create the Travelpopup
+			$location_op->setAllRouteDestinationsToTemplate($location_id, $this->template, $this->helper);
+		}
+
+		$location->load($location_id);
+		$buildings = $location_op->getAllBuildings($location_id);
+>>>>>>> refs/remotes/origin/master
 
 		//Put all Buildings in the Template
 		foreach ($buildings as $entity)
@@ -179,9 +206,15 @@ class Index
 			$building = array(
 				'NAME'	     	=> ($entity->getName() != '')? '"' . $entity->getName() . '"' : '',
 				'TYPE'  		=> $entity->getType(),
+<<<<<<< HEAD
 				'URL'           => $this->helper->route('consim_core_building',
 													array(
 														'location_id' => $location->getId(),
+=======
+				'URL'           => $this->helper->route('consim_core_location_building',
+													array(
+														'location_id' => $location_id,
+>>>>>>> refs/remotes/origin/master
 														'building_id' => $entity->getId()
 													)),
 			);
@@ -191,10 +224,15 @@ class Index
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
+<<<<<<< HEAD
 			'CAN_TRAVEL'                    => ($location->getId() === $this->consim_user->getLocationId())? TRUE : FALSE,
 			'LOCATION'                      => $location->getName(),
 			'LOCATION_DESC'                 => $location->getDescription(),
 			'LOCATION_IMAGE'                => $location->getImage(),
+=======
+			'CAN_TRAVEL'                    => ($location_id === $this->consim_user->getLocationId())? TRUE : FALSE,
+			'LOCATION'                      => $location->getName(),
+>>>>>>> refs/remotes/origin/master
 			'LOCATION_TYPE'                 => $location->getType(),
 			'PROVINCE'                      => $location->getProvince(),
 			'COUNTRY'                       => $location->getCountry(),
@@ -224,11 +262,19 @@ class Index
 		}
 
 		$location = $this->container->get('consim.core.entity.Location')->load($location_id);
+<<<<<<< HEAD
 		$building = $this->container->get('consim.core.entity.Building')->load($building_id);
+=======
+		$building = $this->container->get('consim.core.entity.LocationBuilding')->load($building_id);
+>>>>>>> refs/remotes/origin/master
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+<<<<<<< HEAD
+=======
+			'BUILDING_DESCRIPTION'  => ($building->getDescription() != '')? '' . $building->getDescription() . '' : '',
+>>>>>>> refs/remotes/origin/master
 			'BUILDING_TYP'          => $building->getType(),
 			'LOCATION'              => $location->getName(),
 			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
@@ -262,12 +308,20 @@ class Index
 		//Get the ConSim-User
 		$this->consim_user = $this->container->get('consim.core.entity.ConsimUser')->load($this->user->data['user_id']);
 
+<<<<<<< HEAD
 		//Get User-Location
 		$this->consim_user_location = $this->container->get('consim.core.entity.Location')->load($this->consim_user->getLocationId());
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			//Attribute
+=======
+		//Get the newsticker
+		$this->container->get('consim.core.controller.News')->fetchNews();
+
+		// Set output vars for display in the template
+		$this->template->assign_vars(array(
+>>>>>>> refs/remotes/origin/master
 			'SPRACHE_TADSOWISCH'			=> $this->consim_user->getSpracheTadsowisch(),
 			'SPRACHE_BAKIRISCH'				=> $this->consim_user->getSpracheBakirisch(),
 			'SPRACHE_SURANISCH'				=> $this->consim_user->getSpracheSuranisch(),
@@ -283,6 +337,7 @@ class Index
 			'SCHMUGGEL'					    => $this->consim_user->getSchmuggel(),
 			'MEDIZIN'						=> $this->consim_user->getMedizin(),
 			'UBERLEBENSKUNDE'				=> $this->consim_user->getUberlebenskunde(),
+<<<<<<< HEAD
 			'BAK_RUBEL'                     => $this->consim_user->getBakRubel(),
 			'SUR_DINAR'                     => $this->consim_user->getSurDinar(),
 			'FRT_DOLLAR'                    => $this->consim_user->getFrtDollar(),
@@ -294,6 +349,8 @@ class Index
 			'USER_LOCATION_URL'             => $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
 			'USER_PROVINCE'                 => $this->consim_user_location->getProvince(),
 			'USER_COUNTRY'                  => $this->consim_user_location->getCountry(),
+=======
+>>>>>>> refs/remotes/origin/master
 		));
 	}
 }

@@ -39,6 +39,13 @@ class RouteLocation extends Location
 	* @var string
 	*/
 	protected $consim_route_table;
+<<<<<<< HEAD
+=======
+	protected $consim_location_table;
+	protected $consim_location_type_table;
+	protected $consim_province_table;
+	protected $consim_country_table;
+>>>>>>> refs/remotes/origin/master
 
 	/**
 	* Constructor

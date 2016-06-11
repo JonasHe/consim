@@ -12,6 +12,7 @@
 
 .green {
 	color: green;
+<<<<<<< HEAD
 }
 
 .field_top {
@@ -22,6 +23,8 @@
 .field_top p {
 	margin-top: 5px;
 	margin-bottom: 5px;
+=======
+>>>>>>> refs/remotes/origin/master
 }
 
 .field_left {
@@ -40,8 +43,13 @@
 }
 
 .field_center .panel {
+<<<<<<< HEAD
 	margin-left: 15px;
 	margin-right: 15px;
+=======
+	margin-left: 10px;
+	margin-right: 10px;
+>>>>>>> refs/remotes/origin/master
 }
 
 .content .location_image {
@@ -248,4 +256,84 @@ ul.travellist dd.action a.button2 {
 	width: 20%;
 	text-align: center;
 	padding-top: 50px;
+<<<<<<< HEAD
+=======
+}
+
+.left_column {
+	float: left;
+	width: 49%;
+}
+
+.right_column {
+	float: right;
+	width: 49%;
+}
+
+.clear {
+	clear: both;
+}
+
+.news {
+	height: 30px;
+	display: block;
+	overflow: hidden;
+}
+
+.newsticker ul {
+	list-style-type: none;
+	padding: 0px;
+}
+
+.newsticker {
+	display: inline-block;
+	font-size: 12px;
+	line-height: 19.6px;
+	height: 30px;
+	overflow: hidden;
+	width: 71.5%;
+	white-space: nowrap;
+	color: #696969;
+}
+
+.newsticker .newsticker-list {
+	position: relative;
+	overflow: hidden;
+	margin-top: -10px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.newsticker .newsticker-list .newsticker-item {
+	height: 30px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.channel {
+	position: relative;
+	width: 27%;
+	padding: 5px;
+	display: inline-block;
+	font-size: 18px;
+	height: 30px;
+	overflow: hidden;
+}
+
+.oneline ul, .oneline li {
+	display: inline;
+}
+
+.oneline li {
+	margin-left: 40px;
+}
+
+.oneline li:before, .oneline li:after {
+	content: ' +++ ';
+}
+
+.panel-news {
+	background-color: #ffffff;
+	padding: 0px;
+>>>>>>> refs/remotes/origin/master
 }

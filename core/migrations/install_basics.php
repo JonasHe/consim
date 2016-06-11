@@ -33,7 +33,7 @@ class install_basics extends \phpbb\db\migration\migration
 	public function update_schema()
 	{
 		return array(
-			'add_tables'		=> array(
+			'add_tables' => array(
 				$this->table_prefix . 'consim_user'	=> array(
 					'COLUMNS'		=> array(
 						'user_id'				=> array('UINT:8', 0),
@@ -60,10 +60,14 @@ class install_basics extends \phpbb\db\migration\migration
 						'schmuggel'				=> array('UINT:3', 1),
 						'medizin'				=> array('UINT:3', 1),
 						'uberlebenskunde'		=> array('UINT:3', 1),
+<<<<<<< HEAD
 						'bak_rubel'             => array('UINT:8', 0),
 						'sur_dinar'             => array('UINT:8', 0),
 						'frt_dollar'            => array('UINT:8', 0),
 						'location_id'           => array('UINT:8', 1),
+=======
+						'location_id'           => array('UINT:8', 4),
+>>>>>>> refs/remotes/origin/master
 						'active'                => array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('user_id'),
@@ -91,15 +95,22 @@ class install_basics extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
+<<<<<<< HEAD
 						'starttime'       => array('INDEX', 'starttime'),
 						'endtime'         => array('INDEX', 'endtime'),
 						'travel_id'       => array('INDEX', 'travel_id'),
 						'status'          => array('INDEX', 'status'),
+=======
+						'starttime'				=> array('INDEX', 'starttime'),
+						'endtime'				=> array('INDEX', 'endtime'),
+						'travel_id'				=> array('INDEX', 'travel_id'),
+						'status'				=> array('INDEX', 'status'),
+>>>>>>> refs/remotes/origin/master
 					),
 				),
 			),
-			'add_columns'		=> array(
-				$this->table_prefix . 'users'		=> array(
+			'add_columns' => array(
+				$this->table_prefix . 'users' => array(
 						'consim_register'		=> array('BOOL', 0),
 				),
 			),
@@ -114,11 +125,14 @@ class install_basics extends \phpbb\db\migration\migration
 	*/
 	public function update_data()
 	{
+<<<<<<< HEAD
 		global $user;
 
 		// Load the installation lang file
 		$user->add_lang_ext('consim/core', 'consim_install');
 
+=======
+>>>>>>> refs/remotes/origin/master
 		return array(
 			// Set the current version
 			array('config.add', array('consim_version', $this->consim_version)),

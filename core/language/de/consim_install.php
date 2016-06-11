@@ -1,5 +1,6 @@
 <?php
 /**
+<<<<<<< HEAD
 * @package ConSim for phpBB3.1
 *
 * @copyright (c) 2015 Marco Candian (tacitus@strategie-zone.de)
@@ -9,6 +10,17 @@
 /**
 * DO NOT CHANGE
 */
+=======
+ * @package ConSim for phpBB3.1
+ *
+ * @copyright (c) 2015 Marco Candian (tacitus@strategie-zone.de)
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ */
+
+/**
+ * DO NOT CHANGE
+ */
+>>>>>>> refs/remotes/origin/master
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -36,6 +48,7 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
+<<<<<<< HEAD
 	//Figure
 	'MANNLICH'              => 'Männlich',
 	'WEIBLICH'              => 'Weiblich',
@@ -131,4 +144,20 @@ $lang = array_merge($lang, array(
 	'ROTSTAHL'              => 'Rotstahl',
 	'TRETMINE'              => 'Tretmine',
 
+=======
+	// Countries
+	'COUNTRY_1'						=> 'Bakirien',
+	'COUNTRY_2'						=> 'Tadsowien',
+	'COUNTRY_3'						=> 'Suranien',
+	// locations
+	'LOCATION_1'					=> 'Kubishevsk',
+	// ConSim buildings
+	'BUILDING_1'					=> 'Lokale Administration',
+	'BUILDING_2'					=> 'Industriekombinat',
+	// location_buildings
+	'LOCATION_BUILDING_1'			=> '',
+	'LOCATION_BUILDING_1_EXPLAIN'	=> '',
+	'LOCATION_BUILDING_2'			=> 'Rotstahl',
+	'LOCATION_BUILDING_2_EXPLAIN'	=> '',
+>>>>>>> refs/remotes/origin/master
 ));

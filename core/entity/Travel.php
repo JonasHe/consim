@@ -45,6 +45,10 @@ class Travel extends Action
 	* The database table the consim user data are stored in
 	* @var string
 	*/
+<<<<<<< HEAD
+=======
+	protected $consim_action_table;
+>>>>>>> refs/remotes/origin/master
 	protected $consim_travel_table;
 	protected $consim_user_table;
 
@@ -66,11 +70,14 @@ class Travel extends Action
 	}
 
 	/**
+<<<<<<< HEAD
 	* Don't load this Entity
 	*/
 	public function load() {}
 
 	/**
+=======
+>>>>>>> refs/remotes/origin/master
 	* Insert the Data for the first time
 	*
 	* Will throw an exception if the data was already inserted (call save() instead)
@@ -131,6 +138,64 @@ class Travel extends Action
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	* Get ID
+	*
+	* @return int ID
+	* @access public
+	*/
+	public function getId()
+	{
+		return $this->getInteger($this->data['id']);
+	}
+
+	/**
+	* Get User ID
+	*
+	* @return int UserID
+	* @access public
+	*/
+	public function getUserId()
+	{
+		return $this->getInteger($this->data['user_id']);
+	}
+
+	/**
+	* Get Starttime
+	*
+	* @return int Starttime
+	* @access public
+	*/
+	public function getStartTime()
+	{
+		return $this->getInteger($this->data['starttime']);
+	}
+
+	/**
+	* Get Endtime
+	*
+	* @return int Endtime
+	* @access public
+	*/
+	public function getEndTime()
+	{
+		return $this->getInteger($this->data['endtime']);
+	}
+
+	/**
+	* Get Status
+	*
+	* @return bool Status
+	* @access public
+	*/
+	public function getStatus()
+	{
+		return $this->getInteger($this->data['status']);
+	}
+
+	/**
+>>>>>>> refs/remotes/origin/master
 	* Travel done
 	*
 	* @return Action $this object for chaining calls; load()->set()->save()

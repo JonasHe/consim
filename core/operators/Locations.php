@@ -31,7 +31,11 @@ class Locations
 	protected $consim_province_table;
 	protected $consim_country_table;
 	protected $consim_building_table;
+<<<<<<< HEAD
 	protected $consim_building_type_table;
+=======
+	protected $consim_location_building_table;
+>>>>>>> refs/remotes/origin/master
 
 	/**
 	* Constructor
@@ -55,7 +59,11 @@ class Locations
 								$consim_province_table,
 								$consim_country_table,
 								$consim_building_table,
+<<<<<<< HEAD
 								$consim_building_type_table)
+=======
+								$consim_location_building_table)
+>>>>>>> refs/remotes/origin/master
 	{
 		$this->db = $db;
 		$this->container = $container;
@@ -65,7 +73,11 @@ class Locations
 		$this->consim_province_table = $consim_province_table;
 		$this->consim_country_table = $consim_country_table;
 		$this->consim_building_table = $consim_building_table;
+<<<<<<< HEAD
 		$this->consim_building_type_table = $consim_building_type_table;
+=======
+		$this->consim_location_building_table = $consim_location_building_table;
+>>>>>>> refs/remotes/origin/master
 	}
 
 	/**
@@ -79,15 +91,25 @@ class Locations
 	{
 		$entities = array();
 
+<<<<<<< HEAD
 		$sql = 'SELECT lb.id, lb.name, b.name AS type
 			FROM ' . $this->consim_building_table . ' lb
 			LEFT JOIN ' . $this->consim_building_type_table . ' b ON lb.type_id = b.id
+=======
+		$sql = 'SELECT lb.id, lb.name, lb.description, b.name AS type
+			FROM ' . $this->consim_location_building_table . ' lb
+			LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
+>>>>>>> refs/remotes/origin/master
 			WHERE lb.location_id = ' . (int) $location_id;
 		$result = $this->db->sql_query($sql);
 
 		while($row = $this->db->sql_fetchrow($result))
 		{
+<<<<<<< HEAD
 			$entities[] = $this->container->get('consim.core.entity.Building')->import($row);
+=======
+			$entities[] = $this->container->get('consim.core.entity.LocationBuilding')->import($row);
+>>>>>>> refs/remotes/origin/master
 		}
 		$this->db->sql_freeresult($result);
 
