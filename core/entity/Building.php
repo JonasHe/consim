@@ -20,10 +20,7 @@ class Building extends abstractEntity
 	protected static $fields = array(
 		'id'           => 'integer',
 		'name'         => 'string',
-<<<<<<< HEAD:core/entity/Building.php
-=======
 		'description'  => 'string',
->>>>>>> refs/remotes/origin/master:core/entity/LocationBuilding.php
 		'type'         => 'string',
 	);
 
@@ -52,19 +49,11 @@ class Building extends abstractEntity
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
 								$consim_building_table,
-<<<<<<< HEAD:core/entity/Building.php
 								$consim_building_type_table)
 	{
 		$this->db = $db;
 		$this->consim_building_table = $consim_building_table;
 		$this->consim_building_type_table = $consim_building_type_table;
-=======
-								$consim_location_building_table)
-	{
-		$this->db = $db;
-		$this->consim_building_table = $consim_building_table;
-		$this->consim_location_building_table = $consim_location_building_table;
->>>>>>> refs/remotes/origin/master:core/entity/LocationBuilding.php
 	}
 
 	/**
@@ -77,15 +66,9 @@ class Building extends abstractEntity
 	*/
 	public function load($id)
 	{
-<<<<<<< HEAD:core/entity/Building.php
-		$sql = 'SELECT lb.id, lb.name, b.name AS type
+		$sql = 'SELECT lb.id, lb.name, lb.description, b.name AS type
 			FROM ' . $this->consim_building_table . ' lb
 			LEFT JOIN ' . $this->consim_building_type_table . ' b ON lb.type_id = b.id
-=======
-		$sql = 'SELECT lb.id, lb.name, lb.description, b.name AS type
-			FROM ' . $this->consim_location_building_table . ' lb
-			LEFT JOIN ' . $this->consim_building_table . ' b ON lb.building_id = b.id
->>>>>>> refs/remotes/origin/master:core/entity/LocationBuilding.php
 			WHERE lb.id = ' . (int) $id;
 			echo $sql;
 		$result = $this->db->sql_query($sql);

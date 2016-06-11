@@ -20,11 +20,8 @@ class Location extends abstractEntity
 	protected static $fields = array(
 		'id'						=> 'integer',
 		'name'                      => 'string',
-<<<<<<< HEAD
 		'description'               => 'string',
 		'image'                     => 'string',
-=======
->>>>>>> refs/remotes/origin/master
 		'type'						=> 'string',
 		'province'					=> 'string',
 		'country'					=> 'string',
@@ -76,7 +73,6 @@ class Location extends abstractEntity
 	* @param int $id user identifier
 	* @return object $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\user\exception\out_of_bounds
 	*/
 	public function load($id)
 	{
@@ -95,17 +91,6 @@ class Location extends abstractEntity
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
 
-<<<<<<< HEAD
-=======
-		$this->data = array(
-			'id'        => $row['id'],
-			'name'      => $row['name'],
-			'type'      => $row['type'],
-			'province'  => $row['province'],
-			'country'   => $row['country'],
-		);
-
->>>>>>> refs/remotes/origin/master
 		return $this;
 	}
 

@@ -45,11 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-<<<<<<< HEAD
-=======
 .vscode/launch.json
 .vscode/settings.json
 jsconfig.json
 core/styles/prosilver/
->>>>>>> refs/remotes/origin/master
 .idea/

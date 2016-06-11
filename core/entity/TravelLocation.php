@@ -39,14 +39,11 @@ class TravelLocation extends Travel
 		'endtime',
 	);
 
-<<<<<<< HEAD
-=======
 	protected $data;
 
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
->>>>>>> refs/remotes/origin/master
 	/** @var ContainerInterface */
 	protected $container;
 
@@ -54,11 +51,8 @@ class TravelLocation extends Travel
 	* The database table the consim user data are stored in
 	* @var string
 	*/
-<<<<<<< HEAD
-=======
 	protected $consim_action_table;
 	protected $consim_travel_table;
->>>>>>> refs/remotes/origin/master
 	protected $consim_location_table;
 	protected $consim_location_type_table;
 	protected $consim_province_table;
@@ -108,15 +102,10 @@ class TravelLocation extends Travel
 	{
 		$sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.status,
 					   t.start_location_id, t.end_location_id,
-<<<<<<< HEAD
-					   l1.id AS startId, l1.name AS startName, l1.description AS startDesc, l1.image AS startImage,
-							tp1.name AS startType, p1.name as startProvince, c1.name as startCountry,
-					   l2.id AS endId, l2.name AS endName, l2.description AS endDesc, l2.image AS endImage,
-							tp2.name AS endType, p2.name as endProvince, c2.name as endCountry
-=======
-					   l1.id AS startId, l1.name AS startName, tp1.name AS startType, p1.name as startProvince, c1.name as startCountry,
-					   l2.id AS endId, l2.name AS endName, tp2.name AS endType, p2.name as endProvince, c2.name as endCountry
->>>>>>> refs/remotes/origin/master
+					   l1.id AS startId, l1.name AS startName, l1.description AS startDescription, l1.image AS startImage,
+					   tp1.name AS startType, p1.name as startProvince, c1.name as startCountry,
+					   l2.id AS endId, l2.name AS endName, l1.description AS endDescription, l2.image AS endImage,
+					   tp2.name AS endType, p2.name as endProvince, c2.name as endCountry
 			FROM ' . $this->consim_action_table . ' a
 			LEFT JOIN ' . $this->consim_travel_table . ' t ON t.id = a.travel_id
 			LEFT JOIN ' . $this->consim_location_table . ' l1 ON l1.id = t.start_location_id
@@ -139,48 +128,32 @@ class TravelLocation extends Travel
 		}
 
 		$this->data = array(
-			'id'        => $row['id'],
-			'user_id'   => $row['user_id'],
-			'starttime' => $row['starttime'],
-			'endtime'   => $row['endtime'],
-			'status'    => $row['status'],
+			'id'			=> $row['id'],
+			'user_id'		=> $row['user_id'],
+			'starttime'		=> $row['starttime'],
+			'endtime'		=> $row['endtime'],
+			'status'		=> $row['status'],
 		);
 
 		$start_location = array(
-<<<<<<< HEAD
-			'id'            => $row['startId'],
-			'name'          => $row['startName'],
-			'description'   => $row['startDesc'],
-			'image'         => $row['startImage'],
-			'type'          => $row['startType'],
-			'province'      => $row['startProvince'],
-			'country'       => $row['startCountry'],
-=======
-			'id'        => $row['startId'],
-			'name'      => $row['startName'],
-			'type'      => $row['startType'],
-			'province'  => $row['startProvince'],
-			'country'   => $row['startCountry'],
->>>>>>> refs/remotes/origin/master
+			'id'			=> $row['startId'],
+			'name'			=> $row['startName'],
+			'description'	=> $row['startDescription'],
+			'image'			=> $row['startImage'],
+			'type'			=> $row['startType'],
+			'province'		=> $row['startProvince'],
+			'country'		=> $row['startCountry'],
 		);
 		$this->data['start_location'] = $this->container->get('consim.core.entity.Location')->import($start_location);
 
 		$end_location = array(
-<<<<<<< HEAD
-			'id'            => $row['endId'],
-			'name'          => $row['endName'],
-			'description'   => $row['endDesc'],
-			'image'         => $row['endImage'],
-			'type'          => $row['endType'],
-			'province'      => $row['endProvince'],
-			'country'       => $row['endCountry'],
-=======
-			'id'        => $row['endId'],
-			'name'      => $row['endName'],
-			'type'      => $row['endType'],
-			'province'  => $row['endProvince'],
-			'country'   => $row['endCountry'],
->>>>>>> refs/remotes/origin/master
+			'id'			=> $row['endId'],
+			'name'			=> $row['endName'],
+			'description'	=> $row['endDescription'],
+			'image'			=> $row['endImage'],
+			'type'			=> $row['endType'],
+			'province'		=> $row['endProvince'],
+			'country'		=> $row['endCountry'],
 		);
 		$this->data['end_location'] = $this->container->get('consim.core.entity.Location')->import($end_location);
 
@@ -206,13 +179,9 @@ class TravelLocation extends Travel
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setStartLocation($location)
+	public function setStartLocation($location_data)
 	{
-<<<<<<< HEAD
-		$this->data['start_location'] = $this->container->get('consim.core.entity.Location')->import($location);
-=======
 		$this->data['start_location'] = $this->container->get('consim.core.entity.Location')->import($location_data);
->>>>>>> refs/remotes/origin/master
 		return $this;
 	}
 
@@ -235,13 +204,9 @@ class TravelLocation extends Travel
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-	public function setEndLocation($location)
+	public function setEndLocation($location_data)
 	{
-<<<<<<< HEAD
-		$this->data['end_location'] = $this->container->get('consim.core.entity.Location')->import($location);
-=======
 		$this->data['end_location'] = $this->container->get('consim.core.entity.Location')->import($location_data);
->>>>>>> refs/remotes/origin/master
 		return $this;
 	}
 

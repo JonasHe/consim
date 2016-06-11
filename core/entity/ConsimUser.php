@@ -116,7 +116,7 @@ class ConsimUser extends abstractEntity
 	* @param int $user_id user identifier
 	* @return object $this object for chaining calls; load()->set()->save()
 	* @access public
-	* @throws \consim\user\exception\out_of_bounds
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	public function load($user_id)
 	{
@@ -509,15 +509,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-<<<<<<< HEAD
 	public function setRhetorik($level)
 	{
 		return $this->setInteger('rhetorik', $level, true, 100);
-=======
-	public function setRhetorik($rhetorik)
-	{
-		return $this->setInteger('rhetorik', $rhetorik, true, 100);
->>>>>>> refs/remotes/origin/master
 	}
 
 	/**
@@ -538,15 +532,9 @@ class ConsimUser extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\unexpected_value
 	*/
-<<<<<<< HEAD
 	public function setAdministration($level)
 	{
 		return $this->setInteger('administration', $level, true, 100);
-=======
-	public function setAdministration($administration)
-	{
-		return $this->setInteger('administration', $administration, true, 100);
->>>>>>> refs/remotes/origin/master
 	}
 
    /**
@@ -780,7 +768,6 @@ class ConsimUser extends abstractEntity
 	}
 
 	/**
-<<<<<<< HEAD
 	* Get Bakirischer Rubel
 	*
 	* @return string Bakirischer Rubel
@@ -850,11 +837,9 @@ class ConsimUser extends abstractEntity
 	}
 
 	/**
-=======
->>>>>>> refs/remotes/origin/master
    * Get location
    *
-   * @return id location
+   * @return int location_id
    * @access public
    */
    public function getLocationId()
