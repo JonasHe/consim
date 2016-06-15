@@ -78,6 +78,15 @@ services:
             - %tables.consim.actions%
             - %tables.consim.travels%
 
+    consim.core.operators.inventory:
+        class: consim\core\operators\Inventory
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - @service_container
+            - %tables.consim.inventories%
+            - %tables.consim.inventory_items%
+
     consim.core.entity.building:
         class: consim\core\entity\Building
         scope: prototype # scope MUST be prototype for this to work!
@@ -200,3 +209,18 @@ services:
         arguments:
             - @dbal.conn
             - %tables.consim.figure%
+
+    consim.core.entity.inventory_item:
+        class: consim\core\entity\InventoryItem
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.inventory_items%
+
+    consim.core.entity.inventory:
+            class: consim\core\entity\Inventory
+            scope: prototype # scope MUST be prototype for this to work!
+            arguments:
+                - @dbal.conn
+                - %tables.consim.inventories%
+                - %tables.consim.inventory_items%

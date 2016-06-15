@@ -1,6 +1,8 @@
 parameters:
     tables.consim.user: %core.table_prefix%consim_user
     tables.consim.figure: %core.table_prefix%consim_figure
+    tables.consim.inventory_items: %core.table_prefix%inventory_items
+    tables.consim.inventories: %core.table_prefix%inventories
     tables.consim.locations: %core.table_prefix%consim_locations
     tables.consim.location_types: %core.table_prefix%consim_location_types
     tables.consim.provinces: %core.table_prefix%consim_provinces

@@ -17,7 +17,7 @@
 						<dl>
 							<dt class="title">{works.NAME} ({works.DURATION})</dt>
 							<dd>{L_CONDITION}{L_COLON} {works.CONDITION_TYPE} ({works.CONDITION_VALUE})</dd>
-							<!-- IF works.OUTPUT_VALUE --><dd>{L_OUTPUT}{L_COLON} {works.OUTPUT_TYPE} ({works.OUTPUT_VALUE})</dd><!-- ENDIF -->
+							<dd>{L_OUTPUT}{L_COLON} <!-- IF works.OUTPUT_VALUE -->{works.OUTPUT_TYPE} ({works.OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></dd>
 							<dd class="action"><a name="travel" class="button2">Machen</a></dd>
 						</dl>
 					</li>

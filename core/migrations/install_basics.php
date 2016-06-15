@@ -80,6 +80,28 @@ class install_basics extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
+				$this->table_prefix . 'inventory' => array(
+					'COLUMNS'		=> array(
+						'id'					=> array('UINT:8', 0),
+						'user_id'				=> array('UINT:8', 0),
+						'item_id'				=> array('UINT:8', 0),
+						'value'					=> array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+					'KEYS'			=> array(
+						'user_id'	=> array('INDEX', 'user_id'),
+						'item_id'	=> array('INDEX', 'item_id'),
+					),
+				),
+				$this->table_prefix . 'inventory_item' => array(
+					'COLUMNS'		=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+						'short_name'			=> array('VCHAR:255', ''),
+						'all_user'				=> array('BOOL', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
 				$this->table_prefix . 'consim_actions' => array(
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', NULL, 'auto_increment'),
@@ -162,6 +184,19 @@ class install_basics extends \phpbb\db\migration\migration
 			  array('id' => '27','groups' => 'besondere_merkmale','value' => 'stark_ubergewichtig','name' => $user->lang('STARK_UBERGEWICHTIG')),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_figure', $figure_data);
+	}
+
+	public function insert_inventory_item()
+	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		$inventory = array(
+			array('id' => 1, 'name' => $user->lang('ITEM_1'), 'short_name' => $user->lang('ITEM_1_SHORT'), 'all_user' => 1),
+			array('id' => 2, 'name' => $user->lang('ITEM_2'), 'short_name' => $user->lang('ITEM_2_SHORT'), 'all_user' => 1),
+			array('id' => 3, 'name' => $user->lang('ITEM_3'), 'short_name' => $user->lang('ITEM_3_SHORT'), 'all_user' => 1),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'inventory_item', $inventory);
 	}
 
 	/**

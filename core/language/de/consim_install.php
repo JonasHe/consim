@@ -117,6 +117,14 @@ $lang = array_merge($lang, array(
 
 	//Provinces
 	'ISORIA'					=> 'Isoria',
+
+	// Inventory Items
+	'ITEM_1'					=> 'Bakirischer Rubel',
+	'ITEM_1_SHORT'				=> 'BR',
+	'ITEM_2'					=> 'Suranischer Dinar',
+	'ITEM_2_SHORT'				=> 'SD',
+	'ITEM_3'					=> 'Tadsowischer Dollar',
+	'ITEM_3_SHORT'				=> 'TD',
 	
 	// Countries
 	'COUNTRY_1'					=> 'Bakirien',

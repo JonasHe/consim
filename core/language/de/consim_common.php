@@ -84,4 +84,5 @@ $lang = array_merge($lang, array(
 
 	'CONDITION'					=> 'Bedingung',
 	'OUTPUT'					=> 'Ertrag',
+	'NOTHING'					=> 'nichts',
 ));
