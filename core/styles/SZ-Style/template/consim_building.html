@@ -11,19 +11,17 @@
 				</div>
 				<br /><br />
 
-				<ul class="buildinglist">
+				<ul class="worklist">
+				<!-- BEGIN works -->
 					<li>
 						<dl>
-							<dt class="building">Aktion 1</dt>
+							<dt class="title">{works.NAME} ({works.DURATION})</dt>
+							<dd>{L_CONDITION}{L_COLON} {works.CONDITION_TYPE} ({works.CONDITION_VALUE})</dd>
+							<!-- IF works.OUTPUT_VALUE --><dd>{L_OUTPUT}{L_COLON} {works.OUTPUT_TYPE} ({works.OUTPUT_VALUE})</dd><!-- ENDIF -->
 							<dd class="action"><a name="travel" class="button2">Machen</a></dd>
 						</dl>
 					</li>
-					<li>
-						<dl>
-							<dt class="building">Aktion 2</dt>
-							<dd class="action"><a name="travel" class="button2">Machen</a></dd>
-						</dl>
-					</li>
+				<!-- END works -->
 				</ul>
 				<br /><br />
 			</div>

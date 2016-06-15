@@ -68,6 +68,7 @@ services:
             - %tables.consim.countries%
             - %tables.consim.buildings%
             - %tables.consim.building_types%
+            - %tables.consim.works%
 
     consim.core.operators.action_lists:
         class: consim\core\operators\ActionLists
@@ -155,6 +156,13 @@ services:
         arguments:
             - @dbal.conn
             - %tables.consim.location_types%
+
+    consim.core.entity.work:
+        class: consim\core\entity\Work
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.works%
             
     consim.core.entity.news:
         class: consim\core\entity\News

@@ -21,7 +21,8 @@ class Building extends abstractEntity
 		'id'			=> 'integer',
 		'name'			=> 'string',
 		'description'	=> 'string',
-		'type'			=> 'string',
+		'type_id'		=> 'integer',
+		'type_name'		=> 'string',
 	);
 
 	/**
@@ -65,11 +66,10 @@ class Building extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT lb.id, lb.name, lb.description, b.name AS type
+		$sql = 'SELECT lb.id, lb.name, lb.description, b.id AS type_id, b.name AS type_name
 			FROM ' . $this->consim_building_table . ' lb
 			LEFT JOIN ' . $this->consim_building_type_table . ' b ON lb.type_id = b.id
 			WHERE lb.id = ' . (int) $id;
-			echo $sql;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -116,13 +116,24 @@ class Building extends abstractEntity
 	}
 
 	/**
+	 * Get Id of Building Type
+	 *
+	 * @return int Id of building type
+	 * @access public
+	 */
+	public function getTypeId()
+	{
+		return $this->getInteger($this->data['type_id']);
+	}
+
+	/**
 	* Get Name of Building Type
 	*
 	* @return string Name of building type
 	* @access public
 	*/
-	public function getType()
+	public function getTypeName()
 	{
-		return $this->getString($this->data['type']);
+		return $this->getString($this->data['type_name']);
 	}
 }

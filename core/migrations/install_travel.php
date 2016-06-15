@@ -102,6 +102,22 @@ class install_travel extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
+				$this->table_prefix . 'consim_works'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+						'duration'				=> array('UINT:8', 0),
+						'building_type_id'		=> array('UINT:8', 0),
+						'condition_type'		=> array('VCHAR:255', ''),
+						'condition_value'		=> array('UINT:8', 0),
+						'output_type'			=> array('VCHAR:255', ''),
+						'output_value'			=> array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+					'KEYS'			=> array(
+						'b_type_id'				=> array('INDEX', 'building_type_id'),
+					),
+				),
 			),
 		);
 	}
@@ -128,6 +144,7 @@ class install_travel extends \phpbb\db\migration\migration
 			array('custom', array(array($this, 'insert_countries'))),
 			array('custom', array(array($this, 'insert_building_types'))),
 			array('custom', array(array($this, 'insert_buildings'))),
+			array('custom', array(array($this, 'insert_works'))),
 		);
 	}
 
@@ -255,26 +272,56 @@ class install_travel extends \phpbb\db\migration\migration
 		global $user;
 
 		$location_buildings = array(
-			array('id' => 1,
-				  'name' => $user->lang('BUILDING_1'),
-				  'description' => $user->lang('BUILDING_1_EXPLAIN'),
-				  'type_id' => 1,
-				  'location_id' => 1
+			array('id'			=> 1,
+				  'name'		=> $user->lang('BUILDING_1'),
+				  'description'	=> $user->lang('BUILDING_1_EXPLAIN'),
+				  'type_id'		=> 1,
+				  'location_id'	=> 1
 			),
-			array('id' => 2,
-				  'name' => $user->lang('BUILDING_2'),
-				  'description' => $user->lang('BUILDING_2_EXPLAIN'),
-				  'type_id' => 2,
-				  'location_id' => 1
+			array('id'			=> 2,
+				  'name'		=> $user->lang('BUILDING_2'),
+				  'description'	=> $user->lang('BUILDING_2_EXPLAIN'),
+				  'type_id'		=> 2,
+				  'location_id'	=> 1
 			),
-			array('id' => 3,
-				  'name' => $user->lang('BUILDING_2'),
-				  'description' => $user->lang('BUILDING_2_EXPLAIN'),
-				  'type_id' => 3,
-				  'location_id' => 1
+			array('id'			=> 3,
+				  'name'		=> $user->lang('BUILDING_3'),
+				  'description'	=> $user->lang('BUILDING_3_EXPLAIN'),
+				  'type_id'		=> 3,
+				  'location_id'	=> 1
 			),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_buildings', $location_buildings);
+	}
+
+	public function insert_works()
+	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		$works = array(
+			array(
+				'id'				=> 1,
+				'name'				=> $user->lang('WORK_1'),
+				'duration'			=> 0,
+				'building_type_id'	=> 1,
+				'condition_type'	=> 'sprache_bakirisch',
+				'condition_value'	=> 20,
+				'output_type'		=> '',
+				'output_value'		=> 0,
+			),
+			array(
+				'id'				=> 2,
+				'name'				=> $user->lang('WORK_2'),
+				'duration'			=> 0,
+				'building_type_id'	=> 1,
+				'condition_type'	=> 'administration',
+				'condition_value'	=> 40,
+				'output_type'		=> '',
+				'output_value'		=> 0,
+			),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_works', $works);
 	}
 
 	/**
@@ -295,6 +342,7 @@ class install_travel extends \phpbb\db\migration\migration
 				$this->table_prefix . 'consim_countries',
 				$this->table_prefix . 'consim_buildings',
 				$this->table_prefix . 'consim_building_types',
+				$this->table_prefix . 'consim_works',
 			),
 		);
 	}

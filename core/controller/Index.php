@@ -188,9 +188,9 @@ class Index
 		foreach ($buildings as $entity)
 		{
 			$building = array(
-				'NAME'	     	=> ($entity->getName() != '')? '"' . $entity->getName() . '"' : '',
-				'TYPE'  		=> $entity->getType(),
-				'URL'           => $this->helper->route('consim_core_building',
+				'NAME'			=> ($entity->getName() != '')? '"' . $entity->getName() . '"' : '',
+				'TYPE'  		=> $entity->getTypeName(),
+				'URL'			=> $this->helper->route('consim_core_building',
 													array(
 														'location_id' => $location->getId(),
 														'building_id' => $entity->getId()
@@ -237,11 +237,25 @@ class Index
 		$location = $this->container->get('consim.core.entity.location')->load($location_id);
 		$building = $this->container->get('consim.core.entity.building')->load($building_id);
 
+		//Get all Works
+		$works = $this->container->get('consim.core.operators.locations')->getWorks($building->getTypeId());
+		foreach ($works as $work)
+		{
+			$this->template->assign_block_vars('works', array(
+				'NAME'				=> $work->getName(),
+				'DURATION'			=> date("i:s", $work->getDuration()),
+				'CONDITION_TYPE'	=> $work->getConditionType(),
+				'CONDITION_VALUE'	=> $work->getConditionValue(),
+				'OUTPUT_TYPE'		=> $work->getOutputType(),
+				'OUTPUT_VALUE'		=> $work->getOutputValue(),
+			));
+		}
+
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
 			'BUILDING_DESCRIPTION'  => ($building->getDescription() != '')? '' . $building->getDescription() . '' : '',
-			'BUILDING_TYP'          => $building->getType(),
+			'BUILDING_TYP'          => $building->getTypeName(),
 			'LOCATION'              => $location->getName(),
 			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
 		));

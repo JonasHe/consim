@@ -130,6 +130,7 @@ $lang = array_merge($lang, array(
 	'BUILDING_TYPE_1'			=> 'Lokale Administration',
 	'BUILDING_TYPE_2'			=> 'Industriekombinat',
 	'BUILDING_TYPE_3'			=> 'Industriekombinat',
+
 	// location_buildings
 	'BUILDING_1'				=> '',
 	'BUILDING_1_EXPLAIN'		=> '',
@@ -137,4 +138,8 @@ $lang = array_merge($lang, array(
 	'BUILDING_2_EXPLAIN'		=> '',
 	'BUILDING_3'				=> 'Tretmine',
 	'BUILDING_3_EXPLAIN'		=> '',
+
+	// works
+	'WORK_1'					=> 'Assistent des Archviars',
+	'WORK_2'					=> 'Externe Steuerprüfung',
 ));
