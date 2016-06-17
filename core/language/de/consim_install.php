@@ -118,6 +118,23 @@ $lang = array_merge($lang, array(
 	//Provinces
 	'ISORIA'					=> 'Isoria',
 
+	// Skills
+	'SKILL_1'					=> 'Sprache: Tadsowisch',
+	'SKILL_2'					=> 'Sprache: Bakirisch',
+	'SKILL_3'					=> 'Sprache: Suranisch',
+	'SKILL_4'					=> 'Rhetorik',
+	'SKILL_5'					=> 'Administration',
+	'SKILL_6'					=> 'Wirtschaft',
+	'SKILL_7'					=> 'Technik',
+	'SKILL_8'					=> 'Nahkampf',
+	'SKILL_9'					=> 'Schusswaffen',
+	'SKILL_10'					=> 'Sprengmittel',
+	'SKILL_11'					=> 'Militärkunde',
+	'SKILL_12'					=> 'Spionage',
+	'SKILL_13'					=> 'Schmuggel',
+	'SKILL_14'					=> 'Medizin',
+	'SKILL_15'					=> 'Überlebenskunde',
+
 	// Inventory Items
 	'ITEM_1'					=> 'Bakirischer Rubel',
 	'ITEM_1_SHORT'				=> 'BR',

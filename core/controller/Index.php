@@ -287,7 +287,19 @@ class Index
 
 		//Get the ConSim-User
 		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
-
+		
+		// Get inventory and add to template
+		$inventory = $this->container->get('consim.core.operators.inventory')->getInventory($this->consim_user->getUserId());
+		foreach ($inventory as $item)
+		{
+			$this->template->assign_block_vars('inventory', array(
+				'ID'			=> $item->getId(),
+				'NAME'			=> $item->getItemName(),
+				'SHORT_NAME'	=> $item->getItemShortName(),
+				'VALUE'			=> $item->getValue(),
+			));
+		}
+			
 		//Get User-Location
 		$this->consim_user_location = $this->container->get('consim.core.entity.location')->load($this->consim_user->getLocationId());
 

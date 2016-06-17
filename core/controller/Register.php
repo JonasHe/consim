@@ -131,10 +131,20 @@ class Register
 			if (empty($errors))
 			{
 				//Speichere die Daten und füge User zum Consim hinzu
-				$this->addUserToConsim($consim_user);
+				try
+				{
+					$this->addUserToConsim($consim_user);
+				}
+				catch (\consim\core\exception\base $e)
+				{
+					$errors[] = $e->get_message($this->user);
+				}
 
-				//Leite den User weiter zum Consim Index
-				redirect($this->helper->route('consim_core_index'));
+				if(empty($errors))
+				{
+					//Leite den User weiter zum Consim Index
+					redirect($this->helper->route('consim_core_index'));
+				}
 			}
 		}
 
@@ -254,14 +264,17 @@ class Register
 	* @param ConsimUser $consim_user
 	* @return null
 	* @access private
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	private function addUserToConsim($consim_user)
 	{
-		$consim_user->insert($this->user->data['user_id']);
+		$user_id = $this->user->data['user_id'];
+		$consim_user->insert($user_id);
+		$this->container->get('consim.core.operators.inventory')->setStartInventory($user_id);
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
 			SET consim_register = 1
-			WHERE user_id = ' . $this->user->data['user_id'];
+			WHERE user_id = ' . $user_id;
 		$this->db->sql_query($sql);
 	}
 

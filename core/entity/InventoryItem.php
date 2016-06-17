@@ -19,9 +19,11 @@ class InventoryItem extends abstractEntity
 	 **/
 	protected static $fields = array(
 		'id'				=> 'integer',
-		'name'				=> 'string',
-		'short_name'		=> 'string',
-		'all_user'			=> 'bool',
+		'user_id'			=> 'integer',
+		'value'				=> 'integer',
+		'item_id'			=> 'integer',
+		'item_name'			=> 'string',
+		'item_short_name'	=> 'string',
 	);
 
 	/**
@@ -29,25 +31,32 @@ class InventoryItem extends abstractEntity
 	 **/
 	protected static $validate_unsigned = array(
 		'id',
-		'all_user',
+		'user_id',
+		'item_id',
+		'value',
 	);
 	/**
 	 * The database table the consim user data are stored in
 	 * @var string
 	 */
 	protected $consim_inventory_item_table;
+	protected $consim_item_table;
 
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface		$db								Database object
 	 * @param string								$consim_inventory_item_table	Name of the table used to store data
+	 * @param string								$consim_item_table				Name of the table used to store data
 	 * @access public
 	 */
-	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_inventory_item_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db,
+								$consim_inventory_item_table,
+								$consim_item_table)
 	{
 		$this->db = $db;
 		$this->consim_inventory_item_table = $consim_inventory_item_table;
+		$this->consim_item_table = $consim_item_table;
 	}
 
 	/**
@@ -60,9 +69,11 @@ class InventoryItem extends abstractEntity
 	 */
 	public function load($id)
 	{
-		$sql = 'SELECT id, name, short_name, all_user
-			FROM ' . $this->consim_route_table . '
-			WHERE id = '. (int) $id;
+		$sql = 'SELECT i.id, i.user_id, i.value,
+					item.id AS item_id, item.name AS item_name, item.short_name AS item_short_name
+				FROM ' . $this->consim_inventory_item_table . ' i
+				LEFT JOIN '. $this->consim_item_table .' item ON item.id = i.item_id
+				WHERE i.id = '. (int) $id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -71,6 +82,71 @@ class InventoryItem extends abstractEntity
 		{
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
+
+		return $this;
+	}
+
+	/**
+	 * Insert the Data for the first time
+	 *
+	 * Will throw an exception if the data was already inserted (call save() instead)
+	 *
+	 * @param int $user_id
+	 * @param int $item_id
+	 * @param int $value
+	 * @param bool $reload To use this entity later
+	 * @return InventoryItem|null $this object for chaining calls; load()->set()->save()
+	 * @access public
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function insert($user_id, $item_id, $value, $reload = false)
+	{
+		if (!empty($this->data['id']))
+		{
+			// The page already exists
+			throw new \consim\core\exception\out_of_bounds('id');
+		}
+
+		$data = array(
+			'user_id'	=> $user_id,
+			'item_id'	=> $item_id,
+			'value'		=> $value,
+		);
+
+		// Insert the page data to the database
+		$sql = 'INSERT INTO ' . $this->consim_inventory_item_table . ' ' . $this->db->sql_build_array('INSERT', $data);
+		$this->db->sql_query($sql);
+
+		if($reload)
+		{
+			//reload this entity
+			return $this->load((int) $this->db->sql_nextid());
+		}
+		return null;
+	}
+
+	/**
+	 * Save the current settings to the database
+	 *
+	 * This must be called before closing or any changes will not be saved!
+	 * If adding a rule (saving for the first time), you must call insert() or an exeception will be thrown
+	 *
+	 * @return InventoryItem $this object for chaining calls; load()->set()->save()
+	 * @access public
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function save()
+	{
+		if (empty($this->data['id']))
+		{
+			// The rule does not exist
+			throw new \consim\core\exception\out_of_bounds('rule_id');
+		}
+
+		$sql = 'UPDATE '. $this->consim_inventory_item_table .'
+			SET value = ' . $this->data['value'] . '
+			WHERE id = '. $this->getId();
+		$this->db->sql_query($sql);
 
 		return $this;
 	}
@@ -87,35 +163,58 @@ class InventoryItem extends abstractEntity
 	}
 
 	/**
-	 * Get Name
+	 * Get Value
 	 *
-	 * @return string Name
+	 * @return int Value
 	 * @access public
 	 */
-	public function getName()
+	public function getValue()
 	{
-		return $this->getString($this->data['name']);
+		return $this->getInteger($this->data['value']);
 	}
 
 	/**
-	 * Get Short Name
+	 * Set Value
 	 *
-	 * @return string Short name
+	 * @param int $value
+	 * @return InventoryItem
 	 * @access public
 	 */
-	public function getShortName()
+	public function setValue($value)
 	{
-		return $this->getString($this->data['short_name']);
+		return $this->setInteger('value', $value);
 	}
 
 	/**
-	 * Is it for all users?
+	 * Get Item ID
 	 *
-	 * @return bool
+	 * @return int Item Id
 	 * @access public
 	 */
-	public function getAllUser()
+	public function getItemId()
 	{
-		return ($this->data['all_user'])? TRUE : FALSE;
+		return $this->getInteger($this->data['item_id']);
+	}
+
+	/**
+	 * Get item name
+	 *
+	 * @return string item name
+	 * @access public
+	 */
+	public function getItemName()
+	{
+		return $this->getString($this->data['item_name']);
+	}
+
+	/**
+	 * Get item short name
+	 *
+	 * @return string item short name
+	 * @access public
+	 */
+	public function getItemShortName()
+	{
+		return $this->getString($this->data['item_short_name']);
 	}
 }
