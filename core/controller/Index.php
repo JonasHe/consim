@@ -287,6 +287,16 @@ class Index
 
 		//Get the ConSim-User
 		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
+
+		// get User Skill and add to template
+		$user_skills = $this->container->get('consim.core.operators.user_skills')->getUserSkills($this->user->data['user_id']);
+		foreach ($user_skills as $skill)
+		{
+			$this->template->assign_block_vars('user_skills', array(
+				'NAME'			=> $skill->getSkillName(),
+				'VALUE'			=> $skill->getValue(),
+			));
+		}
 		
 		// Get inventory and add to template
 		$inventory = $this->container->get('consim.core.operators.inventory')->getInventory($this->consim_user->getUserId());
@@ -308,26 +318,6 @@ class Index
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'SPRACHE_TADSOWISCH'			=> $this->consim_user->getSpracheTadsowisch(),
-			'SPRACHE_BAKIRISCH'				=> $this->consim_user->getSpracheBakirisch(),
-			'SPRACHE_SURANISCH'				=> $this->consim_user->getSpracheSuranisch(),
-			'RHETORIK'						=> $this->consim_user->getRhetorik(),
-			'WIRTSCHAFT'					=> $this->consim_user->getWirtschaft(),
-			'ADMINISTRATION'				=> $this->consim_user->getAdministration(),
-			'TECHNIK'						=> $this->consim_user->getTechnik(),
-			'NAHKAMPF'						=> $this->consim_user->getNahkampf(),
-			'SCHUSSWAFFEN'					=> $this->consim_user->getSchusswaffen(),
-			'SPRENGMITTEL'					=> $this->consim_user->getSprengmittel(),
-			'MILITARKUNDE'					=> $this->consim_user->getMilitarkunde(),
-			'SPIONAGE'						=> $this->consim_user->getSpionage(),
-			'SCHMUGGEL'					    => $this->consim_user->getSchmuggel(),
-			'MEDIZIN'						=> $this->consim_user->getMedizin(),
-			'UBERLEBENSKUNDE'				=> $this->consim_user->getUberlebenskunde(),
-
-			'BAK_RUBEL'                     => $this->consim_user->getBakRubel(),
-			'SUR_DINAR'                     => $this->consim_user->getSurDinar(),
-			'FRT_DOLLAR'                    => $this->consim_user->getFrtDollar(),
-
 			//Informations for current location and time
 			'TIME'                          => date("d.m.Y - H:i:s", time()),
 			'USER_LOCATION'                 => $this->consim_user_location->getName(),

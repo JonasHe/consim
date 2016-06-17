@@ -87,6 +87,15 @@ services:
             - %tables.consim.items%
             - %tables.consim.inventory_items%
 
+    consim.core.operators.user_skills:
+            class: consim\core\operators\UserSkills
+            scope: prototype # scope MUST be prototype for this to work!
+            arguments:
+                - @dbal.conn
+                - @service_container
+                - %tables.consim.skills%
+                - %tables.consim.user_skills%
+
     consim.core.entity.building:
         class: consim\core\entity\Building
         scope: prototype # scope MUST be prototype for this to work!
@@ -210,14 +219,14 @@ services:
             - @dbal.conn
             - %tables.consim.figure%
 
-    consim.core.entity.consim_skills:
+    consim.core.entity.consim_skill:
             class: consim\core\entity\Skill
             scope: prototype # scope MUST be prototype for this to work!
             arguments:
                 - @dbal.conn
                 - %tables.consim.skills%
 
-    consim.core.entity.consim_user_skills:
+    consim.core.entity.consim_user_skill:
             class: consim\core\entity\UserSkill
             scope: prototype # scope MUST be prototype for this to work!
             arguments:

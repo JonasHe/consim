@@ -45,24 +45,6 @@ class install_basics extends \phpbb\db\migration\migration
 						'haarfarbe_id'			=> array('UINT:8', 0),
 						'augenfarbe_id'			=> array('UINT:8', 0),
 						'besondere_merkmale_id'	=> array('UINT:8', 0),
-						'sprache_tadsowisch'	=> array('UINT:3', 1),
-						'sprache_bakirisch'		=> array('UINT:3', 1),
-						'sprache_suranisch'		=> array('UINT:3', 1),
-						'rhetorik'				=> array('UINT:3', 1),
-						'administration'		=> array('UINT:3', 1),
-						'wirtschaft'			=> array('UINT:3', 1),
-						'technik'				=> array('UINT:3', 1),
-						'nahkampf'				=> array('UINT:3', 1),
-						'schusswaffen'			=> array('UINT:3', 1),
-						'sprengmittel'			=> array('UINT:3', 1),
-						'militarkunde'			=> array('UINT:3', 1),
-						'spionage'				=> array('UINT:3', 1),
-						'schmuggel'				=> array('UINT:3', 1),
-						'medizin'				=> array('UINT:3', 1),
-						'uberlebenskunde'		=> array('UINT:3', 1),
-						'bak_rubel'				=> array('UINT:8', 0),
-						'sur_dinar'				=> array('UINT:8', 0),
-						'frt_dollar'			=> array('UINT:8', 0),
 						'location_id'			=> array('UINT:8', 1),
 						'active'				=> array('BOOL', 0),
 					),
@@ -84,6 +66,7 @@ class install_basics extends \phpbb\db\migration\migration
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', 0),
 						'name'					=> array('VCHAR:255', ''),
+						'country_id'			=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
@@ -118,8 +101,8 @@ class install_basics extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
-						'uid'	=> array('INDEX', 'user_id'),
-						'iid'	=> array('INDEX', 'item_id'),
+						'u'		=> array('INDEX', 'user_id'),
+						'i'		=> array('INDEX', 'item_id'),
 					),
 				),
 				$this->table_prefix . 'consim_actions' => array(
@@ -167,6 +150,7 @@ class install_basics extends \phpbb\db\migration\migration
 			array('config.add', array('consim_version', $this->consim_version)),
 			array('custom', array(array($this, 'insert_consim_figure'))),
 			array('custom', array(array($this, 'insert_consim_item'))),
+			array('custom', array(array($this, 'insert_consim_skill'))),
 		);
 	}
 
@@ -226,21 +210,21 @@ class install_basics extends \phpbb\db\migration\migration
 		global $user;
 
 		$inventory = array(
-			array('id' => 1, 'name' => $user->lang('SKILL_1')),
-			array('id' => 2, 'name' => $user->lang('SKILL_2')),
-			array('id' => 3, 'name' => $user->lang('SKILL_3')),
-			array('id' => 4, 'name' => $user->lang('SKILL_4')),
-			array('id' => 5, 'name' => $user->lang('SKILL_5')),
-			array('id' => 6, 'name' => $user->lang('SKILL_6')),
-			array('id' => 7, 'name' => $user->lang('SKILL_7')),
-			array('id' => 8, 'name' => $user->lang('SKILL_8')),
-			array('id' => 9, 'name' => $user->lang('SKILL_9')),
-			array('id' => 10, 'name' => $user->lang('SKILL_10')),
-			array('id' => 11, 'name' => $user->lang('SKILL_11')),
-			array('id' => 12, 'name' => $user->lang('SKILL_12')),
-			array('id' => 13, 'name' => $user->lang('SKILL_13')),
-			array('id' => 14, 'name' => $user->lang('SKILL_14')),
-			array('id' => 15, 'name' => $user->lang('SKILL_15')),
+			array('id' => 1, 'name' => $user->lang('SKILL_1'), 'country_id' => 1),
+			array('id' => 2, 'name' => $user->lang('SKILL_2'), 'country_id' => 2),
+			array('id' => 3, 'name' => $user->lang('SKILL_3'), 'country_id' => 3),
+			array('id' => 4, 'name' => $user->lang('SKILL_4'), 'country_id' => 0),
+			array('id' => 5, 'name' => $user->lang('SKILL_5'), 'country_id' => 0),
+			array('id' => 6, 'name' => $user->lang('SKILL_6'), 'country_id' => 0),
+			array('id' => 7, 'name' => $user->lang('SKILL_7'), 'country_id' => 0),
+			array('id' => 8, 'name' => $user->lang('SKILL_8'), 'country_id' => 0),
+			array('id' => 9, 'name' => $user->lang('SKILL_9'), 'country_id' => 0),
+			array('id' => 10, 'name' => $user->lang('SKILL_10'), 'country_id' => 0),
+			array('id' => 11, 'name' => $user->lang('SKILL_11'), 'country_id' => 0),
+			array('id' => 12, 'name' => $user->lang('SKILL_12'), 'country_id' => 0),
+			array('id' => 13, 'name' => $user->lang('SKILL_13'), 'country_id' => 0),
+			array('id' => 14, 'name' => $user->lang('SKILL_14'), 'country_id' => 0),
+			array('id' => 15, 'name' => $user->lang('SKILL_15'), 'country_id' => 0),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_skills', $inventory);
 	}

@@ -119,9 +119,9 @@ $lang = array_merge($lang, array(
 	'ISORIA'					=> 'Isoria',
 
 	// Skills
-	'SKILL_1'					=> 'Sprache: Tadsowisch',
-	'SKILL_2'					=> 'Sprache: Bakirisch',
-	'SKILL_3'					=> 'Sprache: Suranisch',
+	'SKILL_1'					=> 'Sprache: Bakirisch',
+	'SKILL_2'					=> 'Sprache: Suranisch',
+	'SKILL_3'					=> 'Sprache: Tadsowisch',
 	'SKILL_4'					=> 'Rhetorik',
 	'SKILL_5'					=> 'Administration',
 	'SKILL_6'					=> 'Wirtschaft',
@@ -145,8 +145,8 @@ $lang = array_merge($lang, array(
 	
 	// Countries
 	'COUNTRY_1'					=> 'Bakirien',
-	'COUNTRY_2'					=> 'Tadsowien',
-	'COUNTRY_3'					=> 'Suranien',
+	'COUNTRY_2'					=> 'Suranien',
+	'COUNTRY_3'					=> 'Tadsowien',
 
 	// locations
 	'LOCATION_1'				=> 'Kubishevsk',

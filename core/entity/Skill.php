@@ -19,6 +19,7 @@ class Skill extends abstractEntity
 	protected static $fields = array(
 		'id'				=> 'integer',
 		'name'				=> 'string',
+		'country_id'		=> 'integer',
 	);
 
 	/**
@@ -26,6 +27,7 @@ class Skill extends abstractEntity
 	 **/
 	protected static $validate_unsigned = array(
 		'id',
+		'country_id',
 	);
 	/**
 	 * The database table the consim user data are stored in
@@ -57,7 +59,7 @@ class Skill extends abstractEntity
 	 */
 	public function load($id)
 	{
-		$sql = 'SELECT id, name
+		$sql = 'SELECT id, name, country_id
 			FROM ' . $this->consim_skill_table . '
 			WHERE id = '. (int) $id;
 		$result = $this->db->sql_query($sql);
@@ -92,5 +94,16 @@ class Skill extends abstractEntity
 	public function getName()
 	{
 		return $this->getString($this->data['name']);
+	}
+
+	/**
+	 * Get Name
+	 *
+	 * @return int Name
+	 * @access public
+	 */
+	public function getCountryId()
+	{
+		return $this->getInteger($this->data['country_id']);
 	}
 }

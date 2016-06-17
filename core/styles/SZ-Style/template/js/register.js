@@ -43,18 +43,19 @@ $(function() {
 	//function to show lang info
 	function add_25_lang(wert)
 	{
-		if(wert == 'frt') {
-			$('#lang_frt').show();
-			$('#lang_bak').hide();
-			$('#lang_sur').hide();
-		} else if (wert == 'bak') {
-			$('#lang_frt').hide();
-			$('#lang_bak').show();
-			$('#lang_sur').hide();
+
+		if (wert == 'bak') {
+			$('#lang_skill_1').show();
+			$('#lang_skill_2').hide();
+			$('#lang_skill_3').hide();
 		} else if (wert == 'sur') {
-			$('#lang_frt').hide();
-			$('#lang_bak').hide();
-			$('#lang_sur').show();
+			$('#lang_skill_1').hide();
+			$('#lang_skill_2').show();
+			$('#lang_skill_3').hide();
+		} else if(wert == 'frt') {
+			$('#lang_skill_1').hide();
+			$('#lang_skill_2').hide();
+			$('#lang_skill_3').show();
 		}
 	}
 });

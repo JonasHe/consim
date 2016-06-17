@@ -66,7 +66,7 @@ class UserSkill extends abstractEntity
 	 */
 	public function load($id)
 	{
-		$sql = 'SELECT id, name
+		$sql = 'SELECT us.id, us.user_id, us.skill_id, s.name AS skill_name, us.value
 			FROM ' . $this->consim_skill_table . '
 			WHERE id = '. (int) $id;
 		$result = $this->db->sql_query($sql);
@@ -77,6 +77,71 @@ class UserSkill extends abstractEntity
 		{
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
+
+		return $this;
+	}
+
+	/**
+	 * Insert the Data for the first time
+	 *
+	 * Will throw an exception if the data was already inserted (call save() instead)
+	 *
+	 * @param int $user_id
+	 * @param int $skill_id
+	 * @param int $value
+	 * @param bool $reload To use this entity later
+	 * @return InventoryItem|null $this object for chaining calls; load()->set()->save()
+	 * @access public
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function insert($user_id, $skill_id, $value, $reload = false)
+	{
+		if (!empty($this->data['id']))
+		{
+			// The page already exists
+			throw new \consim\core\exception\out_of_bounds('id');
+		}
+
+		$data = array(
+			'user_id'	=> $user_id,
+			'skill_id'	=> $skill_id,
+			'value'		=> $value,
+		);
+
+		// Insert the page data to the database
+		$sql = 'INSERT INTO ' . $this->consim_user_skill_table . ' ' . $this->db->sql_build_array('INSERT', $data);
+		$this->db->sql_query($sql);
+
+		if($reload)
+		{
+			//reload this entity
+			return $this->load((int) $this->db->sql_nextid());
+		}
+		return null;
+	}
+
+	/**
+	 * Save the current settings to the database
+	 *
+	 * This must be called before closing or any changes will not be saved!
+	 * If adding a rule (saving for the first time), you must call insert() or an exeception will be thrown
+	 *
+	 * @return InventoryItem $this object for chaining calls; load()->set()->save()
+	 * @access public
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function save()
+	{
+		if (empty($this->data['id']))
+		{
+			// The rule does not exist
+			throw new \consim\core\exception\out_of_bounds('rule_id');
+		}
+
+		$sql = 'UPDATE '. $this->consim_user_skill_table .'
+			SET value = ' . $this->data['value'] . '
+			WHERE id = '. $this->getId();
+		$this->db->sql_query($sql);
 
 		return $this;
 	}
@@ -134,5 +199,17 @@ class UserSkill extends abstractEntity
 	public function getValue()
 	{
 		return $this->getInteger($this->data['value']);
+	}
+
+	/**
+	 * Set Value
+	 *
+	 * @param int $value
+	 * @return UserSkill
+	 * @access public
+	 */
+	public function setValue($value)
+	{
+		return $this->setInteger('value', $this->data['value']);
 	}
 }
