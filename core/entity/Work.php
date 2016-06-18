@@ -86,7 +86,7 @@ class Work extends abstractEntity
 			FROM ' . $this->consim_work_table . ' w
 			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = w.condition_id
 			LEFT JOIN '. $this->consim_item_table .' i ON i.id = w.output_id
-			WHERE id = '.  $id;
+			WHERE w.id = '.  $id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);

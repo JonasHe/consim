@@ -112,6 +112,7 @@ class install_basics extends \phpbb\db\migration\migration
 						'starttime'				=> array('TIMESTAMP', 0),
 						'endtime'				=> array('TIMESTAMP', 0),
 						'travel_id'				=> array('UINT:8', 0),
+						'work_id'				=> array('UINT:8', 0),
 						'status'				=> array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),

@@ -104,6 +104,41 @@ class Action
 		redirect($this->helper->route('consim_core_index'));
 	}
 
+	public function work()
+	{
+		$work_id = $this->request->variable('work_id', 0);
+
+		//Check the request
+		if (!$this->is_valid($work_id) || !check_form_key('working'))
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
+
+		//Load ConsimUser
+		$consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
+
+		//Check, if user not active
+		if($consim_user->getActive())
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
+
+		// TODO: Check condition!!
+
+		//Get infos about work
+		$work = $this->container->get('consim.core.entity.work')->load($work_id);
+
+		$now = time();
+		$this->container->get('consim.core.entity.working')
+			->setUserId($consim_user->getUserId())
+			->setStartTime($now)
+			->setEndTime($now + $work->getDuration())
+			->setWorkId($work->getId())
+			->insert();
+
+		redirect($this->helper->route('consim_core_index'));
+	}
+
 	protected function is_valid($value)
 	{
 		return !empty($value) && preg_match('/^\w+$/', $value);

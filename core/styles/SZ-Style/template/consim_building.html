@@ -11,18 +11,22 @@
 				</div>
 				<br /><br />
 
-				<ul class="worklist">
-				<!-- BEGIN works -->
-					<li>
-						<dl>
-							<dt class="title">{works.NAME} ({works.DURATION})</dt>
-							<dd>{L_CONDITION}{L_COLON} {works.CONDITION_TYPE} ({works.CONDITION_VALUE})</dd>
-							<dd>{L_OUTPUT}{L_COLON} <!-- IF works.OUTPUT_VALUE -->{works.OUTPUT_TYPE} ({works.OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></dd>
-							<dd class="action"><a name="travel" class="button2">Machen</a></dd>
-						</dl>
-					</li>
-				<!-- END works -->
-				</ul>
+				<form method="post" action="{S_WORK_ACTION}" >
+					<ul class="worklist">
+					<!-- BEGIN works -->
+						<li>
+							<dl>
+								<dt class="title">{works.NAME} ({works.DURATION})</dt>
+								<dd>{L_CONDITION}{L_COLON} {works.CONDITION_TYPE} ({works.CONDITION_VALUE})</dd>
+								<dd>{L_OUTPUT}{L_COLON} <!-- IF works.OUTPUT_VALUE -->{works.OUTPUT_TYPE} ({works.OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></dd>
+								{works.S_HIDDEN_FIELDS}
+								<dd class="action"><input type="submit" value="{L_GO}" class="button2" /></dd>
+								{S_FORM_TOKEN}
+							</dl>
+						</li>
+					<!-- END works -->
+					</ul>
+				</form>
 				<br /><br />
 			</div>
 		</div>
@@ -30,7 +34,7 @@
 
 	<div class="panel">
 		<div class="inner">
-			<form method="post" action="{U_ACTION}" id="post">
+			<form method="post" action="{U_ACTION}">
 				<fieldset class="submit-buttons">
 					<a href="{BACK_TO_LOCATION}" class="button2" >{L_BACK_TO} {LOCATION}</a>
 				</fieldset>

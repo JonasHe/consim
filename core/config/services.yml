@@ -185,6 +185,14 @@ services:
             - %tables.consim.works%
             - %tables.consim.skills%
             - %tables.consim.items%
+
+    consim.core.entity.working:
+            class: consim\core\entity\Working
+            scope: prototype # scope MUST be prototype for this to work!
+            arguments:
+                - @dbal.conn
+                - %tables.consim.actions%
+                - %tables.consim.user%
             
     consim.core.entity.news:
         class: consim\core\entity\News

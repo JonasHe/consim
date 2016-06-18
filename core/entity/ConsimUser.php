@@ -82,7 +82,7 @@ class ConsimUser extends abstractEntity
 	* Load the data from the database for this ressource
 	*
 	* @param int $user_id user identifier
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/

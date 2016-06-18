@@ -9,6 +9,7 @@
 
 namespace consim\core\controller;
 
+use consim\core\entity\Working;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -114,6 +115,11 @@ class Index
 			{
 				return $this->showTraveling($action);
 			}
+			// is user working?
+			if($action instanceof \consim\core\entity\Working)
+			{
+				return $this->showWorking($action);
+			}
 		}
 		else
 		{
@@ -154,6 +160,37 @@ class Index
 
 		// Send all data to the template file
 		return $this->helper->render('consim_travel.html', $this->user->lang('INDEX'));
+	}
+
+	/**
+	 * Display Working page
+	 *
+	 * @param Working $working
+	 * @return null
+	 * @access private
+	 */
+	private function showWorking($working)
+	{
+		/*
+		$now = time();
+		$time = $working->getEndTime() - $now;
+
+		$work = $this->container->get('consim.core.entity.work')->load($working->getWorkId());
+		$this->container->get('consim.core.entity.location')->load($work->)
+
+		// Set output vars for display in the template
+		$this->template->assign_vars(array(
+			'IS_WORKING'			=> TRUE,
+			'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+			'BUILDING_DESCRIPTION'  => ($building->getDescription() != '')? '' . $building->getDescription() . '' : '',
+			'BUILDING_TYP'          => $building->getTypeName(),
+			'LOCATION'              => $location->getName(),
+			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
+			'S_WORK_ACTION'			=> $this->helper->route('consim_core_work'),
+		));
+		*/
+		// Send all data to the template file
+		return $this->helper->render('consim_building.html', $this->user->lang('INDEX'));
 	}
 
 	/**
@@ -241,6 +278,10 @@ class Index
 		$works = $this->container->get('consim.core.operators.locations')->getWorks($building->getTypeId());
 		foreach ($works as $work)
 		{
+			$s_hidden_fields = build_hidden_fields(array(
+				'work_id'		=> $work->getId(),
+			));
+
 			$this->template->assign_block_vars('works', array(
 				'NAME'				=> $work->getName(),
 				'DURATION'			=> date("i:s", $work->getDuration()),
@@ -248,9 +289,11 @@ class Index
 				'CONDITION_VALUE'	=> $work->getConditionValue(),
 				'OUTPUT_TYPE'		=> $work->getOutputName(),
 				'OUTPUT_VALUE'		=> $work->getOutputValue(),
+				'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			));
 		}
 
+		add_form_key('working');
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
@@ -258,6 +301,7 @@ class Index
 			'BUILDING_TYP'          => $building->getTypeName(),
 			'LOCATION'              => $location->getName(),
 			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
+			'S_WORK_ACTION'			=> $this->helper->route('consim_core_work'),
 		));
 
 		// Send all data to the template file

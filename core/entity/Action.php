@@ -72,7 +72,7 @@ class Action extends abstractEntity
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		if ($row === false)
+		if ($this->data['id'] === false)
 		{
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
@@ -103,6 +103,18 @@ class Action extends abstractEntity
 	}
 
 	/**
+	 * Set User Id
+	 *
+	 * @param int $user_id
+	 * @return Working
+	 * @access public
+	 */
+	public function setUserId($user_id)
+	{
+		return $this->setInteger('user_id', $user_id);
+	}
+
+	/**
 	* Get Start Time
 	*
 	* @return int Starttime
@@ -114,6 +126,18 @@ class Action extends abstractEntity
 	}
 
 	/**
+	 * Set Start Time
+	 *
+	 * @param int $starttime
+	 * @return Working
+	 * @access public
+	 */
+	public function setStartTime($starttime)
+	{
+		return $this->setInteger('starttime', $starttime);
+	}
+
+	/**
 	* Get End Time
 	*
 	* @return int Endtime
@@ -122,6 +146,18 @@ class Action extends abstractEntity
 	public function getEndTime()
 	{
 		return $this->getInteger($this->data['endtime']);
+	}
+
+	/**
+	 * Set End Time
+	 *
+	 * @param int $endtime
+	 * @return Working
+	 * @access public
+	 */
+	public function setEndTime($endtime)
+	{
+		return $this->setInteger('endtime', $endtime);
 	}
 
 	/**

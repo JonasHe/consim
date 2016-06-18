@@ -9,6 +9,7 @@
 namespace consim\core\operators;
 
 use consim\core\entity\TravelLocation;
+use consim\core\entity\Working;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -77,26 +78,30 @@ class ActionLists
 	* Get current action from user
 	*
 	* @param int $user_id User ID
-	* @return TravelLocation
+	* @return TravelLocation|Working|null
 	* @access public
 	*/
 	public function getCurrentActionFromUser($user_id)
 	{
 		$action = false;
 
-		$sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.travel_id, a.status
+		$sql = 'SELECT a.id, a.user_id, a.starttime, a.endtime, a.travel_id, work_id, a.status
 			FROM ' . $this->consim_action_table . ' a
 			WHERE user_id = ' . (int) $user_id .' AND status = 0';
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		if($row['travel_id'] > 0 )
+		if($row['travel_id'] > 0)
 		{
-			$action = $this->container->get('consim.core.entity.travel_location')->load($row['id']);
+			return $this->container->get('consim.core.entity.travel_location')->load($row['id']);
+		}
+		if($row['work_id'] > 0)
+		{
+			return $this->container->get('consim.core.entity.working')->load($row['id']);
 		}
 
-		return $action;
+		return null;
 	}
 
 }
