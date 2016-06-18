@@ -242,6 +242,8 @@ class install_basics extends \phpbb\db\migration\migration
 				$this->table_prefix . 'consim_user',
 				$this->table_prefix . 'consim_figure',
 				$this->table_prefix . 'consim_actions',
+				$this->table_prefix . 'consim_skills',
+				$this->table_prefix . 'consim_user_skills',
 				$this->table_prefix . 'consim_items',
 				$this->table_prefix . 'consim_inventory_items',
 			),

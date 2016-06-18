@@ -22,9 +22,11 @@ class Work extends abstractEntity
 		'name'					=> 'string',
 		'duration'				=> 'integer',
 		'building_type_id'		=> 'integer',
-		'condition_type' 		=> 'string',
+		'condition_id' 			=> 'integer',
+		'condition_name'		=> 'string',
 		'condition_value'		=> 'integer',
-		'output_type'			=> 'string',
+		'output_id'				=> 'integer',
+		'output_name'			=> 'string',
 		'output_value'			=> 'integer',
 	);
 
@@ -35,7 +37,9 @@ class Work extends abstractEntity
 		'id',
 		'duration',
 		'building_type_id',
+		'condition_id',
 		'condition_value',
+		'output_id',
 		'output_value',
 	);
 	/**
@@ -43,18 +47,27 @@ class Work extends abstractEntity
 	 * @var string
 	 */
 	protected $consim_work_table;
+	protected $consim_skill_table;
+	protected $consim_item_table;
 
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface	$db					Database object
 	 * @param string							$consim_work_table	Name of the table used to store data
+	 * @param string							$consim_skill_table	Name of the table used to store data
+	 * @param string							$consim_item_table	Name of the table used to store data
 	 * @access public
 	 */
-	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_work_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db,
+								$consim_work_table,
+								$consim_skill_table,
+								$consim_item_table)
 	{
 		$this->db = $db;
 		$this->consim_work_table = $consim_work_table;
+		$this->consim_skill_table = $consim_skill_table;
+		$this->consim_item_table = $consim_item_table;
 	}
 
 	/**
@@ -67,8 +80,12 @@ class Work extends abstractEntity
 	 */
 	public function load($id)
 	{
-		$sql = 'SELECT id, name, duration, building_type_id, condition_type, condition_value, output_type, output_value
-			FROM ' . $this->consim_work_table . '
+		$sql = 'SELECT w.id, w.name, w.description, w.duration, w.building_type_id, 
+				w.condition_id, w.condition_value, w.output_id, w.output_value,
+				COALESCE(s.name,"") AS condition_name, COALESCE(i.name, "") AS output_name
+			FROM ' . $this->consim_work_table . ' w
+			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = w.condition_id
+			LEFT JOIN '. $this->consim_item_table .' i ON i.id = w.output_id
 			WHERE id = '.  $id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
@@ -127,14 +144,25 @@ class Work extends abstractEntity
 	}
 
 	/**
-	 * Get Condition Type
+	 * Get Condition Id
 	 *
-	 * @return string Condition Type
+	 * @return int Condition Id
 	 * @access public
 	 */
-	public function getConditionType()
+	public function getConditionId()
 	{
-		return $this->getString($this->data['condition_type']);
+		return $this->getInteger($this->data['condition_id']);
+	}
+
+	/**
+	 * Get Condition Name
+	 *
+	 * @return string Condition Name
+	 * @access public
+	 */
+	public function getConditionName()
+	{
+		return $this->getString($this->data['condition_name']);
 	}
 
 	/**
@@ -149,14 +177,25 @@ class Work extends abstractEntity
 	}
 
 	/**
-	 * Get Output Type
+	 * Get Output Id
 	 *
-	 * @return string Output Type
+	 * @return int Output Id
 	 * @access public
 	 */
-	public function getOutputType()
+	public function getOutputId()
 	{
-		return $this->getString($this->data['output_type']);
+		return $this->getInteger($this->data['output_id']);
+	}
+
+	/**
+	 * Get Output Name
+	 *
+	 * @return string Output Name
+	 * @access public
+	 */
+	public function getOutputName()
+	{
+		return $this->getString($this->data['output_name']);
 	}
 
 	/**

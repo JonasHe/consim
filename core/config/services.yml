@@ -69,6 +69,8 @@ services:
             - %tables.consim.buildings%
             - %tables.consim.building_types%
             - %tables.consim.works%
+            - %tables.consim.skills%
+            - %tables.consim.items%
 
     consim.core.operators.action_lists:
         class: consim\core\operators\ActionLists
@@ -181,6 +183,8 @@ services:
         arguments:
             - @dbal.conn
             - %tables.consim.works%
+            - %tables.consim.skills%
+            - %tables.consim.items%
             
     consim.core.entity.news:
         class: consim\core\entity\News

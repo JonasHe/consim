@@ -244,9 +244,9 @@ class Index
 			$this->template->assign_block_vars('works', array(
 				'NAME'				=> $work->getName(),
 				'DURATION'			=> date("i:s", $work->getDuration()),
-				'CONDITION_TYPE'	=> $work->getConditionType(),
+				'CONDITION_TYPE'	=> $work->getConditionName(),
 				'CONDITION_VALUE'	=> $work->getConditionValue(),
-				'OUTPUT_TYPE'		=> $work->getOutputType(),
+				'OUTPUT_TYPE'		=> $work->getOutputName(),
 				'OUTPUT_VALUE'		=> $work->getOutputValue(),
 			));
 		}
