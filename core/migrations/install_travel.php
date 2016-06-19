@@ -362,7 +362,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'name'				=> $user->lang('WORK_5'),
 				'description'		=> '',
 				'duration'			=> 0,
-				'building_type_id'	=> 1,
+				'building_type_id'	=> 2,
 				'condition_id'		=> 7,
 				'condition_value'	=> 60,
 				'output_id'			=> 1,
