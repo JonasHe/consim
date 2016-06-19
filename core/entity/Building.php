@@ -83,6 +83,34 @@ class Building extends abstractEntity
 	}
 
 	/**
+	 * Find the data from the database for this object
+	 *
+	 * @param int $location_id
+	 * @param int $building_type_id
+	 * @return Building $this object for chaining calls; load()->set()->save()
+	 * @access public
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function find($location_id, $building_type_id)
+	{
+		$sql = 'SELECT lb.id, lb.name, lb.description, b.id AS type_id, b.name AS type_name
+			FROM ' . $this->consim_building_table . ' lb
+			LEFT JOIN ' . $this->consim_building_type_table . ' b ON lb.type_id = b.id
+			WHERE b.id = '. $building_type_id .'
+				AND lb.location_id = '. $location_id;
+		$result = $this->db->sql_query($sql);
+		$this->data = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		if ($this->data === false)
+		{
+			throw new \consim\core\exception\out_of_bounds('id');
+		}
+
+		return $this;
+	}
+
+	/**
 	* Get Building ID
 	*
 	* @return int ID

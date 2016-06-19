@@ -9,6 +9,7 @@
 
 namespace consim\core\controller;
 
+use consim\core\entity\Action;
 use consim\core\entity\Working;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -111,12 +112,13 @@ class Index
 			//get current action
 			$action = $this->container->get('consim.core.operators.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
 			//Is User traveling?
-			if($action instanceof \consim\core\entity\TravelLocation)
+
+			if($action->getRouteId() > 0)
 			{
 				return $this->showTraveling($action);
 			}
 			// is user working?
-			if($action instanceof \consim\core\entity\Working)
+			if($action->getWorkId() > 0)
 			{
 				return $this->showWorking($action);
 			}
@@ -132,29 +134,41 @@ class Index
 	/**
 	* Display all traveling routes
 	*
-	* @param \consim\core\entity\TravelLocation $travel
+	* @param Action $action
 	* @return null
 	* @access private
 	*/
-	private function showTraveling($travel)
+	private function showTraveling($action)
 	{
 		$now = time();
-		$time = $travel->getEndTime() - $now;
+		$time = $action->getEndTime() - $now;
+
+		$route = $this->container->get('consim.core.entity.route')->load($action->getRouteId());
+		$start_location = $this->container->get('consim.core.entity.location')->load($action->getLocationId());
+		$end_location = $this->container->get('consim.core.entity.location');
+		if($action->getLocationId() == $route->getStartLocationId())
+		{
+			$end_location->load($route->getEndLocationId());
+		}
+		else
+		{
+			$end_location->load($route->getStartLocationId());
+		}
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'START_LOCATION_NAME'       => $travel->getStartLocation()->getName(),
-			'START_LOCATION_IMAGE'      => $travel->getStartLocation()->getImage(),
-			'START_LOCATION_TYPE'       => $travel->getStartLocation()->getType(),
-			'START_LOCATION_PROVINCE'   => $travel->getStartLocation()->getProvince(),
-			'START_LOCATION_COUNTRY'    => $travel->getStartLocation()->getCountry(),
-			'START_TIME'                => date("d.m.Y - H:i:s", $travel->getStartTime()),
-			'END_LOCATION_NAME'         => $travel->getEndLocation()->getName(),
-			'END_LOCATION_IMAGE'        => $travel->getEndLocation()->getImage(),
-			'END_LOCATION_TYPE'         => $travel->getEndLocation()->getType(),
-			'END_LOCATION_PROVINCE'     => $travel->getEndLocation()->getProvince(),
-			'END_LOCATION_COUNTRY'      => $travel->getEndLocation()->getCountry(),
-			'END_TIME'                  => date("d.m.Y - H:i:s", $travel->getEndTime()),
+			'START_LOCATION_NAME'       => $start_location->getName(),
+			'START_LOCATION_IMAGE'      => $start_location->getImage(),
+			'START_LOCATION_TYPE'       => $start_location->getType(),
+			'START_LOCATION_PROVINCE'   => $start_location->getProvince(),
+			'START_LOCATION_COUNTRY'    => $start_location->getCountry(),
+			'START_TIME'                => date("d.m.Y - H:i:s", $action->getStartTime()),
+			'END_LOCATION_NAME'         => $end_location->getName(),
+			'END_LOCATION_IMAGE'        => $end_location->getImage(),
+			'END_LOCATION_TYPE'         => $end_location->getType(),
+			'END_LOCATION_PROVINCE'     => $end_location->getProvince(),
+			'END_LOCATION_COUNTRY'      => $end_location->getCountry(),
+			'END_TIME'                  => date("d.m.Y - H:i:s", $action->getEndTime()),
 			'COUNTDOWN'                 => date("i:s", $time),
 		));
 
@@ -165,18 +179,18 @@ class Index
 	/**
 	 * Display Working page
 	 *
-	 * @param Working $working
+	 * @param Action $action
 	 * @return null
 	 * @access private
 	 */
-	private function showWorking($working)
+	private function showWorking($action)
 	{
-		/*
 		$now = time();
-		$time = $working->getEndTime() - $now;
+		$time = $action->getEndTime() - $now;
 
-		$work = $this->container->get('consim.core.entity.work')->load($working->getWorkId());
-		$this->container->get('consim.core.entity.location')->load($work->)
+		$working = $this->container->get('consim.core.entity.work')->load($action->getWorkId());
+		$location = $this->container->get('consim.core.entity.location')->load($working->getLocationId());
+		$building = $this->container->get('consim.core.entity.building')->find($location->getId(), $working->getBuildingTypeId());
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
@@ -185,12 +199,11 @@ class Index
 			'BUILDING_DESCRIPTION'  => ($building->getDescription() != '')? '' . $building->getDescription() . '' : '',
 			'BUILDING_TYP'          => $building->getTypeName(),
 			'LOCATION'              => $location->getName(),
-			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
-			'S_WORK_ACTION'			=> $this->helper->route('consim_core_work'),
+			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location->getId())),
 		));
-		*/
+
 		// Send all data to the template file
-		return $this->helper->render('consim_building.html', $this->user->lang('INDEX'));
+		return $this->helper->render('consim_working.html', $this->user->lang('INDEX'));
 	}
 
 	/**

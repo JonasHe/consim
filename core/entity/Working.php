@@ -12,19 +12,23 @@ namespace consim\core\entity;
  * Entity for a single ressource
  * To Insert a new travelaction
  */
-class Working extends Action
+class Working extends Work
 {
 	/**
 	 * All of fields of this objects
 	 *
 	 **/
 	protected static $fields = array(
-		'id'						=> 'integer',
-		'user_id'					=> 'integer',
-		'starttime'					=> 'integer',
-		'endtime'					=> 'integer',
-		'work_id'					=> 'integer',
-		'status'					=> 'boolean',
+		'id'					=> 'integer',
+		'name'					=> 'string',
+		'duration'				=> 'integer',
+		'building_type_id'		=> 'integer',
+		'condition_id' 			=> 'integer',
+		'condition_name'		=> 'string',
+		'condition_value'		=> 'integer',
+		'output_id'				=> 'integer',
+		'output_name'			=> 'string',
+		'output_value'			=> 'integer',
 	);
 
 	/**
@@ -32,11 +36,12 @@ class Working extends Action
 	 **/
 	protected static $validate_unsigned = array(
 		'id',
-		'user_id',
-		'starttime',
-		'endtime',
-		'work_id',
-		'status',
+		'duration',
+		'building_type_id',
+		'condition_id',
+		'condition_value',
+		'output_id',
+		'output_value',
 	);
 
 	/**
@@ -44,115 +49,149 @@ class Working extends Action
 	 * @var string
 	 */
 	protected $consim_action_table;
-	protected $consim_user_table;
+	protected $consim_work_table;
+	protected $consim_skill_table;
+	protected $consim_item_table;
 
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface	$db							Database object
 	 * @param string								$consim_action_table	Name of the table used to store data
-	 * @param string								$consim_user_table		Name of the table used to store data
+	 * @param string								$consim_work_table		Name of the table used to store data
+	 * @param string								$consim_skill_table		Name of the table used to store data
+	 * @param string								$consim_item_table		Name of the table used to store data
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
 								$consim_action_table,
-								$consim_user_table)
+								$consim_work_table,
+								$consim_skill_table,
+								$consim_item_table)
 	{
 		$this->db = $db;
 		$this->consim_action_table = $consim_action_table;
-		$this->consim_user_table = $consim_user_table;
+		$this->consim_work_table = $consim_work_table;
+		$this->consim_skill_table = $consim_skill_table;
+		$this->consim_item_table = $consim_item_table;
 	}
 
 	/**
-	 * Don't load this Entity
-	 */
-	public function load($id) {}
-
-	/**
-	 * Insert the Data for the first time
+	 * Load the data from the database for this object
 	 *
-	 * Will throw an exception if the data was already inserted (call save() instead)
-	 *
+	 * @param int $id Work id
 	 * @return Working $this object for chaining calls; load()->set()->save()
 	 * @access public
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
-	public function insert()
+	public function load($id)
 	{
-		if (!empty($this->data['id']))
+		$sql = 'SELECT w.id, w.name, w.description, w.duration, w.building_type_id, 
+				w.condition_id, w.condition_value, w.output_id, w.output_value,
+				COALESCE(s.name,"") AS condition_name, COALESCE(i.name, "") AS output_name,
+				a.id AS action_id, a.user_id, a.starttime, a.endtime, a.location_id, a.status
+			FROM '. $this->consim_action_table .' a
+			LEFT JOIN '. $this->consim_work_table .' w ON w.id = a.work_id
+			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = w.condition_id
+			LEFT JOIN '. $this->consim_item_table .' i ON i.id = w.output_id
+			WHERE a.id = '.  $id;
+		$result = $this->db->sql_query($sql);
+		$this->data = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		if ($this->data === false)
 		{
-			// The data already exists
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
 
-		// Make extra sure there is no id set
-		unset($this->data['id']);
-
-		// Insert the data to the database
-		$sql = 'INSERT INTO ' . $this->consim_action_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
-		$this->db->sql_query($sql);
-
-		$this->data['id'] = (int) $this->db->sql_nextid();
-
-		//User is now active
-		$sql = 'UPDATE ' . $this->consim_user_table . '
-			SET active = 1
-			WHERE user_id = ' . $this->data['user_id'];
-		$this->db->sql_query($sql);
-
 		return $this;
 	}
 
 	/**
-	 * Travel done
+	 * Get action id
 	 *
-	 * @return Travel $this object for chaining calls; load()->set()->save()
+	 * @return int action id
 	 * @access public
-	 * @throws \consim\core\exception\out_of_bounds
 	 */
-	public function done()
+	public function getActionId()
 	{
-		// TODO: WAS???
-		if($this->data['endtime'] > time() || $this->data['status'] === 1)
-		{
-			throw new \consim\core\exception\out_of_bounds($integer);
-		}
-
-		//User is free
-		$sql = 'UPDATE ' . $this->consim_action_table . '
-			SET status = 1
-			WHERE id = ' . $this->data['id'];
-		$this->db->sql_query($sql);
-
-		//User is free and at the new location
-		$sql = 'UPDATE ' . $this->consim_user_table . '
-			SET active = 0, location_id = '. $this->data['end_location_id'] .'
-			WHERE user_id = ' . $this->data['user_id'];
-		$this->db->sql_query($sql);
-
-		return $this;
+		return $this->getInteger($this->data['action_id']);
 	}
 
 	/**
-	 * Set work Id
+	 * Get User ID
 	 *
-	 * @param int $work_id
-	 * @return Working
+	 * @return int User ID
 	 * @access public
 	 */
-	public function setWorkId($work_id)
+	public function getUserId()
 	{
-		return $this->setInteger('work_id', $work_id);
+		return $this->getInteger($this->data['user_id']);
 	}
 
 	/**
-	 * Get work Id
+	 * Get location id
 	 *
-	 * @return int work_id
+	 * @return int location id
+	 * @access public
+	 */
+	public function getLocationId()
+	{
+		return $this->getInteger($this->data['location_id']);
+	}
+
+	/**
+	 * Get Start Time
+	 *
+	 * @return int Starttime
+	 * @access public
+	 */
+	public function getStartTime()
+	{
+		return $this->getInteger($this->data['starttime']);
+	}
+
+	/**
+	 * Get End Time
+	 *
+	 * @return int Endtime
+	 * @access public
+	 */
+	public function getEndTime()
+	{
+		return $this->getInteger($this->data['endtime']);
+	}
+
+	/**
+	 * Get route id
+	 *
+	 * @return int route id
+	 * @access public
+	 */
+	public function getRouteId()
+	{
+		return $this->getInteger($this->data['route_id']);
+	}
+
+	/**
+	 * Get work id
+	 *
+	 * @return int work id
 	 * @access public
 	 */
 	public function getWorkId()
 	{
 		return $this->getInteger($this->data['work_id']);
+	}
+
+	/**
+	 * Get Status
+	 *
+	 * @return int Status
+	 * @access public
+	 */
+	public function getStatus()
+	{
+		return $this->getInteger($this->data['status']);
 	}
 }

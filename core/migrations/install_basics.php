@@ -100,18 +100,18 @@ class install_basics extends \phpbb\db\migration\migration
 						'value'					=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
-					'KEYS'			=> array(
-						'u'		=> array('INDEX', 'user_id'),
-						'i'		=> array('INDEX', 'item_id'),
+					'KEYS'		=> array(
+						'u'		=> array('UNIQUE',  array('user_id', 'item_id')),
 					),
 				),
 				$this->table_prefix . 'consim_actions' => array(
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', NULL, 'auto_increment'),
 						'user_id'				=> array('UINT:8', 0),
+						'location_id'			=> array('UINT:8', 0),
 						'starttime'				=> array('TIMESTAMP', 0),
 						'endtime'				=> array('TIMESTAMP', 0),
-						'travel_id'				=> array('UINT:8', 0),
+						'route_id'				=> array('UINT:8', 0),
 						'work_id'				=> array('UINT:8', 0),
 						'status'				=> array('BOOL', 0),
 					),
@@ -119,7 +119,8 @@ class install_basics extends \phpbb\db\migration\migration
 					'KEYS'			=> array(
 						'starttime'		=> array('INDEX', 'starttime'),
 						'endtime'		=> array('INDEX', 'endtime'),
-						'travel_id'		=> array('INDEX', 'travel_id'),
+						'route_id'		=> array('INDEX', 'route_id'),
+						'work_id'		=> array('INDEX', 'work_id'),
 						'status'		=> array('INDEX', 'status'),
 					),
 				),

@@ -88,14 +88,14 @@ class Action
 		$route = $this->container->get('consim.core.entity.route')->load($consim_user->getLocationId(), $travel_id);
 
 		$now = time();
-		//Add new Travel Action
-		$this->container->get('consim.core.entity.travel')
-			 ->insert($consim_user->getUserId(),
-					$now,
-					//TODO: Removed division 10!
-					($now + ($route->getTime()/10)),
-					$consim_user->getLocationId(),
-					$travel_id);
+		$this->container->get('consim.core.entity.action')
+			->setUserId($consim_user->getUserId())
+			->setLocationId($consim_user->getLocationId())
+			->setStartTime($now)
+			//TODO: Removed division 10!
+			->setEndTime($now + ($route->getTime()/10))
+			->setRouteId($route->getId())
+			->insert();
 
 		//$consim_user->setLocation($travel_id);
 		//$consim_user->save();
@@ -129,8 +129,9 @@ class Action
 		$work = $this->container->get('consim.core.entity.work')->load($work_id);
 
 		$now = time();
-		$this->container->get('consim.core.entity.working')
+		$this->container->get('consim.core.entity.action')
 			->setUserId($consim_user->getUserId())
+			->setLocationId($consim_user->getLocationId())
 			->setStartTime($now)
 			->setEndTime($now + $work->getDuration())
 			->setWorkId($work->getId())

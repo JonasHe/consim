@@ -112,8 +112,7 @@ services:
         arguments:
             - @dbal.conn
             - @service_container
-            - %tables.consim.actions%
-            - %tables.consim.travels%
+            - %tables.consim.routes%
             - %tables.consim.locations%
             - %tables.consim.location_types%
             - %tables.consim.provinces%
@@ -133,7 +132,11 @@ services:
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
+            - @service_container
             - %tables.consim.actions%
+            - %tables.consim.user%
+            - %tables.consim.works%
+            - %tables.consim.inventory_items%
 
     consim.core.entity.route:
         class: consim\core\entity\Route
@@ -192,7 +195,9 @@ services:
             arguments:
                 - @dbal.conn
                 - %tables.consim.actions%
-                - %tables.consim.user%
+                - %tables.consim.works%
+                - %tables.consim.skills%
+                - %tables.consim.items%
             
     consim.core.entity.news:
         class: consim\core\entity\News

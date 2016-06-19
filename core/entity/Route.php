@@ -42,8 +42,8 @@ class Route extends abstractEntity
    /**
 	* Constructor
 	*
-	* @param \phpbb\db\driver\driver_interface	$db							Database object
-	* @param string								$consim_location_type_table	Name of the table used to store data
+	* @param \phpbb\db\driver\driver_interface	$db					Satabase object
+	* @param string								$consim_route_table	Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db, $consim_route_table)
@@ -53,7 +53,32 @@ class Route extends abstractEntity
 	}
 
 	/**
-	* Load the data from the database for this object
+	 * Load the data from the database for this object
+	 *
+	 * @param int $id
+	 * @return Route $this object for chaining calls; load()->set()->save()
+	 * @access public
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function load($id)
+	{
+		$sql = 'SELECT id, start_location_id, end_location_id, time
+			FROM ' . $this->consim_route_table . '
+			WHERE id = '. (int) $id;
+		$result = $this->db->sql_query($sql);
+		$this->data = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		if ($this->data === false)
+		{
+			throw new \consim\core\exception\out_of_bounds('id');
+		}
+
+		return $this;
+	}
+
+	/**
+	* Find object based on start and end location
 	*
 	* @param int $start Start Location
 	* @param int $end End Location
@@ -61,7 +86,7 @@ class Route extends abstractEntity
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
-	public function load($start, $end)
+	public function find($start, $end)
 	{
 		$sql = 'SELECT id, start_location_id, end_location_id, time
 			FROM ' . $this->consim_route_table . '
