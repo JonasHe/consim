@@ -154,17 +154,33 @@ $lang = array_merge($lang, array(
 	// ConSim buildings
 	'BUILDING_TYPE_1'			=> 'Lokale Administration',
 	'BUILDING_TYPE_2'			=> 'Industriekombinat',
-	'BUILDING_TYPE_3'			=> 'Industriekombinat',
+	'BUILDING_TYPE_3'			=> 'Bordell',
+	'BUILDING_TYPE_4'			=> 'Armenviertel',
+	'BUIDLING_TYPE_5'			=> 'Fernfahrerkneipe',
 
 	// location_buildings
 	'BUILDING_1'				=> '',
-	'BUILDING_1_EXPLAIN'		=> '',
+	'BUILDING_1_EXPLAIN'		=> 'Die Verwaltung der Provinzhauptstadt Nobri ist zugleich eine wichtige Parteiinstanz als auch Anlaufstelle für Bürger. Hier werden alltägliche Verwaltungsaufgaben bewältigt, Infrastrukturprojekte geplant und im Sinne der sozialistischen Ideologie Bürger"initiativen" unterstützt. Außerdem ist die Administration verantwortlich für die Zusammenarbeit mit Polizei und Zivilschutz, um die Sicherheit der Bevölkerung zu gewährleisten. Die Verwaltung in Nobri gilt dabei als weniger korrupt als vergleichbare Institutionen in anderen bakirischen Städten. Möglicherweise liegt dies im höheren Anteil junger Kader begründet, die hier mit Idealismus und Vaterlandsliebe einen Einsteig in die Verwaltungslaufbahn beginnen.',
 	'BUILDING_2'				=> 'Rotstahl',
-	'BUILDING_2_EXPLAIN'		=> '',
+	'BUILDING_2_EXPLAIN'		=> 'Das örtliche Industriekombinat "Rotstahl" gilt als eines der fortschrittlicheren innerhalb der VRB. Zum Einen ist die lokale Administration mit liberaleren (sofern man diesen Ausdruck hier nutzen kann) Elementen durchmischt. Andererseits besteht eine intensive Partnerschaft mit der Technik-Akademie "Tscherenkow". Schließlich gibt es eine deutliche Anzahl von "Rückkehrern" aus dem Westen. Diese Schüler oder Studenten aus wohlhabenderen Familien haben einige Jahre im Ausland verbracht (häufig London, Paris oder Berlin) und dort mit staatlicher Unterstützung Bildungsabschlüsse erworben. Ihre Rückkehr ist zumeist mehr oder minder freiwillig, schließlich ist ihre Familie weiterhin fest "eingebunden" im sozialistischen Kollektiv. Das Industriekombinat produziert hochwertige Industriegüter, sowohl für den Zivil- wie auch Rüstungssektor. Elektronische Komponenten, chemische Produkte und zahlreiche Apparaturen bzw. Einzelteile. Arbeitsangebote sind hier reichlich zu finden, sofern angemessene Qualifikationen vorhanden sind.',
 	'BUILDING_3'				=> 'Tretmine',
-	'BUILDING_3_EXPLAIN'		=> '',
+	'BUILDING_3_EXPLAIN'		=> 'Prositution erreicht im sozialistischen Idealstaat nur mit Schwierigkeiten den Status der Legalität. Laut ideologischer Lehre ist Prostitution eines der zahlreichen, subversiven Kampfmittel des korrupten Westens und für Sowjetmenschen der neuen Generation kein attraktives Angebot. Die menschliche Natur ist aber noch immer fest verankert im sozialistischen Typus. So floriert auch in der VRB Prostitution, teilweise unter dem Schutz von lokalen Offiziellen, die sich ihre Unterstützung großzügig kompensieren lassen. Die "Tretmine" ist ein weithin bekanntes Etablissement, das Mitarbeiterinnen verschiedener eurasischer Kulturen anbietet. Unter der Hand werden hier zu sündhaft teuren Preisen auch westliche Getränke angeboten, wie schottischer Whiskey. Die lokale Administration drückt hierbei ein Auge zu.',
+	'BUILDING_4'				=> '',
+	'BUILDING_4_EXPLAIN'		=> 'Die Verwaltung der Provinzhauptstadt Nobri ist zugleich eine wichtige Parteiinstanz als auch Anlaufstelle für Bürger.',
+	'BUILDING_5'				=> '',
+	'BUILDING_5_EXPLAIN'		=> 'Die weniger gut begüterten Gegenden der Stadt Alatyr mögen tagsüber einen friedlichen Anschein machen. Aber in den dunklen Nächten regiert hier das organisierte Verbrechen. Trotz offizieller Stellungnahmen der Behörden dass es in der VRB keine "kapitalischen Banden" gibt, blühen Schmuggel, Waffen- und Drogenhandel sowie Erpressungen.',
+	'BUILDING_6'				=> 'Zum Benzinschlucker',
+	'BUILDING_6_EXPLAIN'		=> 'Böse Zungen behaupten, dass der Name der bekanntesten Fernfahrerkneipe bei weitem keine Übertreibung darstellt. In Zeiten wirtschaftlicher Schwierigkeiten greifen verzweifelte Einwohner notgedrungen auf mehr oder minder gefährliche Ersatzmittel zurück, um ihre Alkolholsucht zu befriedigen. Herstellung und Konsum dieser Ersatzmittel sind nicht nur verboten, sondern werden durch die Polizei aktiv verfolgt als "volksfeindliche Schädigung kollektiver Gesundheit". Die einfachen Straßenpolizisten mit minimalen Gehältern allerdings sehen regelmäßig über kleinere Verstöße hinweg und kassieren als Gegenleistung ein kleines Handgeld.',
 
 	// works
 	'WORK_1'					=> 'Assistent des Archviars',
 	'WORK_2'					=> 'Externe Steuerprüfung',
+	'WORK_3'					=> 'Sicherheitspersonal',
+	'WORK_4'					=> 'Produkt-Kontrolleur',
+	'WORK_5'					=> 'Produktdesign Studien-Evaluierung',
+	'WORK_6'					=> 'Gerüchte lauschen',
+	'WORK_7'					=> 'Türsteher',
+	'WORK_8'					=> 'Gassengespenst',
+	'WORK_9'					=> 'Straßenschreck',
+	'WORK_10'					=> 'Des Teufels Destillateur',
 ));
