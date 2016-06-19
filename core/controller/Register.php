@@ -11,6 +11,7 @@ namespace consim\core\controller;
 
 use consim\core\entity\ConsimFigure;
 use consim\core\entity\ConsimUser;
+use consim\core\entity\Skill;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -41,8 +42,15 @@ class Register
 
 	const FREE_POINTS = 50;
 	const DEFAULT_POINTS = 15;
+	//extra language skill
+	const EXTRA_LANG = 25;
+
 
 	protected $sum_skill = self::DEFAULT_POINTS;
+	/* @var Skill[] $skills */
+	protected $skills = array();
+	/* @var int[] $skills_values */
+	protected  $skills_values = array();
 
 	/**
 	* Constructor
@@ -114,6 +122,7 @@ class Register
 		//get the consimUser Entity
 		$consim_user = $this->container->get('consim.core.entity.consim_user');
 		$figure = $consim_user->getFigureData();
+		$this->skills = $this->container->get('consim.core.operators.user_skills')->getSkills();
 
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('submit'))
@@ -131,14 +140,36 @@ class Register
 			if (empty($errors))
 			{
 				//Speichere die Daten und füge User zum Consim hinzu
-				$this->addUserToConsim($consim_user);
+				try
+				{
+					$this->addUserToConsim($consim_user);
+				}
+				catch (\consim\core\exception\base $e)
+				{
+					$errors[] = $e->get_message($this->user);
+				}
 
-				//Leite den User weiter zum Consim Index
-				redirect($this->helper->route('consim_core_index'));
+				if(empty($errors))
+				{
+					//Leite den User weiter zum Consim Index
+					redirect($this->helper->route('consim_core_index'));
+				}
 			}
 		}
 
 		$this->createSelection($figure);
+
+		//Skills to template
+		foreach ($this->skills as $skill)
+		{
+			$this->template->assign_block_vars('skills', array(
+				'ID'			=> 'skill_' . $skill->getId(),
+				'NAME'			=> $skill->getName(),
+				'IS_LANG'		=> ($skill->getCountryId() > 0)? TRUE : FALSE,
+				'COUNTRY_ID'	=> $skill->getCountryId(),
+				'VALUE'			=> $this->request->variable('skill_' . $skill->getId(), 1),
+			));
+		}
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
@@ -156,21 +187,6 @@ class Register
 			'HAARFARBE'						=> $this->request->variable('haarfarbe', ''),
 			'AUGENFARBE'					=> $this->request->variable('augenfarbe', ''),
 			'BESONDERE_MERKMALE'			=> $this->request->variable('besondere_merkmale', ''),
-			'SPRACHE_TADSOWISCH'			=> $this->request->variable('sprache_tadsowisch', 1),
-			'SPRACHE_BAKIRISCH'				=> $this->request->variable('sprache_bakirisch', 1),
-			'SPRACHE_SURANISCH'				=> $this->request->variable('sprache_suranisch', 1),
-			'RHETORIK'						=> $this->request->variable('rhetorik', 1),
-			'ADMINISTRATION'				=> $this->request->variable('administration', 1),
-			'WIRTSCHAFT'					=> $this->request->variable('wirtschaft', 1),
-			'TECHNIK'						=> $this->request->variable('technik', 1),
-			'NAHKAMPF'						=> $this->request->variable('nahkampf', 1),
-			'SCHUSSWAFFEN'					=> $this->request->variable('schusswaffen', 1),
-			'SPRENGMITTEL'					=> $this->request->variable('sprengmittel', 1),
-			'MILITARKUNDE'					=> $this->request->variable('militarkunde', 1),
-			'SPIONAGE'						=> $this->request->variable('spionage', 1),
-			'SCHMUGGEL'						=> $this->request->variable('schmuggel', 1),
-			'MEDIZIN'						=> $this->request->variable('medizin', 1),
-			'UBERLEBENSKUNDE'				=> $this->request->variable('uberlebenskunde', 1),
 		));
 
 		// Send all data to the template file
@@ -197,25 +213,14 @@ class Register
 			'Augenfarbe'					=> $this->request->variable('augenfarbe', ''),
 			'BesondereMerkmale'				=> $this->request->variable('besondere_merkmale', ''),
 		);
-		$attribute = array(
-			'SpracheTadsowisch'				=> $this->request->variable('sprache_tadsowisch', 1),
-			'SpracheBakirisch'				=> $this->request->variable('sprache_bakirisch', 1),
-			'SpracheSuranisch'				=> $this->request->variable('sprache_suranisch', 1),
-			'Rhetorik'						=> $this->request->variable('rhetorik', 1),
-			'Administration'				=> $this->request->variable('administration', 1),
-			'Wirtschaft'					=> $this->request->variable('wirtschaft', 1),
-			'Technik'						=> $this->request->variable('technik', 1),
-			'Nahkampf'						=> $this->request->variable('nahkampf', 1),
-			'Schusswaffen'					=> $this->request->variable('schusswaffen', 1),
-			'Sprengmittel'					=> $this->request->variable('sprengmittel', 1),
-			'Militarkunde'					=> $this->request->variable('militarkunde', 1),
-			'Spionage'						=> $this->request->variable('spionage', 1),
-			'Schmuggel'						=> $this->request->variable('schmuggel', 1),
-			'Medizin'						=> $this->request->variable('medizin', 1),
-			'Uberlebenskunde'				=> $this->request->variable('uberlebenskunde', 1),
-		);
 
-		$this->sum_skill = array_sum($attribute);
+		// set skills_values from request
+		foreach ($this->skills as $skill)
+		{
+			$this->skills_values[$skill->getId()] = $this->request->variable('skill_' . $skill->getId(), 1);
+		}
+
+		$this->sum_skill = array_sum($this->skills_values);
 
 		//Die Summe der Attribute darf einen bestimmten Wert nicht überschreiten
 		if($this->sum_skill > self::FREE_POINTS + self::DEFAULT_POINTS)
@@ -229,10 +234,8 @@ class Register
 			$errors[] = $this->user->lang('TOO_LOW_ATTRIBUTE');
 		}
 
-		$data = array_merge($person, $attribute);
-
 		// Set the data in the entity
-		foreach ($data as $entity_function => $wert)
+		foreach ($person as $entity_function => $wert)
 		{
 			try
 			{
@@ -254,14 +257,33 @@ class Register
 	* @param ConsimUser $consim_user
 	* @return null
 	* @access private
+	* @throws \consim\core\exception\out_of_bounds
 	*/
 	private function addUserToConsim($consim_user)
 	{
-		$consim_user->insert($this->user->data['user_id']);
+		$user_id = $this->user->data['user_id'];
+		$consim_user->insert($user_id);
+		$this->container->get('consim.core.operators.inventories')->setStartInventory($user_id);
+
+		foreach ($this->skills as $skill)
+		{
+			if($skill->getCountryId() > 0 && (
+					($consim_user->getGeburtsland()->getValue() == 'bak' && $skill->getId() == 1) ||
+					($consim_user->getGeburtsland()->getValue() == 'sur' && $skill->getId() == 2) ||
+					($consim_user->getGeburtsland()->getValue() == 'frt' && $skill->getId() == 3)
+				)
+			)
+			{
+				$this->skills_values[$skill->getId()] += self::EXTRA_LANG;
+			}
+
+			$this->container->get('consim.core.entity.consim_user_skill')
+				->insert($user_id, $skill->getId(), $this->skills_values[$skill->getId()]);
+		}
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
 			SET consim_register = 1
-			WHERE user_id = ' . $this->user->data['user_id'];
+			WHERE user_id = ' . $user_id;
 		$this->db->sql_query($sql);
 	}
 
@@ -291,7 +313,5 @@ class Register
 			$this->template->assign_block_vars($element->getGroups(), $select);
 		}
 	}
-
-
 
 }

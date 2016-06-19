@@ -46,24 +46,6 @@ class install_basics extends \phpbb\db\migration\migration
 						'haarfarbe_id'			=> array('UINT:8', 0),
 						'augenfarbe_id'			=> array('UINT:8', 0),
 						'besondere_merkmale_id'	=> array('UINT:8', 0),
-						'sprache_tadsowisch'	=> array('UINT:3', 1),
-						'sprache_bakirisch'		=> array('UINT:3', 1),
-						'sprache_suranisch'		=> array('UINT:3', 1),
-						'rhetorik'				=> array('UINT:3', 1),
-						'administration'		=> array('UINT:3', 1),
-						'wirtschaft'			=> array('UINT:3', 1),
-						'technik'				=> array('UINT:3', 1),
-						'nahkampf'				=> array('UINT:3', 1),
-						'schusswaffen'			=> array('UINT:3', 1),
-						'sprengmittel'			=> array('UINT:3', 1),
-						'militarkunde'			=> array('UINT:3', 1),
-						'spionage'				=> array('UINT:3', 1),
-						'schmuggel'				=> array('UINT:3', 1),
-						'medizin'				=> array('UINT:3', 1),
-						'uberlebenskunde'		=> array('UINT:3', 1),
-						'bak_rubel'				=> array('UINT:8', 0),
-						'sur_dinar'				=> array('UINT:8', 0),
-						'frt_dollar'			=> array('UINT:8', 0),
 						'location_id'			=> array('UINT:8', 1),
 						'active'				=> array('BOOL', 0),
 					),
@@ -81,20 +63,65 @@ class install_basics extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 				),
+				$this->table_prefix . 'consim_skills' => array(
+					'COLUMNS'		=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+						'country_id'			=> array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
+				$this->table_prefix . 'consim_user_skills' => array(
+					'COLUMNS'		=> array(
+						'id'					=> array('UINT:8', NULL, 'auto_increment'),
+						'user_id'				=> array('UINT:8', 0),
+						'skill_id'				=> array('UINT:8', 0),
+						'value'					=> array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+					'KEYS'			=> array(
+						'uid'	=> array('INDEX', 'user_id'),
+						'sid'	=> array('INDEX', 'skill_id'),
+					),
+				),
+				$this->table_prefix . 'consim_items' => array(
+					'COLUMNS'		=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+						'short_name'			=> array('VCHAR:255', ''),
+						'all_user'				=> array('BOOL', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
+				$this->table_prefix . 'consim_inventory_items' => array(
+					'COLUMNS'		=> array(
+						'id'					=> array('UINT:8', NULL, 'auto_increment'),
+						'user_id'				=> array('UINT:8', 0),
+						'item_id'				=> array('UINT:8', 0),
+						'value'					=> array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+					'KEYS'		=> array(
+						'u'		=> array('UNIQUE',  array('user_id', 'item_id')),
+					),
+				),
 				$this->table_prefix . 'consim_actions' => array(
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', NULL, 'auto_increment'),
 						'user_id'				=> array('UINT:8', 0),
+						'location_id'			=> array('UINT:8', 0),
 						'starttime'				=> array('TIMESTAMP', 0),
 						'endtime'				=> array('TIMESTAMP', 0),
-						'travel_id'				=> array('UINT:8', 0),
+						'route_id'				=> array('UINT:8', 0),
+						'work_id'				=> array('UINT:8', 0),
 						'status'				=> array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
 						'starttime'		=> array('INDEX', 'starttime'),
 						'endtime'		=> array('INDEX', 'endtime'),
-						'travel_id'		=> array('INDEX', 'travel_id'),
+						'route_id'		=> array('INDEX', 'route_id'),
+						'work_id'		=> array('INDEX', 'work_id'),
 						'status'		=> array('INDEX', 'status'),
 					),
 				),
@@ -125,6 +152,8 @@ class install_basics extends \phpbb\db\migration\migration
 			// Set the current version
 			array('config.add', array('consim_version', $this->consim_version)),
 			array('custom', array(array($this, 'insert_consim_figure'))),
+			array('custom', array(array($this, 'insert_consim_item'))),
+			array('custom', array(array($this, 'insert_consim_skill'))),
 
 			// Add an acp tab
 			array('module.add', array('acp', 0, 'ACP_CONSIM')),
@@ -174,6 +203,44 @@ class install_basics extends \phpbb\db\migration\migration
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_figure', $figure_data);
 	}
 
+	public function insert_consim_item()
+	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		$inventory = array(
+			array('id' => 1, 'name' => $user->lang('ITEM_1'), 'short_name' => $user->lang('ITEM_1_SHORT'), 'all_user' => 1),
+			array('id' => 2, 'name' => $user->lang('ITEM_2'), 'short_name' => $user->lang('ITEM_2_SHORT'), 'all_user' => 1),
+			array('id' => 3, 'name' => $user->lang('ITEM_3'), 'short_name' => $user->lang('ITEM_3_SHORT'), 'all_user' => 1),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_items', $inventory);
+	}
+
+	public function insert_consim_skill()
+	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		$inventory = array(
+			array('id' => 1, 'name' => $user->lang('SKILL_1'), 'country_id' => 1),
+			array('id' => 2, 'name' => $user->lang('SKILL_2'), 'country_id' => 2),
+			array('id' => 3, 'name' => $user->lang('SKILL_3'), 'country_id' => 3),
+			array('id' => 4, 'name' => $user->lang('SKILL_4'), 'country_id' => 0),
+			array('id' => 5, 'name' => $user->lang('SKILL_5'), 'country_id' => 0),
+			array('id' => 6, 'name' => $user->lang('SKILL_6'), 'country_id' => 0),
+			array('id' => 7, 'name' => $user->lang('SKILL_7'), 'country_id' => 0),
+			array('id' => 8, 'name' => $user->lang('SKILL_8'), 'country_id' => 0),
+			array('id' => 9, 'name' => $user->lang('SKILL_9'), 'country_id' => 0),
+			array('id' => 10, 'name' => $user->lang('SKILL_10'), 'country_id' => 0),
+			array('id' => 11, 'name' => $user->lang('SKILL_11'), 'country_id' => 0),
+			array('id' => 12, 'name' => $user->lang('SKILL_12'), 'country_id' => 0),
+			array('id' => 13, 'name' => $user->lang('SKILL_13'), 'country_id' => 0),
+			array('id' => 14, 'name' => $user->lang('SKILL_14'), 'country_id' => 0),
+			array('id' => 15, 'name' => $user->lang('SKILL_15'), 'country_id' => 0),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_skills', $inventory);
+	}
+
 	/**
 	* Drop columns
 	*
@@ -187,6 +254,10 @@ class install_basics extends \phpbb\db\migration\migration
 				$this->table_prefix . 'consim_user',
 				$this->table_prefix . 'consim_figure',
 				$this->table_prefix . 'consim_actions',
+				$this->table_prefix . 'consim_skills',
+				$this->table_prefix . 'consim_user_skills',
+				$this->table_prefix . 'consim_items',
+				$this->table_prefix . 'consim_inventory_items',
 			),
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users' => array('consim_register'),

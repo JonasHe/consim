@@ -34,6 +34,9 @@ class Locations
 	protected $consim_country_table;
 	protected $consim_building_table;
 	protected $consim_building_type_table;
+	protected $consim_work_table;
+	protected $consim_skill_table;
+	protected $consim_item_table;
 
 	/**
 	* Constructor
@@ -47,6 +50,9 @@ class Locations
 	* @param string								$consim_country_table			Name of the table used to store data
 	* @param string								$consim_building_table			Name of the table used to store data
 	* @param string								$consim_building_type_table		Name of the table used to store data
+	* @param string								$consim_work_table				Name of the table used to store data
+	* @param string								$consim_skill_table				Name of the table used to store data
+	* @param string								$consim_item_table				Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
@@ -57,7 +63,10 @@ class Locations
 								$consim_province_table,
 								$consim_country_table,
 								$consim_building_table,
-								$consim_building_type_table)
+								$consim_building_type_table,
+								$consim_work_table,
+								$consim_skill_table,
+								$consim_item_table)
 	{
 		$this->db = $db;
 		$this->container = $container;
@@ -68,6 +77,9 @@ class Locations
 		$this->consim_country_table = $consim_country_table;
 		$this->consim_building_table = $consim_building_table;
 		$this->consim_building_type_table = $consim_building_type_table;
+		$this->consim_work_table = $consim_work_table;
+		$this->consim_skill_table = $consim_skill_table;
+		$this->consim_item_table = $consim_item_table;
 	}
 
 	/**
@@ -81,7 +93,7 @@ class Locations
 	{
 		$entities = array();
 
-		$sql = 'SELECT lb.id, lb.name, lb.description, b.name AS type
+		$sql = 'SELECT lb.id, lb.name, lb.description, b.id AS type_id, b.name AS type_name
 			FROM ' . $this->consim_building_table . ' lb
 			LEFT JOIN ' . $this->consim_building_type_table . ' b ON lb.type_id = b.id
 			WHERE lb.location_id = ' . (int) $location_id;
@@ -133,7 +145,7 @@ class Locations
 	* @param int						$start
 	* @param \phpbb\template\template	$template
 	* @param \phpbb\controller\helper	$helper
-	* return void
+	* @return void
 	* @access public
 	*/
 	public function setAllRouteDestinationsToTemplate($start, $template, $helper)
@@ -154,6 +166,35 @@ class Locations
 
 			$template->assign_block_vars('destination', $select);
 		}
+	}
+
+	/**
+	 * Get all works of building type
+	 *
+	 * @param int $buildingType
+	 * @return \consim\core\entity\Work[]
+	 * @access public
+	 */
+	public function getWorks($buildingType)
+	{
+		$entities = array();
+
+		$sql = 'SELECT w.id, w.name, w.description, w.duration, w.building_type_id, 
+				w.condition_id, w.condition_value, w.output_id, w.output_value,
+				COALESCE(s.name,"") AS condition_name, COALESCE(i.name, "") AS output_name
+			FROM ' . $this->consim_work_table . ' w
+			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = w.condition_id
+			LEFT JOIN '. $this->consim_item_table .' i ON i.id = w.output_id 
+			WHERE building_type_id = '.  $buildingType;
+		$result = $this->db->sql_query($sql);
+		
+		while($row = $this->db->sql_fetchrow($result))
+		{
+			$entities[] = $this->container->get('consim.core.entity.work')->import($row);
+		}
+		$this->db->sql_freeresult($result);
+
+		return $entities;
 	}
 
 }

@@ -81,4 +81,8 @@ $lang = array_merge($lang, array(
 	'BUILDING'                  => 'Gebäude',
 	'BACK_TO'                   => 'Zurück nach',
 	'LOCATION'                  => 'Standort',
+
+	'CONDITION'					=> 'Bedingung',
+	'OUTPUT'					=> 'Ertrag',
+	'NOTHING'					=> 'nichts',
 ));

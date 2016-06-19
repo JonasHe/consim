@@ -69,6 +69,9 @@ services:
             - %tables.consim.countries%
             - %tables.consim.buildings%
             - %tables.consim.building_types%
+            - %tables.consim.works%
+            - %tables.consim.skills%
+            - %tables.consim.items%
 
     consim.core.operators.action_lists:
         class: consim\core\operators\ActionLists
@@ -76,7 +79,24 @@ services:
             - @dbal.conn
             - @service_container
             - %tables.consim.actions%
-            - %tables.consim.travels%
+
+    consim.core.operators.inventories:
+        class: consim\core\operators\Inventories
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - @service_container
+            - %tables.consim.items%
+            - %tables.consim.inventory_items%
+
+    consim.core.operators.user_skills:
+            class: consim\core\operators\UserSkills
+            scope: prototype # scope MUST be prototype for this to work!
+            arguments:
+                - @dbal.conn
+                - @service_container
+                - %tables.consim.skills%
+                - %tables.consim.user_skills%
 
     consim.core.entity.building:
         class: consim\core\entity\Building
@@ -86,34 +106,16 @@ services:
             - %tables.consim.buildings%
             - %tables.consim.building_types%
 
-    consim.core.entity.travel_location:
-        class: consim\core\entity\TravelLocation
-        scope: prototype # scope MUST be prototype for this to work!
-        arguments:
-            - @dbal.conn
-            - @service_container
-            - %tables.consim.actions%
-            - %tables.consim.travels%
-            - %tables.consim.locations%
-            - %tables.consim.location_types%
-            - %tables.consim.provinces%
-            - %tables.consim.countries%
-
-    consim.core.entity.travel:
-        class: consim\core\entity\Travel
-        scope: prototype # scope MUST be prototype for this to work!
-        arguments:
-            - @dbal.conn
-            - %tables.consim.actions%
-            - %tables.consim.travels%
-            - %tables.consim.user%
-
     consim.core.entity.action:
         class: consim\core\entity\Action
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
+            - @service_container
             - %tables.consim.actions%
+            - %tables.consim.user%
+            - %tables.consim.works%
+            - %tables.consim.inventory_items%
 
     consim.core.entity.route:
         class: consim\core\entity\Route
@@ -156,6 +158,15 @@ services:
         arguments:
             - @dbal.conn
             - %tables.consim.location_types%
+
+    consim.core.entity.work:
+        class: consim\core\entity\Work
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.works%
+            - %tables.consim.skills%
+            - %tables.consim.items%
             
     consim.core.entity.news:
         class: consim\core\entity\News
@@ -193,3 +204,33 @@ services:
         arguments:
             - @dbal.conn
             - %tables.consim.figure%
+
+    consim.core.entity.consim_skill:
+            class: consim\core\entity\Skill
+            scope: prototype # scope MUST be prototype for this to work!
+            arguments:
+                - @dbal.conn
+                - %tables.consim.skills%
+
+    consim.core.entity.consim_user_skill:
+            class: consim\core\entity\UserSkill
+            scope: prototype # scope MUST be prototype for this to work!
+            arguments:
+                - @dbal.conn
+                - %tables.consim.skills%
+                - %tables.consim.user_skills%
+
+    consim.core.entity.item:
+        class: consim\core\entity\Item
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.items%
+
+    consim.core.entity.inventory_item:
+            class: consim\core\entity\InventoryItem
+            scope: prototype # scope MUST be prototype for this to work!
+            arguments:
+                - @dbal.conn
+                - %tables.consim.inventory_items%
+                - %tables.consim.items%

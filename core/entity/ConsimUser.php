@@ -29,21 +29,6 @@ class ConsimUser extends abstractEntity
 		'haarfarbe_id'					=> 'integer',
 		'augenfarbe_id'					=> 'integer',
 		'besondere_merkmale_id'			=> 'integer',
-		'sprache_tadsowisch'			=> 'integer',
-		'sprache_bakirisch'				=> 'integer',
-		'sprache_suranisch'				=> 'integer',
-		'rhetorik'						=> 'integer',
-		'administration'				=> 'integer',
-		'wirtschaft'					=> 'integer',
-		'technik'						=> 'integer',
-		'nahkampf'						=> 'integer',
-		'schusswaffen'					=> 'integer',
-		'sprengmittel'					=> 'integer',
-		'militarkunde'					=> 'integer',
-		'spionage'						=> 'integer',
-		'schmuggel'						=> 'integer',
-		'medizin'						=> 'integer',
-		'uberlebenskunde'				=> 'integer',
 		'location_id'					=> 'integer',
 		'active'						=> 'bool'
 	);
@@ -53,21 +38,6 @@ class ConsimUser extends abstractEntity
 	**/
 	protected static $validate_unsigned = array(
 		'user_id',
-		'sprache_tadsowisch',
-		'sprache_bakirisch',
-		'sprache_suranisch',
-		'rhetorik',
-		'administration',
-		'wirtschaft',
-		'technik',
-		'nahkampf',
-		'schusswaffen',
-		'sprengmittel',
-		'militarkunde',
-		'spionage',
-		'schmuggel',
-		'medizin',
-		'uberlebenskunde',
 		'location_id',
 		'active',
 	);
@@ -84,12 +54,9 @@ class ConsimUser extends abstractEntity
 
 	/**
 	* Variable to save the data from person table
-	* @var ConsimFigure[]
+	* @var ConsimFigure[] $figure_data
 	*/
 	private $figure_data;
-
-	//extra language skill
-	const EXTRA_LANG = 25;
 
    /**
 	* Constructor
@@ -115,7 +82,7 @@ class ConsimUser extends abstractEntity
 	* Load the data from the database for this ressource
 	*
 	* @param int $user_id user identifier
-	* @return object $this object for chaining calls; load()->set()->save()
+	* @return ConsimUser $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -152,7 +119,7 @@ class ConsimUser extends abstractEntity
 		while($row = $this->db->sql_fetchrow($result))
 		{
 			$figure_data[$row['id']] = $this->container->get('consim.core.entity.consim_figure')
-									  ->import($row);
+				->import($row);
 		}
 		$this->db->sql_freeresult($result);
 
@@ -179,17 +146,6 @@ class ConsimUser extends abstractEntity
 		}
 
 		$this->data['user_id'] = $user_id;
-
-		//Add extra language skill
-		switch($this->figure_data[$this->data['geburtsland_id']]->getValue())
-		{
-			case 'frt': $this->data['sprache_tadsowisch'] = $this->data['sprache_tadsowisch'] + self::EXTRA_LANG;
-			break;
-			case 'bak': $this->data['sprache_bakirisch'] = $this->data['sprache_bakirisch'] + self::EXTRA_LANG;
-			break;
-			case 'sur': $this->data['sprache_suranisch'] = $this->data['sprache_suranisch'] + self::EXTRA_LANG;
-			break;
-		}
 
 		// Insert the data to the database
 		$sql = 'INSERT INTO ' . $this->consim_user_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
@@ -423,420 +379,6 @@ class ConsimUser extends abstractEntity
 	public function setBesondereMerkmale($besondere_merkmale)
 	{
 		return $this->setFigure('besondere_merkmale', $besondere_merkmale);
-	}
-
-   /**
-	* Get Sprache Tadsowisch
-	*
-	* @return int Sprache Tadsowisch
-	* @access public
-	*/
-	public function getSpracheTadsowisch()
-	{
-		return $this->getInteger($this->data['sprache_tadsowisch']);
-	}
-	/**
-	* Set Sprache Tadsowisch
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setSpracheTadsowisch($level)
-	{
-		return $this->setInteger('sprache_tadsowisch', $level, true, 100);
-	}
-
-   /**
-	* Get Sprache bakirisch
-	*
-	* @return int Sprache bakirisch
-	* @access public
-	*/
-	public function getSpracheBakirisch()
-	{
-		return $this->getInteger($this->data['sprache_bakirisch']);
-	}
-	/**
-	* Set Sprache bakirisch
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setSpracheBakirisch($level)
-	{
-		return $this->setInteger('sprache_bakirisch', $level, true, 100);
-	}
-
-   /**
-	* Get Sprache Suranisch
-	*
-	* @return int Sprache Suranisch
-	* @access public
-	*/
-	public function getSpracheSuranisch()
-	{
-		return $this->getInteger($this->data['sprache_suranisch']);
-	}
-	/**
-	* Set Sprache Suranisch
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setSpracheSuranisch($level)
-	{
-		return $this->setInteger('sprache_suranisch', $level, true, 100);
-	}
-
-   /**
-	* Get rhetorik
-	*
-	* @return int rhetorik
-	* @access public
-	*/
-	public function getRhetorik()
-	{
-		return $this->getInteger($this->data['rhetorik']);
-	}
-	/**
-	* Set rhetorik
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setRhetorik($level)
-	{
-		return $this->setInteger('rhetorik', $level, true, 100);
-	}
-
-	/**
-	* Get Administration
-	*
-	* @return int Administration
-	* @access public
-	*/
-	public function getAdministration()
-	{
-		return $this->getInteger($this->data['administration']);
-	}
-	/**
-	* Set Administration
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setAdministration($level)
-	{
-		return $this->setInteger('administration', $level, true, 100);
-	}
-
-   /**
-	* Get wirtschaft
-	*
-	* @return int wirtschaft
-	* @access public
-	*/
-	public function getWirtschaft()
-	{
-		return $this->getInteger($this->data['wirtschaft']);
-	}
-	/**
-	* Set wirtschaft
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setWirtschaft($level)
-	{
-		return $this->setInteger('wirtschaft', $level, true, 100);
-	}
-
-   /**
-	* Get technik
-	*
-	* @return int technik
-	* @access public
-	*/
-	public function getTechnik()
-	{
-		return $this->getInteger($this->data['technik']);
-	}
-	/**
-	* Set technik
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setTechnik($level)
-	{
-		return $this->setInteger('technik', $level, true, 100);
-	}
-
-   /**
-	* Get nahkampf
-	*
-	* @return int nahkampf
-	* @access public
-	*/
-	public function getNahkampf()
-	{
-		return $this->getInteger($this->data['nahkampf']);
-	}
-	/**
-	* Set nahkampf
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setNahkampf($level)
-	{
-		return $this->setInteger('nahkampf', $level, true, 100);
-	}
-
-	/**
-	* Get schusswaffen
-	*
-	* @return int schusswaffen
-	* @access public
-	*/
-	public function getSchusswaffen()
-	{
-		return $this->getInteger($this->data['schusswaffen']);
-	}
-	/**
-	* Set schusswaffen
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setSchusswaffen($level)
-	{
-		return $this->setInteger('schusswaffen', $level, true, 100);
-	}
-
-	/**
-	* Get Sprengmittel
-	*
-	* @return int Sprengmittel
-	* @access public
-	*/
-	public function getSprengmittel()
-	{
-		return $this->getInteger($this->data['sprengmittel']);
-	}
-	/**
-	* Set Sprengmittel
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setSprengmittel($level)
-	{
-		return $this->setInteger('sprengmittel', $level, true, 100);
-	}
-
-   /**
-	* Get militarkunde
-	*
-	* @return int militarkunde
-	* @access public
-	*/
-	public function getMilitarkunde()
-	{
-		return $this->getInteger($this->data['militarkunde']);
-	}
-	/**
-	* Set militarkunde
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setMilitarkunde($level)
-	{
-		return $this->setInteger('militarkunde', $level, true, 100);
-	}
-
-   /**
-	* Get spionage
-	*
-	* @return int spionage
-	* @access public
-	*/
-	public function getSpionage()
-	{
-		return $this->getInteger($this->data['spionage']);
-	}
-	/**
-	* Set militarkunde
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setSpionage($level)
-	{
-		return $this->setInteger('spionage', $level, true, 100);
-	}
-
-	/**
-	* Get Schmuggel
-	*
-	* @return int Schmuggel
-	* @access public
-	*/
-	public function getSchmuggel()
-	{
-		return $this->getInteger($this->data['schmuggel']);
-	}
-	/**
-	* Set Schmuggel
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setSchmuggel($level)
-	{
-		return $this->setInteger('schmuggel', $level, true, 100);
-	}
-
-	/**
-	* Get Medizin
-	*
-	* @return int Medizin
-	* @access public
-	*/
-	public function getMedizin()
-	{
-		return $this->getInteger($this->data['medizin']);
-	}
-	/**
-	* Set Medizin
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setMedizin($level)
-	{
-		return $this->setInteger('medizin', $level, true, 100);
-	}
-
-	/**
-	* Get uberlebenskunde
-	*
-	* @return int uberlebenskunde
-	* @access public
-	*/
-	public function getUberlebenskunde()
-	{
-		return $this->getInteger($this->data['uberlebenskunde']);
-	}
-	/**
-	* Set uberlebenskunde
-	*
-	* @param int $level
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setUberlebenskunde($level)
-	{
-		return $this->setInteger('uberlebenskunde', $level, true, 100);
-	}
-
-	/**
-	* Get Bakirischer Rubel
-	*
-	* @return int Bakirischer Rubel
-	* @access public
-	*/
-	public function getBakRubel()
-	{
-		return $this->getInteger($this->data['bak_rubel']);
-	}
-	/**
-	* Set Bakirischer Rubel
-	*
-	* @param int $rubel
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setBakRubel($rubel)
-	{
-		return $this->setInteger('bak_rubel', $rubel);
-	}
-
-	/**
-	* Get Suranischer Dinar
-	*
-	* @return string Suranischer Dinar
-	* @access public
-	*/
-	public function getSurDinar()
-	{
-		return $this->getInteger($this->data['sur_dinar']);
-	}
-	/**
-	* Set Suranischer Dinar
-	*
-	* @param string $dinar
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setSurDinar($dinar)
-	{
-		return $this->setInteger('sur_dinar', $dinar);
-	}
-
-	/**
-	* Get Tadsowischer Dollar
-	*
-	* @return string Tadsowischer Dollar
-	* @access public
-	*/
-	public function getFrtDollar()
-	{
-		return $this->getInteger($this->data['frt_dollar']);
-	}
-	/**
-	* Set Tadsowischer Dollar
-	*
-	* @param string $dollar
-	* @return ConsimUser $this object for chaining calls; load()->set()->save()
-	* @access public
-	* @throws \consim\core\exception\unexpected_value
-	*/
-	public function setFrtDollar($dollar)
-	{
-		return $this->setInteger('frt_dollar', $dollar);
 	}
 
 	/**
