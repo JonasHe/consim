@@ -156,7 +156,7 @@ $lang = array_merge($lang, array(
 	'BUILDING_TYPE_2'			=> 'Industriekombinat',
 	'BUILDING_TYPE_3'			=> 'Bordell',
 	'BUILDING_TYPE_4'			=> 'Armenviertel',
-	'BUIDLING_TYPE_5'			=> 'Fernfahrerkneipe',
+	'BUILDING_TYPE_5'			=> 'Fernfahrerkneipe',
 
 	// location_buildings
 	'BUILDING_1'				=> '',
