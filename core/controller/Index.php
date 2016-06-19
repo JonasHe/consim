@@ -277,9 +277,6 @@ class Index
 		//Get User-Location
 		$this->consim_user_location = $this->container->get('consim.core.entity.location')->load($this->consim_user->getLocationId());
 
-		//Get the newsticker
-		$this->container->get('consim.core.controller.news')->fetchNews();
-
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			'SPRACHE_TADSOWISCH'			=> $this->consim_user->getSpracheTadsowisch(),

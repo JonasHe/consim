@@ -9,6 +9,7 @@ services:
             - @controller.helper
             - @template
             - @user
+            - @dbal.conn
         tags:
             - { name: event.listener }
 
@@ -45,8 +46,8 @@ services:
             - @request
             - @dbal.conn
 
-    consim.core.controller.news:
-        class: consim\core\controller\News
+    consim.core.controller.acpnews:
+        class: consim\core\controller\ACP_News
         arguments:
             - @config
             - @service_container

@@ -1,0 +1,22 @@
+<!-- INCLUDECSS @consim_core/../theme/consim.css -->
+<!-- IF S_NEWSTICKER -->
+	<span class="vRefresh hidden">{VREFRESH}</span>
+	<div class="panel panel-news" style="border: 2px solid {CHANNEL_BACKGROUND};">
+	    <div class="news">
+	        <div class="channel" style="color: {CHANNEL_COLOR}; background: {CHANNEL_BACKGROUND};">
+	            <span class="channel_name">{CHANNEL}</span>
+                <span class="topic" style="display: none;">
+                </span>
+            </div>
+            <div class="newsticker">
+                <ul class="newsticker-list">
+                    <!-- BEGIN allNews -->
+                    <li class="newsticker-item" data-topic="{allNews.TOPIC}">{allNews.CONTENT}</li>
+                    <!-- END allNews -->
+                </ul>
+            </div>
+        </div>
+    </div>
+<!-- ENDIF -->
+
+<!-- INCLUDEJS @consim_core/js/news.js -->

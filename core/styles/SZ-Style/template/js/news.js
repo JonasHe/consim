@@ -97,6 +97,9 @@
 					}, config.interval);
 				}
 				else{
+					var old_width = $('.channel_name').width();
+					$('.news').find('.channel').css('width', $('.channel_name').width());
+					$newsticker.css('width', $newsticker.width() + (old_width - $('.channel_name').width()));
 					$frame.addClass('oneline');
 					$frame.liScroll();
 				}

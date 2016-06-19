@@ -4,6 +4,7 @@
 *
 * @package ConSim for phpBB3.1
 * @copyright (c) 2015 Marco Candian (tacitus@strategie-zone.de)
+* @copyright (c) 2016 Jonas Heitmann (kommodoree@googlemail.com)
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -25,7 +26,7 @@ class core_module
 		global $phpbb_container, $request, $user, $template;
 
 		// Get an instance of the admin controller and set the template (we only need acp_rsp_user in this file)
-		$news_controller = $phpbb_container->get('consim.core.controller.news');
+		$news_controller = $phpbb_container->get('consim.core.controller.acpnews');
 
 		// Requests
 		$action = $request->variable('action', '');
