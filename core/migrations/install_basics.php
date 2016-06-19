@@ -4,6 +4,7 @@
 *
 * @package ConSim for phpBB3.1
 * @copyright (c) 2015 Marco Candian (tacitus@strategie-zone.de)
+* @copyright (c) 2016 Jonas Heitmann (kommodoree@googlemail.com)
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -153,6 +154,15 @@ class install_basics extends \phpbb\db\migration\migration
 			array('custom', array(array($this, 'insert_consim_figure'))),
 			array('custom', array(array($this, 'insert_consim_item'))),
 			array('custom', array(array($this, 'insert_consim_skill'))),
+
+			// Add an acp tab
+			array('module.add', array('acp', 0, 'ACP_CONSIM')),
+			array('module.add', array(
+				'acp', 'ACP_CONSIM', array(
+					'module_basename'	=> '\consim\core\acp\core_module',
+					'modes'				=> array('news'),
+				),
+			)),
 		);
 	}
 
@@ -252,6 +262,13 @@ class install_basics extends \phpbb\db\migration\migration
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users' => array('consim_register'),
 			),
+			array('module.remove', array(
+				'acp', 'ACP_CONSIM', array(
+					'module_basename'	=> '\consim\core\acp\core_module',
+					'modes'				=> array('news'),
+				),
+			)),
+			array('module.remove', array('acp', 0, 'ACP_CONSIM')),
 		);
 	}
 }

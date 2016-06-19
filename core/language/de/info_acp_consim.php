@@ -3,6 +3,7 @@
 * @package ConSim for phpBB3.1
 *
 * @copyright (c) 2015 Marco Candian (tacitus@strategie-zone.de)
+* @copyright (c) 2016 Jonas Heitmann (kommodoree@googlemail.com)
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 */
 
@@ -38,5 +39,5 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'CONSIM_TITLE'					=> 'ConSim',
 	'CONSIM_NEWS'					=> 'ConSim News',
-	'ACP_CAT_CONSIM'				=> 'ConSim',
+	'ACP_CONSIM'					=> 'ConSim',
 ));

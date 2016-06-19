@@ -4,6 +4,7 @@
 *
 * @package ConSim for phpBB3.1
 * @copyright (c) 2015 Marco Candian (tacitus@strategie-zone.de)
+* @copyright (c) 2016 Jonas Heitmann (kommodoree@googlemail.com)
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -18,7 +19,7 @@ class core_info
 			'filename'	=> '\consim\core\acp\core_module',
 			'title'		=> 'CONSIM',
 			'modes'		=> array(
-				'news'			=> array('title' => 'CONSIM_NEWS', 'auth' => 'ext_consim/core && acl_a_extensions',	'cat' =>  array('ACP_CAT_CONSIM')),
+				'news'			=> array('title' => 'CONSIM_NEWS', 'auth' => 'ext_consim/core && acl_a_extensions',	'cat' =>  array('ACP_CONSIM')),
 			),
 		);
 	}

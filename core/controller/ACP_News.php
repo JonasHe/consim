@@ -4,6 +4,7 @@
 *
 * @package ConSim for phpBB3.1
 * @copyright (c) 2015 Marco Candian (tacitus@strategie-zone.de)
+* @copyright (c) 2016 Jonas Heitmann (kommodoree@googlemail.com)
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -15,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
 * News controller
 */
-class News
+class ACP_News
 {
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -67,68 +68,27 @@ class News
 		$this->request = $request;
 		$this->db = $db;
 	}
-	
+
 	/**
-	* Get the news bar for the frontend
+	* Prüfe die eingehenden Daten
 	*
+	* @param string[] $errors
+	* @param string[] $fields All required fields
 	* @return null
-	* @access public
+	* @access private
 	*/
-	public function fetchNews()
+	private function check_data(&$errors, $fields)
 	{
-		$groups = $channel = array();
-		
-		//Catch all groups from the database where the user is a member of
-		$sql = 'SELECT group_id FROM '. USER_GROUP_TABLE .' WHERE user_id = '.$this->user->data['user_id'];
-		$result = $this->db->sql_query($sql);
-		$row = $this->db->sql_fetchrowset($result);
-		foreach($row as $value){
-			$groups[] = $value['group_id'];
-		}
-		
-		// Catch the first channel from the database where the user is a member of the group
-		$csql = 'SELECT * FROM phpbb_consim_news_channel';
-		$cresult = $this->db->sql_query($csql);
-		while($crow = $this->db->sql_fetchrow($cresult))
+		// Add language file
+		$this->user->add_lang_ext('consim/core', 'exceptions');
+
+		foreach($fields as $value)
 		{
-			if(in_array($crow['group_id'],$groups))
+			if(trim($this->request->variable($value, '')) == '')
 			{
-				$channel['id'] 			= $crow['channel_id'];
-				$channel['name'] 		= $crow['channel_name'];
-				$channel['vRefresh'] 	= $crow['vRefresh'];
-				$channel['background'] 	= $crow['background_color'];
-				$channel['color'] 		= $crow['color'];
-				break;
+				$errors[] = $this->user->lang('EXCEPTION_FIELD_MISSING');
 			}
 		}
-		
-		if($channel['id']) // If the user is allowed to see a channel proceed with fetching all topics and news
-		{
-			// Catch all news from the database
-			$nsql = "SELECT n.news_id, n.content, t.topic_name
-				FROM phpbb_consim_news n 
-				INNER JOIN phpbb_consim_news_topics t
-				ON t.topic_id = n.topic_id
-				WHERE n.channel_id = ".$channel['id']." 
-				ORDER BY n.topic_id";
-			$nresult = $this->db->sql_query($nsql);
-			while($nrow = $this->db->sql_fetchrow($nresult))
-			{
-				$this->template->assign_block_vars('allNews', array(
-				'TOPIC'		=> $nrow['topic_name'],
-				'CONTENT' 	=> $nrow['content'],
-				));
-			}
-		}
-		
-		// Pass the channel data to the template
-		$this->template->assign_vars(array(
-			'S_NEWSTICKER'					=> ($channel['id']) ? true : false,
-			'CHANNEL'						=> $channel['name'].' '.date('H:i'),
-			'VREFRESH'						=> $channel['vRefresh'],
-			'CHANNEL_BACKGROUND'			=> $channel['background'],
-			'CHANNEL_COLOR'					=> $channel['color'],
-		));
 	}
 	
 	/**
@@ -213,6 +173,9 @@ class News
 			{
 				$errors[] = $this->user->lang('FORM_INVALID');
 			}
+			
+			// Check if all required fields are set
+			$this->check_data($errors,array('group','name','background','border'));
 
 			// If no errors, process the form data
 			if (empty($errors))
@@ -239,6 +202,12 @@ class News
 				'GROUPNAME' 	=> (isset($this->user->lang['G_'.$row['group_name']])) ? $this->user->lang['G_'.$row['group_name']] : $row['group_name'],
 			));
 		}
+
+		// Add the error messages to the template
+		$this->template->assign_vars(array(
+			'S_ERROR'	=> (sizeof($errors)) ? true : false,
+			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
+		));
 	}
 	
 	/**
@@ -266,6 +235,9 @@ class News
 			{
 				$errors[] = $this->user->lang('FORM_INVALID');
 			}
+			
+			// Check if all required fields are set
+			$this->check_data($errors,array('group','name','background','border'));
 
 			// If no errors, process the form data
 			if (empty($errors))
@@ -310,6 +282,8 @@ class News
 			'COLOR'			=> $row['color'],
 			'DELETE'			=> build_url("action").'&action=delete_channel&channel_id='.$id,
 			'S_DELETE'			=> true,
+			'S_ERROR'	=> (sizeof($errors)) ? true : false,
+			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
 		));
 	}
 	
@@ -363,6 +337,9 @@ class News
 				$errors[] = $this->user->lang('FORM_INVALID');
 			}
 
+			// Check if all required fields are set
+			$this->check_data($errors,array('channel','topic','content'));
+
 			// If no errors, process the form data
 			if (empty($errors))
 			{
@@ -398,6 +375,11 @@ class News
 				'NAME' 			=> $row['topic_name'],
 			));
 		}
+
+		$this->template->assign_vars(array(
+			'S_ERROR'	=> (sizeof($errors)) ? true : false,
+			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
+		));
 	}
 	
 	/**
@@ -425,7 +407,10 @@ class News
 			{
 				$errors[] = $this->user->lang('FORM_INVALID');
 			}
-
+			
+			// Check if all required fields are set
+			$this->check_data($errors,array('channel','topic','content'));
+			
 			// If no errors, process the form data
 			if (empty($errors))
 			{
@@ -476,6 +461,8 @@ class News
 			'TID'				=> $row['topic_id'],
 			'DELETE'			=> build_url("action").'&action=delete_news&news_id='.$id,
 			'S_DELETE'			=> true,
+			'S_ERROR'	=> (sizeof($errors)) ? true : false,
+			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
 		));
 	}
 	
@@ -512,7 +499,20 @@ class News
 	*/
 	public function topic_add()
 	{
-		$this->container->get('consim.core.entity.news_topics')->setTopicName($this->request->variable('topicTitle','',true))->insert();
+
+		// Check if all required fields are set
+		$this->check_data($errors,array('topicTitle'));
+
+		// If no errors, process the form data
+		if (empty($errors))
+		{
+			$this->container->get('consim.core.entity.news_topics')->setTopicName($this->request->variable('topicTitle','',true))->insert();
+		}
+
+		$this->template->assign_vars(array(
+			'S_ERROR'	=> (sizeof($errors)) ? true : false,
+			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
+		));
 	}
 	
 	/**
@@ -524,7 +524,19 @@ class News
 	*/
 	public function topic_edit($id)
 	{
-		$this->container->get('consim.core.entity.news_topics')->setTopicName($this->request->variable('title','',true))->setId($id)->save();
+		// Check if all required fields are set
+		$this->check_data($errors,array('topicTitle'));
+
+		// If no errors, process the form data
+		if (empty($errors))
+		{
+			$this->container->get('consim.core.entity.news_topics')->setTopicName($this->request->variable('title','',true))->setId($id)->save();
+		}
+
+		$this->template->assign_vars(array(
+			'S_ERROR'	=> (sizeof($errors)) ? true : false,
+			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
+		));
 	}
 	
 	/**
