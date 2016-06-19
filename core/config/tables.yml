@@ -11,7 +11,6 @@ parameters:
     tables.consim.countries: %core.table_prefix%consim_countries
     tables.consim.routes: %core.table_prefix%consim_routes
     tables.consim.actions: %core.table_prefix%consim_actions
-    tables.consim.travels: %core.table_prefix%consim_travels
     tables.consim.buildings: %core.table_prefix%consim_buildings
     tables.consim.building_types: %core.table_prefix%consim_building_types
     tables.consim.works: %core.table_prefix%consim_works

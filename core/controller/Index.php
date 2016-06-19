@@ -10,7 +10,6 @@
 namespace consim\core\controller;
 
 use consim\core\entity\Action;
-use consim\core\entity\Working;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -173,7 +172,7 @@ class Index
 		));
 
 		// Send all data to the template file
-		return $this->helper->render('consim_travel.html', $this->user->lang('INDEX'));
+		return $this->helper->render('consim_traveling.html', $this->user->lang('INDEX'));
 	}
 
 	/**
@@ -356,7 +355,7 @@ class Index
 		}
 		
 		// Get inventory and add to template
-		$inventory = $this->container->get('consim.core.operators.inventory')->getInventory($this->consim_user->getUserId());
+		$inventory = $this->container->get('consim.core.operators.inventories')->getInventory($this->consim_user->getUserId());
 		foreach ($inventory as $item)
 		{
 			$this->template->assign_block_vars('inventory', array(

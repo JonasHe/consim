@@ -9,8 +9,6 @@
 namespace consim\core\operators;
 
 use consim\core\entity\Action;
-use consim\core\entity\TravelLocation;
-use consim\core\entity\Working;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -29,26 +27,22 @@ class ActionLists
 	* @var string
 	*/
 	protected $consim_action_table;
-	protected $consim_travel_table;
 
 	/**
 	* Constructor
 	*
 	* @param \phpbb\db\driver\driver_interface	$db						Database object
 	* @param ContainerInterface					$container				Service container interface
-	* @param string								$consim_action_table	Name of the table used to store data
 	* @param string								$consim_travel_table	Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
 								ContainerInterface $container,
-								$consim_action_table,
-								$consim_travel_table)
+								$consim_action_table)
 	{
 		$this->db = $db;
 		$this->container = $container;
 		$this->consim_action_table = $consim_action_table;
-		$this->consim_travel_table = $consim_travel_table;
 	}
 
 	/**
@@ -79,8 +73,6 @@ class ActionLists
 	*/
 	public function getCurrentActionFromUser($user_id)
 	{
-		$action = false;
-
 		$sql = 'SELECT a.id, a.user_id, a.location_id, a.starttime, a.endtime, a.route_id, a.work_id, a.status
 			FROM ' . $this->consim_action_table . ' a
 			WHERE user_id = ' . (int) $user_id .' AND status = 0';

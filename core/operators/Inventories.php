@@ -8,12 +8,13 @@
 
 namespace consim\core\operators;
 
+use consim\core\entity\InventoryItem;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Operator for Inventory
  */
-class Inventory
+class Inventories
 {
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
@@ -52,7 +53,7 @@ class Inventory
 	 * Get all Items from Inventory of User
 	 *
 	 * @param int $user_id User ID
-	 * @return \consim\core\entity\InventoryItem[]
+	 * @return InventoryItem[]
 	 * @access public
 	 */
 	public function getInventory($user_id)
@@ -78,7 +79,7 @@ class Inventory
 	/**
 	 * Put the items for all user to new user
 	 *
-	 * @param $user_id
+	 * @param int $user_id
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
 	public function setStartInventory($user_id)

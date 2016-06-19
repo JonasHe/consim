@@ -263,7 +263,7 @@ class Register
 	{
 		$user_id = $this->user->data['user_id'];
 		$consim_user->insert($user_id);
-		$this->container->get('consim.core.operators.inventory')->setStartInventory($user_id);
+		$this->container->get('consim.core.operators.inventories')->setStartInventory($user_id);
 
 		foreach ($this->skills as $skill)
 		{

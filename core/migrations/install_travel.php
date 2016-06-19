@@ -62,14 +62,6 @@ class install_travel extends \phpbb\db\migration\migration
 						'end_id'		=> array('INDEX', 'end_location_id'),
 					),
 				),
-				$this->table_prefix . 'consim_travels'	=> array(
-					'COLUMNS'	=> array(
-						'id'					=> array('UINT:8', NULL, 'auto_increment'),
-						'start_location_id'		=> array('UINT:8', 0),
-						'end_location_id'		=> array('UINT:8', 0),
-					),
-					'PRIMARY_KEY'	=> array('id'),
-				),
 				$this->table_prefix . 'consim_provinces'	=> array(
 					'COLUMNS'	=> array(
 						'id'					=> array('UINT:8', 0),
