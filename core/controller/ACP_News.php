@@ -525,7 +525,7 @@ class ACP_News
 	public function topic_edit($id)
 	{
 		// Check if all required fields are set
-		$this->check_data($errors,array('topicTitle'));
+		$this->check_data($errors,array('title'));
 
 		// If no errors, process the form data
 		if (empty($errors))
@@ -551,6 +551,7 @@ class ACP_News
 		if(confirm_box(true))
 		{
 			$this->container->get('consim.core.entity.news_topics')->setId($id)->delete();
+			redirect(build_url(array("action","topic_id")));
 		}
 		else
 		{
@@ -561,6 +562,5 @@ class ACP_News
 				'topic_id' 		=> $id,
 			)));
 		}
-		redirect(build_url(array("action","topic_id")));
 	}
 }
