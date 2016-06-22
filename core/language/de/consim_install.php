@@ -40,9 +40,9 @@ $lang = array_merge($lang, array(
 	//Figure
 	'MANNLICH'				=> 'Männlich',
 	'WEIBLICH'				=> 'Weiblich',
-	'FRT'					=> 'Tadsowien',
-	'BAK'					=> 'Bakirien',
-	'SUR'					=> 'Suranien',
+	'FRT'					=> 'Freie Republik Tadsowien',
+	'VRB'					=> 'Volksrepublik Bakirien',
+	'SUR'					=> 'Suranische Republik',
 	'ORTHODOX'				=> 'Orthodox',
 	'KATHOLISCH'			=> 'Katholisch',
 	'MUSLIMISCH'			=> 'Muslimisch',
@@ -64,7 +64,7 @@ $lang = array_merge($lang, array(
 	'NARBE'					=> 'Narbe',
 	'SCHMUCK'				=> 'Schmuck',
 	'DEFORMIERUNG'			=> 'Deformierung',
-	'STARK_UBERGEWICHTIG'	=> 'Stark Übergewichtig',
+	'STARK_UBERGEWICHTIG'	=> 'Stark übergewichtig',
 
 	//Locations
 	'NOBRI'					=> 'Nobri',
@@ -87,7 +87,7 @@ $lang = array_merge($lang, array(
 	'GRUSHEVSK'				=> 'Grushevsk',
 	'GRUSHEVSK_DESC'		=> 'Grushevsk ist in mehrfacher Hinsicht eine post-sowjetische Grenzstadt. Trotz einer eher geringen Einwohnerzahl von 104.000 umfasst das Stadtgebiet zahlreiche Befestigungen, Bunkeranlagen und Sperrgebiete. ',
 	'ASTRAKAN'				=> 'Astrakan',
-	'ASTRAKAN_DESC'			=> '',
+	'ASTRAKAN_DESC'			=> 'Eingebettet in die ganzjährig schneebedeckten Gipfel des Kaukasusgebirges liegt Astrakan. Ein beinahe malerisches Panorama umgibt diese Stadt, abgerundet durch Wälder mit urtümlicher Flora. Im Gegensatz zu den vielen Industriestädten Bakirien findet man hier selbst im Stadtgebiet kristallklare Gebirgsbäche und grüne Obstwiesen. Der "Jurgori"-Naturschutzpark ist das größte Reservat für seltene Vogelarten wie das bakirische Gebirgshuhn und den Jevgeni-Wisent. Als historischer Passwächter gen Südwesten in die Provinz Aljaria diente die Stadt schon immer als Rastplatz für Handelskarawanen und Garnisonsstadt. Heute sind die Handelskarawanen den Fernfahrern gewichen, die an manchen Tag dicht gedrängt die stellenweise engen Bergstraßen blockieren. In der Winterzeit kann Astrakan über Wochen einschneien. Seine Bewohner ertragen den Wechsel aus tiefen, langen Wintern und kurzen, heißen Sommern mit blühenden Tälern mit gleichsam stoischer Ruhe. Auch politisch scheint Astrakan nur mittelbar den regelmäßigen Erschütterungen des Staatsführung ausgesetzt zu sein. Der Spruch "sobald es in Astrakan angekommen ist", ist schon staatsweit bekannt: Wenn ein neues Gesetz oder eine neue Mode auch hier Beachtung finden, dann halt tatsächlich jeder Staatsbürger in der VRB davon Kenntnis genommen.',
 	'KUBISHEVSK'			=> 'Kubishevsk',
 	'KUBISHEVSK_DESC'		=> 'Kubishevsk mit seinen circa 215.000 Einwohnern wurde in den Jahren 1984-1987 als spätsowjetische Musterstadt geplant und teilweise auch noch angelegt. '
 							  .'Unproportional breite Straßen boten Raum für Mengen von motorisiertem Verkehr, den die Bevölkerung durch die geringe Verbreitung von Privatfahrzeugen nie wirklich ausnutzen konnte. '
@@ -96,17 +96,17 @@ $lang = array_merge($lang, array(
 							  .'Kubishevsk verzeichnet in den letzten Jahren einen leichten wirtschaftlichen Aufschwung, hervorgerufen durch Schwerindustrie, Ressourcenförderung und eine relativ erhaltene Infrastruktur. '
 							  .'Im Umfeld der Stadt liegt ein mit großen Mühen abgeschotteter militärischer Sperrbezirk, dessen Personal an Wochenenden den geringen Sold in der Innenstadt ausgibt, welche neben traditionellen Restaurants wie "der sternlosen Internationale" auch andere, tolerierte Vergnügungen bereithält.',
 	'VARNOGRAD'					=> 'Varnograd',
-	'VARNOGRAD_DESC'			=> '',
+	'VARNOGRAD_DESC'			=> 'Qualmende Schornsteine, ratternde Maschinen und Fließbänder, unablässige Stahlwalzen, dies sind die deutlich sicht- und hörbaren Symbole der bakirischen Schwerpunkt. Varnograd mit seinen schätzungsweise 260.000 Einwohnern ist ein stetig wachsender Moloch aus Industrieanlagen, Wohnblöcken und post-sowjetischer Betriebsamkeit. Viele Bakirier aus ärmeren Regionen versuchen in dieser Großstadt eine neue Existenz aufzubauen. Entsprechend dicht ist so auch das politische Raster. Die Staatsführung ist bemüht, möglichst viele Arbeiter als Parteimitglieder zu gewinnen und scheut sich ebenso nicht, in großen Umfang Propaganda zu betreiben. An den Stadtgrenzen sind gigantische Plakate mit Motivsprüchen aufgestellt, es gibt kostenlose Filmtage in Kinos und die sporadischen Paraden der Werktätigen. Abseits von der offiziellen Kulisse ist Varnograd aber auch ein notorisches Zentrum für politische Oppositon und organisierte Kriminalität. In dunklen Fabrikhinterhöfen und hinter verhängten Wohnungsfenstern finden sich einige der meistgesuchten Spionagegruppen anderer Staaten, wie auch Zellen verschiedener Terrorgruppen. Besonders die zahlreichen Logistiktätigkeiten und Waffenfabriken erlauben zahlreiche Möglichkeiten für Personen, die gewillt sind schwere Strafen durch die Staatspolizei oder den Geheimdienst zu riskieren.',
 	'JEGENSK'					=> 'Jegensk',
 	'JEGENSK_DESC'				=> 'Jegensk besitzt innerhalb der Volksrepulik Bakirien einen Ruf als Bade- und Kurort. Mehrere therapeutische und touristische Anlagen datieren bereits auf zaristische Zeiten zurück, u.a. das wohlbekannte "Schwarzmeer-Kurbad Braschenski". Die ständige Bevölkerung beträgt ungefähr 37.000',
 	'TURAV'						=> 'Turav',
-	'TURAV_DESC'				=> '',
+	'TURAV_DESC'				=> 'An der nordwestlichen Provinzgrenze zu Warandi gelegen, ist die Kleinstadt Turav mit ihren knapp 30.000 Einwohnern. Landwirtschaftliche Produktion und Holzschlag sind die Haupteinnahmen, entsprechend traditionell und konservativ ist die lokale Bevölkerung geprägt. In Turav befindet sich das überregional bekannte Kloster "Heilige Maria", dessen traditionreiche Geschichte man in ausgedehnten Rundgängen durch die ausgedehnten Anlagen erkunden kann. Turav leidet unter der häufig unterentwickelten Infrastruktur innerhalb der VRB, auch wenn das lokale Parteibüro dieses niemals zugeben würde. Am Rand der Stadt befindet sich ein sowjetischer Heldenfriendhof aus der Zeit des Großen Vaterländischen Krieges.',
 	'KIRGANOV'					=> 'Kirganov',
-	'KIRGANOV_DESC'				=> '',
+	'KIRGANOV_DESC'				=> 'Im südlichen Teil der Provinz Isoria befindet sich die Kleinstadt Kirganov mit schätungsweise 40.000 Einwohnern. Es ist im wesentlichen eine typische, bakirische Siedlung mit Einrichtungen der Staatspartei, ausgedehneter privater und vergemeinschafteter Landwirtschaft (Getreide, Kartoffeln, etwas Tabak) und ausbaufähiger Infrastruktur. Seit mehreren Jahren befindet sich hier in staatlich finanziertes Krankenkaus mit angeschlossenen Unterkünften, das Bakirier behandelt und versorgt welche aus neutralen Provinzen fliehen mussten und hier auch die Zuteilung einer neuer Heimstätte warten.',
 	'PKD_74'					=> 'PKD 74',
-	'PKD_74_DESC'				=> '',
+	'PKD_74_DESC'				=> 'Im Osten der Provinz, mit relativer Nähe zur neutralen Provinz XYZ, liegt der militärische Sperrbereich PKD 47. Dieser umfasst mehrere "Großbunker", wie die Staatsführung Bunkerkomplexe mit Mehrfachnutzung deklariert. Mehrere hundert Panzerfahrzeuge werden hier, sicher vor fremden Augen und den meisten Bombentypen, unter einer dicken Schicht Stahlbeton gelagert. Munitionslager, Treibstofftanks und Werkstätten sind ebenfalls Teil dieser Anlage. Das PKD 74 dient auch als Erprobungsgelände neuer Panzermodifikationen und Typen. Das Umfeld des ca. 55 km² großen Areals ist durch einen Minensperrgürtel und Patroullien geschützt. Die einheimische Bevölkerung meidet den Bereich großräumig. Die sporadischen, verirrten Touristen in den Sommermonaten werden zum Teil ausgiebigen Verhören durch Mitglieder verschiedener Sicherheitsdienste unterzogen, bevor man diese nach Zahlung einer erstaunlicherweise kleinen Geldstrafe wieder fahren lässt. Der offizielle Vorwurf lautet bis heute: "Unbefugtes Betreten eines Wasserschutzgebietes". Abgesehen davon ist der PKD 74 auch dauerhafte Garnison und Ausbildungsstätte für zahlreiche Soldaten und Offiziere der bakirischen Volksarmee. Bei vorbildlicher Diensterfüllung ist die Erteilung eines Reisescheines zum nächsten Strand des Schwarzen Meeres eine äußerst begehrte Belohnung; im Übrigen auch im Winter zum Eisangeln. ',
 	'SMTU_567_C'				=> 'SMTU 567-C',
-	'SMTU_567_C_DESC'			=> '',
+	'SMTU_567_C_DESC'			=> 'Eingebettet in die Täler des Kaukasusgebirges im Südwesten von Isoria ist der größte, militärische Sperrbereich der gesamten VRB. Das Gelände wird bis heute mit großem Aufwand geheim gehalten, auch wenn sich natürlich die Existenz kaum verbergen lässt. Offiziell als Naturschutzpark deklariert, ist dieses ca. 80 km² große Areal sowohl ein gigantisches Munitions- und Fahrzeugdepot, Radar- und Abhörposten und Standort mehrerer Abfang- und Bomberstaffeln der bakirischen Luftwaffe. Niemand weiß genau, welche Funktion die weitläufigen Gebäudekomplexe besitzen, in denen täglich einige Hundertschaften Uniformierter ihren Dienst tun. Gerüchtehalber befinden sich unterhalb mancher Gebäude Bunkerkomplexe, die Forschungsanlagen für biologische und chemische Waffen beinhalten. Die wenigen Landwirte in der Umgebung sind, so munkelt man, keine Zivilisten sondern allesamt Mitglieder verschiedener Sicherheitsapparate, die jeden ungebetenen Gast schon weit vor dem eigentlichen Gelände filmen und gegebenenfalls von "ihren privaten Äckern" vertreiben. Die bakirische Bevölkerung jedenfalls hat gelernt, den gesamten Großbereich des SMTU zu meiden.',
 
 	//LocationTypes
 	'TOWN'						=> 'Kleinstadt',
@@ -153,7 +153,7 @@ $lang = array_merge($lang, array(
 
 	// ConSim buildings
 	'BUILDING_TYPE_1'			=> 'Lokale Administration',
-	'BUILDING_TYPE_2'			=> 'Industriekombinat',
+	'BUILDING_TYPE_2'			=> 'Industriekombinat Rotstahl',
 	'BUILDING_TYPE_3'			=> 'Bordell',
 	'BUILDING_TYPE_4'			=> 'Armenviertel',
 	'BUILDING_TYPE_5'			=> 'Fernfahrerkneipe',
