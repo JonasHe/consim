@@ -66,12 +66,11 @@ class listener implements EventSubscriberInterface
 		return array(
 			'core.user_setup'		=> 'load_language_on_setup',
 			'core.page_header'		=> 'add_page_header_link',
-			'core.common'			=> 'fetch_news',
 		);
 	}
 
 	/**
-	* Load common consim language files during user setup
+	* Load common consim language files during user setup and add the newsbar
 	*
 	* @param object $event The event object
 	* @return null
@@ -85,33 +84,12 @@ class listener implements EventSubscriberInterface
 			'lang_set' => 'consim_common',
 		);
 		$event['lang_set_ext'] = $lang_set_ext;
-	}
 
-	/**
-	* Create a URL to the consim controller file for the header linklist
-	*
-	* @return null
-	* @access public
-	*/
-	public function add_page_header_link()
-	{
-		$this->template->assign_vars(array(
-			'U_CONSIM' => $this->controller_helper->route('consim_core_index'),
-		));
-	}
-
-	/**
-	* Get the news bar for the frontend
-	*
-	* @return null
-	* @access public
-	*/
-	public function fetch_news()
-	{
+		// Add the Newsbar
 		$groups = $channel = array();
 		
 		//Catch all groups from the database where the user is a member of
-		$sql = 'SELECT group_id FROM '. USER_GROUP_TABLE .' WHERE user_id = 2';
+		$sql = 'SELECT group_id FROM '. USER_GROUP_TABLE .' WHERE user_id = ' . $this->user->data['user_id'];
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrowset($result);
 		foreach($row as $value){
@@ -134,7 +112,7 @@ class listener implements EventSubscriberInterface
 			}
 		}
 		
-		if($channel['id']) // If the user is allowed to see a channel proceed with fetching all topics and news
+		if(isset($channel['id']) && $channel['id']!="") // If the user is allowed to see a channel proceed with fetching all topics and news
 		{
 			// Catch all news from the database
 			$nsql = "SELECT n.news_id, n.content, t.topic_name
@@ -155,11 +133,24 @@ class listener implements EventSubscriberInterface
 		
 		// Pass the channel data to the template
 		$this->template->assign_vars(array(
-			'S_NEWSTICKER'					=> ($channel['id']) ? true : false,
-			'CHANNEL'						=> $channel['name'].' '.date('H:i'),
-			'VREFRESH'						=> $channel['vRefresh'],
-			'CHANNEL_BACKGROUND'			=> $channel['background'],
-			'CHANNEL_COLOR'					=> $channel['color'],
+			'S_NEWSTICKER'					=> (isset($channel['id'])) ? true : false,
+			'CHANNEL'						=> (isset($channel['name'])) ? $channel['name'].' '.date('H:i') : "",
+			'VREFRESH'						=> (isset($channel['vRefresh'])) ? $channel['vRefresh'] : 0,
+			'CHANNEL_BACKGROUND'			=> (isset($channel['background'])) ? $channel['background'] : "",
+			'CHANNEL_COLOR'					=> (isset($channel['color'])) ? $channel['color'] : "",
+		));
+	}
+
+	/**
+	* Create a URL to the consim controller file for the header linklist
+	*
+	* @return null
+	* @access public
+	*/
+	public function add_page_header_link()
+	{
+		$this->template->assign_vars(array(
+			'U_CONSIM' => $this->controller_helper->route('consim_core_index'),
 		));
 	}
 }
