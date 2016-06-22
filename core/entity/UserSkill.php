@@ -58,17 +58,18 @@ class UserSkill extends abstractEntity
 	/**
 	 * Load the data from the database for this object
 	 *
-	 * @param int $id Id
-	 *
-	 * @return Item $this object for chaining calls; load()->set()->save()
+	 * @param int $user_id
+	 * @param int $skill_id
+	 * @return UserSkill $this object for chaining calls; load()->set()->save()
 	 * @access public
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
-	public function load($id)
+	public function load($user_id, $skill_id)
 	{
 		$sql = 'SELECT us.id, us.user_id, us.skill_id, s.name AS skill_name, us.value
-			FROM ' . $this->consim_skill_table . '
-			WHERE id = '. (int) $id;
+			FROM ' . $this->consim_user_skill_table .' us
+			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = us.skill_id
+			WHERE us.user_id = '. $user_id .' AND us.skill_id = '. $skill_id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -90,7 +91,7 @@ class UserSkill extends abstractEntity
 	 * @param int $skill_id
 	 * @param int $value
 	 * @param bool $reload To use this entity later
-	 * @return InventoryItem|null $this object for chaining calls; load()->set()->save()
+	 * @return UserSkill|null $this object for chaining calls; load()->set()->save()
 	 * @access public
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
@@ -115,7 +116,7 @@ class UserSkill extends abstractEntity
 		if($reload)
 		{
 			//reload this entity
-			return $this->load((int) $this->db->sql_nextid());
+			return $this->load($user_id, $skill_id);
 		}
 		return null;
 	}
@@ -126,7 +127,7 @@ class UserSkill extends abstractEntity
 	 * This must be called before closing or any changes will not be saved!
 	 * If adding a rule (saving for the first time), you must call insert() or an exeception will be thrown
 	 *
-	 * @return InventoryItem $this object for chaining calls; load()->set()->save()
+	 * @return UserSkill $this object for chaining calls; load()->set()->save()
 	 * @access public
 	 * @throws \consim\core\exception\out_of_bounds
 	 */

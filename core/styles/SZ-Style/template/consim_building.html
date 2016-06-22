@@ -16,11 +16,12 @@
 						<form method="post" action="{S_WORK_ACTION}" >
 							<dl>
 								<dt class="title">{works.NAME} ({works.DURATION})</dt>
-								<dd>{L_CONDITION}{L_COLON} {works.CONDITION_TYPE} ({works.CONDITION_VALUE})</dd>
+								<dd>{L_CONDITION}{L_COLON} <!-- IF works.OUTPUT_VALUE -->{works.CONDITION_TYPE} ({works.CONDITION_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></dd>
 								<dd>{L_OUTPUT}{L_COLON} <!-- IF works.OUTPUT_VALUE -->{works.OUTPUT_TYPE} ({works.OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></dd>
-								{works.S_HIDDEN_FIELDS}
+								<!-- IF works.CAN_WORK -->{works.S_HIDDEN_FIELDS}
 								<dd class="action"><input type="submit" value="{L_GO}" class="button2" /></dd>
 								{S_FORM_TOKEN}
+								<!-- ENDIF -->
 							</dl>
 							</form>
 					</li>

@@ -10,6 +10,7 @@
 namespace consim\core\controller;
 
 use consim\core\entity\Action;
+use consim\core\entity\UserSkill;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -43,9 +44,10 @@ class Index
 	**/
 	/** @var  \consim\core\entity\ConsimUser */
 	protected $consim_user;
-
 	/** @var  \consim\core\entity\Location */
 	protected $consim_user_location;
+	/** @var  UserSkill[] */
+	protected $consim_user_skills;
 
 	/**
 	* Constructor
@@ -301,6 +303,8 @@ class Index
 				'CONDITION_VALUE'	=> $work->getConditionValue(),
 				'OUTPUT_TYPE'		=> $work->getOutputName(),
 				'OUTPUT_VALUE'		=> $work->getOutputValue(),
+				'CAN_WORK'			=> ($work->getConditionId() > 0 &&
+										$this->consim_user_skills[$work->getConditionId()]->getValue() > $work->getConditionValue())? TRUE : FALSE,
 				'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			));
 		}
@@ -345,8 +349,8 @@ class Index
 		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
 
 		// get User Skill and add to template
-		$user_skills = $this->container->get('consim.core.operators.user_skills')->getUserSkills($this->user->data['user_id']);
-		foreach ($user_skills as $skill)
+		$this->consim_user_skills = $this->container->get('consim.core.operators.user_skills')->getUserSkills($this->user->data['user_id']);
+		foreach ($this->consim_user_skills as $skill)
 		{
 			$this->template->assign_block_vars('user_skills', array(
 				'NAME'			=> $skill->getSkillName(),

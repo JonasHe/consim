@@ -127,6 +127,12 @@ class Action
 
 		//Get infos about work
 		$work = $this->container->get('consim.core.entity.work')->load($work_id);
+		$user_skill = $this->container->get('consim.core.entity.consim_user_skill')->load($consim_user->getUserId(), $work->getConditionId());
+
+		if($user_skill->getValue() < $work->getConditionValue())
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
 
 		$now = time();
 		$this->container->get('consim.core.entity.action')
