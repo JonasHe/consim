@@ -7,8 +7,8 @@
 				<h2>{WORK_NAME} ({WORK_TIME})</h2>
 				<div class="inner">
 					<p>Kleine Beschreibung...</p>
-					<p><strong>{L_CONDITION}{L_COLON}</strong> <!-- IF works.OUTPUT_VALUE -->{WORK_CONDITION_TYPE} ({WORK_CONDITION_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
-					<p><strong>{L_OUTPUT}{L_COLON}</strong> <!-- IF works.OUTPUT_VALUE -->{WORK_OUTPUT_TYPE} ({WORK_OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
+					<p><strong>{L_CONDITION}{L_COLON}</strong> <!-- IF WORK_CONDITION_VALUE -->{WORK_CONDITION_TYPE} ({WORK_CONDITION_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
+					<p><strong>{L_OUTPUT}{L_COLON}</strong> <!-- IF WORK_OUTPUT_VALUE -->{WORK_OUTPUT_TYPE} ({WORK_OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
 				</div>
 			</div>
 		</div>

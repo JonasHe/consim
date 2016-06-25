@@ -378,7 +378,7 @@ class Action extends abstractEntity
 	public function userDone()
 	{
 		//is it really ready or it is already done?
-		if($this->data['endtime'] > time() || $this->data['status'] == 1)
+		if($this->data['endtime'] > time() || $this->data['status'] != 2)
 		{
 			throw new \consim\core\exception\out_of_bounds('time');
 		}
@@ -394,20 +394,27 @@ class Action extends abstractEntity
 		if($this->data['work_id'] > 0)
 		{
 			//get infos about work and inventory items
-			$sql = 'SELECT w.output_id, w.output_value, i.value AS currentValue
+			$sql = 'SELECT w.output_id, w.output_value, w.condition_value, i.value AS currentValue, s.value AS user_skill
 				FROM '. $this->consim_work_table .' w
+				LEFT JOIN phpbb_consim_user_skills s ON s.skill_id = w.condition_id AND s.user_id = '. $this->data['user_id'] .'
 				LEFT JOIN '. $this->consim_inventory_item_table .' i ON i.item_id = w.output_id AND i.user_id = '. $this->data['user_id'] .'
 				WHERE w.id = '. $this->getWorkId() ;
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
+			$result = 10;
+			if($row['condition_value'] > 0)
+			{
+				$result = $this->calculateResult($row['user_skill']);
+			}
 
 			//Action is done
 			$sql = 'UPDATE ' . $this->consim_action_table . '
 			SET status = '. self::completed .'
 			WHERE id = ' . $this->data['id'];
 			$this->db->sql_query($sql);
+			$this->data['status'] = 1;
 
 			//User is free
 			$sql = 'UPDATE ' . $this->consim_user_table . '
@@ -415,7 +422,7 @@ class Action extends abstractEntity
 			WHERE user_id = ' . $this->data['user_id'];
 			$this->db->sql_query($sql);
 
-			if($row['output_id'] == 0)
+			if($row['output_id'] == 0 || $result < 5)
 			{
 				return null;
 			}
@@ -437,8 +444,21 @@ class Action extends abstractEntity
 			}
 		}
 
-		$this->data['status'] = 1;
-
 		return null;
+	}
+
+	private function calculateResult($user_skill)
+	{
+		$result = 0;
+		for($i = 0; $i < 10; $i++)
+		{
+			$rand = mt_rand(0, 100);
+			if($rand <= $user_skill)
+			{
+				$result++;
+			}
+		}
+
+		return $result;
 	}
 }
