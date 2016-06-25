@@ -27,7 +27,7 @@ class Action extends abstractEntity
 		'endtime'				=> 'integer',
 		'route_id'				=> 'integer',
 		'work_id'				=> 'integer',
-		'status'				=> 'boolean',
+		'status'				=> 'integer',
 	);
 
 	/**
@@ -55,6 +55,13 @@ class Action extends abstractEntity
 	protected $consim_user_table;
 	protected $consim_work_table;
 	protected $consim_inventory_item_table;
+
+	// work is active
+	const active = 0;
+	// work is finished
+	const completed = 1;
+	// user must be confirm the completed
+	const mustConfirm = 2;
 
 	/**
 	* Constructor
@@ -306,9 +313,8 @@ class Action extends abstractEntity
 	}
 
 	/**
-	 * Action done
+	 * Action done with auto save
 	 *
-	 * @return Action $this object for chaining calls; load()->set()->save()
 	 * @access public
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
@@ -344,6 +350,44 @@ class Action extends abstractEntity
 			SET active = 0, location_id = '. $end_location_id .'
 			WHERE user_id = ' . $this->data['user_id'];
 			$this->db->sql_query($sql);
+
+			$this->data['status'] = 1;
+
+			//finished
+			return null;
+		}
+
+		//it is working
+		if($this->data['work_id'] > 0)
+		{
+			//Action is done
+			$sql = 'UPDATE ' . $this->consim_action_table . '
+			SET status = '. self::mustConfirm .'
+			WHERE id = ' . $this->data['id'];
+			$this->db->sql_query($sql);
+
+			$this->data['status'] = 2;
+
+			//finished
+			return null;
+		}
+
+
+	}
+
+	public function userDone()
+	{
+		//is it really ready or it is already done?
+		if($this->data['endtime'] > time() || $this->data['status'] == 1)
+		{
+			throw new \consim\core\exception\out_of_bounds('time');
+		}
+
+		//it is traveling
+		if($this->data['route_id'] > 0)
+		{
+			//nothing to do
+			return null;
 		}
 
 		//it is working
@@ -357,11 +401,11 @@ class Action extends abstractEntity
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
-			
+
 
 			//Action is done
 			$sql = 'UPDATE ' . $this->consim_action_table . '
-			SET status = 1
+			SET status = '. self::completed .'
 			WHERE id = ' . $this->data['id'];
 			$this->db->sql_query($sql);
 
@@ -395,6 +439,6 @@ class Action extends abstractEntity
 
 		$this->data['status'] = 1;
 
-		return $this;
+		return null;
 	}
 }

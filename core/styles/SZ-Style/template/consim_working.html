@@ -13,14 +13,25 @@
 			</div>
 		</div>
 	</div>
+	<!-- IF IS_CONFIRM_FINISH -->
+	<div class="panel">
+		<div class="inner">
+			<form method="post" action="{U_FINISH}">
+				<fieldset class="submit-buttons">
+					{S_HIDDEN_FIELDS}
+					<input type="submit" value="{L_FINISH}" class="button2" />
+					{S_FORM_TOKEN}
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<!-- ENDIF -->
 
 	<div class="panel">
 		<div class="inner">
-			<form method="post" action="{U_ACTION}">
-				<fieldset class="submit-buttons">
-					<a href="{U_OVERVIEW}" class="button2" >{L_BACK_TO} {L_OVERVIEW}</a>
-				</fieldset>
-			</form>
+			<fieldset class="submit-buttons">
+				<a href="{U_OVERVIEW}" class="button2" >{L_BACK_TO} {L_OVERVIEW}</a>
+			</fieldset>
 		</div>
 	</div>
 </div>

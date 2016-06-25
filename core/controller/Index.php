@@ -12,7 +12,6 @@ namespace consim\core\controller;
 use consim\core\entity\Action;
 use consim\core\entity\UserSkill;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Routing\Route;
 
 /**
 * Main controller
@@ -188,9 +187,23 @@ class Index
 		$location = $this->container->get('consim.core.entity.location')->load($action->getLocationId());
 		$building = $this->container->get('consim.core.entity.building')->find($location->getId(), $working->getBuildingTypeId());
 
+		if($action->getStatus() == 2)
+		{
+			$s_hidden_fields = build_hidden_fields(array(
+				'action_id'		=> $action->getId(),
+			));
+			$this->template->assign_vars(array(
+				'IS_CONFIRM_FINISH'	=> TRUE,
+				'U_FINISH'			=> ($action->getStatus() == 2)? $this->helper->route('consim_core_work_end') : FALSE,
+				'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
+			));
+			add_form_key('working_end');
+		}
+
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'IS_WORKING'			=> TRUE,
+			'SHOW_WORKING'			=> TRUE,
+			'IS_WORKING'			=> ($action->getStatus() == 0)? TRUE : FALSE,
 			'WORK_NAME'				=> $working->getName(),
 			'WORK_CONDITION_TYPE'	=> $working->getConditionName(),
 			'WORK_CONDITION_VALUE'	=> $working->getConditionValue(),
@@ -199,7 +212,8 @@ class Index
 			'WORK_BUILDING_NAME'	=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
 			'WORK_BUILDING_TYPE'	=> $building->getTypeName(),
 			'WORK_LOCATION_NAME'	=> $location->getName(),
-			'WORK_TIME'				=> date("i:s", $time),
+			'WORK_TIME'				=> ($action->getStatus() == 0)? date("i:s", $time) : FALSE,
+
 		));
 	}
 
@@ -321,7 +335,7 @@ class Index
 			'BUILDING_TYP'          => $building->getTypeName(),
 			'LOCATION'              => $location->getName(),
 			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
-			'S_WORK_ACTION'			=> $this->helper->route('consim_core_work'),
+			'S_WORK_ACTION'			=> $this->helper->route('consim_core_work_start'),
 		));
 
 		// Send all data to the template file
@@ -334,10 +348,6 @@ class Index
 		{
 			//get current action
 			$action = $this->container->get('consim.core.operators.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
-
-			$this->template->assign_vars(array(
-				'U_OVERVIEW'			=> $this->helper->route('consim_core_index'),
-			));
 
 			if($action->getRouteId() > 0)
 			{
@@ -355,6 +365,35 @@ class Index
 				return $this->helper->render('consim_working.html', $this->user->lang('CONSIM'));
 			}
 		}
+		return null;
+	}
+
+	public function showAction($action_id)
+	{
+		$action = $this->container->get('consim.core.entity.action')->load($action_id);
+
+		//check if the user is owner of action
+		if($action->getUserId() != $this->consim_user->getUserId())
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
+
+		if($action->getRouteId() > 0)
+		{
+			$this->showTraveling($action);
+
+			// Send all data to the template file
+			return $this->helper->render('consim_traveling.html', $this->user->lang('CONSIM'));
+		}
+		// is user working?
+		if($action->getWorkId() > 0)
+		{
+			$this->showWorking($action);
+
+			// Send all data to the template file
+			return $this->helper->render('consim_working.html', $this->user->lang('CONSIM'));
+		}
+
 		return null;
 	}
 
@@ -418,6 +457,7 @@ class Index
 			'USER_PROVINCE'					=> $this->consim_user_location->getProvince(),
 			'USER_COUNTRY'					=> $this->consim_user_location->getCountry(),
 			'GO_TO_INFORMATION'				=> $this->helper->route('consim_core_activity'),
+			'U_OVERVIEW'					=> $this->helper->route('consim_core_index'),
 		));
 	}
 
