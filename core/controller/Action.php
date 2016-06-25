@@ -123,12 +123,11 @@ class Action
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
-		// TODO: Check condition!!
-
 		//Get infos about work
 		$work = $this->container->get('consim.core.entity.work')->load($work_id);
 		$user_skill = $this->container->get('consim.core.entity.consim_user_skill')->load($consim_user->getUserId(), $work->getConditionId());
 
+		//Check condition
 		if($user_skill->getValue() < $work->getConditionValue())
 		{
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');

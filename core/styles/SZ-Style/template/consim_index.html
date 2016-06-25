@@ -72,7 +72,7 @@
 
 
 
-
+<!-- IF CAN_TRAVEL -->
 <div id="travel_popup" class="consim_popup">
 	<a href="#" class="popup_close"></a>
 	<h2 class="popup_title">Reisen</h2>
@@ -80,7 +80,7 @@
 		<p>
 			<img src="{BOARD_URL}ext/consim/core/images/map.jpeg" width="750"  height="350"/>
 		</p>
-		<form method="post" action="{U_ACTION}" id="post">
+		<form method="post" action="{U_ACTION}" id="action_post">
 		<ul class="travellist">
 			<!-- BEGIN destination -->
 			<li>
@@ -97,5 +97,6 @@
 		</form>
 	</div>
 </div>
+<!-- ENDIF -->
 
 <!-- INCLUDE consim_footer.html -->

@@ -12,6 +12,7 @@ namespace consim\core\controller;
 use consim\core\entity\Action;
 use consim\core\entity\UserSkill;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Route;
 
 /**
 * Main controller
@@ -221,8 +222,12 @@ class Index
 		if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
 		{
 			$location = $this->consim_user_location;
-			//Create the Travelpopup
-			$location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
+
+			if(!$this->consim_user->getActive())
+			{
+				//Create the Travelpopup
+				$location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
+			}
 		}
 		else
 		{
@@ -248,17 +253,18 @@ class Index
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'CAN_TRAVEL'                    => ($location->getId() === $this->consim_user->getLocationId())? TRUE : FALSE,
-			'LOCATION'                      => $location->getName(),
-			'LOCATION_DESC'                 => $location->getDescription(),
-			'LOCATION_IMAGE'                => $location->getImage(),
-			'LOCATION_TYPE'                 => $location->getType(),
-			'PROVINCE'                      => $location->getProvince(),
-			'COUNTRY'                       => $location->getCountry(),
+			'CAN_TRAVEL'					=> ($location->getId() === $this->consim_user->getLocationId()
+												&& !$this->consim_user->getActive())? TRUE : FALSE,
+			'LOCATION'						=> $location->getName(),
+			'LOCATION_DESC'					=> $location->getDescription(),
+			'LOCATION_IMAGE'				=> $location->getImage(),
+			'LOCATION_TYPE'					=> $location->getType(),
+			'PROVINCE'						=> $location->getProvince(),
+			'COUNTRY'						=> $location->getCountry(),
 		));
 
 		// Send all data to the template file
-		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
+		return $this->helper->render('consim_index.html', $this->user->lang('CONSIM'));
 	}
 
 	/**
@@ -316,7 +322,7 @@ class Index
 		));
 
 		// Send all data to the template file
-		return $this->helper->render('consim_building.html', $this->user->lang('INDEX'));
+		return $this->helper->render('consim_building.html', $this->user->lang('CONSIM'));
 	}
 
 	public function showActivity()
@@ -335,7 +341,7 @@ class Index
 				$this->showTraveling($action);
 
 				// Send all data to the template file
-				return $this->helper->render('consim_traveling.html', $this->user->lang('INDEX'));
+				return $this->helper->render('consim_traveling.html', $this->user->lang('CONSIM'));
 			}
 			// is user working?
 			if($action->getWorkId() > 0)
@@ -343,7 +349,7 @@ class Index
 				$this->showWorking($action);
 
 				// Send all data to the template file
-				return $this->helper->render('consim_working.html', $this->user->lang('INDEX'));
+				return $this->helper->render('consim_working.html', $this->user->lang('CONSIM'));
 			}
 		}
 		return null;
@@ -366,6 +372,7 @@ class Index
 
 		// Add language file
 		$this->user->add_lang_ext('consim/core', 'consim_common');
+		$this->add_navlinks();
 
 		//Check all finished Actions
 		//$this->container->get('consim.core.operators.action_lists')->finishedActions();
@@ -408,5 +415,31 @@ class Index
 			'USER_PROVINCE'                 => $this->consim_user_location->getProvince(),
 			'USER_COUNTRY'                  => $this->consim_user_location->getCountry(),
 		));
+	}
+
+	/**
+	 * Adding link at navlinks
+	 *
+	 * @param string $name
+	 * @param string $route
+	 * @return null
+	 * @access public
+	 */
+	private function add_navlinks($name = '', $route = '')
+	{
+		if(empty($name))
+		{
+			$this->template->assign_block_vars('navlinks', array(
+				'U_VIEW_FORUM'		=> $this->helper->route('consim_core_index'),
+				'FORUM_NAME'		=> $this->user->lang('CONSIM'),
+			));
+		}
+		else
+		{
+			$this->template->assign_block_vars('navlinks', array(
+				'U_VIEW_FORUM'		=> $this->helper->route($route),
+				'FORUM_NAME'		=> $this->user->lang($name),
+			));
+		}
 	}
 }
