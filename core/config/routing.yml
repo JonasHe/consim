@@ -15,6 +15,10 @@ consim_core_building:
         location_id: \w+
         building_id: \w+
 
+consim_core_activity:
+    path: /game/activity
+    defaults: { _controller: consim.core.controller.Index:showActivity}
+
 consim_core_travel:
     path: /game/action/travel/{travel_id}
     defaults: { _controller: consim.core.controller.Action:travel, travel_id: 0 }

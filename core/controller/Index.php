@@ -116,20 +116,16 @@ class Index
 
 			if($action->getRouteId() > 0)
 			{
-				return $this->showTraveling($action);
+				$this->showTraveling($action);
 			}
 			// is user working?
 			if($action->getWorkId() > 0)
 			{
-				return $this->showWorking($action);
+				$this->showWorking($action);
 			}
 		}
-		else
-		{
-			return $this->showLocation();
-		}
 
-		return null;
+		return $this->showLocation();
 	}
 
 	/**
@@ -172,9 +168,6 @@ class Index
 			'END_TIME'                  => date("d.m.Y - H:i:s", $action->getEndTime()),
 			'COUNTDOWN'                 => date("i:s", $time),
 		));
-
-		// Send all data to the template file
-		return $this->helper->render('consim_traveling.html', $this->user->lang('INDEX'));
 	}
 
 	/**
@@ -190,21 +183,23 @@ class Index
 		$time = $action->getEndTime() - $now;
 
 		$working = $this->container->get('consim.core.entity.work')->load($action->getWorkId());
-		$location = $this->container->get('consim.core.entity.location')->load($working->getLocationId());
+		$location = $this->container->get('consim.core.entity.location')->load($action->getLocationId());
 		$building = $this->container->get('consim.core.entity.building')->find($location->getId(), $working->getBuildingTypeId());
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			'IS_WORKING'			=> TRUE,
-			'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
-			'BUILDING_DESCRIPTION'  => ($building->getDescription() != '')? '' . $building->getDescription() . '' : '',
-			'BUILDING_TYP'          => $building->getTypeName(),
-			'LOCATION'              => $location->getName(),
-			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location->getId())),
+			'WORK_NAME'				=> $working->getName(),
+			'WORK_CONDITION_TYPE'	=> $working->getConditionName(),
+			'WORK_CONDITION_VALUE'	=> $working->getConditionValue(),
+			'WORK_OUTPUT_TYPE'		=> $working->getOutputName(),
+			'WORK_OUTPUT_VALUE'		=> $working->getOutputValue(),
+			'WORK_BUILDING_NAME'	=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+			'WORK_BUILDING_TYPE'	=> $building->getTypeName(),
+			'WORK_LOCATION_NAME'	=> $location->getName(),
+			'WORK_TIME'				=> date("i:s", $time),
+			'GO_TO_INFORMATION'		=> $this->helper->route('consim_core_activity'),
 		));
-
-		// Send all data to the template file
-		return $this->helper->render('consim_working.html', $this->user->lang('INDEX'));
 	}
 
 	/**
@@ -324,6 +319,36 @@ class Index
 		return $this->helper->render('consim_building.html', $this->user->lang('INDEX'));
 	}
 
+	public function showActivity()
+	{
+		if($this->consim_user->getActive())
+		{
+			//get current action
+			$action = $this->container->get('consim.core.operators.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
+
+			$this->template->assign_vars(array(
+				'U_OVERVIEW'			=> $this->helper->route('consim_core_index'),
+			));
+
+			if($action->getRouteId() > 0)
+			{
+				$this->showTraveling($action);
+
+				// Send all data to the template file
+				return $this->helper->render('consim_traveling.html', $this->user->lang('INDEX'));
+			}
+			// is user working?
+			if($action->getWorkId() > 0)
+			{
+				$this->showWorking($action);
+
+				// Send all data to the template file
+				return $this->helper->render('consim_working.html', $this->user->lang('INDEX'));
+			}
+		}
+		return null;
+	}
+
 	/**
 	* Initiated all important variable
 	* and check if it a consim-user
@@ -343,7 +368,7 @@ class Index
 		$this->user->add_lang_ext('consim/core', 'consim_common');
 
 		//Check all finished Actions
-		$this->container->get('consim.core.operators.action_lists')->finishedActions();
+		//$this->container->get('consim.core.operators.action_lists')->finishedActions();
 
 		//Get the ConSim-User
 		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);

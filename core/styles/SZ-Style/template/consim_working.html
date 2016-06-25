@@ -4,18 +4,12 @@
 	<div class="panel">
 		<div class="inner">
 			<div class="content">
-				<h2>{BUILDING_TYP} {BUILDING_NAME} ({LOCATION})</h2>
+				<h2>{WORK_NAME} ({WORK_TIME})</h2>
 				<div class="inner">
-					<p class="location_desc">{BUILDING_DESCRIPTION}</p>
-					<div class="location_image"><img src="{BOARD_URL}ext/consim/core/images/stadt.png" /></div>
+					<p>Kleine Beschreibung...</p>
+					<p><strong>{L_CONDITION}{L_COLON}</strong> <!-- IF works.OUTPUT_VALUE -->{WORK_CONDITION_TYPE} ({WORK_CONDITION_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
+					<p><strong>{L_OUTPUT}{L_COLON}</strong> <!-- IF works.OUTPUT_VALUE -->{WORK_OUTPUT_TYPE} ({WORK_OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
 				</div>
-				<br /><br />
-
-				<div class="work">
-					toll...
-
-				</div>
-				<br /><br />
 			</div>
 		</div>
 	</div>
@@ -24,7 +18,7 @@
 		<div class="inner">
 			<form method="post" action="{U_ACTION}">
 				<fieldset class="submit-buttons">
-					<a href="{BACK_TO_LOCATION}" class="button2" >{L_BACK_TO} {LOCATION}</a>
+					<a href="{U_OVERVIEW}" class="button2" >{L_BACK_TO} {L_OVERVIEW}</a>
 				</fieldset>
 			</form>
 		</div>
