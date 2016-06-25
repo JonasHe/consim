@@ -155,6 +155,7 @@ class Index
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
+			'IS_TRAVELING'				=> TRUE,
 			'START_LOCATION_NAME'       => $start_location->getName(),
 			'START_LOCATION_IMAGE'      => $start_location->getImage(),
 			'START_LOCATION_TYPE'       => $start_location->getType(),
@@ -199,7 +200,6 @@ class Index
 			'WORK_BUILDING_TYPE'	=> $building->getTypeName(),
 			'WORK_LOCATION_NAME'	=> $location->getName(),
 			'WORK_TIME'				=> date("i:s", $time),
-			'GO_TO_INFORMATION'		=> $this->helper->route('consim_core_activity'),
 		));
 	}
 
@@ -289,6 +289,9 @@ class Index
 		$location = $this->container->get('consim.core.entity.location')->load($location_id);
 		$building = $this->container->get('consim.core.entity.building')->load($building_id);
 
+		//add location to navbar
+		$this->add_navlinks($location->getName(), $this->helper->route('consim_core_location', array('location_id' => $location->getId())));
+
 		//Get all Works
 		$works = $this->container->get('consim.core.operators.locations')->getWorks($building->getTypeId());
 		foreach ($works as $work)
@@ -375,7 +378,7 @@ class Index
 		$this->add_navlinks();
 
 		//Check all finished Actions
-		//$this->container->get('consim.core.operators.action_lists')->finishedActions();
+		$this->container->get('consim.core.operators.action_lists')->finishedActions();
 
 		//Get the ConSim-User
 		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
@@ -408,12 +411,13 @@ class Index
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			//Informations for current location and time
-			'TIME'                          => date("d.m.Y - H:i:s", time()),
-			'USER_LOCATION'                 => $this->consim_user_location->getName(),
-			'USER_LOCATION_TYPE'            => $this->consim_user_location->getType(),
-			'USER_LOCATION_URL'             => $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
-			'USER_PROVINCE'                 => $this->consim_user_location->getProvince(),
-			'USER_COUNTRY'                  => $this->consim_user_location->getCountry(),
+			'TIME'							=> date("d.m.Y - H:i:s", time()),
+			'USER_LOCATION'					=> $this->consim_user_location->getName(),
+			'USER_LOCATION_TYPE'			=> $this->consim_user_location->getType(),
+			'USER_LOCATION_URL'				=> $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
+			'USER_PROVINCE'					=> $this->consim_user_location->getProvince(),
+			'USER_COUNTRY'					=> $this->consim_user_location->getCountry(),
+			'GO_TO_INFORMATION'				=> $this->helper->route('consim_core_activity'),
 		));
 	}
 
@@ -430,15 +434,15 @@ class Index
 		if(empty($name))
 		{
 			$this->template->assign_block_vars('navlinks', array(
-				'U_VIEW_FORUM'		=> $this->helper->route('consim_core_index'),
 				'FORUM_NAME'		=> $this->user->lang('CONSIM'),
+				'U_VIEW_FORUM'		=> $this->helper->route('consim_core_index'),
 			));
 		}
 		else
 		{
 			$this->template->assign_block_vars('navlinks', array(
-				'U_VIEW_FORUM'		=> $this->helper->route($route),
-				'FORUM_NAME'		=> $this->user->lang($name),
+				'FORUM_NAME'		=> $name,
+				'U_VIEW_FORUM'		=> $route,
 			));
 		}
 	}

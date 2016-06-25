@@ -8,12 +8,30 @@
 			<div class="content">
 				<h2>{L_ACTIVITY} ({WORK_TIME})</h2>
 				<p>{WORK_NAME} in {WORK_BUILDING_TYPE}<!-- IF BUILDING_NAME --> "{WORK_BUILDING_NAME}"<!-- ENDIF -->, {WORK_LOCATION_NAME}.</p>
-				<span class=""><a href="{GO_TO_INFORMATION}" class="button2">{L_INFORMATION}</a></span>
+				<span><a href="{GO_TO_INFORMATION}" class="button2">{L_INFORMATION}</a></span>
 			</div>
 		</div>
 	</div>
 	<!-- ELSE IF IS_TRAVELING -->
-
+	<div class="panel">
+		<div class="inner">
+			<div class="content">
+				<h2>{L_ACTIVITY} ({COUNTDOWN})</h2>
+				<div class="inner">
+					<div class="travel_location">
+						<p>{START_LOCATION_TYPE} {START_LOCATION_NAME}, {START_LOCATION_PROVINCE} ({START_LOCATION_COUNTRY})</p>
+					</div>
+					<div class="travel_middle">
+						<div style="font-size:3em;">&#8694;</div>
+					</div>
+					<div class="travel_location">
+						<p>{END_LOCATION_TYPE} {END_LOCATION_NAME}, {END_LOCATION_PROVINCE} ({END_LOCATION_COUNTRY})</p>
+					</div>
+				</div>
+				<span><a href="{GO_TO_INFORMATION}" class="button2">{L_INFORMATION}</a></span>
+			</div>
+		</div>
+	</div>
 	<!-- ENDIF -->
 
 	<div class="panel">
