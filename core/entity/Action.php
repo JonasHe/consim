@@ -444,12 +444,12 @@ class Action extends abstractEntity
 			$this->data['successful_trials'] = $result;
 
 			//this work is not successful - no reward :(
-			if($row['output_id'] == 0 || $result < Work::neededSuccessfulTrials)
+			if($result < Work::neededSuccessfulTrials)
 			{
 				//terminate
 				//User is free
 				$sql = 'UPDATE ' . $this->consim_user_table . '
-					SET active = 0,
+					SET active = 0
 					WHERE user_id = ' . $this->data['user_id'];
 				$this->db->sql_query($sql);
 
@@ -461,6 +461,12 @@ class Action extends abstractEntity
 			SET active = 0, experience_points = experience_points + '. $row['experience_points'] .'
 			WHERE user_id = ' . $this->data['user_id'];
 			$this->db->sql_query($sql);
+
+			//no output :(
+			if($row['output_id'] == 0)
+			{
+				return null;
+			}
 
 			if(isset($row['currentValue']))
 			{
