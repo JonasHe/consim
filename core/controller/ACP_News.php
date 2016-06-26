@@ -107,7 +107,7 @@ class ACP_News
 			$this->template->assign_block_vars('allChannels', array(
 				'GROUP' 		=> (isset($this->user->lang['G_'.$crow['group_name']])) ? $this->user->lang['G_'.$crow['group_name']] : $crow['group_name'],
 				'CHANNELNAME' 	=> $crow['channel_name'],
-				'vRefresh' 		=> $crow['vRefresh'],
+				'VREFRESH' 		=> ($crow['vRefresh']==1) ? $this->user->lang['YES'] : $this->user->lang['NO'],
 				'EDITCHANNEL' 	=> build_url("action")."&amp;action=edit_channel&amp;channel_id=".$crow['channel_id'],
 			));
 		}
@@ -136,7 +136,7 @@ class ACP_News
 		$nresult = $this->db->sql_query($nsql);
 		while ($nrow = $this->db->sql_fetchrow($nresult))
 		{
-			$this->template->assign_block_vars('allNews', array(
+			$this->template->assign_block_vars('NewsBlock', array(
 				'CONTENT' 		=> $nrow['content'],
 				'CHANNEL' 		=> $nrow['channel_name'],
 				'TOPIC' 		=> $nrow['topic_name'],

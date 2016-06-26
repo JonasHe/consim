@@ -17,7 +17,7 @@
 			<tr>
 				<td>{allChannels.CHANNELNAME}</td>
 				<td>{allChannels.GROUP}</td>
-				<td><!-- IF {allChannels:VREFRESH} == 1 -->{L_YES}<!-- ELSE -->{L_NO}<!-- ENDIF --></td>
+				<td>{allChannels.VREFRESH}</td>
 				<td><a href="{allChannels.EDITCHANNEL}">{L_EDIT_CHANNEL}</a></td>
 			</tr>
 			<!-- END allChannels -->
@@ -57,14 +57,14 @@
 				<td><a href="{ADDNEWS}">{L_ADD_NEWS}</a></td>
 			</tr>
 		</thead>
-		<!-- BEGIN allNews -->
+		<!-- BEGIN NewsBlock -->
 		<tr>
-			<td>{allNews.CONTENT}</td>
-			<td>{allNews.CHANNEL}</td>
-			<td>{allNews.TOPIC}</td>
-			<td><a href="{allNews.EDITNEWS}">{L_EDIT_NEWS}</a></td>
+			<td>{NewsBlock.CONTENT}</td>
+			<td>{NewsBlock.CHANNEL}</td>
+			<td>{NewsBlock.TOPIC}</td>
+			<td><a href="{NewsBlock.EDITNEWS}">{L_EDIT_NEWS}</a></td>
 		</tr>
-		<!-- END allNews -->
+		<!-- END NewsBlock -->
 	</table>
 <!-- ENDIF -->
 <!-- IF S_ADD_CHANNEL || S_EDIT_CHANNEL -->
