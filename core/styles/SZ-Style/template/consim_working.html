@@ -4,11 +4,18 @@
 	<div class="panel">
 		<div class="inner">
 			<div class="content">
-				<h2>{WORK_NAME} ({WORK_TIME})</h2>
+				<h2>{WORK_NAME} (<!-- IF IS_WORKING -->{WORK_TIME}<!-- ELSE -->{L_FINISHED}<!-- ENDIF-->)</h2>
 				<div class="inner">
 					<p>Kleine Beschreibung...</p>
 					<p><strong>{L_CONDITION}{L_COLON}</strong> <!-- IF WORK_CONDITION_VALUE -->{WORK_CONDITION_TYPE} ({WORK_CONDITION_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
 					<p><strong>{L_OUTPUT}{L_COLON}</strong> <!-- IF WORK_OUTPUT_VALUE -->{WORK_OUTPUT_TYPE} ({WORK_OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
+					<p><strong>{L_EXPERIENCE_POINTS}{L_COLON}</strong> <!-- IF WORK_OUTPUT_VALUE -->{WORK_EXPERIENCE_POINTS}<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
+					<!-- IF not IS_WORKING and not IS_CONFIRM_FINISH -->
+					<hr />
+					<p><strong>{L_RESULT}{L_COLON} <!-- IF IS_WORK_SUCCESSFUL --><span style="color: rgb(0, 127, 0)">{L_SUCCESSFUL}</span><!-- ELSE -->
+						<span style="color: rgb(127, 0, 0);">{L_UNSUCCESSFUL}</span><!-- ENDIF --></strong>
+						({WORK_SUCCESSFUL_TRIALS}/{WORK_TRIALS_NUMBER})</p>
+					<!-- ENDIF -->
 				</div>
 			</div>
 		</div>

@@ -28,6 +28,7 @@ class Work extends abstractEntity
 		'output_id'				=> 'integer',
 		'output_name'			=> 'string',
 		'output_value'			=> 'integer',
+		'experience_points'		=> 'integer',
 	);
 
 	/**
@@ -41,6 +42,7 @@ class Work extends abstractEntity
 		'condition_value',
 		'output_id',
 		'output_value',
+		'experience_points',
 	);
 	/**
 	 * The database table the consim user data are stored in
@@ -49,6 +51,9 @@ class Work extends abstractEntity
 	protected $consim_work_table;
 	protected $consim_skill_table;
 	protected $consim_item_table;
+
+	const trialsNumber = 10;
+	const neededSuccessfulTrials = 5;
 
 	/**
 	 * Constructor
@@ -81,7 +86,7 @@ class Work extends abstractEntity
 	public function load($id)
 	{
 		$sql = 'SELECT w.id, w.name, w.description, w.duration, w.building_type_id, 
-				w.condition_id, w.condition_value, w.output_id, w.output_value,
+				w.condition_id, w.condition_value, w.output_id, w.output_value, w.experience_points,
 				COALESCE(s.name,"") AS condition_name, COALESCE(i.name, "") AS output_name
 			FROM ' . $this->consim_work_table . ' w
 			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = w.condition_id
@@ -207,5 +212,16 @@ class Work extends abstractEntity
 	public function getOutputValue()
 	{
 		return $this->getInteger($this->data['output_value']);
+	}
+
+	/**
+	 * Get experience points
+	 *
+	 * @return string experience points
+	 * @access public
+	 */
+	public function getExperiencePoints()
+	{
+		return $this->getInteger($this->data['experience_points']);
 	}
 }

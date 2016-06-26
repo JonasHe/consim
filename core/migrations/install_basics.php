@@ -46,6 +46,7 @@ class install_basics extends \phpbb\db\migration\migration
 						'haarfarbe_id'			=> array('UINT:8', 0),
 						'augenfarbe_id'			=> array('UINT:8', 0),
 						'besondere_merkmale_id'	=> array('UINT:8', 0),
+						'experience_points'		=> array('UINT:8', 0),
 						'location_id'			=> array('UINT:8', 1),
 						'active'				=> array('BOOL', 0),
 					),

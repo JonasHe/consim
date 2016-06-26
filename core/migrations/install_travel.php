@@ -105,6 +105,7 @@ class install_travel extends \phpbb\db\migration\migration
 						'condition_value'		=> array('UINT:8', 0),
 						'output_id'				=> array('UINT:8', 0),
 						'output_value'			=> array('UINT:8', 0),
+						'experience_points'		=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
@@ -323,6 +324,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 20,
 				'output_id'			=> 0,
 				'output_value'		=> 0,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 2,
@@ -334,6 +336,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 40,
 				'output_id'			=> 1,
 				'output_value'		=> 10,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 3,
@@ -345,6 +348,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 20,
 				'output_id'			=> 1,
 				'output_value'		=> 10,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 4,
@@ -356,6 +360,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 30,
 				'output_id'			=> 1,
 				'output_value'		=> 10,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 5,
@@ -367,6 +372,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 60,
 				'output_id'			=> 1,
 				'output_value'		=> 10,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 6,
@@ -378,6 +384,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 0,
 				'output_id'			=> 0,
 				'output_value'		=> 0,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 7,
@@ -389,6 +396,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 30,
 				'output_id'			=> 1,
 				'output_value'		=> 10,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 8,
@@ -400,6 +408,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 30,
 				'output_id'			=> 1,
 				'output_value'		=> 10,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 9,
@@ -411,6 +420,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 50,
 				'output_id'			=> 1,
 				'output_value'		=> 10,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 10,
@@ -422,6 +432,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 0,
 				'output_id'			=> 0,
 				'output_value'		=> 0,
+				'experience_points'	=> 1,
 			),
 			array(
 				'id'				=> 11,
@@ -433,6 +444,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'condition_value'	=> 65,
 				'output_id'			=> 1,
 				'output_value'		=> 10,
+				'experience_points'	=> 1,
 			),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_works', $works);

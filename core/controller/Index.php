@@ -11,6 +11,7 @@ namespace consim\core\controller;
 
 use consim\core\entity\Action;
 use consim\core\entity\UserSkill;
+use consim\core\entity\Work;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -199,6 +200,15 @@ class Index
 			));
 			add_form_key('working_end');
 		}
+		
+		if($action->getStatus() == 1)
+		{
+			$this->template->assign_vars(array(
+				'IS_WORK_SUCCESSFUL'		=> ($action->getSuccessfulTrials() < Work::neededSuccessfulTrials)?  FALSE : TRUE,
+				'WORK_SUCCESSFUL_TRIALS'	=> $action->getSuccessfulTrials(),
+				'WORK_TRIALS_NUMBER'		=> Work::trialsNumber,
+			));
+		}
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
@@ -209,6 +219,7 @@ class Index
 			'WORK_CONDITION_VALUE'	=> $working->getConditionValue(),
 			'WORK_OUTPUT_TYPE'		=> $working->getOutputName(),
 			'WORK_OUTPUT_VALUE'		=> $working->getOutputValue(),
+			'WORK_EXPERIENCE_POINTS'=> $working->getExperiencePoints(),
 			'WORK_BUILDING_NAME'	=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
 			'WORK_BUILDING_TYPE'	=> $building->getTypeName(),
 			'WORK_LOCATION_NAME'	=> $location->getName(),
@@ -321,7 +332,8 @@ class Index
 				'CONDITION_VALUE'	=> $work->getConditionValue(),
 				'OUTPUT_TYPE'		=> $work->getOutputName(),
 				'OUTPUT_VALUE'		=> $work->getOutputValue(),
-				'CAN_WORK'			=> ($work->getConditionId() > 0 &&
+				'EXPERIENCE_POINTS'	=> $work->getExperiencePoints(),
+				'CAN_WORK'			=> ($work->getConditionId() > 0 && !$this->consim_user->getActive() &&
 										$this->consim_user_skills[$work->getConditionId()]->getValue() > $work->getConditionValue())? TRUE : FALSE,
 				'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			));
@@ -443,7 +455,7 @@ class Index
 				'VALUE'			=> $item->getValue(),
 			));
 		}
-			
+
 		//Get User-Location
 		$this->consim_user_location = $this->container->get('consim.core.entity.location')->load($this->consim_user->getLocationId());
 
@@ -456,6 +468,7 @@ class Index
 			'USER_LOCATION_URL'				=> $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
 			'USER_PROVINCE'					=> $this->consim_user_location->getProvince(),
 			'USER_COUNTRY'					=> $this->consim_user_location->getCountry(),
+			'USER_EXPERIENCE_POINTS'		=> $this->consim_user->getExperiencePoints(),
 			'GO_TO_INFORMATION'				=> $this->helper->route('consim_core_activity'),
 			'U_OVERVIEW'					=> $this->helper->route('consim_core_index'),
 		));

@@ -50,6 +50,7 @@ $lang = array_merge($lang, array(
 	'HAARFARBE'					=> 'Haarfarbe',
 	'AUGENFARBE'				=> 'Augenfarbe',
 	'BESONDERE_MERKMALE'		=> 'Besondere Merkmale',
+	'EXPERIENCE_POINTS'			=> 'Erfahrungspunkte',
 
 	'SKILL'						=> 'Fähigkeit',
 	'INVENTORY'					=> 'Inventar',
@@ -62,6 +63,10 @@ $lang = array_merge($lang, array(
 	'BACK_TO'					=> 'Zurück nach',
 	'OVERVIEW'					=> 'Übersicht',
 	'LOCATION'					=> 'Standort',
+
+	'RESULT'					=> 'Ergebnis',
+	'SUCCESSFUL'				=> 'Erfolgreich',
+	'UNSUCCESSFUL'				=> 'Erfolglos',
 
 	'CONDITION'					=> 'Bedingung',
 	'OUTPUT'					=> 'Ertrag',

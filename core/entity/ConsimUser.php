@@ -29,6 +29,7 @@ class ConsimUser extends abstractEntity
 		'haarfarbe_id'					=> 'integer',
 		'augenfarbe_id'					=> 'integer',
 		'besondere_merkmale_id'			=> 'integer',
+		'experience_points'				=> 'integer',
 		'location_id'					=> 'integer',
 		'active'						=> 'bool'
 	);
@@ -38,6 +39,13 @@ class ConsimUser extends abstractEntity
 	**/
 	protected static $validate_unsigned = array(
 		'user_id',
+		'geschlecht_id',
+		'geburtsland_id',
+		'religion_id',
+		'haarfarbe_id',
+		'augenfarbe_id',
+		'besondere_merkmale_id',
+		'experience_points',
 		'location_id',
 		'active',
 	);
@@ -379,6 +387,29 @@ class ConsimUser extends abstractEntity
 	public function setBesondereMerkmale($besondere_merkmale)
 	{
 		return $this->setFigure('besondere_merkmale', $besondere_merkmale);
+	}
+
+	/**
+	 * Get experience points
+	 *
+	 * @return int experience points
+	 * @access public
+	 */
+	public function getExperiencePoints()
+	{
+		return $this->getInteger($this->data['experience_points']);
+	}
+
+	/**
+	 * Set experience points
+	 *
+	 * @param int $experience_points
+	 * @return ConsimUser
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function setExperiencePoints($experience_points)
+	{
+		return $this->setInteger('experience_points', $experience_points);
 	}
 
 	/**

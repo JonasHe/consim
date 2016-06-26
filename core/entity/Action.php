@@ -27,6 +27,7 @@ class Action extends abstractEntity
 		'endtime'				=> 'integer',
 		'route_id'				=> 'integer',
 		'work_id'				=> 'integer',
+		'successful_trials'		=> 'integer',
 		'status'				=> 'integer',
 	);
 
@@ -41,6 +42,7 @@ class Action extends abstractEntity
 		'endtime',
 		'route_id',
 		'work_id',
+		'successful_trials',
 		'status',
 	);
 
@@ -99,7 +101,7 @@ class Action extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT id, user_id, location_id, starttime, endtime, route_id, work_id, status
+		$sql = 'SELECT id, user_id, location_id, starttime, endtime, route_id, work_id, successful_trials, status
 			FROM ' . $this->consim_action_table . '
 			WHERE id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
@@ -302,6 +304,29 @@ class Action extends abstractEntity
 	}
 
 	/**
+	 * Get successful trials
+	 *
+	 * @return int successful trials
+	 * @access public
+	 */
+	public function getSuccessfulTrials()
+	{
+		return $this->getInteger($this->data['successful_trials']);
+	}
+
+	/**
+	 * Set successful trials
+	 *
+	 * @param $successful_trials
+	 * @return self
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function setSuccessfulTrials($successful_trials)
+	{
+		return $this->setInteger('successful_trials', $successful_trials);
+	}
+
+	/**
 	* Get Status
 	*
 	* @return int Status
@@ -394,7 +419,8 @@ class Action extends abstractEntity
 		if($this->data['work_id'] > 0)
 		{
 			//get infos about work and inventory items
-			$sql = 'SELECT w.output_id, w.output_value, w.condition_value, i.value AS currentValue, s.value AS user_skill
+			$sql = 'SELECT w.output_id, w.output_value, w.condition_value, w.experience_points, 
+					i.value AS currentValue, s.value AS user_skill
 				FROM '. $this->consim_work_table .' w
 				LEFT JOIN phpbb_consim_user_skills s ON s.skill_id = w.condition_id AND s.user_id = '. $this->data['user_id'] .'
 				LEFT JOIN '. $this->consim_inventory_item_table .' i ON i.item_id = w.output_id AND i.user_id = '. $this->data['user_id'] .'
@@ -403,7 +429,7 @@ class Action extends abstractEntity
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
-			$result = 10;
+			$result = Work::trialsNumber;
 			if($row['condition_value'] > 0)
 			{
 				$result = $this->calculateResult($row['user_skill']);
@@ -411,35 +437,47 @@ class Action extends abstractEntity
 
 			//Action is done
 			$sql = 'UPDATE ' . $this->consim_action_table . '
-			SET status = '. self::completed .'
+			SET status = '. self::completed .', successful_trials = '. $result .'
 			WHERE id = ' . $this->data['id'];
 			$this->db->sql_query($sql);
 			$this->data['status'] = 1;
+			$this->data['successful_trials'] = $result;
+
+			//this work is not successful - no reward :(
+			if($row['output_id'] == 0 || $result < Work::neededSuccessfulTrials)
+			{
+				//terminate
+				//User is free
+				$sql = 'UPDATE ' . $this->consim_user_table . '
+					SET active = 0,
+					WHERE user_id = ' . $this->data['user_id'];
+				$this->db->sql_query($sql);
+
+				return null;
+			}
 
 			//User is free
 			$sql = 'UPDATE ' . $this->consim_user_table . '
-			SET active = 0
+			SET active = 0, experience_points = experience_points + '. $row['experience_points'] .'
 			WHERE user_id = ' . $this->data['user_id'];
 			$this->db->sql_query($sql);
 
-			if($row['output_id'] == 0 || $result < 5)
+			if(isset($row['currentValue']))
 			{
-				return null;
-			}
-			if(!isset($row['currentValue']))
-			{
-				//set output to user
-				$sql = 'INSERT INTO ' . $this->consim_inventory_item_table . ' (user_id, item_id, value)
-					VALUES  ('. $this->data['user_id'] .', '. $row['output_id'] .', '. $row['output_value'] .')';
-				$this->db->sql_query($sql);
-			}
-			else
-			{
+				//Item is present
 				//set output to user
 				$sql = 'UPDATE ' . $this->consim_inventory_item_table . '
 					SET  value = value + '. $row['output_value'] .'
 					WHERE user_id = '. $this->data['user_id'] .'
 					AND item_id = '. $row['output_id'];
+				$this->db->sql_query($sql);
+			}
+			else
+			{
+				//Item is new in this inventory
+				//set output to user
+				$sql = 'INSERT INTO ' . $this->consim_inventory_item_table . ' (user_id, item_id, value)
+					VALUES  ('. $this->data['user_id'] .', '. $row['output_id'] .', '. $row['output_value'] .')';
 				$this->db->sql_query($sql);
 			}
 		}
@@ -450,7 +488,7 @@ class Action extends abstractEntity
 	private function calculateResult($user_skill)
 	{
 		$result = 0;
-		for($i = 0; $i < 10; $i++)
+		for($i = 0; $i < Work::trialsNumber; $i++)
 		{
 			$rand = mt_rand(0, 100);
 			if($rand <= $user_skill)
