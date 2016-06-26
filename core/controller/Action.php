@@ -104,7 +104,7 @@ class Action
 		redirect($this->helper->route('consim_core_index'));
 	}
 
-	public function work()
+	public function startWork()
 	{
 		$work_id = $this->request->variable('work_id', 0);
 
@@ -123,10 +123,15 @@ class Action
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
-		// TODO: Check condition!!
-
 		//Get infos about work
 		$work = $this->container->get('consim.core.entity.work')->load($work_id);
+		$user_skill = $this->container->get('consim.core.entity.consim_user_skill')->load($consim_user->getUserId(), $work->getConditionId());
+
+		//Check condition
+		if($user_skill->getValue() < $work->getConditionValue())
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
 
 		$now = time();
 		$this->container->get('consim.core.entity.action')
@@ -138,6 +143,35 @@ class Action
 			->insert();
 
 		redirect($this->helper->route('consim_core_index'));
+	}
+
+	public function endWork()
+	{
+		$action_id = $this->request->variable('action_id', 0);
+		//Check the request
+		if (!$this->is_valid($action_id) || !check_form_key('working_end'))
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
+
+		//Load ConsimUser
+		$consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
+
+		//Check, if user active
+		if(!$consim_user->getActive())
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
+
+		$action = $this->container->get('consim.core.operators.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
+
+		if($action->getStatus() != 2)
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
+		$action->userDone();
+
+		redirect($this->helper->route('consim_core_action', array('action_id' => $action->getId())));
 	}
 
 	protected function is_valid($value)

@@ -10,6 +10,8 @@
 namespace consim\core\controller;
 
 use consim\core\entity\Action;
+use consim\core\entity\UserSkill;
+use consim\core\entity\Work;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -43,9 +45,10 @@ class Index
 	**/
 	/** @var  \consim\core\entity\ConsimUser */
 	protected $consim_user;
-
 	/** @var  \consim\core\entity\Location */
 	protected $consim_user_location;
+	/** @var  UserSkill[] */
+	protected $consim_user_skills;
 
 	/**
 	* Constructor
@@ -97,6 +100,18 @@ class Index
 				WHERE user_id = ' . $this->user->data['user_id'];
 			$this->db->sql_query($sql);
 
+			$sql = 'DELETE FROM phpbb_consim_actions
+				WHERE user_id = 2'. $this->user->data['user_id'];
+			$this->db->sql_query($sql);
+
+			$sql = 'DELETE FROM phpbb_consim_user_skills
+				WHERE user_id = 2'. $this->user->data['user_id'];
+			$this->db->sql_query($sql);
+
+			$sql = 'DELETE FROM phpbb_consim_inventory_items
+				WHERE user_id = 2'. $this->user->data['user_id'];
+			$this->db->sql_query($sql);
+
 			$sql = 'DELETE FROM phpbb_consim_user
 				WHERE user_id = 2'. $this->user->data['user_id'];
 			$this->db->sql_query($sql);
@@ -114,20 +129,16 @@ class Index
 
 			if($action->getRouteId() > 0)
 			{
-				return $this->showTraveling($action);
+				$this->showTraveling($action);
 			}
 			// is user working?
 			if($action->getWorkId() > 0)
 			{
-				return $this->showWorking($action);
+				$this->showWorking($action);
 			}
 		}
-		else
-		{
-			return $this->showLocation();
-		}
 
-		return null;
+		return $this->showLocation();
 	}
 
 	/**
@@ -156,6 +167,7 @@ class Index
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
+			'IS_TRAVELING'				=> TRUE,
 			'START_LOCATION_NAME'       => $start_location->getName(),
 			'START_LOCATION_IMAGE'      => $start_location->getImage(),
 			'START_LOCATION_TYPE'       => $start_location->getType(),
@@ -170,9 +182,6 @@ class Index
 			'END_TIME'                  => date("d.m.Y - H:i:s", $action->getEndTime()),
 			'COUNTDOWN'                 => date("i:s", $time),
 		));
-
-		// Send all data to the template file
-		return $this->helper->render('consim_traveling.html', $this->user->lang('INDEX'));
 	}
 
 	/**
@@ -188,21 +197,47 @@ class Index
 		$time = $action->getEndTime() - $now;
 
 		$working = $this->container->get('consim.core.entity.work')->load($action->getWorkId());
-		$location = $this->container->get('consim.core.entity.location')->load($working->getLocationId());
+		$location = $this->container->get('consim.core.entity.location')->load($action->getLocationId());
 		$building = $this->container->get('consim.core.entity.building')->find($location->getId(), $working->getBuildingTypeId());
+
+		if($action->getStatus() == 2)
+		{
+			$s_hidden_fields = build_hidden_fields(array(
+				'action_id'		=> $action->getId(),
+			));
+			$this->template->assign_vars(array(
+				'IS_CONFIRM_FINISH'	=> TRUE,
+				'U_FINISH'			=> ($action->getStatus() == 2)? $this->helper->route('consim_core_work_end') : FALSE,
+				'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
+			));
+			add_form_key('working_end');
+		}
+		
+		if($action->getStatus() == 1)
+		{
+			$this->template->assign_vars(array(
+				'IS_WORK_SUCCESSFUL'		=> ($action->getSuccessfulTrials() < Work::neededSuccessfulTrials)?  FALSE : TRUE,
+				'WORK_SUCCESSFUL_TRIALS'	=> $action->getSuccessfulTrials(),
+				'WORK_TRIALS_NUMBER'		=> Work::trialsNumber,
+			));
+		}
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'IS_WORKING'			=> TRUE,
-			'BUILDING_NAME'         => ($building->getName() != '')? '"' . $building->getName() . '"' : '',
-			'BUILDING_DESCRIPTION'  => ($building->getDescription() != '')? '' . $building->getDescription() . '' : '',
-			'BUILDING_TYP'          => $building->getTypeName(),
-			'LOCATION'              => $location->getName(),
-			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location->getId())),
-		));
+			'SHOW_WORKING'			=> TRUE,
+			'IS_WORKING'			=> ($action->getStatus() == 0)? TRUE : FALSE,
+			'WORK_NAME'				=> $working->getName(),
+			'WORK_CONDITION_TYPE'	=> $working->getConditionName(),
+			'WORK_CONDITION_VALUE'	=> $working->getConditionValue(),
+			'WORK_OUTPUT_TYPE'		=> $working->getOutputName(),
+			'WORK_OUTPUT_VALUE'		=> $working->getOutputValue(),
+			'WORK_EXPERIENCE_POINTS'=> $working->getExperiencePoints(),
+			'WORK_BUILDING_NAME'	=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+			'WORK_BUILDING_TYPE'	=> $building->getTypeName(),
+			'WORK_LOCATION_NAME'	=> $location->getName(),
+			'WORK_TIME'				=> ($action->getStatus() == 0)? date("i:s", $time) : FALSE,
 
-		// Send all data to the template file
-		return $this->helper->render('consim_working.html', $this->user->lang('INDEX'));
+		));
 	}
 
 	/**
@@ -224,8 +259,12 @@ class Index
 		if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
 		{
 			$location = $this->consim_user_location;
-			//Create the Travelpopup
-			$location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
+
+			if(!$this->consim_user->getActive())
+			{
+				//Create the Travelpopup
+				$location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
+			}
 		}
 		else
 		{
@@ -251,17 +290,18 @@ class Index
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'CAN_TRAVEL'                    => ($location->getId() === $this->consim_user->getLocationId())? TRUE : FALSE,
-			'LOCATION'                      => $location->getName(),
-			'LOCATION_DESC'                 => $location->getDescription(),
-			'LOCATION_IMAGE'                => $location->getImage(),
-			'LOCATION_TYPE'                 => $location->getType(),
-			'PROVINCE'                      => $location->getProvince(),
-			'COUNTRY'                       => $location->getCountry(),
+			'CAN_TRAVEL'					=> ($location->getId() === $this->consim_user->getLocationId()
+												&& !$this->consim_user->getActive())? TRUE : FALSE,
+			'LOCATION'						=> $location->getName(),
+			'LOCATION_DESC'					=> $location->getDescription(),
+			'LOCATION_IMAGE'				=> $location->getImage(),
+			'LOCATION_TYPE'					=> $location->getType(),
+			'PROVINCE'						=> $location->getProvince(),
+			'COUNTRY'						=> $location->getCountry(),
 		));
 
 		// Send all data to the template file
-		return $this->helper->render('consim_index.html', $this->user->lang('INDEX'));
+		return $this->helper->render('consim_index.html', $this->user->lang('CONSIM'));
 	}
 
 	/**
@@ -286,6 +326,9 @@ class Index
 		$location = $this->container->get('consim.core.entity.location')->load($location_id);
 		$building = $this->container->get('consim.core.entity.building')->load($building_id);
 
+		//add location to navbar
+		$this->add_navlinks($location->getName(), $this->helper->route('consim_core_location', array('location_id' => $location->getId())));
+
 		//Get all Works
 		$works = $this->container->get('consim.core.operators.locations')->getWorks($building->getTypeId());
 		foreach ($works as $work)
@@ -301,6 +344,9 @@ class Index
 				'CONDITION_VALUE'	=> $work->getConditionValue(),
 				'OUTPUT_TYPE'		=> $work->getOutputName(),
 				'OUTPUT_VALUE'		=> $work->getOutputValue(),
+				'EXPERIENCE_POINTS'	=> $work->getExperiencePoints(),
+				'CAN_WORK'			=> ($work->getConditionId() > 0 && !$this->consim_user->getActive() &&
+										$this->consim_user_skills[$work->getConditionId()]->getValue() > $work->getConditionValue())? TRUE : FALSE,
 				'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			));
 		}
@@ -313,11 +359,66 @@ class Index
 			'BUILDING_TYP'          => $building->getTypeName(),
 			'LOCATION'              => $location->getName(),
 			'BACK_TO_LOCATION'      => $this->helper->route('consim_core_location', array('location_id' => $location_id)),
-			'S_WORK_ACTION'			=> $this->helper->route('consim_core_work'),
+			'S_WORK_ACTION'			=> $this->helper->route('consim_core_work_start'),
 		));
 
 		// Send all data to the template file
-		return $this->helper->render('consim_building.html', $this->user->lang('INDEX'));
+		return $this->helper->render('consim_building.html', $this->user->lang('CONSIM'));
+	}
+
+	public function showActivity()
+	{
+		if($this->consim_user->getActive())
+		{
+			//get current action
+			$action = $this->container->get('consim.core.operators.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
+
+			if($action->getRouteId() > 0)
+			{
+				$this->showTraveling($action);
+
+				// Send all data to the template file
+				return $this->helper->render('consim_traveling.html', $this->user->lang('CONSIM'));
+			}
+			// is user working?
+			if($action->getWorkId() > 0)
+			{
+				$this->showWorking($action);
+
+				// Send all data to the template file
+				return $this->helper->render('consim_working.html', $this->user->lang('CONSIM'));
+			}
+		}
+		return null;
+	}
+
+	public function showAction($action_id)
+	{
+		$action = $this->container->get('consim.core.entity.action')->load($action_id);
+
+		//check if the user is owner of action
+		if($action->getUserId() != $this->consim_user->getUserId())
+		{
+			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
+		}
+
+		if($action->getRouteId() > 0)
+		{
+			$this->showTraveling($action);
+
+			// Send all data to the template file
+			return $this->helper->render('consim_traveling.html', $this->user->lang('CONSIM'));
+		}
+		// is user working?
+		if($action->getWorkId() > 0)
+		{
+			$this->showWorking($action);
+
+			// Send all data to the template file
+			return $this->helper->render('consim_working.html', $this->user->lang('CONSIM'));
+		}
+
+		return null;
 	}
 
 	/**
@@ -337,6 +438,7 @@ class Index
 
 		// Add language file
 		$this->user->add_lang_ext('consim/core', 'consim_common');
+		$this->add_navlinks();
 
 		//Check all finished Actions
 		$this->container->get('consim.core.operators.action_lists')->finishedActions();
@@ -345,8 +447,8 @@ class Index
 		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
 
 		// get User Skill and add to template
-		$user_skills = $this->container->get('consim.core.operators.user_skills')->getUserSkills($this->user->data['user_id']);
-		foreach ($user_skills as $skill)
+		$this->consim_user_skills = $this->container->get('consim.core.operators.user_skills')->getUserSkills($this->user->data['user_id']);
+		foreach ($this->consim_user_skills as $skill)
 		{
 			$this->template->assign_block_vars('user_skills', array(
 				'NAME'			=> $skill->getSkillName(),
@@ -365,19 +467,48 @@ class Index
 				'VALUE'			=> $item->getValue(),
 			));
 		}
-			
+
 		//Get User-Location
 		$this->consim_user_location = $this->container->get('consim.core.entity.location')->load($this->consim_user->getLocationId());
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			//Informations for current location and time
-			'TIME'                          => date("d.m.Y - H:i:s", time()),
-			'USER_LOCATION'                 => $this->consim_user_location->getName(),
-			'USER_LOCATION_TYPE'            => $this->consim_user_location->getType(),
-			'USER_LOCATION_URL'             => $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
-			'USER_PROVINCE'                 => $this->consim_user_location->getProvince(),
-			'USER_COUNTRY'                  => $this->consim_user_location->getCountry(),
+			'TIME'							=> date("d.m.Y - H:i:s", time()),
+			'USER_LOCATION'					=> $this->consim_user_location->getName(),
+			'USER_LOCATION_TYPE'			=> $this->consim_user_location->getType(),
+			'USER_LOCATION_URL'				=> $this->helper->route('consim_core_location', array('location_id' => $this->consim_user_location->getId())),
+			'USER_PROVINCE'					=> $this->consim_user_location->getProvince(),
+			'USER_COUNTRY'					=> $this->consim_user_location->getCountry(),
+			'USER_EXPERIENCE_POINTS'		=> $this->consim_user->getExperiencePoints(),
+			'GO_TO_INFORMATION'				=> $this->helper->route('consim_core_activity'),
+			'U_OVERVIEW'					=> $this->helper->route('consim_core_index'),
 		));
+	}
+
+	/**
+	 * Adding link at navlinks
+	 *
+	 * @param string $name
+	 * @param string $route
+	 * @return null
+	 * @access public
+	 */
+	private function add_navlinks($name = '', $route = '')
+	{
+		if(empty($name))
+		{
+			$this->template->assign_block_vars('navlinks', array(
+				'FORUM_NAME'		=> $this->user->lang('CONSIM'),
+				'U_VIEW_FORUM'		=> $this->helper->route('consim_core_index'),
+			));
+		}
+		else
+		{
+			$this->template->assign_block_vars('navlinks', array(
+				'FORUM_NAME'		=> $name,
+				'U_VIEW_FORUM'		=> $route,
+			));
+		}
 	}
 }

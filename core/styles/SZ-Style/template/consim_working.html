@@ -4,29 +4,41 @@
 	<div class="panel">
 		<div class="inner">
 			<div class="content">
-				<h2>{BUILDING_TYP} {BUILDING_NAME} ({LOCATION})</h2>
+				<h2>{WORK_NAME} (<!-- IF IS_WORKING -->{WORK_TIME}<!-- ELSE -->{L_FINISHED}<!-- ENDIF-->)</h2>
 				<div class="inner">
-					<p class="location_desc">{BUILDING_DESCRIPTION}</p>
-					<div class="location_image"><img src="{BOARD_URL}ext/consim/core/images/stadt.png" /></div>
+					<p>Kleine Beschreibung...</p>
+					<p><strong>{L_CONDITION}{L_COLON}</strong> <!-- IF WORK_CONDITION_VALUE -->{WORK_CONDITION_TYPE} ({WORK_CONDITION_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
+					<p><strong>{L_OUTPUT}{L_COLON}</strong> <!-- IF WORK_OUTPUT_VALUE -->{WORK_OUTPUT_TYPE} ({WORK_OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
+					<p><strong>{L_EXPERIENCE_POINTS}{L_COLON}</strong> <!-- IF WORK_OUTPUT_VALUE -->{WORK_EXPERIENCE_POINTS}<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
+					<!-- IF not IS_WORKING and not IS_CONFIRM_FINISH -->
+					<hr />
+					<p><strong>{L_RESULT}{L_COLON} <!-- IF IS_WORK_SUCCESSFUL --><span style="color: rgb(0, 127, 0)">{L_SUCCESSFUL}</span><!-- ELSE -->
+						<span style="color: rgb(127, 0, 0);">{L_UNSUCCESSFUL}</span><!-- ENDIF --></strong>
+						({WORK_SUCCESSFUL_TRIALS}/{WORK_TRIALS_NUMBER})</p>
+					<!-- ENDIF -->
 				</div>
-				<br /><br />
-
-				<div class="work">
-					toll...
-
-				</div>
-				<br /><br />
 			</div>
 		</div>
 	</div>
+	<!-- IF IS_CONFIRM_FINISH -->
+	<div class="panel">
+		<div class="inner">
+			<form method="post" action="{U_FINISH}">
+				<fieldset class="submit-buttons">
+					{S_HIDDEN_FIELDS}
+					<input type="submit" value="{L_FINISH}" class="button2" />
+					{S_FORM_TOKEN}
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<!-- ENDIF -->
 
 	<div class="panel">
 		<div class="inner">
-			<form method="post" action="{U_ACTION}">
-				<fieldset class="submit-buttons">
-					<a href="{BACK_TO_LOCATION}" class="button2" >{L_BACK_TO} {LOCATION}</a>
-				</fieldset>
-			</form>
+			<fieldset class="submit-buttons">
+				<a href="{U_OVERVIEW}" class="button2" >{L_BACK_TO} {L_OVERVIEW}</a>
+			</fieldset>
 		</div>
 	</div>
 </div>

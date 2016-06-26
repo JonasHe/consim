@@ -89,7 +89,7 @@ class UserSkills
 
 		while($row = $this->db->sql_fetchrow($result))
 		{
-			$skills[] = $this->container->get('consim.core.entity.consim_user_skill')->import($row);
+			$skills[$row['skill_id']] = $this->container->get('consim.core.entity.consim_user_skill')->import($row);
 		}
 		$this->db->sql_freeresult($result);
 

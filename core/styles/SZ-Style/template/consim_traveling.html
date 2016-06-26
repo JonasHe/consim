@@ -11,7 +11,7 @@
 						<img src="{BOARD_URL}ext/consim/core/images/{START_LOCATION_IMAGE}" />
 						<p>Abreisezeit: {START_TIME}</p>
 					</div>
-					<div class="travel_middle">
+					<div class="travel_middle" style="padding-top: 50px;">
 						<div id="countdown" class="countdown">{COUNTDOWN}</div>
 						<div style="font-size:5em;">&#8694;</div>
 					</div>
@@ -23,6 +23,15 @@
 
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="panel">
+		<div class="inner">
+			<form method="post" action="{U_ACTION}">
+				<fieldset class="submit-buttons">
+					<a href="{U_OVERVIEW}" class="button2" >{L_BACK_TO} {L_OVERVIEW}</a>
+				</fieldset>
+			</form>
 		</div>
 	</div>
 </div>

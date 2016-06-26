@@ -180,7 +180,7 @@ class Locations
 		$entities = array();
 
 		$sql = 'SELECT w.id, w.name, w.description, w.duration, w.building_type_id, 
-				w.condition_id, w.condition_value, w.output_id, w.output_value,
+				w.condition_id, w.condition_value, w.output_id, w.output_value, experience_points,
 				COALESCE(s.name,"") AS condition_name, COALESCE(i.name, "") AS output_name
 			FROM ' . $this->consim_work_table . ' w
 			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = w.condition_id

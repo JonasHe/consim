@@ -153,7 +153,7 @@ $lang = array_merge($lang, array(
 
 	// ConSim buildings
 	'BUILDING_TYPE_1'			=> 'Lokale Administration',
-	'BUILDING_TYPE_2'			=> 'Industriekombinat Rotstahl',
+	'BUILDING_TYPE_2'			=> 'Industriekombinat',
 	'BUILDING_TYPE_3'			=> 'Bordell',
 	'BUILDING_TYPE_4'			=> 'Armenviertel',
 	'BUILDING_TYPE_5'			=> 'Fernfahrerkneipe',
