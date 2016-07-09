@@ -19,7 +19,8 @@ class core_info
 			'filename'	=> '\consim\core\acp\core_module',
 			'title'		=> 'CONSIM',
 			'modes'		=> array(
-				'news'			=> array('title' => 'CONSIM_NEWS', 'auth' => 'ext_consim/core && acl_a_extensions',	'cat' =>  array('ACP_CONSIM')),
+				'news'			=> array('title' => 'CONSIM_NEWS', 'auth' => 'ext_consim/core && acl_a_extensions',	'cat' =>  array('ACP_CAT_CONSIMMODULES')),
+				'anniversary'	=> array('title' => 'CONSIM_ANNIVERSARY', 'auth' => 'ext_consim/core && acl_a_extensions',	'cat' =>  array('ACP_CAT_CONSIMMODULES')),
 			),
 		);
 	}

@@ -39,6 +39,10 @@ $lang = array_merge($lang, array(
 	//ConSim header
 	'CONSIM'					=> 'ConSim',
 	'CONSIM_TITLE'				=> 'ConSim',
+
+	'ANNIVERSARY_NONE'			=> 'Keine historischen Ereignisse',
+	'ANNIVERSARY_TODAY'			=> 'Heute',
+	'ANNIVERSARY_TOMORROW'		=> 'Morgen',
 	
 	'REGISTER'					=> 'ConSim - Registrierung',
 	'PERSON'					=> 'Charakterbeschreibung',

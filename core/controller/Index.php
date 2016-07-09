@@ -101,19 +101,19 @@ class Index
 			$this->db->sql_query($sql);
 
 			$sql = 'DELETE FROM phpbb_consim_actions
-				WHERE user_id = 2'. $this->user->data['user_id'];
+				WHERE user_id = '. $this->user->data['user_id'];
 			$this->db->sql_query($sql);
 
 			$sql = 'DELETE FROM phpbb_consim_user_skills
-				WHERE user_id = 2'. $this->user->data['user_id'];
+				WHERE user_id = '. $this->user->data['user_id'];
 			$this->db->sql_query($sql);
 
 			$sql = 'DELETE FROM phpbb_consim_inventory_items
-				WHERE user_id = 2'. $this->user->data['user_id'];
+				WHERE user_id = '. $this->user->data['user_id'];
 			$this->db->sql_query($sql);
 
 			$sql = 'DELETE FROM phpbb_consim_user
-				WHERE user_id = 2'. $this->user->data['user_id'];
+				WHERE user_id = '. $this->user->data['user_id'];
 			$this->db->sql_query($sql);
 
 			//Leite den User weiter zum Consim Register

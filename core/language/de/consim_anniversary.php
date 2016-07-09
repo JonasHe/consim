@@ -37,9 +37,15 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'CONSIM_ANNIVERSARY'			=> 'ConSim Feiertage',
-	'CONSIM_TITLE'					=> 'ConSim',
-	'CONSIM_NEWS'					=> 'ConSim News',
-	'ACP_CAT_CONSIM'				=> 'ConSim',
-	'ACP_CAT_CONSIMMODULES'			=> 'ConSim Module',
+	'ADD_ANNIVERSARY'			=> 'Feiertag hinzuf&uuml;gen',
+	'ANNIVERSARY_DATE'			=> 'Datum',
+	'ANNIVERSARY_DAY'			=> 'Tag (1-31)',
+	'ANNIVERSARY_DELETE'		=> 'Feiertag l&ouml;schen',
+	'ANNIVERSARY_DELETE_CONFIRM'=> 'Willst du den Feiertag wirklich l&ouml;schen?',
+	'ANNIVERSARY_EVENT'			=> 'Ereignis',
+	'ANNIVERSARY_LINK'			=> 'Verweis',
+	'ANNIVERSARY_MONTH'			=> 'Monat (1-12)',
+	'ANNIVERSARY_YEAR'			=> 'Jahr (optional)',
+	'SAVE'						=> 'Speichern',
+	
 ));

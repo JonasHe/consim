@@ -127,6 +127,17 @@ class install_basics extends \phpbb\db\migration\migration
 						'status'		=> array('INDEX', 'status'),
 					),
 				),
+				$this->table_prefix . 'consim_anniversary' => array(
+					'COLUMNS'		=> array(
+						'anniversary_id'		=> array('UINT:8', NULL, 'auto_increment'),
+						'day'					=> array('UINT:2',0),
+						'month'					=> array('UINT:2',0),
+						'year'					=> array('UINT:2',0),
+						'event'					=> array('VCHAR:255',''),
+						'link'					=> array('VCHAR:255',''),
+					),
+					'PRIMARY_KEY'	=> array('anniversary_id'),
+				),
 			),
 			'add_columns' => array(
 				$this->table_prefix . 'users' => array(
@@ -158,11 +169,12 @@ class install_basics extends \phpbb\db\migration\migration
 			array('custom', array(array($this, 'insert_consim_skill'))),
 
 			// Add an acp tab
-			array('module.add', array('acp', 0, 'ACP_CONSIM')),
+			array('module.add', array('acp', 0, 'ACP_CAT_CONSIM')),
+			array('module.add', array('acp', 'ACP_CAT_CONSIM', 'ACP_CAT_CONSIMMODULES')),
 			array('module.add', array(
-				'acp', 'ACP_CONSIM', array(
+				'acp', 'ACP_CAT_CONSIMMODULES', array(
 					'module_basename'	=> '\consim\core\acp\core_module',
-					'modes'				=> array('news'),
+					'modes'				=> array('news','anniversary'),
 				),
 			)),
 		);
@@ -260,17 +272,19 @@ class install_basics extends \phpbb\db\migration\migration
 				$this->table_prefix . 'consim_user_skills',
 				$this->table_prefix . 'consim_items',
 				$this->table_prefix . 'consim_inventory_items',
+				$this->table_prefix . 'consim_anniversary',
 			),
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users' => array('consim_register'),
 			),
 			array('module.remove', array(
-				'acp', 'ACP_CONSIM', array(
+				'acp', 'ACP_CAT_CONSIMMODULES', array(
 					'module_basename'	=> '\consim\core\acp\core_module',
-					'modes'				=> array('news'),
+					'modes'				=> array('news','anniversary'),
 				),
 			)),
-			array('module.remove', array('acp', 0, 'ACP_CONSIM')),
+			array('module.remove', array('acp', 'ACP_CAT_CONSIM', 'ACP_CAT_CONSIMMODULES')),
+			array('module.remove', array('acp', 0, 'ACP_CAT_CONSIM')),
 		);
 	}
 }

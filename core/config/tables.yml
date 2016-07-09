@@ -17,3 +17,4 @@ parameters:
     tables.consim.news: %core.table_prefix%consim_news
     tables.consim.news_channels: %core.table_prefix%consim_news_channel
     tables.consim.news_topics: %core.table_prefix%consim_news_topics
+    tables.consim.anniversary: %core.table_prefix%consim_anniversary
