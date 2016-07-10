@@ -111,6 +111,7 @@ $lang = array_merge($lang, array(
 	//LocationTypes
 	'TOWN'						=> 'Kleinstadt',
 	'CITY'						=> 'Stadt',
+	'PROVINCIAL_CAPITAL'		=> 'Provinzhauptstadt',
 	'CAPITAL'					=> 'Hauptstadt',
 	'INDUSTRY_AREA'				=> 'Industriebezirk',
 	'MILITARY_AREA'				=> 'Militärischer Sperrbereich',
@@ -144,9 +145,9 @@ $lang = array_merge($lang, array(
 	'ITEM_3_SHORT'				=> 'TD',
 	
 	// Countries
-	'COUNTRY_1'					=> 'Bakirien',
-	'COUNTRY_2'					=> 'Suranien',
-	'COUNTRY_3'					=> 'Tadsowien',
+	'COUNTRY_1'					=> 'Volksrepublik Bakirien',
+	'COUNTRY_2'					=> 'Suranische Repubik',
+	'COUNTRY_3'					=> 'Freie Repubik Tadsowien',
 
 	// locations
 	'LOCATION_1'				=> 'Kubishevsk',

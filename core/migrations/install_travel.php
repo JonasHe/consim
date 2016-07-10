@@ -165,7 +165,7 @@ class install_travel extends \phpbb\db\migration\migration
 				  'image' => 'locations/isoria_kubishevsk.jpg', 'type_id' => 2, 'province_id' => 1),
 			array('id' => 6, 'name' => $user->lang('VARNOGRAD'),
 				  'description' => $user->lang('VARNOGRAD_DESC'),
-				  'image' => 'locations/isoria_varnograd.jpg', 'type_id' => 4, 'province_id' => 1),
+				  'image' => 'locations/isoria_varnograd.jpg', 'type_id' => 5, 'province_id' => 1),
 			array('id' => 7, 'name' => $user->lang('JEGENSK'),
 				  'description' => $user->lang('JEGENSK_DESC'),
 				  'image' => 'locations/isoria_jegensk.jpg', 'type_id' => 1, 'province_id' => 1),
@@ -177,10 +177,10 @@ class install_travel extends \phpbb\db\migration\migration
 				  'image' => 'locations/isoria_kirganov.jpg', 'type_id' => 1, 'province_id' => 1),
 			array('id' => 10, 'name' => $user->lang('PKD_74'),
 				  'description' => $user->lang('PKD_74_DESC'),
-				  'image' => 'locations/isoria_pkd_74.jpg', 'type_id' => 5, 'province_id' => 1),
+				  'image' => 'locations/isoria_pkd_74.jpg', 'type_id' => 6, 'province_id' => 1),
 			array('id' => 11, 'name' => $user->lang('SMTU_567_C'),
 				  'description' => $user->lang('SMTU_567_C_DESC'),
-				  'image' => 'locations/isoria_smtu_567_c.jpg', 'type_id' => 5, 'province_id' => 1),
+				  'image' => 'locations/isoria_smtu_567_c.jpg', 'type_id' => 6, 'province_id' => 1),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_locations', $locations);
 	}
@@ -193,9 +193,10 @@ class install_travel extends \phpbb\db\migration\migration
 		$types = array(
 			array('id' => 1, 'name' => $user->lang('TOWN')),
 			array('id' => 2, 'name' => $user->lang('CITY')),
-			array('id' => 3, 'name' => $user->lang('CAPITAL')),
-			array('id' => 4, 'name' => $user->lang('INDUSTRY_AREA')),
-			array('id' => 5, 'name' => $user->lang('MILITARY_AREA')),
+			array('id' => 3, 'name' => $user->lang('PROVINCIAL_CAPITAL')),
+			array('id' => 4, 'name' => $user->lang('CAPITAL')),
+			array('id' => 5, 'name' => $user->lang('INDUSTRY_AREA')),
+			array('id' => 6, 'name' => $user->lang('MILITARY_AREA')),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_location_types', $types);
 	}
