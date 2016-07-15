@@ -101,8 +101,16 @@ class install_travel extends \phpbb\db\migration\migration
 						'description'			=> array('TEXT_UNI', ''),
 						'duration'				=> array('UINT:8', 0),
 						'building_type_id'		=> array('UINT:8', 0),
-						'condition_id'			=> array('UINT:8', 0),
-						'condition_value'		=> array('UINT:8', 0),
+						'condition_1_id'		=> array('UINT:8', 0),
+						'condition_1_trials'	=> array('UINT:8', 0),
+						'condition_1_value'		=> array('UINT:8', 0),
+						'condition_2_id'		=> array('UINT:8', 0),
+						'condition_2_trials'	=> array('UINT:8', 0),
+						'condition_2_value'		=> array('UINT:8', 0),
+						'condition_3_id'		=> array('UINT:8', 0),
+						'condition_3_trials'	=> array('UINT:8', 0),
+						'condition_3_value'		=> array('UINT:8', 0),
+						'output_trials'			=> array('UINT:8', 0),
 						'output_id'				=> array('UINT:8', 0),
 						'output_value'			=> array('UINT:8', 0),
 						'experience_points'		=> array('UINT:8', 0),
@@ -110,6 +118,21 @@ class install_travel extends \phpbb\db\migration\migration
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
 						'b_type_id'				=> array('INDEX', 'building_type_id'),
+					),
+				),
+				$this->table_prefix . 'consim_work_outputs'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'work_id'				=> array('UINT:8', 0),
+						'successful_trials'		=> array('UINT:8', 0),
+						'output_id'				=> array('UINT:8', 0),
+						'output_value'			=> array('UINT:8', 0),
+						'experience_points'		=> array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+					'KEYS'			=> array(
+						'wid'					=> array('INDEX', 'work_id'),
+						't'						=> array('INDEX', 'successful_trials'),
 					),
 				),
 			),
@@ -447,7 +470,7 @@ class install_travel extends \phpbb\db\migration\migration
 				'experience_points'	=> 1,
 			),
 		);
-		$this->db->sql_multi_insert($this->table_prefix . 'consim_works', $works);
+		//$this->db->sql_multi_insert($this->table_prefix . 'consim_works', $works);
 	}
 
 	/**
@@ -469,6 +492,7 @@ class install_travel extends \phpbb\db\migration\migration
 				$this->table_prefix . 'consim_buildings',
 				$this->table_prefix . 'consim_building_types',
 				$this->table_prefix . 'consim_works',
+				$this->table_prefix . 'consim_work_outputs',
 			),
 		);
 	}

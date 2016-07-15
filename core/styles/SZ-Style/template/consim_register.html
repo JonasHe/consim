@@ -103,90 +103,30 @@
 					<dt><label class="bigger">{L_FREIE_PUNKTE}</label></dt>
 					<dd><span class="bigger bolder" id="free_points">{FREIE_PUNKTE}</span></dd>
 				</dl>
-				<!-- BEGIN skills -->
-				<dl>
-					<dt><label>{skills.NAME}</label></dt>
-					<dd>
-						<input class="inputbox autowidth" type="number" name="{skills.ID}" id="{skills.ID}" <!-- IF skills.IS_LANG -->data-lang="{skills.COUNTRY_ID}"<!-- ENDIF --> size="3" tabindex="11" value="{skills.VALUE}" max="100" min="1" />
-						<!-- IF skills.IS_LANG --><span id="lang_{skills.ID}" class="bolder" style="display:none;">{L_ADD_25_LANG}</span><!-- ENDIF -->
-					</dd>
-				</dl>
-				<!-- END skills -->
-				<!--
-				<dl>
-					<dt><label>{L_SPRACHE_TADSOWISCH}</label></dt>
-					<dd>
-						<input class="inputbox autowidth" type="number" name="sprache_tadsowisch" id="sprache_tadsowisch" size="3" tabindex="11" value="{SPRACHE_TADSOWISCH}" max="100" min="1" />
-						<span id="lang_frt" class="bolder" style="display:none;">{L_ADD_25_LANG}</span>
-					</dd>
-				</dl>
-				<dl>
-					<dt><label>{L_SPRACHE_BAKIRISCH}</label></dt>
-					<dd>
-						<input class="inputbox autowidth" type="number" name="sprache_bakirisch" id="sprache_bakirisch" size="3" tabindex="12" value="{SPRACHE_BAKIRISCH}" max="100" min="1" />
-						<span id="lang_bak" class="bolder" style="display:none;">{L_ADD_25_LANG}</span>
-					</dd>
-				</dl>
-				<dl>
-					<dt><label>{L_SPRACHE_SURANISCH}</label></dt>
-					<dd>
-						<input class="inputbox autowidth" type="number" name="sprache_suranisch" id="sprache_suranisch" size="3" tabindex="13" value="{SPRACHE_SURANISCH}" max="100" min="1" />
-						<span id="lang_sur" class="bolder" style="display:none;">{L_ADD_25_LANG}</span>
-					</dd>
-				</dl>
-				<dl>
-					<dt><label>{L_RHETORIK}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="rhetorik" id="rhetorik" size="3" tabindex="14" value="{RHETORIK}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_WIRTSCHAFT}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="wirtschaft" id="wirtschaft" size="3" tabindex="15" value="{WIRTSCHAFT}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_ADMINISTRATION}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="administration" id="administration" size="3" tabindex="16" value="{ADMINISTRATION}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_TECHNIK}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="technik" id="technik" size="3" tabindex="17" value="{TECHNIK}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_NAHKAMPF}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="nahkampf" id="nahkampf" size="3" tabindex="18" value="{NAHKAMPF}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_SCHUSSWAFFEN}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="schusswaffen" id="schusswaffen" size="3" tabindex="19" value="{SCHUSSWAFFEN}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_SPRENGMITTEL}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="sprengmittel" id="sprengmittel" size="3" tabindex="20" value="{SPRENGMITTEL}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_MILITARKUNDE}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="militarkunde" id="militarkunde" size="3" tabindex="21" value="{MILITARKUNDE}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_SPIONAGE}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="spionage" id="spionage" size="3" tabindex="22" value="{SPIONAGE}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_SCHMUGGEL}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="schmuggel" id="schmuggel" size="3" tabindex="23" value="{SCHMUGGEL}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_MEDIZIN}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="medizin" id="medizin" size="3" tabindex="24" value="{MEDIZIN}" max="100" min="1" /></dd>
-				</dl>
-				<dl>
-					<dt><label>{L_UBERLEBENSKUNDE}</label></dt>
-					<dd><input class="inputbox autowidth" type="number" name="uberlebenskunde" id="uberlebenskunde" size="3" tabindex="25" value="{UBERLEBENSKUNDE}" max="100" min="1" /></dd>
-				</dl>
-				-->
 			</fieldset>
 		</div>
 	</div>
 </div>
+<!-- BEGIN skill_groups -->
+<div class="panel">
+	<div class="inner">
+		<h2>{skill_groups.NAME}</h2>
+		<div class="content" id="attribute">
+			<fieldset>
+				<!-- BEGIN skills -->
+				<dl>
+					<dt><label>{skill_groups.skills.NAME}</label></dt>
+					<dd>
+						<input class="inputbox autowidth" type="number" name="{skill_groups.skills.ID}" id="{skill_groups.skills.ID}" <!-- IF skill_groups.skills.IS_LANG -->data-lang="{skill_groups.skills.COUNTRY_ID}"<!-- ENDIF --> size="3" tabindex="11" value="{skill_groups.skills.VALUE}" max="100" min="1" />
+						<!-- IF skills.IS_LANG --><span id="lang_{skill_groups.skills.ID}" class="bolder" style="display:none;">{L_ADD_25_LANG}</span><!-- ENDIF -->
+					</dd>
+				</dl>
+				<!-- END skills -->
+			</fieldset>
+		</div>
+	</div>
+</div>
+<!-- END skill_groups -->
 <div class="panel">
 	<div class="inner">
 		<div class="content">

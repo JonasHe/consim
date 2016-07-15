@@ -59,7 +59,7 @@ class UserSkills
 	{
 		$skills = array();
 
-		$sql = 'SELECT id, name, country_id
+		$sql = 'SELECT id, name, cat, country_id
 			FROM ' . $this->consim_skill_table;
 		$result = $this->db->sql_query($sql);
 
@@ -73,6 +73,24 @@ class UserSkills
 	}
 
 	/**
+	 * Get all Skills, which sorted by Categories
+	 *
+	 * @param $skills Skill[]|UserSkill[]
+	 * @return Skill[][]|UserSkill[][]
+	 */
+	public function sortSkillsByCategory($skills)
+	{
+		$sortedSkills = array();
+
+		foreach($skills as $skill)
+		{
+			$sortedSkills[$skill->getCategory()][] = $skill;
+		}
+
+		return $sortedSkills;
+	}
+
+	/**
 	 * Get all Skills
 	 *
 	 * @return UserSkill[]
@@ -81,7 +99,7 @@ class UserSkills
 	{
 		$skills = array();
 
-		$sql = 'SELECT us.id, us.user_id, us.skill_id, s.name AS skill_name, us.value
+		$sql = 'SELECT us.id, us.user_id, us.skill_id, s.name, s.cat, us.value
 			FROM ' . $this->consim_user_skill_table .' us
 			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = us.skill_id
 			WHERE us.user_id = '. $user_id;

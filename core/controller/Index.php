@@ -10,6 +10,7 @@
 namespace consim\core\controller;
 
 use consim\core\entity\Action;
+use consim\core\entity\Skill;
 use consim\core\entity\UserSkill;
 use consim\core\entity\Work;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -281,7 +282,7 @@ class Index
 				'URL'			=> $this->helper->route('consim_core_building',
 													array(
 														'location_id' => $location->getId(),
-														'building_id' => $entity->getId()
+														'building_id' => $entity->getId(),
 													)),
 			);
 
@@ -447,13 +448,24 @@ class Index
 		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
 
 		// get User Skill and add to template
-		$this->consim_user_skills = $this->container->get('consim.core.operators.user_skills')->getUserSkills($this->user->data['user_id']);
-		foreach ($this->consim_user_skills as $skill)
+		$user_skills_container = $this->container->get('consim.core.operators.user_skills');
+		$this->consim_user_skills = $user_skills_container->getUserSkills($this->user->data['user_id']);
+
+		foreach ($user_skills_container->sortSkillsByCategory($this->consim_user_skills) as $cat => $skills)
 		{
-			$this->template->assign_block_vars('user_skills', array(
-				'NAME'			=> $skill->getSkillName(),
-				'VALUE'			=> $skill->getValue(),
+			$this->template->assign_block_vars('user_skill_groups', array(
+				'NAME'			=> $cat,
 			));
+
+			/** @var UserSkill $skill */
+			foreach ($skills as $skill)
+			{
+				$this->template->assign_block_vars('user_skill_groups.skills', array(
+					'NAME'			=> $skill->getName(),
+					'VALUE'			=> $skill->getValue(),
+				));
+			}
+
 		}
 		
 		// Get inventory and add to template

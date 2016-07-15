@@ -125,7 +125,7 @@ class Action
 
 		//Get infos about work
 		$work = $this->container->get('consim.core.entity.work')->load($work_id);
-		$user_skill = $this->container->get('consim.core.entity.consim_user_skill')->load($consim_user->getUserId(), $work->getConditionId());
+		$user_skill = $this->container->get('consim.core.entity.consim_user_skill')->loadByUserIdAndSkillId($consim_user->getUserId(), $work->getConditionId());
 
 		//Check condition
 		if($user_skill->getValue() < $work->getConditionValue())

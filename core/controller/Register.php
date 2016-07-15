@@ -160,15 +160,28 @@ class Register
 		$this->createSelection($figure);
 
 		//Skills to template
-		foreach ($this->skills as $skill)
+		foreach ($this->container->get('consim.core.operators.user_skills')->sortSkillsByCategory($this->skills) as $cat => $skills)
 		{
-			$this->template->assign_block_vars('skills', array(
-				'ID'			=> 'skill_' . $skill->getId(),
-				'NAME'			=> $skill->getName(),
-				'IS_LANG'		=> ($skill->getCountryId() > 0)? TRUE : FALSE,
-				'COUNTRY_ID'	=> $skill->getCountryId(),
-				'VALUE'			=> $this->request->variable('skill_' . $skill->getId(), 1),
-			));
+			$this->template->assign_block_vars(
+				'skill_groups',
+				array(
+					'NAME'			=> $cat,
+				)
+			);
+
+			/** @var Skill[] $skills */
+			foreach ($skills as $skill) {
+				$this->template->assign_block_vars(
+					'skill_groups.skills',
+					array(
+						'ID'		=> 'skill_'.$skill->getId(),
+						'NAME'		=> $skill->getName(),
+						'IS_LANG'	=> ($skill->getCountryId() > 0) ? true : false,
+						'COUNTRY_ID'=> $skill->getCountryId(),
+						'VALUE'		=> $this->request->variable('skill_'.$skill->getId(), 1),
+					)
+				);
+			}
 		}
 
 		// Set output vars for display in the template
