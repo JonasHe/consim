@@ -22,9 +22,18 @@ class Work extends abstractEntity
 		'name'					=> 'string',
 		'duration'				=> 'integer',
 		'building_type_id'		=> 'integer',
-		'condition_id' 			=> 'integer',
-		'condition_name'		=> 'string',
-		'condition_value'		=> 'integer',
+		'condition_1_id' 		=> 'integer',
+		'condition_1_trials'	=> 'integer',
+		'condition_1_value'		=> 'integer',
+		'condition_1_name'		=> 'string',
+		'condition_2_id' 		=> 'integer',
+		'condition_2_trials'	=> 'integer',
+		'condition_2_value'		=> 'integer',
+		'condition_2_name'		=> 'string',
+		'condition_3_id' 		=> 'integer',
+		'condition_3_trials'	=> 'integer',
+		'condition_3_value'		=> 'integer',
+		'condition_3_name'		=> 'string',
 		'output_id'				=> 'integer',
 		'output_name'			=> 'string',
 		'output_value'			=> 'integer',
@@ -38,8 +47,15 @@ class Work extends abstractEntity
 		'id',
 		'duration',
 		'building_type_id',
-		'condition_id',
-		'condition_value',
+		'condition_1_id',
+		'condition_1_trials',
+		'condition_1_value',
+		'condition_2_id',
+		'condition_2_trials',
+		'condition_2_value',
+		'condition_3_id',
+		'condition_3_trials',
+		'condition_3_value',
 		'output_id',
 		'output_value',
 		'experience_points',
@@ -86,10 +102,15 @@ class Work extends abstractEntity
 	public function load($id)
 	{
 		$sql = 'SELECT w.id, w.name, w.description, w.duration, w.building_type_id, 
+				w.condition_1_id, w.condition_1_trials, w.condition_1_value, COALESCE(s1.name,"") AS condition_1_name,
+				w.condition_2_id, w.condition_2_trials, w.condition_2_value, COALESCE(s2.name,"") AS condition_2_name,
+				w.condition_3_id, w.condition_3_trials, w.condition_3_value, COALESCE(s3.name,"") AS condition_3_name,
 				w.condition_id, w.condition_value, w.output_id, w.output_value, w.experience_points,
-				COALESCE(s.name,"") AS condition_name, COALESCE(i.name, "") AS output_name
+				COALESCE(i.name, "") AS output_name
 			FROM ' . $this->consim_work_table . ' w
-			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = w.condition_id
+			LEFT JOIN '. $this->consim_skill_table .' s1 ON s1.id = w.condition_1_id
+			LEFT JOIN '. $this->consim_skill_table .' s2 ON s2.id = w.condition_2_id
+			LEFT JOIN '. $this->consim_skill_table .' s3 ON s3.id = w.condition_3_id
 			LEFT JOIN '. $this->consim_item_table .' i ON i.id = w.output_id
 			WHERE w.id = '.  $id;
 		$result = $this->db->sql_query($sql);
