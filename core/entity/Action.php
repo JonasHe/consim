@@ -95,7 +95,7 @@ class Action extends abstractEntity
 	* Load the data from the database for this object
 	*
 	* @param int $id user identifier
-	* @return self $this object for chaining calls; load()->set()->save()
+	* @return Action $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -121,7 +121,7 @@ class Action extends abstractEntity
 	 *
 	 * Will throw an exception if the data was already inserted (call save() instead)
 	 *
-	 * @return self $this object for chaining calls; load()->set()->save()
+	 * @return Action $this object for chaining calls; load()->set()->save()
 	 * @access public
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
@@ -178,7 +178,7 @@ class Action extends abstractEntity
 	 * Set User Id
 	 *
 	 * @param int $user_id
-	 * @return self
+	 * @return Action
 	 * @access public
 	 */
 	public function setUserId($user_id)
@@ -201,7 +201,7 @@ class Action extends abstractEntity
 	 * Set location id
 	 *
 	 * @param int $location_id location id
-	 * @return self
+	 * @return Action
 	 * @access public
 	 */
 	public function setLocationId($location_id)
@@ -224,7 +224,7 @@ class Action extends abstractEntity
 	 * Set Start Time
 	 *
 	 * @param int $starttime
-	 * @return self
+	 * @return Action
 	 * @access public
 	 */
 	public function setStartTime($starttime)
@@ -247,7 +247,7 @@ class Action extends abstractEntity
 	 * Set End Time
 	 *
 	 * @param int $endtime
-	 * @return self
+	 * @return Action
 	 * @access public
 	 */
 	public function setEndTime($endtime)
@@ -270,7 +270,7 @@ class Action extends abstractEntity
 	 * Set route id and reset work id to 0
 	 *
 	 * @param int $route_id
-	 * @return self
+	 * @return Action
 	 * @access public
 	 */
 	public function setRouteId($route_id)
@@ -294,7 +294,7 @@ class Action extends abstractEntity
 	 * Set work id and reset route id to 0
 	 *
 	 * @param int $work_id
-	 * @return self
+	 * @return Action
 	 * @access public
 	 */
 	public function setWorkId($work_id)
@@ -318,7 +318,7 @@ class Action extends abstractEntity
 	 * Set successful trials
 	 *
 	 * @param $successful_trials
-	 * @return self
+	 * @return Action
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
 	public function setSuccessfulTrials($successful_trials)
@@ -419,32 +419,47 @@ class Action extends abstractEntity
 		if($this->data['work_id'] > 0)
 		{
 			//get infos about work and inventory items
-			$sql = 'SELECT w.output_id, w.output_value, w.condition_value, w.experience_points, 
-					i.value AS currentValue, s.value AS user_skill
+			$sql = 'SELECT w.condition_1_value, w.condition_2_value, w.condition_3_value,
+					w.condition_1_trials, w.condition_2_trials, w.condition_3_trials,
+					w.experience_points, 
+					s1.value AS user_skill_1, s2.value AS user_skill_2, s3.value AS user_skill_3
 				FROM '. $this->consim_work_table .' w
-				LEFT JOIN phpbb_consim_user_skills s ON s.skill_id = w.condition_id AND s.user_id = '. $this->data['user_id'] .'
-				LEFT JOIN '. $this->consim_inventory_item_table .' i ON i.item_id = w.output_id AND i.user_id = '. $this->data['user_id'] .'
+				LEFT JOIN phpbb_consim_user_skills s1 ON s1.skill_id = w.condition_1_id AND s1.user_id = '. $this->data['user_id'] .'
+				LEFT JOIN phpbb_consim_user_skills s2 ON s2.skill_id = w.condition_2_id AND s2.user_id = '. $this->data['user_id'] .'
+				LEFT JOIN phpbb_consim_user_skills s3 ON s3.skill_id = w.condition_3_id AND s3.user_id = '. $this->data['user_id'] .'
 				WHERE w.id = '. $this->getWorkId() ;
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
-			$result = Work::trialsNumber;
-			if($row['condition_value'] > 0)
+			$result = array();
+			//Calculate result with condition_1, condition_2 and condition_3
+			if($row['condition_1_value'] > 0 && $row['condition_1_trials'] > 0)
 			{
-				$result = $this->calculateResult($row['user_skill']);
+				$result[] = $this->calculateResult($row['user_skill_1'], $row['condition_1_trials']);
 			}
+			if($row['condition_2_value'] > 0 && $row['condition_2_trials'] > 0)
+			{
+				$result[] = $this->calculateResult($row['user_skill_2'], $row['condition_2_trials']);
+			}
+			if($row['condition_3_value'] > 0 && $row['condition_3_trials'] > 0)
+			{
+				$result[] = $this->calculateResult($row['user_skill_3'], $row['condition_3_trials']);
+			}
+			$successful_trials = array_sum($result);
+
+			exit();
 
 			//Action is done
 			$sql = 'UPDATE ' . $this->consim_action_table . '
-			SET status = '. self::completed .', successful_trials = '. $result .'
+			SET status = '. self::completed .', successful_trials = '. $successful_trials .'
 			WHERE id = ' . $this->data['id'];
 			$this->db->sql_query($sql);
 			$this->data['status'] = 1;
-			$this->data['successful_trials'] = $result;
+			$this->data['successful_trials'] = $successful_trials;
 
 			//this work is not successful - no reward :(
-			if($result < Work::neededSuccessfulTrials)
+			if($successful_trials < Work::neededSuccessfulTrials)
 			{
 				//terminate
 				//User is free
@@ -491,10 +506,10 @@ class Action extends abstractEntity
 		return null;
 	}
 
-	private function calculateResult($user_skill)
+	private function calculateResult($user_skill, $number)
 	{
 		$result = 0;
-		for($i = 0; $i < Work::trialsNumber; $i++)
+		for($i = 0; $i < $number; $i++)
 		{
 			$rand = mt_rand(0, 100);
 			if($rand <= $user_skill)

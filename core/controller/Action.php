@@ -125,10 +125,18 @@ class Action
 
 		//Get infos about work
 		$work = $this->container->get('consim.core.entity.work')->load($work_id);
-		$user_skill = $this->container->get('consim.core.entity.consim_user_skill')->loadByUserIdAndSkillId($consim_user->getUserId(), $work->getConditionId());
+		$user_skills = $this->container->get('consim.core.operators.user_skills')->getUserSkills($consim_user->getUserId());
 
 		//Check condition
-		if($user_skill->getValue() < $work->getConditionValue())
+		$can_work = true;
+		if(($work->getCondition1Id() > 0 && $user_skills[$work->getCondition1Id()]->getValue() > $work->getCondition1Value()) ||
+			($work->getCondition2Id() > 0 && $user_skills[$work->getCondition2Id()]->getValue() > $work->getCondition2Value()) ||
+			($work->getCondition3Id() > 0 && $user_skills[$work->getCondition3Id()]->getValue() > $work->getCondition3Value())
+		)
+		{
+			$can_work = true;
+		}
+		if($can_work === false)
 		{
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}

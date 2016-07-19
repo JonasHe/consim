@@ -229,16 +229,15 @@ class Index
 			'SHOW_WORKING'			=> TRUE,
 			'IS_WORKING'			=> ($action->getStatus() == 0)? TRUE : FALSE,
 			'WORK_NAME'				=> $working->getName(),
-			'WORK_CONDITION_TYPE'	=> $working->getConditionName(),
-			'WORK_CONDITION_VALUE'	=> $working->getConditionValue(),
-			'WORK_OUTPUT_TYPE'		=> $working->getOutputName(),
-			'WORK_OUTPUT_VALUE'		=> $working->getOutputValue(),
+			'WORK_CONDITION_TYPE'	=> $working->getCondition1Name(),
+			'WORK_CONDITION_VALUE'	=> $working->getCondition1Value(),
+			//'WORK_OUTPUT_TYPE'		=> $working->getOutputName(),
+			//'WORK_OUTPUT_VALUE'		=> $working->getOutputValue(),
 			'WORK_EXPERIENCE_POINTS'=> $working->getExperiencePoints(),
 			'WORK_BUILDING_NAME'	=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
 			'WORK_BUILDING_TYPE'	=> $building->getTypeName(),
 			'WORK_LOCATION_NAME'	=> $location->getName(),
 			'WORK_TIME'				=> ($action->getStatus() == 0)? date("i:s", $time) : FALSE,
-
 		));
 	}
 
