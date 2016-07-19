@@ -110,10 +110,7 @@ class install_travel extends \phpbb\db\migration\migration
 						'condition_3_id'		=> array('UINT:8', 0),
 						'condition_3_trials'	=> array('UINT:8', 0),
 						'condition_3_value'		=> array('UINT:8', 0),
-						'output_trials'			=> array('UINT:8', 0),
-						'output_id'				=> array('UINT:8', 0),
-						'output_value'			=> array('UINT:8', 0),
-						'experience_points'		=> array('UINT:8', 0),
+						'experience_points'		=> array('TEXT_UNI', ''),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
@@ -127,7 +124,6 @@ class install_travel extends \phpbb\db\migration\migration
 						'successful_trials'		=> array('UINT:8', 0),
 						'output_id'				=> array('UINT:8', 0),
 						'output_value'			=> array('UINT:8', 0),
-						'experience_points'		=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
@@ -162,6 +158,7 @@ class install_travel extends \phpbb\db\migration\migration
 			array('custom', array(array($this, 'insert_building_types'))),
 			array('custom', array(array($this, 'insert_buildings'))),
 			array('custom', array(array($this, 'insert_works'))),
+			array('custom', array(array($this, 'insert_work_outputs'))),
 		);
 	}
 
@@ -345,23 +342,20 @@ class install_travel extends \phpbb\db\migration\migration
 				'building_type_id'		=> 1,
 				'condition_1_id'		=> 1,
 				'condition_1_trials'	=> 10,
-				'condition_1_value'		=> 10,
+				'condition_1_value'		=> 25,
 				'condition_2_id'		=> 4,
 				'condition_2_trials'	=> 5,
-				'condition_2_value'		=> 5,
+				'condition_2_value'		=> 20,
 				'condition_3_id'		=> 0,
 				'condition_3_trials'	=> 0,
 				'condition_3_value'		=> 0,
-				'output_trials'			=> 0,
-				'output_id'				=> 0,
-				'output_value'			=> 0,
-				'experience_points'		=> 0,
+				'experience_points'		=> serialize(array(0,0,0,1,2)),
 			),
 		);
-		//$this->db->sql_multi_insert($this->table_prefix . 'consim_works', $works);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_works', $works);
 	}
 
-	public function insert_works_output()
+	public function insert_work_outputs()
 	{
 		$output = array(
 			//work id = 1
@@ -371,7 +365,6 @@ class install_travel extends \phpbb\db\migration\migration
 				'successful_trials'		=> 3,
 				'output_id'				=> 1,
 				'output_value'			=> 2,
-				'experience_points'		=> 0,
 			),
 			array(
 				'id'					=> 2,
@@ -379,7 +372,6 @@ class install_travel extends \phpbb\db\migration\migration
 				'successful_trials'		=> 6,
 				'output_id'				=> 1,
 				'output_value'			=> 4,
-				'experience_points'		=> 0,
 			),
 			array(
 				'id'					=> 3,
@@ -387,7 +379,6 @@ class install_travel extends \phpbb\db\migration\migration
 				'successful_trials'		=> 9,
 				'output_id'				=> 1,
 				'output_value'			=> 6,
-				'experience_points'		=> 0,
 			),
 			array(
 				'id'					=> 4,
@@ -395,7 +386,6 @@ class install_travel extends \phpbb\db\migration\migration
 				'successful_trials'		=> 12,
 				'output_id'				=> 1,
 				'output_value'			=> 8,
-				'experience_points'		=> 1,
 			),
 			array(
 				'id'					=> 5,
@@ -403,10 +393,9 @@ class install_travel extends \phpbb\db\migration\migration
 				'successful_trials'		=> 15,
 				'output_id'				=> 1,
 				'output_value'			=> 10,
-				'experience_points'		=> 2,
 			),
 		);
-		//$this->db->sql_multi_insert($this->table_prefix . 'consim_work_outputs', $output);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_work_outputs', $output);
 	}
 
 	/**

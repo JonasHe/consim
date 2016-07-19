@@ -102,7 +102,7 @@ ul.buildinglist a.button2 {
 	vertical-align: baseline;
 }
 
-ul.worklist li {
+ul.worklist > li {
 	display: block;
 	float: left;
 	width: 45%;
@@ -115,11 +115,11 @@ ul.worklist li {
 	border-radius: 7px;
 }
 
-ul.worklist li dt.title {
+ul.worklist > li dt.title {
 	border-bottom: 1px solid #000000;
 }
 
-ul.worklist li dd.action {
+ul.worklist > li dd.action {
 	float: right;
 }
 

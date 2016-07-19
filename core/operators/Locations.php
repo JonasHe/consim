@@ -167,34 +167,4 @@ class Locations
 			$template->assign_block_vars('destination', $select);
 		}
 	}
-
-	/**
-	 * Get all works of building type
-	 *
-	 * @param int $buildingType
-	 * @return \consim\core\entity\Work[]
-	 * @access public
-	 */
-	public function getWorks($buildingType)
-	{
-		$entities = array();
-
-		$sql = 'SELECT w.id, w.name, w.description, w.duration, w.building_type_id, 
-				w.condition_id, w.condition_value, w.output_id, w.output_value, experience_points,
-				COALESCE(s.name,"") AS condition_name, COALESCE(i.name, "") AS output_name
-			FROM ' . $this->consim_work_table . ' w
-			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = w.condition_id
-			LEFT JOIN '. $this->consim_item_table .' i ON i.id = w.output_id 
-			WHERE building_type_id = '.  $buildingType;
-		$result = $this->db->sql_query($sql);
-		
-		while($row = $this->db->sql_fetchrow($result))
-		{
-			$entities[] = $this->container->get('consim.core.entity.work')->import($row);
-		}
-		$this->db->sql_freeresult($result);
-
-		return $entities;
-	}
-
 }

@@ -8,6 +8,8 @@
 
 namespace consim\core\entity;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
  * Entity
  */
@@ -34,10 +36,7 @@ class Work extends abstractEntity
 		'condition_3_trials'	=> 'integer',
 		'condition_3_value'		=> 'integer',
 		'condition_3_name'		=> 'string',
-		'output_id'				=> 'integer',
-		'output_name'			=> 'string',
-		'output_value'			=> 'integer',
-		'experience_points'		=> 'integer',
+		'experience_points'		=> 'unserializeExPoints',
 	);
 
 	/**
@@ -56,17 +55,22 @@ class Work extends abstractEntity
 		'condition_3_id',
 		'condition_3_trials',
 		'condition_3_value',
-		'output_id',
-		'output_value',
-		'experience_points',
 	);
+
+	/** @var ContainerInterface */
+	protected $container;
+
 	/**
 	 * The database table the consim user data are stored in
 	 * @var string
 	 */
 	protected $consim_work_table;
 	protected $consim_skill_table;
-	protected $consim_item_table;
+
+	/**
+	 * Class Variable to save all outputs
+	 */
+	protected $sorted_outputs = null;
 
 	const trialsNumber = 10;
 	const neededSuccessfulTrials = 5;
@@ -75,20 +79,20 @@ class Work extends abstractEntity
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface	$db					Database object
+	 * @param ContainerInterface				$container			Service container interface
 	 * @param string							$consim_work_table	Name of the table used to store data
 	 * @param string							$consim_skill_table	Name of the table used to store data
-	 * @param string							$consim_item_table	Name of the table used to store data
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
-								$consim_work_table,
-								$consim_skill_table,
-								$consim_item_table)
+		ContainerInterface $container,
+		$consim_work_table,
+		$consim_skill_table)
 	{
 		$this->db = $db;
+		$this->container = $container;
 		$this->consim_work_table = $consim_work_table;
 		$this->consim_skill_table = $consim_skill_table;
-		$this->consim_item_table = $consim_item_table;
 	}
 
 	/**
@@ -105,13 +109,11 @@ class Work extends abstractEntity
 				w.condition_1_id, w.condition_1_trials, w.condition_1_value, COALESCE(s1.name,"") AS condition_1_name,
 				w.condition_2_id, w.condition_2_trials, w.condition_2_value, COALESCE(s2.name,"") AS condition_2_name,
 				w.condition_3_id, w.condition_3_trials, w.condition_3_value, COALESCE(s3.name,"") AS condition_3_name,
-				w.condition_id, w.condition_value, w.output_id, w.output_value, w.experience_points,
-				COALESCE(i.name, "") AS output_name
+				w.experience_points
 			FROM ' . $this->consim_work_table . ' w
 			LEFT JOIN '. $this->consim_skill_table .' s1 ON s1.id = w.condition_1_id
 			LEFT JOIN '. $this->consim_skill_table .' s2 ON s2.id = w.condition_2_id
 			LEFT JOIN '. $this->consim_skill_table .' s3 ON s3.id = w.condition_3_id
-			LEFT JOIN '. $this->consim_item_table .' i ON i.id = w.output_id
 			WHERE w.id = '.  $id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
@@ -121,6 +123,9 @@ class Work extends abstractEntity
 		{
 			throw new \consim\core\exception\out_of_bounds('id');
 		}
+
+		//unserialized the experience points
+		$this->data['experience_points'] = unserialize($this->data['experience_points']);
 
 		return $this;
 	}
@@ -170,79 +175,172 @@ class Work extends abstractEntity
 	}
 
 	/**
-	 * Get Condition Id
+	 * Get Condition 1 Id
 	 *
 	 * @return int Condition Id
 	 * @access public
 	 */
-	public function getConditionId()
+	public function getCondition1Id()
 	{
-		return $this->getInteger($this->data['condition_id']);
+		return $this->getInteger($this->data['condition_1_id']);
 	}
 
 	/**
-	 * Get Condition Name
+	 * Get Condition 1 Name
 	 *
 	 * @return string Condition Name
 	 * @access public
 	 */
-	public function getConditionName()
+	public function getCondition1Name()
 	{
-		return $this->getString($this->data['condition_name']);
+		return $this->getString($this->data['condition_1_name']);
 	}
 
 	/**
-	 * Get Condition Value
+	 * Get Condition 1 Value
 	 *
 	 * @return int Condition Value
 	 * @access public
 	 */
-	public function getConditionValue()
+	public function getCondition1Trials()
 	{
-		return $this->getInteger($this->data['condition_value']);
+		return $this->getInteger($this->data['condition_1_trials']);
 	}
 
 	/**
-	 * Get Output Id
+	 * Get Condition 1 Value
 	 *
-	 * @return int Output Id
+	 * @return int Condition Value
 	 * @access public
 	 */
-	public function getOutputId()
+	public function getCondition1Value()
 	{
-		return $this->getInteger($this->data['output_id']);
+		return $this->getInteger($this->data['condition_1_value']);
 	}
 
 	/**
-	 * Get Output Name
+	 * Get Condition 2 Id
 	 *
-	 * @return string Output Name
+	 * @return int Condition Id
 	 * @access public
 	 */
-	public function getOutputName()
+	public function getCondition2Id()
 	{
-		return $this->getString($this->data['output_name']);
+		return $this->getInteger($this->data['condition_2_id']);
 	}
 
 	/**
-	 * Get Output Value
+	 * Get Condition 2 Name
 	 *
-	 * @return int Output Value
+	 * @return string Condition Name
 	 * @access public
 	 */
-	public function getOutputValue()
+	public function getCondition2Name()
 	{
-		return $this->getInteger($this->data['output_value']);
+		return $this->getString($this->data['condition_2_name']);
 	}
 
 	/**
-	 * Get experience points
+	 * Get Condition 2 Value
 	 *
-	 * @return string experience points
+	 * @return int Condition Value
+	 * @access public
+	 */
+	public function getCondition2Trials()
+	{
+		return $this->getInteger($this->data['condition_2_trials']);
+	}
+
+	/**
+	 * Get Condition 2 Value
+	 *
+	 * @return int Condition Value
+	 * @access public
+	 */
+	public function getCondition2Value()
+	{
+		return $this->getInteger($this->data['condition_2_value']);
+	}
+
+	/**
+	 * Get Condition 3 Id
+	 *
+	 * @return int Condition Id
+	 * @access public
+	 */
+	public function getCondition3Id()
+	{
+		return $this->getInteger($this->data['condition_3_id']);
+	}
+
+	/**
+	 * Get Condition 3 Name
+	 *
+	 * @return string Condition Name
+	 * @access public
+	 */
+	public function getCondition3Name()
+	{
+		return $this->getString($this->data['condition_3_name']);
+	}
+
+	/**
+	 * Get Condition 3 Value
+	 *
+	 * @return int Condition Value
+	 * @access public
+	 */
+	public function getCondition3Trials()
+	{
+		return $this->getInteger($this->data['condition_3_trials']);
+	}
+
+	/**
+	 * Get Condition 3 Value
+	 *
+	 * @return int Condition Value
+	 * @access public
+	 */
+	public function getCondition3Value()
+	{
+		return $this->getInteger($this->data['condition_3_value']);
+	}
+
+	/**
+	 * Get experience points as Array
+	 * start with 0!
+	 *
+	 * @return int[]
 	 * @access public
 	 */
 	public function getExperiencePoints()
 	{
-		return $this->getInteger($this->data['experience_points']);
+		return $this->data['experience_points'];
+	}
+
+	/**
+	 * unserialized experience points
+	 *
+	 * @param $string
+	 * @return Work
+	 */
+	protected function unserializeExPoints($string)
+	{
+		$this->data['experience_points'] = unserialize($string);
+		return $this;
+	}
+
+	/**
+	 * Get all Output for this Work
+	 *
+	 * @return WorkOutput[][]
+	 */
+	public function getSortedOutputs()
+	{
+		if($this->sorted_outputs === null)
+		{
+			$this->sorted_outputs = $this->container->get('consim.core.operators.works')->getSortedOutputs($this->data['id']);
+		}
+		return $this->sorted_outputs;
 	}
 }

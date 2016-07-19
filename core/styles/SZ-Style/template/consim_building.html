@@ -16,8 +16,45 @@
 						<form method="post" action="{S_WORK_ACTION}" >
 							<dl>
 								<dt class="title">{works.NAME} ({works.DURATION})</dt>
-								<dd><strong>{L_CONDITION}{L_COLON}</strong> <!-- IF works.CONDITION_VALUE -->{works.CONDITION_TYPE} ({works.CONDITION_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></dd>
-								<dd><strong>{L_OUTPUT}{L_COLON}</strong> <!-- IF works.OUTPUT_VALUE -->{works.OUTPUT_TYPE} ({works.OUTPUT_VALUE})<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></dd>
+								<dd><strong>{L_CONDITIONS}{L_COLON}</strong>
+									<ul class="conditionlist">
+										<!-- IF works.CONDITION_1_VALUE -->
+										<li>
+											{works.CONDITION_1_TYPE} ({works.CONDITION_1_TRIALS}){L_COLON} {works.CONDITION_1_VALUE}
+										</li>
+										<!-- ENDIF -->
+										<!-- IF works.CONDITION_2_VALUE -->
+										<li>
+											{works.CONDITION_2_TYPE} ({works.CONDITION_2_TRIALS}){L_COLON} {works.CONDITION_2_VALUE}
+										</li>
+										<!-- ENDIF -->
+										<!-- IF works.CONDITION_3_VALUE -->
+										<li>
+											{works.CONDITION_3_TYPE} ({works.CONDITION_3_TRIALS}){L_COLON} {works.CONDITION_3_VALUE}
+										</li>
+										<!-- ENDIF -->
+										<!-- IF not works.CONDITION_1_VALUE and not works.CONDITION_2_VALUE and not works.CONDITION_3_VALUE -->
+										<li>
+											{L_NOTHING}
+										</li>
+										<!-- ENDIF -->
+									</ul>
+								</dd>
+								<dd><strong>{L_OUTPUT}{L_COLON}</strong>
+									<ul class="outputlist">
+										<!-- IF works.outputs -->
+											<!-- BEGIN works.outputs -->
+											<li>
+												{works.outputs.TYPE}{L_COLON} <!-- BEGIN works.outputs.types --><!-- IF not works.outputs.types.S_FIRST_ROW -->/<!-- ENDIF -->{works.outputs.types.VALUE}<!-- END works.outputs.types -->
+											</li>
+											<!-- END works.outputs -->
+										<!-- ELSE -->
+											<li>
+												{L_NOTHING}
+											</li>
+										<!-- ENDIF -->
+									</ul>
+								</dd>
 								<dd><strong>{L_EXPERIENCE_POINTS}{L_COLON}</strong> <!-- IF works.EXPERIENCE_POINTS -->{works.EXPERIENCE_POINTS}<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></dd>
 								<!-- IF works.CAN_WORK -->{works.S_HIDDEN_FIELDS}
 								<dd class="action"><input type="submit" value="{L_GO}" class="button2" /></dd>

@@ -82,7 +82,6 @@ services:
 
     consim.core.operators.inventories:
         class: consim\core\operators\Inventories
-        scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
             - @service_container
@@ -91,12 +90,21 @@ services:
 
     consim.core.operators.user_skills:
             class: consim\core\operators\UserSkills
-            scope: prototype # scope MUST be prototype for this to work!
             arguments:
                 - @dbal.conn
                 - @service_container
                 - %tables.consim.skills%
                 - %tables.consim.user_skills%
+
+    consim.core.operators.works:
+            class: consim\core\operators\Works
+            arguments:
+                - @dbal.conn
+                - @service_container
+                - %tables.consim.works%
+                - %tables.consim.work_outputs%
+                - %tables.consim.skills%
+                - %tables.consim.items%
 
     consim.core.entity.building:
         class: consim\core\entity\Building
@@ -164,6 +172,7 @@ services:
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
+            - @service_container
             - %tables.consim.works%
             - %tables.consim.skills%
 
