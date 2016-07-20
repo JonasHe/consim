@@ -224,20 +224,41 @@ class Index
 			));
 		}
 
+		//set output to template
+		foreach ($working->getSortedOutputs() as $type => $outputs)
+		{
+			$this->template->assign_block_vars('work_outputs', array(
+				'TYPE'			=> $type,
+			));
+
+			/** @var WorkOutput $output */
+			foreach ($outputs as $output)
+			{
+				$this->template->assign_block_vars('work_outputs.types', array(
+					'VALUE'			=> $output->getOutputValue(),
+				));
+			}
+		}
+
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'SHOW_WORKING'			=> TRUE,
-			'IS_WORKING'			=> ($action->getStatus() == 0)? TRUE : FALSE,
-			'WORK_NAME'				=> $working->getName(),
-			'WORK_CONDITION_TYPE'	=> $working->getCondition1Name(),
-			'WORK_CONDITION_VALUE'	=> $working->getCondition1Value(),
-			//'WORK_OUTPUT_TYPE'		=> $working->getOutputName(),
-			//'WORK_OUTPUT_VALUE'		=> $working->getOutputValue(),
-			'WORK_EXPERIENCE_POINTS'=> $working->getExperiencePoints(),
-			'WORK_BUILDING_NAME'	=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
-			'WORK_BUILDING_TYPE'	=> $building->getTypeName(),
-			'WORK_LOCATION_NAME'	=> $location->getName(),
-			'WORK_TIME'				=> ($action->getStatus() == 0)? date("i:s", $time) : FALSE,
+			'SHOW_WORKING'				=> TRUE,
+			'IS_WORKING'				=> ($action->getStatus() == 0)? TRUE : FALSE,
+			'WORK_NAME'					=> $working->getName(),
+			'WORK_CONDITION_1_TYPE'		=> $working->getCondition1Name(),
+			'WORK_CONDITION_1_TRIALS'	=> $working->getCondition1Trials(),
+			'WORK_CONDITION_1_VALUE'	=> $working->getCondition1Value(),
+			'WORK_CONDITION_2_TYPE'		=> $working->getCondition2Name(),
+			'WORK_CONDITION_2_TRIALS'	=> $working->getCondition2Trials(),
+			'WORK_CONDITION_2_VALUE'	=> $working->getCondition2Value(),
+			'WORK_CONDITION_3_TYPE'		=> $working->getCondition3Name(),
+			'WORK_CONDITION_3_TRIALS'	=> $working->getCondition3Trials(),
+			'WORK_CONDITION_3_VALUE'	=> $working->getCondition3Value(),
+			'WORK_EXPERIENCE_POINTS'	=> implode("/", $working->getExperiencePoints()),
+			'WORK_BUILDING_NAME'		=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+			'WORK_BUILDING_TYPE'		=> $building->getTypeName(),
+			'WORK_LOCATION_NAME'		=> $location->getName(),
+			'WORK_TIME'					=> ($action->getStatus() == 0)? date("i:s", $time) : FALSE,
 		));
 	}
 
