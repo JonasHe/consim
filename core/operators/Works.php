@@ -92,6 +92,7 @@ class Works
 	/**
 	 * Get all Output for a Work
 	 *
+	 * @param int $work_id
 	 * @return WorkOutput[]
 	 */
 	public function getOutputs($work_id)
@@ -99,7 +100,7 @@ class Works
 		$outputs = array();
 
 		$sql = 'SELECT o.id, o.work_id, o.successful_trials,
-				o.output_id, o.output_value, COALESCE(i.name,"") AS output_name, o.experience_points
+				o.output_id, o.output_value, COALESCE(i.name,"") AS output_name, o.success_threshold
 			FROM ' . $this->consim_work_output_table . ' o
 			LEFT JOIN '. $this->consim_item_table .' i ON i.id = o.output_id
 			WHERE o.work_id = '.  $work_id;
@@ -118,23 +119,25 @@ class Works
 	 * Get all Output for a Work
 	 * which sorted by output_id
 	 *
+	 * @param int $work_id
 	 * @return WorkOutput[][]
 	 */
 	public function getSortedOutputs($work_id)
 	{
 		$outputs = array();
 
-		$sql = 'SELECT o.id, o.work_id, o.successful_trials,
-				o.output_id, o.output_value, COALESCE(i.name,"") AS output_name, o.experience_points
+		$sql = 'SELECT o.id, o.work_id, o.success_threshold,
+				o.output_id, o.output_value, COALESCE(i.name,"") AS output_name, o.success_threshold
 			FROM ' . $this->consim_work_output_table . ' o
 			LEFT JOIN '. $this->consim_item_table .' i ON i.id = o.output_id
 			WHERE o.work_id = '.  $work_id .'
-			ORDER BY o.successful_trials ASC';
+			ORDER BY o.id, o.success_threshold ASC';
 		$result = $this->db->sql_query($sql);
 
 		while($row = $this->db->sql_fetchrow($result))
 		{
-			$outputs[$row['output_name']][] = $this->container->get('consim.core.entity.work_output')->import($row);
+			$outputs[$row['output_id']]['name'] = $row['output_name'];
+			$outputs[$row['output_id']][] = $this->container->get('consim.core.entity.work_output')->import($row);
 		}
 		$this->db->sql_freeresult($result);
 

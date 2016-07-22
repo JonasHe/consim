@@ -347,3 +347,7 @@ ul.travellist dd.action a.button2 {
 	background-color: #ffffff;
 	padding: 0px;
 }
+
+table.table1 tbody td.indent {
+	padding-left: 2em;
+}

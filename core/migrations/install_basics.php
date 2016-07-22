@@ -116,7 +116,8 @@ class install_basics extends \phpbb\db\migration\migration
 						'endtime'				=> array('TIMESTAMP', 0),
 						'route_id'				=> array('UINT:8', 0),
 						'work_id'				=> array('UINT:8', 0),
-						'successful_trials'		=> array('TINT:1', 0),
+						'result'				=> array('TEXT_UNI', ''),
+						'successful_trials'		=> array('UINT:8', 0), //TODO: Sinnvoll? Nützlich?
 						'status'				=> array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),

@@ -10,7 +10,6 @@
 namespace consim\core\controller;
 
 use consim\core\entity\Action;
-use consim\core\entity\Skill;
 use consim\core\entity\UserSkill;
 use consim\core\entity\Work;
 use consim\core\entity\WorkOutput;
@@ -202,6 +201,7 @@ class Index
 		$location = $this->container->get('consim.core.entity.location')->load($action->getLocationId());
 		$building = $this->container->get('consim.core.entity.building')->find($location->getId(), $working->getBuildingTypeId());
 
+		//User must finished the work
 		if($action->getStatus() == 2)
 		{
 			$s_hidden_fields = build_hidden_fields(array(
@@ -214,13 +214,21 @@ class Index
 			));
 			add_form_key('working_end');
 		}
-		
+
+		$result = array();
+		//Work finished
 		if($action->getStatus() == 1)
 		{
+			$result = $action->getResult();
 			$this->template->assign_vars(array(
-				'IS_WORK_SUCCESSFUL'		=> ($action->getSuccessfulTrials() < Work::neededSuccessfulTrials)?  FALSE : TRUE,
+				'IS_WORK_FINISHED'			=> TRUE,
 				'WORK_SUCCESSFUL_TRIALS'	=> $action->getSuccessfulTrials(),
 				'WORK_TRIALS_NUMBER'		=> Work::trialsNumber,
+				'WORK_RESULT_ALL'			=> $result['conditions']['all'],
+				'WORK_RESULT_1'				=> (isset($result['conditions'][0]))? $result['conditions'][0] : 0,
+				'WORK_RESULT_2'				=> (isset($result['conditions'][1]))? $result['conditions'][1] : 0,
+				'WORK_RESULT_3'				=> (isset($result['conditions'][2]))? $result['conditions'][2] : 0,
+				'WORK_EXPERIENCE'			=> $result['experience'],
 			));
 		}
 
@@ -228,14 +236,16 @@ class Index
 		foreach ($working->getSortedOutputs() as $type => $outputs)
 		{
 			$this->template->assign_block_vars('work_outputs', array(
-				'TYPE'			=> $type,
+				'TYPE'			=> $outputs['name'],
+				'VALUE'			=> (isset($result) && !empty($result['outputs'][$type]))? $result['outputs'][$type]['value'] : 0,
 			));
+			print_r($result['outputs']);
 
-			/** @var WorkOutput $output */
-			foreach ($outputs as $output)
+			/** @var WorkOutput[] $outputs */
+			for($i=0; $i < 5; $i++)
 			{
 				$this->template->assign_block_vars('work_outputs.types', array(
-					'VALUE'			=> $output->getOutputValue(),
+					'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
 				));
 			}
 		}
@@ -254,6 +264,7 @@ class Index
 			'WORK_CONDITION_3_TYPE'		=> $working->getCondition3Name(),
 			'WORK_CONDITION_3_TRIALS'	=> $working->getCondition3Trials(),
 			'WORK_CONDITION_3_VALUE'	=> $working->getCondition3Value(),
+			'WORK_CONDITION_ALL'		=> ($working->getCondition1Trials() + $working->getCondition2Trials() + $working->getCondition3Trials()),
 			'WORK_EXPERIENCE_POINTS'	=> implode("/", $working->getExperiencePoints()),
 			'WORK_BUILDING_NAME'		=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
 			'WORK_BUILDING_TYPE'		=> $building->getTypeName(),
@@ -389,14 +400,14 @@ class Index
 			foreach ($work->getSortedOutputs() as $type => $outputs)
 			{
 				$this->template->assign_block_vars('works.outputs', array(
-					'TYPE'			=> $type,
+					'TYPE'			=> $outputs['name'],
 				));
 
-				/** @var WorkOutput $output */
-				foreach ($outputs as $output)
+				/** @var WorkOutput[] $outputs */
+				for($i=0; $i < 5; $i++)
 				{
 					$this->template->assign_block_vars('works.outputs.types', array(
-						'VALUE'			=> $output->getOutputValue(),
+						'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
 					));
 				}
 			}
@@ -517,7 +528,7 @@ class Index
 			}
 
 		}
-		
+
 		// Get inventory and add to template
 		$inventory = $this->container->get('consim.core.operators.inventories')->getInventory($this->consim_user->getUserId());
 		foreach ($inventory as $item)

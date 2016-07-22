@@ -20,7 +20,7 @@ class WorkOutput extends abstractEntity
 	protected static $fields = array(
 		'id'					=> 'integer',
 		'work_id'				=> 'integer',
-		'successful_trials'		=> 'integer',
+		'success_threshold'		=> 'integer',
 		'output_id' 			=> 'integer',
 		'output_value'			=> 'integer',
 		'output_name'			=> 'string',
@@ -32,7 +32,7 @@ class WorkOutput extends abstractEntity
 	protected static $validate_unsigned = array(
 		'id',
 		'work_id',
-		'successful_trials',
+		'success_threshold',
 		'output_id',
 		'output_value',
 	);
@@ -70,7 +70,7 @@ class WorkOutput extends abstractEntity
 	 */
 	public function load($id)
 	{
-		$sql = 'SELECT o.id, o.work_id, o.successful_trials,
+		$sql = 'SELECT o.id, o.work_id, o.success_threshold,
 				o.output_id, o.output_value, COALESCE(i.name,"") AS output_name
 			FROM ' . $this->consim_work_output_table . ' o
 			LEFT JOIN '. $this->consim_item_table .' i ON i.id = o.output_id
@@ -115,9 +115,9 @@ class WorkOutput extends abstractEntity
 	 * @return int Successful Trials
 	 * @access public
 	 */
-	public function getSuccessfulTrials()
+	public function getSuccessThreshold()
 	{
-		return $this->getInteger($this->data['successful_trials']);
+		return $this->getInteger($this->data['success_threshold']);
 	}
 
 	/**

@@ -27,6 +27,7 @@ class Action extends abstractEntity
 		'endtime'				=> 'integer',
 		'route_id'				=> 'integer',
 		'work_id'				=> 'integer',
+		'result'				=> 'string',
 		'successful_trials'		=> 'integer',
 		'status'				=> 'integer',
 	);
@@ -101,7 +102,7 @@ class Action extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT id, user_id, location_id, starttime, endtime, route_id, work_id, successful_trials, status
+		$sql = 'SELECT id, user_id, location_id, starttime, endtime, route_id, work_id, result, successful_trials, status
 			FROM ' . $this->consim_action_table . '
 			WHERE id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
@@ -304,6 +305,30 @@ class Action extends abstractEntity
 	}
 
 	/**
+	 * Get result
+	 *
+	 * @return array result
+	 * @access public
+	 */
+	public function getResult()
+	{
+		return unserialize($this->data['result']);
+	}
+
+	/**
+	 * Set result
+	 *
+	 * @param array $result
+	 * @return Action
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function setResult($result)
+	{
+		$this->data['result'] = serialize($result);
+		return $this;
+	}
+
+	/**
 	 * Get successful trials
 	 *
 	 * @return int successful trials
@@ -396,8 +421,6 @@ class Action extends abstractEntity
 			//finished
 			return null;
 		}
-
-
 	}
 
 	public function userDone()
@@ -419,8 +442,9 @@ class Action extends abstractEntity
 		if($this->data['work_id'] > 0)
 		{
 			//get infos about work and inventory items
-			$sql = 'SELECT w.condition_1_value, w.condition_2_value, w.condition_3_value,
-					w.condition_1_trials, w.condition_2_trials, w.condition_3_trials,
+			$sql = 'SELECT w.condition_1_id, w.condition_1_value, w.condition_1_trials,
+					w.condition_2_id, w.condition_2_value, w.condition_2_trials,
+					w.condition_3_id, w.condition_3_value, w.condition_3_trials,
 					w.experience_points, 
 					s1.value AS user_skill_1, s2.value AS user_skill_2, s3.value AS user_skill_3
 				FROM '. $this->consim_work_table .' w
@@ -432,41 +456,67 @@ class Action extends abstractEntity
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
-			$result = array();
+			$result = array(
+				'conditions'		=> array(),
+				'outputs'		=> array(),
+				'experience'	=> 0,
+			);
 			//Calculate result with condition_1, condition_2 and condition_3
 			if($row['condition_1_value'] > 0 && $row['condition_1_trials'] > 0)
 			{
-				$result[] = $this->calculateResult($row['user_skill_1'], $row['condition_1_trials']);
+				$result['conditions'][0] = $this->calculateResult($row['user_skill_1'], $row['condition_1_trials']);
 			}
 			if($row['condition_2_value'] > 0 && $row['condition_2_trials'] > 0)
 			{
-				$result[] = $this->calculateResult($row['user_skill_2'], $row['condition_2_trials']);
+				$result['conditions'][1] = $this->calculateResult($row['user_skill_2'], $row['condition_2_trials']);
 			}
 			if($row['condition_3_value'] > 0 && $row['condition_3_trials'] > 0)
 			{
-				$result[] = $this->calculateResult($row['user_skill_3'], $row['condition_3_trials']);
+				$result['conditions'][2] = $this->calculateResult($row['user_skill_3'], $row['condition_3_trials']);
 			}
-			$successful_trials = array_sum($result);
+			$result['conditions']['all'] = array_sum($result['conditions']);
 
-			exit();
+			//get success threshold
+			$success_threshold = (int) ($result['conditions']['all'] / 3);
+
+			//calculate experience
+			$experience_points = unserialize($row['experience_points']);
+			$result['experience'] = $this->setExperience($experience_points, $success_threshold);
+
+			//calculate outputs
+			$result['outputs'] = $this->setOutput($success_threshold);
 
 			//Action is done
+			$this->data['status'] = self::completed;
+			$this->data['result'] = serialize($result);
+			$this->data['successful_trials'] = $result['conditions']['all'];
 			$sql = 'UPDATE ' . $this->consim_action_table . '
-			SET status = '. self::completed .', successful_trials = '. $successful_trials .'
-			WHERE id = ' . $this->data['id'];
+				SET result = \''. $this->data['result'] .'\', successful_trials = '. $this->data['successful_trials'] .', status = '. $this->data['status'] .'
+				WHERE id = ' . $this->data['id'];
 			$this->db->sql_query($sql);
-			$this->data['status'] = 1;
-			$this->data['successful_trials'] = $successful_trials;
 
+			//User is free
+			$sql = 'UPDATE ' . $this->consim_user_table . '
+				SET active = 0
+				WHERE user_id = ' . $this->data['user_id'];
+			$this->db->sql_query($sql);
+
+
+			echo $success_threshold;
+			print_r($result);
+
+
+
+
+
+			//exit();
+
+			/**
 			//this work is not successful - no reward :(
 			if($successful_trials < Work::neededSuccessfulTrials)
 			{
 				//terminate
-				//User is free
-				$sql = 'UPDATE ' . $this->consim_user_table . '
-					SET active = 0
-					WHERE user_id = ' . $this->data['user_id'];
-				$this->db->sql_query($sql);
+
 
 				return null;
 			}
@@ -501,8 +551,8 @@ class Action extends abstractEntity
 					VALUES  ('. $this->data['user_id'] .', '. $row['output_id'] .', '. $row['output_value'] .')';
 				$this->db->sql_query($sql);
 			}
+			 */
 		}
-
 		return null;
 	}
 
@@ -516,6 +566,54 @@ class Action extends abstractEntity
 			{
 				$result++;
 			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param int[] $experience_points
+	 * @param int $success_threshold
+	 * @return int
+	 */
+	private function setExperience($experience_points, $success_threshold)
+	{
+		$points = $experience_points[($success_threshold - 1)];
+
+		//update experience
+		$sql = 'UPDATE '. $this->consim_user_table .'
+			SET experience_points = experience_points + '. $points .'
+			WHERE user_id = '. $this->getUserId();
+		$this->db->sql_query($sql);
+
+		return $points;
+	}
+
+	/**
+	 * @param int $success_threshold
+	 * @return array
+	 */
+	private function setOutput($success_threshold)
+	{
+		$sql = 'SELECT output_id AS id, output_value AS value
+				FROM phpbb_consim_work_outputs
+				WHERE work_id = '. $this->getWorkId() .' AND
+					success_threshold = '. (int) $success_threshold .'
+				ORDER BY id ASC';
+		$result = $this->db->sql_query($sql);
+		$row = $this->db->sql_fetchrowset($result);
+		$this->db->sql_freeresult($result);
+
+		//update the user inventory
+		$result = array();
+		foreach($row as $output)
+		{
+			$result[$output['id']] = $output['value'];
+			$sql = 'UPDATE '. $this->consim_inventory_item_table .'
+					SET value = value + '. $output['value'] .'
+					WHERE user_id = '. $this->getUserId() .' AND
+						item_id = '. $output['id'];
+			$this->db->sql_query($sql);
 		}
 
 		return $result;

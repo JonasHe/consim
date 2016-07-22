@@ -1,53 +1,64 @@
 <!-- INCLUDE consim_header.html -->
 
-<div class="field_center">
+<div class="field_center panel-container">
 	<div class="panel">
 		<div class="inner">
 			<div class="content">
 				<h2>{WORK_NAME} (<!-- IF IS_WORKING -->{WORK_TIME}<!-- ELSE -->{L_FINISHED}<!-- ENDIF-->)</h2>
-				<div class="inner">
-					<p>Kleine Beschreibung...</p>
-					<p><strong>{L_CONDITIONS}{L_COLON}</strong>
-						<ul class="conditionlist">
-							<!-- IF WORK_CONDITION_1_VALUE -->
-							<li>
-								{WORK_CONDITION_1_TYPE} ({WORK_CONDITION_1_TRIALS}){L_COLON} {WORK_CONDITION_1_VALUE}
-							</li>
-							<!-- ENDIF -->
-							<!-- IF WORK_CONDITION_2_VALUE -->
-							<li>
-								{WORK_CONDITION_2_TYPE} ({WORK_CONDITION_2_TRIALS}){L_COLON} {WORK_CONDITION_2_VALUE}
-							</li>
-							<!-- ENDIF -->
-							<!-- IF WORK_CONDITION_3_VALUE -->
-							<li>
-								{WORK_CONDITION_3_TYPE} ({WORK_CONDITION_3_TRIALS}){L_COLON} {WORK_CONDITION_3_VALUE}
-							</li>
-							<!-- ENDIF -->
-							<!-- IF not WORK_CONDITION_1_VALUE and not WORK_CONDITION_2_VALUE and not WORK_CONDITION_3_VALUE -->
-							<li>
-								{L_NOTHING}
-							</li>
-							<!-- ENDIF -->
-						</ul>
-					</p>
-					<p><strong>{L_OUTPUT}{L_COLON}</strong>
-						<ul class="outputlist">
-							<!-- BEGIN work_outputs -->
-							<li>
-								{work_outputs.TYPE}{L_COLON} <!-- BEGIN work_outputs.types --><!-- IF not work_outputs.types.S_FIRST_ROW -->/<!-- ENDIF -->{work_outputs.types.VALUE}<!-- END work_outputs.types -->
-							</li>
-							<!-- END work_outputs -->
-						</ul>
-					<p><strong>{L_EXPERIENCE_POINTS}{L_COLON}</strong> <!-- IF WORK_EXPERIENCE_POINTS -->{WORK_EXPERIENCE_POINTS}<!-- ELSE -->{L_NOTHING}<!-- ENDIF --></p>
-					<!-- IF not IS_WORKING and not IS_CONFIRM_FINISH -->
-					<hr />
-					<p><strong>{L_RESULT}{L_COLON} <!-- IF IS_WORK_SUCCESSFUL --><span style="color: rgb(0, 127, 0)">{L_SUCCESSFUL}</span><!-- ELSE -->
-						<span style="color: rgb(127, 0, 0);">{L_UNSUCCESSFUL}</span><!-- ENDIF --></strong>
-						({WORK_SUCCESSFUL_TRIALS}/{WORK_TRIALS_NUMBER})</p>
-					<!-- ENDIF -->
-				</div>
+				<p>Kleine Beschreibung...</p>
 			</div>
+			<table class="table1 responsive">
+				<thead>
+				<tr>
+					<th>Art</th>
+					<th>Wert</th>
+					<th>Ergebnis</th>
+				</tr>
+				</thead>
+				<tbody>
+					<tr class="bg3 big-column">
+						<td>{L_CONDITIONS} ({L_MIN_SKILL})</td>
+						<td class="center ">{WORK_CONDITION_ALL}</td>
+						<td class="center"><!-- IF IS_WORK_FINISHED -->{WORK_RESULT_ALL}<!-- ELSE -->?<!-- ENDIF --></td>
+					</tr>
+					<!-- IF WORK_CONDITION_1_VALUE -->
+					<tr class="bg1">
+						<td class="indent">{WORK_CONDITION_1_TYPE} ({WORK_CONDITION_1_VALUE})</td>
+						<td class="center">{WORK_CONDITION_1_TRIALS}</td>
+						<td class="center"><!-- IF IS_WORK_FINISHED -->{WORK_RESULT_1}<!-- ELSE -->?<!-- ENDIF --></td>
+					</tr>
+					<!-- ENDIF -->
+					<!-- IF WORK_CONDITION_2_VALUE -->
+					<tr class="bg2">
+						<td class="indent">{WORK_CONDITION_2_TYPE} ({WORK_CONDITION_2_VALUE})</td>
+						<td class="center">{WORK_CONDITION_2_TRIALS}</td>
+						<td class="center"><!-- IF IS_WORK_FINISHED -->{WORK_RESULT_2}<!-- ELSE -->?<!-- ENDIF --></td>
+					</tr>
+					<!-- ENDIF -->
+					<!-- IF WORK_CONDITION_3_VALUE -->
+					<tr class="bg1">
+						<td class="indent">{WORK_CONDITION_3_TYPE} ({WORK_CONDITION_3_VALUE})</td>
+						<td class="center">{WORK_CONDITION_3_TRIALS}</td>
+						<td class="center"><!-- IF IS_WORK_FINISHED -->{WORK_RESULT_3}<!-- ELSE -->?<!-- ENDIF --></td>
+					</tr>
+					<!-- ENDIF -->
+					<tr class="bg3 big-column">
+						<td colspan="3">{L_OUTPUT}</td>
+					</tr>
+					<!-- BEGIN work_outputs -->
+					<tr class="bg1">
+						<td class="indent">{work_outputs.TYPE}</td>
+						<td class="center"><!-- BEGIN work_outputs.types --><!-- IF not work_outputs.types.S_FIRST_ROW -->/<!-- ENDIF -->{work_outputs.types.VALUE}<!-- END work_outputs.types --></td>
+						<td class="center"><!-- IF IS_WORK_FINISHED -->{work_outputs.VALUE}<!-- ELSE -->?<!-- ENDIF --></td>
+					</tr>
+					<!-- END work_outputs -->
+					<tr class="bg3">
+						<td>{L_EXPERIENCE_POINTS}</td>
+						<td class="center">{WORK_EXPERIENCE_POINTS}</td>
+						<td class="center"><!-- IF IS_WORK_FINISHED -->{WORK_EXPERIENCE}<!-- ELSE -->?<!-- ENDIF --></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 	<!-- IF IS_CONFIRM_FINISH -->

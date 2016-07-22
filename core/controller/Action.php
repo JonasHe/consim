@@ -95,6 +95,7 @@ class Action
 			//TODO: Removed division 10!
 			->setEndTime($now + ($route->getTime()/10))
 			->setRouteId($route->getId())
+			->setResult('')
 			->insert();
 
 		//$consim_user->setLocation($travel_id);
@@ -148,6 +149,7 @@ class Action
 			->setStartTime($now)
 			->setEndTime($now + $work->getDuration())
 			->setWorkId($work->getId())
+			->setResult('')
 			->insert();
 
 		redirect($this->helper->route('consim_core_index'));
