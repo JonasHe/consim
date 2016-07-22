@@ -500,58 +500,6 @@ class Action extends abstractEntity
 				SET active = 0
 				WHERE user_id = ' . $this->data['user_id'];
 			$this->db->sql_query($sql);
-
-
-			echo $success_threshold;
-			print_r($result);
-
-
-
-
-
-			//exit();
-
-			/**
-			//this work is not successful - no reward :(
-			if($successful_trials < Work::neededSuccessfulTrials)
-			{
-				//terminate
-
-
-				return null;
-			}
-
-			//User is free
-			$sql = 'UPDATE ' . $this->consim_user_table . '
-			SET active = 0, experience_points = experience_points + '. $row['experience_points'] .'
-			WHERE user_id = ' . $this->data['user_id'];
-			$this->db->sql_query($sql);
-
-			//no output :(
-			if($row['output_id'] == 0)
-			{
-				return null;
-			}
-
-			if(isset($row['currentValue']))
-			{
-				//Item is present
-				//set output to user
-				$sql = 'UPDATE ' . $this->consim_inventory_item_table . '
-					SET  value = value + '. $row['output_value'] .'
-					WHERE user_id = '. $this->data['user_id'] .'
-					AND item_id = '. $row['output_id'];
-				$this->db->sql_query($sql);
-			}
-			else
-			{
-				//Item is new in this inventory
-				//set output to user
-				$sql = 'INSERT INTO ' . $this->consim_inventory_item_table . ' (user_id, item_id, value)
-					VALUES  ('. $this->data['user_id'] .', '. $row['output_id'] .', '. $row['output_value'] .')';
-				$this->db->sql_query($sql);
-			}
-			 */
 		}
 		return null;
 	}
