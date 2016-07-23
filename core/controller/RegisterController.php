@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
 * Main controller
 */
-class Register
+class RegisterController
 {
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -64,7 +64,7 @@ class Register
 	* @param \phpbb\template\template			$template		Template object
 	* @param \phpbb\request\request				$request		Request object
 	* @param \phpbb\db\driver\driver_interface	$db				Database object
-	* @return \consim\core\controller\Register
+	* @return \consim\core\controller\RegisterController
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,

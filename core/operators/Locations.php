@@ -161,7 +161,7 @@ class Locations
 				'COUNTRY'		=> $entity->getCountry(),
 				'TIME'          => gmdate('i:s', $entity->getTime()),
 				'URL'           => $helper->route('consim_core_location', array('location_id' => $entity->getId())),
-				'ACTION'  		=> $helper->route('consim_core_travel', array('travel_id' => $entity->getId(), 'hash' => generate_link_hash("travel_".$entity->getId()))),
+				'ACTION'  		=> $helper->route('consim_core_travel_start', array('travel_id' => $entity->getId(), 'hash' => generate_link_hash("travel_".$entity->getId()))),
 			);
 
 			$template->assign_block_vars('destination', $select);

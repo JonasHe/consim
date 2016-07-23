@@ -1,0 +1,52 @@
+imports:
+    - { resource: tables.yml }
+
+services:
+    consim.core.operators.locations:
+        class: consim\core\operators\Locations
+        arguments:
+            - @dbal.conn
+            - @service_container
+            - %tables.consim.routes%
+            - %tables.consim.locations%
+            - %tables.consim.location_types%
+            - %tables.consim.provinces%
+            - %tables.consim.countries%
+            - %tables.consim.buildings%
+            - %tables.consim.building_types%
+            - %tables.consim.works%
+            - %tables.consim.skills%
+            - %tables.consim.items%
+
+    consim.core.operators.action_lists:
+        class: consim\core\operators\ActionLists
+        arguments:
+            - @dbal.conn
+            - @service_container
+            - %tables.consim.actions%
+
+    consim.core.operators.inventories:
+        class: consim\core\operators\Inventories
+        arguments:
+            - @dbal.conn
+            - @service_container
+            - %tables.consim.items%
+            - %tables.consim.inventory_items%
+
+    consim.core.operators.user_skills:
+            class: consim\core\operators\UserSkills
+            arguments:
+                - @dbal.conn
+                - @service_container
+                - %tables.consim.skills%
+                - %tables.consim.user_skills%
+
+    consim.core.operators.works:
+            class: consim\core\operators\Works
+            arguments:
+                - @dbal.conn
+                - @service_container
+                - %tables.consim.works%
+                - %tables.consim.work_outputs%
+                - %tables.consim.skills%
+                - %tables.consim.items%
