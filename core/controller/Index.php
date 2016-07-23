@@ -370,12 +370,12 @@ class Index
 
 			$can_work = true;
 			if($this->consim_user->getActive() ||
-				($work->getCondition1Id() > 0 && $this->consim_user_skills[$work->getCondition1Id()]->getValue() > $work->getCondition1Value()) ||
-				($work->getCondition2Id() > 0 && $this->consim_user_skills[$work->getCondition2Id()]->getValue() > $work->getCondition2Value()) ||
-				($work->getCondition3Id() > 0 && $this->consim_user_skills[$work->getCondition3Id()]->getValue() > $work->getCondition3Value())
+				($work->getCondition1Id() > 0 && $this->consim_user_skills[$work->getCondition1Id()]->getValue() < $work->getCondition1Value()) ||
+				($work->getCondition2Id() > 0 && $this->consim_user_skills[$work->getCondition2Id()]->getValue() < $work->getCondition2Value()) ||
+				($work->getCondition3Id() > 0 && $this->consim_user_skills[$work->getCondition3Id()]->getValue() < $work->getCondition3Value())
 			)
 			{
-				$can_work = true;
+				$can_work = false;
 			}
 
 			$this->template->assign_block_vars('works', array(

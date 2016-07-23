@@ -130,12 +130,12 @@ class Action
 
 		//Check condition
 		$can_work = true;
-		if(($work->getCondition1Id() > 0 && $user_skills[$work->getCondition1Id()]->getValue() > $work->getCondition1Value()) ||
-			($work->getCondition2Id() > 0 && $user_skills[$work->getCondition2Id()]->getValue() > $work->getCondition2Value()) ||
-			($work->getCondition3Id() > 0 && $user_skills[$work->getCondition3Id()]->getValue() > $work->getCondition3Value())
+		if(($work->getCondition1Id() > 0 && $user_skills[$work->getCondition1Id()]->getValue() < $work->getCondition1Value()) ||
+			($work->getCondition2Id() > 0 && $user_skills[$work->getCondition2Id()]->getValue() < $work->getCondition2Value()) ||
+			($work->getCondition3Id() > 0 && $user_skills[$work->getCondition3Id()]->getValue() < $work->getCondition3Value())
 		)
 		{
-			$can_work = true;
+			$can_work = false;
 		}
 		if($can_work === false)
 		{
