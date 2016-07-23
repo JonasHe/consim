@@ -68,6 +68,7 @@ class install_basics extends \phpbb\db\migration\migration
 					'COLUMNS'		=> array(
 						'id'					=> array('UINT:8', 0),
 						'name'					=> array('VCHAR:255', ''),
+						'cat'					=> array('VCHAR:255', ''),
 						'country_id'			=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
@@ -115,7 +116,8 @@ class install_basics extends \phpbb\db\migration\migration
 						'endtime'				=> array('TIMESTAMP', 0),
 						'route_id'				=> array('UINT:8', 0),
 						'work_id'				=> array('UINT:8', 0),
-						'successful_trials'		=> array('TINT:1', 0),
+						'result'				=> array('TEXT_UNI', ''),
+						'successful_trials'		=> array('UINT:8', 0), //TODO: Sinnvoll? Nützlich?
 						'status'				=> array('BOOL', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
@@ -235,24 +237,32 @@ class install_basics extends \phpbb\db\migration\migration
 		/** @var \phpbb\user $user */
 		global $user;
 
-		$inventory = array(
-			array('id' => 1, 'name' => $user->lang('SKILL_1'), 'country_id' => 1),
-			array('id' => 2, 'name' => $user->lang('SKILL_2'), 'country_id' => 2),
-			array('id' => 3, 'name' => $user->lang('SKILL_3'), 'country_id' => 3),
-			array('id' => 4, 'name' => $user->lang('SKILL_4'), 'country_id' => 0),
-			array('id' => 5, 'name' => $user->lang('SKILL_5'), 'country_id' => 0),
-			array('id' => 6, 'name' => $user->lang('SKILL_6'), 'country_id' => 0),
-			array('id' => 7, 'name' => $user->lang('SKILL_7'), 'country_id' => 0),
-			array('id' => 8, 'name' => $user->lang('SKILL_8'), 'country_id' => 0),
-			array('id' => 9, 'name' => $user->lang('SKILL_9'), 'country_id' => 0),
-			array('id' => 10, 'name' => $user->lang('SKILL_10'), 'country_id' => 0),
-			array('id' => 11, 'name' => $user->lang('SKILL_11'), 'country_id' => 0),
-			array('id' => 12, 'name' => $user->lang('SKILL_12'), 'country_id' => 0),
-			array('id' => 13, 'name' => $user->lang('SKILL_13'), 'country_id' => 0),
-			array('id' => 14, 'name' => $user->lang('SKILL_14'), 'country_id' => 0),
-			array('id' => 15, 'name' => $user->lang('SKILL_15'), 'country_id' => 0),
+		$skill = array(
+			array('id' => 1, 'name' => $user->lang('SKILL_1'), 'cat' => $user->lang('SKILL_CAT_1'), 'country_id' => 1),
+			array('id' => 2, 'name' => $user->lang('SKILL_2'), 'cat' => $user->lang('SKILL_CAT_1'), 'country_id' => 2),
+			array('id' => 3, 'name' => $user->lang('SKILL_3'), 'cat' => $user->lang('SKILL_CAT_1'), 'country_id' => 3),
+			array('id' => 4, 'name' => $user->lang('SKILL_4'), 'cat' => $user->lang('SKILL_CAT_2'), 'country_id' => 0),
+			array('id' => 5, 'name' => $user->lang('SKILL_5'), 'cat' => $user->lang('SKILL_CAT_2'), 'country_id' => 0),
+			array('id' => 6, 'name' => $user->lang('SKILL_6'), 'cat' => $user->lang('SKILL_CAT_2'), 'country_id' => 0),
+			array('id' => 7, 'name' => $user->lang('SKILL_7'), 'cat' => $user->lang('SKILL_CAT_2'), 'country_id' => 0),
+			array('id' => 8, 'name' => $user->lang('SKILL_8'), 'cat' => $user->lang('SKILL_CAT_2'), 'country_id' => 0),
+			array('id' => 9, 'name' => $user->lang('SKILL_9'), 'cat' => $user->lang('SKILL_CAT_3'), 'country_id' => 0),
+			array('id' => 10, 'name' => $user->lang('SKILL_10'), 'cat' => $user->lang('SKILL_CAT_3'), 'country_id' => 0),
+			array('id' => 11, 'name' => $user->lang('SKILL_11'), 'cat' => $user->lang('SKILL_CAT_3'), 'country_id' => 0),
+			array('id' => 12, 'name' => $user->lang('SKILL_12'), 'cat' => $user->lang('SKILL_CAT_3'), 'country_id' => 0),
+			array('id' => 13, 'name' => $user->lang('SKILL_13'), 'cat' => $user->lang('SKILL_CAT_3'), 'country_id' => 0),
+			array('id' => 14, 'name' => $user->lang('SKILL_14'), 'cat' => $user->lang('SKILL_CAT_4'), 'country_id' => 0),
+			array('id' => 15, 'name' => $user->lang('SKILL_15'), 'cat' => $user->lang('SKILL_CAT_4'), 'country_id' => 0),
+			array('id' => 16, 'name' => $user->lang('SKILL_16'), 'cat' => $user->lang('SKILL_CAT_4'), 'country_id' => 0),
+			array('id' => 17, 'name' => $user->lang('SKILL_17'), 'cat' => $user->lang('SKILL_CAT_4'), 'country_id' => 0),
+			array('id' => 18, 'name' => $user->lang('SKILL_18'), 'cat' => $user->lang('SKILL_CAT_4'), 'country_id' => 0),
+			array('id' => 19, 'name' => $user->lang('SKILL_19'), 'cat' => $user->lang('SKILL_CAT_5'), 'country_id' => 0),
+			array('id' => 20, 'name' => $user->lang('SKILL_20'), 'cat' => $user->lang('SKILL_CAT_5'), 'country_id' => 0),
+			array('id' => 21, 'name' => $user->lang('SKILL_21'), 'cat' => $user->lang('SKILL_CAT_5'), 'country_id' => 0),
+			array('id' => 22, 'name' => $user->lang('SKILL_22'), 'cat' => $user->lang('SKILL_CAT_5'), 'country_id' => 0),
+			array('id' => 23, 'name' => $user->lang('SKILL_23'), 'cat' => $user->lang('SKILL_CAT_5'), 'country_id' => 0),
 		);
-		$this->db->sql_multi_insert($this->table_prefix . 'consim_skills', $inventory);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_skills', $skill);
 	}
 
 	/**

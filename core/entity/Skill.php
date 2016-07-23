@@ -19,6 +19,7 @@ class Skill extends abstractEntity
 	protected static $fields = array(
 		'id'				=> 'integer',
 		'name'				=> 'string',
+		'cat'				=> 'string',
 		'country_id'		=> 'integer',
 	);
 
@@ -53,13 +54,13 @@ class Skill extends abstractEntity
 	 *
 	 * @param int $id Id
 	 *
-	 * @return Item $this object for chaining calls; load()->set()->save()
+	 * @return Skill $this object for chaining calls; load()->set()->save()
 	 * @access public
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
 	public function load($id)
 	{
-		$sql = 'SELECT id, name, country_id
+		$sql = 'SELECT id, name, cat, country_id
 			FROM ' . $this->consim_skill_table . '
 			WHERE id = '. (int) $id;
 		$result = $this->db->sql_query($sql);
@@ -94,6 +95,17 @@ class Skill extends abstractEntity
 	public function getName()
 	{
 		return $this->getString($this->data['name']);
+	}
+
+	/**
+	 * Get Category
+	 *
+	 * @return string Category
+	 * @access public
+	 */
+	public function getCategory()
+	{
+		return $this->getString($this->data['cat']);
 	}
 
 	/**

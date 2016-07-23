@@ -40,6 +40,7 @@ $lang = array_merge($lang, array(
 	'INPUT_FEHLT'				=> 'Das Feld "%s" ist leer.',
 	'TOO_HIGH_ATTRIBUTE'		=> 'Die Summe der Fähigkeitspunkte ist zu hoch!',
 	'TOO_LOW_ATTRIBUTE'			=> 'Es sind noch freie Fähigkeitspunkte übrig!',
+	'TOO_LOW_SKILL'				=> 'Die Fähigkeit "%s" hat zuwenig Punkte!',
 	'ERROR_ANONYMOUS'			=> 'Fehlende Anmeldung',
 	'ANONYMOUS_EXPLAIN'			=> 'Du musst dich in deinen Forenaccount anmelden, oder einen Forenaccount erstellen.',
 	'FREIE_PUNKTE'				=> 'Freie Fähigkeitspunkte',

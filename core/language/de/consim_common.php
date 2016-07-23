@@ -71,8 +71,10 @@ $lang = array_merge($lang, array(
 	'RESULT'					=> 'Ergebnis',
 	'SUCCESSFUL'				=> 'Erfolgreich',
 	'UNSUCCESSFUL'				=> 'Erfolglos',
-
-	'CONDITION'					=> 'Bedingung',
+	'FINISHED'					=> 'Beendet',
+	'FINISH'					=> 'Beenden',
+	'MIN_SKILL'					=> 'Mindestfähigkeit',
+	'CONDITIONS'				=> 'Bedingungen',
 	'OUTPUT'					=> 'Ertrag',
 	'NOTHING'					=> 'keine',
 ));

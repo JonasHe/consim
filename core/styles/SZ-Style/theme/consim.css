@@ -1,3 +1,9 @@
+.icon-consim {
+	background-position: 0 50%;
+	background-repeat: no-repeat;
+	background-image: url("./images/icon_consim.png");
+}
+
 .bolder {
 	font-weight: bold;
 }
@@ -101,7 +107,7 @@ ul.buildinglist a.button2 {
 	vertical-align: baseline;
 }
 
-ul.worklist li {
+ul.worklist > li {
 	display: block;
 	float: left;
 	width: 45%;
@@ -114,11 +120,11 @@ ul.worklist li {
 	border-radius: 7px;
 }
 
-ul.worklist li dt.title {
+ul.worklist > li dt.title {
 	border-bottom: 1px solid #000000;
 }
 
-ul.worklist li dd.action {
+ul.worklist > li dd.action {
 	float: right;
 }
 
@@ -198,7 +204,7 @@ ul.travellist dd.action a.button2 {
 	z-index: 50;
 	width: 750px;
 	margin: 0 auto;
-	box-shadow: 0px 0px 8px 4px #000000;
+	box-shadow: 0 0 8px 4px #000000;
 }
 
 .consim_popup .popup_close {
@@ -292,13 +298,13 @@ ul.travellist dd.action a.button2 {
 
 .newsticker ul {
 	list-style-type: none;
-	padding: 0px;
+	padding: 0;
 }
 
 .newsticker {
 	display: inline-block;
 	font-size: 12px;
-	line-height: 19.6px;
+	line-height: 20px;
 	height: 30px;
 	overflow: hidden;
 	width: 71.5%;
@@ -310,7 +316,6 @@ ul.travellist dd.action a.button2 {
 	position: relative;
 	overflow: hidden;
 	margin-top: -10px;
-	overflow: hidden;
 	white-space: nowrap;
 }
 
@@ -344,9 +349,13 @@ ul.travellist dd.action a.button2 {
 
 .panel-news {
 	background-color: #ffffff;
-	padding: 0px;
+	padding: 0;
 }
 
 p .right_column {
 	text-align: right;
+}
+
+table.table1 tbody td.indent {
+	padding-left: 2em;
 }

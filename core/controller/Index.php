@@ -12,6 +12,7 @@ namespace consim\core\controller;
 use consim\core\entity\Action;
 use consim\core\entity\UserSkill;
 use consim\core\entity\Work;
+use consim\core\entity\WorkOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -200,6 +201,7 @@ class Index
 		$location = $this->container->get('consim.core.entity.location')->load($action->getLocationId());
 		$building = $this->container->get('consim.core.entity.building')->find($location->getId(), $working->getBuildingTypeId());
 
+		//User must finished the work
 		if($action->getStatus() == 2)
 		{
 			$s_hidden_fields = build_hidden_fields(array(
@@ -212,31 +214,60 @@ class Index
 			));
 			add_form_key('working_end');
 		}
-		
+
+		$result = array();
+		//Work finished
 		if($action->getStatus() == 1)
 		{
+			$result = $action->getResult();
 			$this->template->assign_vars(array(
-				'IS_WORK_SUCCESSFUL'		=> ($action->getSuccessfulTrials() < Work::neededSuccessfulTrials)?  FALSE : TRUE,
-				'WORK_SUCCESSFUL_TRIALS'	=> $action->getSuccessfulTrials(),
-				'WORK_TRIALS_NUMBER'		=> Work::trialsNumber,
+				'IS_WORK_FINISHED'			=> TRUE,
+				'WORK_RESULT_ALL'			=> $result['conditions']['all'],
+				'WORK_RESULT_1'				=> (isset($result['conditions'][0]))? $result['conditions'][0] : 0,
+				'WORK_RESULT_2'				=> (isset($result['conditions'][1]))? $result['conditions'][1] : 0,
+				'WORK_RESULT_3'				=> (isset($result['conditions'][2]))? $result['conditions'][2] : 0,
+				'WORK_EXPERIENCE'			=> $result['experience'],
 			));
+		}
+
+		//set output to template
+		foreach ($working->getSortedOutputs() as $type => $outputs)
+		{
+			$this->template->assign_block_vars('work_outputs', array(
+				'TYPE'			=> $outputs['name'],
+				'VALUE'			=> (isset($result) && !empty($result['outputs'][$type]))? $result['outputs'][$type]['value'] : 0,
+			));
+			print_r($result['outputs']);
+
+			/** @var WorkOutput[] $outputs */
+			for($i=0; $i < 5; $i++)
+			{
+				$this->template->assign_block_vars('work_outputs.types', array(
+					'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
+				));
+			}
 		}
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'SHOW_WORKING'			=> TRUE,
-			'IS_WORKING'			=> ($action->getStatus() == 0)? TRUE : FALSE,
-			'WORK_NAME'				=> $working->getName(),
-			'WORK_CONDITION_TYPE'	=> $working->getConditionName(),
-			'WORK_CONDITION_VALUE'	=> $working->getConditionValue(),
-			'WORK_OUTPUT_TYPE'		=> $working->getOutputName(),
-			'WORK_OUTPUT_VALUE'		=> $working->getOutputValue(),
-			'WORK_EXPERIENCE_POINTS'=> $working->getExperiencePoints(),
-			'WORK_BUILDING_NAME'	=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
-			'WORK_BUILDING_TYPE'	=> $building->getTypeName(),
-			'WORK_LOCATION_NAME'	=> $location->getName(),
-			'WORK_TIME'				=> ($action->getStatus() == 0)? date("i:s", $time) : FALSE,
-
+			'SHOW_WORKING'				=> TRUE,
+			'IS_WORKING'				=> ($action->getStatus() == 0)? TRUE : FALSE,
+			'WORK_NAME'					=> $working->getName(),
+			'WORK_CONDITION_1_TYPE'		=> $working->getCondition1Name(),
+			'WORK_CONDITION_1_TRIALS'	=> $working->getCondition1Trials(),
+			'WORK_CONDITION_1_VALUE'	=> $working->getCondition1Value(),
+			'WORK_CONDITION_2_TYPE'		=> $working->getCondition2Name(),
+			'WORK_CONDITION_2_TRIALS'	=> $working->getCondition2Trials(),
+			'WORK_CONDITION_2_VALUE'	=> $working->getCondition2Value(),
+			'WORK_CONDITION_3_TYPE'		=> $working->getCondition3Name(),
+			'WORK_CONDITION_3_TRIALS'	=> $working->getCondition3Trials(),
+			'WORK_CONDITION_3_VALUE'	=> $working->getCondition3Value(),
+			'WORK_CONDITION_ALL'		=> ($working->getCondition1Trials() + $working->getCondition2Trials() + $working->getCondition3Trials()),
+			'WORK_EXPERIENCE_POINTS'	=> implode("/", $working->getExperiencePoints()),
+			'WORK_BUILDING_NAME'		=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+			'WORK_BUILDING_TYPE'		=> $building->getTypeName(),
+			'WORK_LOCATION_NAME'		=> $location->getName(),
+			'WORK_TIME'					=> ($action->getStatus() == 0)? date("i:s", $time) : FALSE,
 		));
 	}
 
@@ -281,7 +312,7 @@ class Index
 				'URL'			=> $this->helper->route('consim_core_building',
 													array(
 														'location_id' => $location->getId(),
-														'building_id' => $entity->getId()
+														'building_id' => $entity->getId(),
 													)),
 			);
 
@@ -330,25 +361,54 @@ class Index
 		$this->add_navlinks($location->getName(), $this->helper->route('consim_core_location', array('location_id' => $location->getId())));
 
 		//Get all Works
-		$works = $this->container->get('consim.core.operators.locations')->getWorks($building->getTypeId());
+		$works = $this->container->get('consim.core.operators.works')->getWorks($building->getTypeId());
 		foreach ($works as $work)
 		{
 			$s_hidden_fields = build_hidden_fields(array(
 				'work_id'		=> $work->getId(),
 			));
 
+			$can_work = true;
+			if($this->consim_user->getActive() ||
+				($work->getCondition1Id() > 0 && $this->consim_user_skills[$work->getCondition1Id()]->getValue() < $work->getCondition1Value()) ||
+				($work->getCondition2Id() > 0 && $this->consim_user_skills[$work->getCondition2Id()]->getValue() < $work->getCondition2Value()) ||
+				($work->getCondition3Id() > 0 && $this->consim_user_skills[$work->getCondition3Id()]->getValue() < $work->getCondition3Value())
+			)
+			{
+				$can_work = false;
+			}
+
 			$this->template->assign_block_vars('works', array(
-				'NAME'				=> $work->getName(),
-				'DURATION'			=> date("i:s", $work->getDuration()),
-				'CONDITION_TYPE'	=> $work->getConditionName(),
-				'CONDITION_VALUE'	=> $work->getConditionValue(),
-				'OUTPUT_TYPE'		=> $work->getOutputName(),
-				'OUTPUT_VALUE'		=> $work->getOutputValue(),
-				'EXPERIENCE_POINTS'	=> $work->getExperiencePoints(),
-				'CAN_WORK'			=> ($work->getConditionId() > 0 && !$this->consim_user->getActive() &&
-										$this->consim_user_skills[$work->getConditionId()]->getValue() > $work->getConditionValue())? TRUE : FALSE,
-				'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
+				'NAME'					=> $work->getName(),
+				'DURATION'				=> date("i:s", $work->getDuration()),
+				'CONDITION_1_TYPE'		=> $work->getCondition1Name(),
+				'CONDITION_1_TRIALS'	=> $work->getCondition1Trials(),
+				'CONDITION_1_VALUE'		=> $work->getCondition1Value(),
+				'CONDITION_2_TYPE'		=> $work->getCondition2Name(),
+				'CONDITION_2_TRIALS'	=> $work->getCondition2Trials(),
+				'CONDITION_2_VALUE'		=> $work->getCondition2Value(),
+				'CONDITION_3_TYPE'		=> $work->getCondition3Name(),
+				'CONDITION_3_TRIALS'	=> $work->getCondition3Trials(),
+				'CONDITION_3_VALUE'		=> $work->getCondition3Value(),
+				'EXPERIENCE_POINTS'		=> implode("/", $work->getExperiencePoints()),
+				'CAN_WORK'				=> $can_work,
+				'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
 			));
+
+			foreach ($work->getSortedOutputs() as $type => $outputs)
+			{
+				$this->template->assign_block_vars('works.outputs', array(
+					'TYPE'			=> $outputs['name'],
+				));
+
+				/** @var WorkOutput[] $outputs */
+				for($i=0; $i < 5; $i++)
+				{
+					$this->template->assign_block_vars('works.outputs.types', array(
+						'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
+					));
+				}
+			}
 		}
 
 		add_form_key('working');
@@ -447,15 +507,26 @@ class Index
 		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
 
 		// get User Skill and add to template
-		$this->consim_user_skills = $this->container->get('consim.core.operators.user_skills')->getUserSkills($this->user->data['user_id']);
-		foreach ($this->consim_user_skills as $skill)
+		$user_skills_container = $this->container->get('consim.core.operators.user_skills');
+		$this->consim_user_skills = $user_skills_container->getUserSkills($this->user->data['user_id']);
+
+		foreach ($user_skills_container->sortSkillsByCategory($this->consim_user_skills) as $cat => $skills)
 		{
-			$this->template->assign_block_vars('user_skills', array(
-				'NAME'			=> $skill->getSkillName(),
-				'VALUE'			=> $skill->getValue(),
+			$this->template->assign_block_vars('user_skill_groups', array(
+				'NAME'			=> $cat,
 			));
+
+			/** @var UserSkill $skill */
+			foreach ($skills as $skill)
+			{
+				$this->template->assign_block_vars('user_skill_groups.skills', array(
+					'NAME'			=> $skill->getName(),
+					'VALUE'			=> $skill->getValue(),
+				));
+			}
+
 		}
-		
+
 		// Get inventory and add to template
 		$inventory = $this->container->get('consim.core.operators.inventories')->getInventory($this->consim_user->getUserId());
 		foreach ($inventory as $item)

@@ -11,7 +11,7 @@ namespace consim\core\entity;
 /**
  * Entity
  */
-class UserSkill extends abstractEntity
+class UserSkill extends Skill
 {
 	/**
 	 * All of fields of this objects
@@ -20,7 +20,8 @@ class UserSkill extends abstractEntity
 		'id'				=> 'integer',
 		'user_id'			=> 'integer',
 		'skill_id'			=> 'integer',
-		'skill_name'		=> 'string',
+		'name'				=> 'string',
+		'cat'				=> 'string',
 		'value'				=> 'integer'
 	);
 
@@ -58,15 +59,41 @@ class UserSkill extends abstractEntity
 	/**
 	 * Load the data from the database for this object
 	 *
+	 * @param int $id
+	 * @return UserSkill $this object for chaining calls; load()->set()->save()
+	 * @access public
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function load($id)
+	{
+		$sql = 'SELECT us.id, us.user_id, us.skill_id, s.name, s.cat, us.value
+			FROM ' . $this->consim_user_skill_table .' us
+			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = us.skill_id
+			WHERE us.id = '. (int) $id;
+		$result = $this->db->sql_query($sql);
+		$this->data = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		if ($this->data === false)
+		{
+			throw new \consim\core\exception\out_of_bounds('id');
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Load the data from the database for this object
+	 *
 	 * @param int $user_id
 	 * @param int $skill_id
 	 * @return UserSkill $this object for chaining calls; load()->set()->save()
 	 * @access public
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
-	public function load($user_id, $skill_id)
+	public function loadByUserIdAndSkillId($user_id, $skill_id)
 	{
-		$sql = 'SELECT us.id, us.user_id, us.skill_id, s.name AS skill_name, us.value
+		$sql = 'SELECT us.id, us.user_id, us.skill_id, s.name, s.cat, us.value
 			FROM ' . $this->consim_user_skill_table .' us
 			LEFT JOIN '. $this->consim_skill_table .' s ON s.id = us.skill_id
 			WHERE us.user_id = '. $user_id .' AND us.skill_id = '. $skill_id;
@@ -116,7 +143,7 @@ class UserSkill extends abstractEntity
 		if($reload)
 		{
 			//reload this entity
-			return $this->load($user_id, $skill_id);
+			return $this->loadByUserIdAndSkillId($user_id, $skill_id);
 		}
 		return null;
 	}
@@ -181,17 +208,6 @@ class UserSkill extends abstractEntity
 	}
 
 	/**
-	 * Get Name
-	 *
-	 * @return string Name
-	 * @access public
-	 */
-	public function getSkillName()
-	{
-		return $this->getString($this->data['skill_name']);
-	}
-
-	/**
 	 * Get Value
 	 *
 	 * @return int ID
@@ -211,6 +227,6 @@ class UserSkill extends abstractEntity
 	 */
 	public function setValue($value)
 	{
-		return $this->setInteger('value', $this->data['value']);
+		return $this->setInteger('value', $value);
 	}
 }

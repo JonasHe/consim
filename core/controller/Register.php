@@ -40,8 +40,10 @@ class Register
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
+	const MIN_POINTS = 5;
 	const FREE_POINTS = 50;
-	const DEFAULT_POINTS = 15;
+	//vordefinierte Punkte => anzahlskill * MIN_POINTS
+	const DEFAULT_POINTS = 115;
 	//extra language skill
 	const EXTRA_LANG = 25;
 
@@ -160,24 +162,38 @@ class Register
 		$this->createSelection($figure);
 
 		//Skills to template
-		foreach ($this->skills as $skill)
+		foreach ($this->container->get('consim.core.operators.user_skills')->sortSkillsByCategory($this->skills) as $cat => $skills)
 		{
-			$this->template->assign_block_vars('skills', array(
-				'ID'			=> 'skill_' . $skill->getId(),
-				'NAME'			=> $skill->getName(),
-				'IS_LANG'		=> ($skill->getCountryId() > 0)? TRUE : FALSE,
-				'COUNTRY_ID'	=> $skill->getCountryId(),
-				'VALUE'			=> $this->request->variable('skill_' . $skill->getId(), 1),
-			));
+			$this->template->assign_block_vars(
+				'skill_groups',
+				array(
+					'NAME'			=> $cat,
+				)
+			);
+
+			/** @var Skill[] $skills */
+			foreach ($skills as $skill) {
+				$this->template->assign_block_vars(
+					'skill_groups.skills',
+					array(
+						'ID'		=> 'skill_'.$skill->getId(),
+						'NAME'		=> $skill->getName(),
+						'IS_LANG'	=> ($skill->getCountryId() > 0) ? true : false,
+						'COUNTRY_ID'=> $skill->getCountryId(),
+						'VALUE'		=> $this->request->variable('skill_'.$skill->getId(), 5),
+					)
+				);
+			}
 		}
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'S_ERROR'	=> (sizeof($errors)) ? true : false,
-			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
+			'S_ERROR'		=> (sizeof($errors)) ? true : false,
+			'ERROR_MSG'		=> (sizeof($errors)) ? implode('<br />', $errors) : '',
 
-			'U_ACTION'	=> $this->helper->route('consim_core_register'),
-			'FREIE_PUNKTE' => self::FREE_POINTS + self::DEFAULT_POINTS - $this->sum_skill,
+			'U_ACTION'		=> $this->helper->route('consim_core_register'),
+			'FREIE_PUNKTE' 	=> self::FREE_POINTS + self::DEFAULT_POINTS - $this->sum_skill,
+			'MIN_POINTS'	=> self::MIN_POINTS,
 
 			'VORNAME'						=> $this->request->variable('vorname', ''),
 			'NACHNAME'						=> $this->request->variable('nachname', ''),
@@ -217,7 +233,11 @@ class Register
 		// set skills_values from request
 		foreach ($this->skills as $skill)
 		{
-			$this->skills_values[$skill->getId()] = $this->request->variable('skill_' . $skill->getId(), 1);
+			$this->skills_values[$skill->getId()] = $this->request->variable('skill_' . $skill->getId(), self::MIN_POINTS);
+			if($this->skills_values[$skill->getId()] < self::MIN_POINTS)
+			{
+				$errors[] = $this->user->lang('TOO_LOW_SKILL', $skill->getName());
+			}
 		}
 
 		$this->sum_skill = array_sum($this->skills_values);

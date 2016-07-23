@@ -52,7 +52,7 @@ class ActionLists
 	*/
 	public function finishedActions()
 	{
-		$sql = 'SELECT a.id, a.user_id, a.location_id, a.starttime, a.endtime, a.route_id, a.work_id, a.successful_trials, a.status
+		$sql = 'SELECT a.id, a.user_id, a.location_id, a.starttime, a.endtime, a.route_id, a.work_id, a.result, a.successful_trials, a.status
 			FROM ' . $this->consim_action_table . ' a
 			WHERE a.endtime <= '. time() .' AND a.status = '. Action::active;
 		$result = $this->db->sql_query($sql);
@@ -73,7 +73,7 @@ class ActionLists
 	*/
 	public function getCurrentActionFromUser($user_id)
 	{
-		$sql = 'SELECT a.id, a.user_id, a.location_id, a.starttime, a.endtime, a.route_id, a.work_id, a.successful_trials, a.status
+		$sql = 'SELECT a.id, a.user_id, a.location_id, a.starttime, a.endtime, a.route_id, a.work_id, a.result, a.successful_trials, a.status
 			FROM ' . $this->consim_action_table . ' a
 			WHERE user_id = ' . (int) $user_id .' AND status = '. Action::active .' OR status = '. Action::mustConfirm;
 		$result = $this->db->sql_query($sql);
