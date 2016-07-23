@@ -25,21 +25,57 @@ class core_module
 		 */
 		global $phpbb_container, $request, $user, $template;
 
-		// Get an instance of the admin controller and set the template (we only need acp_rsp_user in this file)
-		$news_controller = $phpbb_container->get('consim.core.controller.acpnews');
-
 		// Requests
 		$action = $request->variable('action', '');
 		
 		// Load the module modes
-		$this->tpl_name = 'consim_news';
 		$this->page_title = $user->lang['CONSIM_TITLE'];
 
 		switch ($mode)
 		{
+			case 'anniversary':
+				
+				// Get an instance of the admin controller and set the template (we only need acp_rsp_user in this file)
+				$controller = $phpbb_container->get('consim.core.controller.acpanniversary');
+				$this->tpl_name = 'consim_anniversary';
+				$user->add_lang_ext('/consim/core', 'consim_anniversary'); // Load the needed language file
+
+				switch($action)
+				{
+					case "add_anniversary":
+						$controller->anniversary_add();
+						break;
+					
+					case "delete_anniversary":
+						$controller->anniversary_delete($request->variable('anniversary_id',0));
+						break;
+					
+					default:
+						$template->assign_var('S_OVERVIEW',true); // Only show the needed part of the template file
+						
+						// Update or add anniversaries
+						if($request->is_set_post('addAnniversary'))
+						{
+							$controller->anniversary_add();
+						}
+						elseif($request->is_set_post('updateAnniversary'))
+						{
+							$controller->anniversary_update($request->variable('anniversary_id',0));
+						}
+	
+						$controller->overview();
+						break;
+				}
+				break;
+
 			case 'news':
 			default:
+
+				// Get an instance of the admin controller and set the template (we only need acp_rsp_user in this file)
+				$news_controller = $phpbb_container->get('consim.core.controller.acpnews');
+				$this->tpl_name = 'consim_news';
 				$user->add_lang_ext('/consim/core', 'consim_news'); // Load the needed language file
+
 				switch($action)
 				{
 					case "add_channel":

@@ -1,0 +1,44 @@
+<!-- INCLUDE overall_header.html -->
+<!-- IF S_ERROR --><p class="error">{ERROR_MSG}</p><!-- ENDIF -->
+
+<!-- IF S_OVERVIEW -->
+    <h1>{L_CONSIM_ANNIVERSARY}</h1>
+    <table>
+        <thead>
+            <tr>
+	            <td>{L_ANNIVERSARY_EVENT}</td>
+                <td>{L_ANNIVERSARY_DATE}</td>
+                <td>{L_ANNIVERSARY_LINK}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <form action="{U_ACTION}" method="POST">
+                    <td><input type="text" name="event" placeholder="{L_ANNIVERSARY_EVENT}"></td>
+                    <td>
+                        <input type="number" name="day" placeholder="{L_ANNIVERSARY_DAY}" size="11" min="1" max="31">
+                        <input type="number"" name="month" placeholder="{L_ANNIVERSARY_MONTH}" size="11" min="1" max="12">
+	                    <input type="number" name="year" placeholder="{L_ANNIVERSARY_YEAR}" size="11">
+                    </td>
+                    <td><input type="text" name="link" value="http://"></td>
+                    <td><input type="submit" value="{L_SAVE}" name="addAnniversary"></td>
+                </form>
+            </tr>
+        </thead>
+        <!-- BEGIN Anniversaries -->
+        <tr>
+            <form action="{U_ACTION}" method="POST">
+                <td>{Anniversaries.ODATE}<input type="text" name="event" value="{Anniversaries.EVENT}"></td>
+                <td>
+                    <input type="number" name="day" value="{Anniversaries.DAY}" size="11" min="1" max="31">
+                    <input type="number"" name="month" value="{Anniversaries.MONTH}" size="11" min="1" max="12">
+                    <input type="number" name="year" value="{Anniversaries.YEAR}" size="11">
+                </td>
+                <td><input type="text" name="link" value="{Anniversaries.LINK}"></td>
+                <td><input type="hidden" name="anniversary_id" value="{Anniversaries.ID}"><input type="submit" value="{L_SAVE}" name="updateAnniversary"></td>
+                <td><a href="{Anniversaries.DELETE}">{L_ANNIVERSARY_DELETE}</a></td>
+            </form>
+        </tr>
+        <!-- END Anniversaries -->
+    </table>
+<!-- ENDIF -->
+<!-- INCLUDE overall_footer.html -->

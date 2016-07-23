@@ -57,6 +57,17 @@ services:
             - @request
             - @dbal.conn
 
+    consim.core.controller.acpanniversary:
+        class: consim\core\controller\ACP_Anniversary
+        arguments:
+            - @config
+            - @service_container
+            - @controller.helper
+            - @user
+            - @template
+            - @request
+            - @dbal.conn
+
     consim.core.operators.locations:
         class: consim\core\operators\Locations
         arguments:
@@ -250,3 +261,10 @@ services:
                 - @dbal.conn
                 - %tables.consim.inventory_items%
                 - %tables.consim.items%
+            
+    consim.core.entity.anniversary:
+        class: consim\core\entity\Anniversary
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.anniversary%

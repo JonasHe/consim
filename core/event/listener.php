@@ -70,7 +70,7 @@ class listener implements EventSubscriberInterface
 	}
 
 	/**
-	* Load common consim language files during user setup and add the newsbar
+	* Load common consim language files during user setup and add the newsbar and history hint
 	*
 	* @param object $event The event object
 	* @return null
@@ -86,7 +86,7 @@ class listener implements EventSubscriberInterface
 		$event['lang_set_ext'] = $lang_set_ext;
 
 		// Add the Newsbar
-		$groups = $channel = array();
+		$groups = $channel = $anniversary = array();
 		
 		//Catch all groups from the database where the user is a member of
 		$sql = 'SELECT group_id FROM '. USER_GROUP_TABLE .' WHERE user_id = ' . $this->user->data['user_id'];
@@ -131,13 +131,49 @@ class listener implements EventSubscriberInterface
 			}
 		}
 		
-		// Pass the channel data to the template
+		// Add the history hint
+		$anniversary['today'] = $anniversary['tomorrow'] = "";
+
+		$sql = "SELECT event, day, year, link
+			FROM phpbb_consim_anniversary
+			WHERE month = ".date('m');
+		$result = $this->db->sql_query($sql);	
+		while($row = $this->db->sql_fetchrow($result))
+		{
+			$event = (($row['year']!=0) ? date("Y")-(int)$row['year'].". ": "").$row['event'];
+			if($row['day']==date("j"))
+			{
+				if($anniversary['today']!="")
+				{
+					$anniversary['today'] .= ($row['link']!="http://") ? '<a href="'.$row['link'].'">'.$event.'</a>' : $event;
+				}
+				else
+				{
+					$anniversary['today'] = ($row['link']!="http://") ? '<a href="'.$row['link'].'">'.$event.'</a>' : $event;
+				}
+			}
+			if($row['day']==(new \DateTime('tomorrow'))->format('j'))
+			{
+				if($anniversary['tomorrow']!="")
+				{
+					$anniversary['today'] .= ($row['link']!="http://") ? '<a href="'.$row['link'].'">'.$event.'</a>' : $event;
+				}
+				else
+				{
+					$anniversary['tomorrow'] = ($row['link']!="http://") ? '<a href="'.$row['link'].'">'.$event.'</a>' : $event;
+				}
+			}
+		}
+
+		// Pass the data to the template
 		$this->template->assign_vars(array(
 			'S_NEWSTICKER'					=> (isset($channel['id'])) ? true : false,
 			'CHANNEL'						=> (isset($channel['name'])) ? $channel['name'].' '.date('H:i') : "",
 			'VREFRESH'						=> (isset($channel['vRefresh'])) ? $channel['vRefresh'] : 0,
 			'CHANNEL_BACKGROUND'			=> (isset($channel['background'])) ? $channel['background'] : "",
 			'CHANNEL_COLOR'					=> (isset($channel['color'])) ? $channel['color'] : "",
+			'ANNIVERSARY_TODAY'				=> $anniversary['today'],
+			'ANNIVERSARY_TOMORROW'			=> $anniversary['tomorrow'],
 		));
 	}
 

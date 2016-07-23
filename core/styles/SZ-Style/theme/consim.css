@@ -15,7 +15,6 @@
 }
 
 .field_top {
-	text-align: right;
 	padding-bottom: 5px;
 }
 
@@ -346,6 +345,10 @@ ul.travellist dd.action a.button2 {
 .panel-news {
 	background-color: #ffffff;
 	padding: 0px;
+}
+
+p .right_column {
+	text-align: right;
 }
 
 table.table1 tbody td.indent {
