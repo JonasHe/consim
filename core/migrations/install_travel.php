@@ -277,8 +277,8 @@ class install_travel extends \phpbb\db\migration\migration
 			array('id' => 1, 'name' => $user->lang('BUILDING_TYPE_1')),
 			array('id' => 2, 'name' => $user->lang('BUILDING_TYPE_2')),
 			array('id' => 3, 'name' => $user->lang('BUILDING_TYPE_3')),
-			array('id' => 4, 'name' => $user->lang('BUILDING_TYPE_4')),
-			array('id' => 5, 'name' => $user->lang('BUILDING_TYPE_5')),
+			//array('id' => 4, 'name' => $user->lang('BUILDING_TYPE_4')),
+			//array('id' => 5, 'name' => $user->lang('BUILDING_TYPE_5')),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_building_types', $buildings);
 	}
@@ -308,21 +308,21 @@ class install_travel extends \phpbb\db\migration\migration
 				  'location_id'	=> 1
 			),
 			array('id'			=> 4,
-				  'name'		=> $user->lang('BUILDING_4'),
-				  'description'	=> $user->lang('BUILDING_4_EXPLAIN'),
+				  'name'		=> $user->lang('BUILDING_1'),
+				  'description'	=> $user->lang('BUILDING_1_EXPLAIN'),
 				  'type_id'		=> 1,
 				  'location_id'	=> 2
 			),
 			array('id'			=> 5,
-				  'name'		=> $user->lang('BUILDING_5'),
-				  'description'	=> $user->lang('BUILDING_5_EXPLAIN'),
-				  'type_id'		=> 4,
+				  'name'		=> $user->lang('BUILDING_2'),
+				  'description'	=> $user->lang('BUILDING_2_EXPLAIN'),
+				  'type_id'		=> 2,
 				  'location_id'	=> 2
 			),
 			array('id'			=> 6,
-				  'name'		=> $user->lang('BUILDING_6'),
-				  'description'	=> $user->lang('BUILDING_6_EXPLAIN'),
-				  'type_id'		=> 5,
+				  'name'		=> $user->lang('BUILDING_3'),
+				  'description'	=> $user->lang('BUILDING_3_EXPLAIN'),
+				  'type_id'		=> 3,
 				  'location_id'	=> 2
 			),
 		);
