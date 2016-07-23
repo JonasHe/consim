@@ -222,8 +222,6 @@ class Index
 			$result = $action->getResult();
 			$this->template->assign_vars(array(
 				'IS_WORK_FINISHED'			=> TRUE,
-				'WORK_SUCCESSFUL_TRIALS'	=> $action->getSuccessfulTrials(),
-				'WORK_TRIALS_NUMBER'		=> Work::trialsNumber,
 				'WORK_RESULT_ALL'			=> $result['conditions']['all'],
 				'WORK_RESULT_1'				=> (isset($result['conditions'][0]))? $result['conditions'][0] : 0,
 				'WORK_RESULT_2'				=> (isset($result['conditions'][1]))? $result['conditions'][1] : 0,

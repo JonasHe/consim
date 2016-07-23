@@ -72,9 +72,6 @@ class Work extends abstractEntity
 	 */
 	protected $sorted_outputs = null;
 
-	const trialsNumber = 10;
-	const neededSuccessfulTrials = 5;
-
 	/**
 	 * Constructor
 	 *
