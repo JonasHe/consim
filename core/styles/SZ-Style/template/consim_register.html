@@ -23,15 +23,15 @@
 
 			 <fieldset>
 				<dl>
-					<dt><label>{L_VORNAME}</label></dt>
+					<dt><label for="vorname">{L_VORNAME}</label></dt>
 					<dd><input class="inputbox autowidth" type="text" name="vorname" id="vorname" size="50" tabindex="3" value="{VORNAME}" /></dd>
 				</dl>
 				<dl>
-					<dt><label>{L_NACHNAME}</label></dt>
+					<dt><label for="nachname">{L_NACHNAME}</label></dt>
 					<dd><input class="inputbox autowidth" type="text" name="nachname" id="nachname" size="50" tabindex="4" value="{NACHNAME}" /></dd>
 				</dl>
 				<dl>
-					<dt><label>{L_GESCHLECHT}</label></dt>
+					<dt><label for="geschlecht">{L_GESCHLECHT}</label></dt>
 					<dd><select name="geschlecht" id="geschlecht">
 							<option value="">Wähle...</option>
 							<!-- BEGIN geschlecht -->
@@ -41,7 +41,7 @@
 					</dd>
 				</dl>
 				<dl>
-					<dt><label>{L_GEBURTSLAND}</label></dt>
+					<dt><label for="geburtsland">{L_GEBURTSLAND}</label></dt>
 					<dd><select name="geburtsland" id="geburtsland">
 							<option value="">Wähle...</option>
 							<!-- BEGIN geburtsland -->
@@ -51,7 +51,7 @@
 					</dd>
 				</dl>
 				<dl>
-					<dt><label>{L_RELIGION}</label></dt>
+					<dt><label for="religion">{L_RELIGION}</label></dt>
 					<dd><select name="religion" id="religion">
 							<option value="">Wähle...</option>
 							<!-- BEGIN religion -->
@@ -61,7 +61,7 @@
 					</dd>
 				</dl>
 				<dl>
-					<dt><label>{L_HAARFARBE}</label></dt>
+					<dt><label for="haarfarbe">{L_HAARFARBE}</label></dt>
 					<dd><select name="haarfarbe" id="haarfarbe">
 							<option value="">Wähle...</option>
 							<!-- BEGIN haarfarbe -->
@@ -71,7 +71,7 @@
 					</dd>
 				</dl>
 				<dl>
-					<dt><label>{L_AUGENFARBE}</label></dt>
+					<dt><label for="augenfarbe">{L_AUGENFARBE}</label></dt>
 					<dd><select name="augenfarbe" id="augenfarbe">
 							<option value="">Wähle...</option>
 							<!-- BEGIN augenfarbe -->
@@ -81,7 +81,7 @@
 					</dd>
 				</dl>
 				<dl>
-					<dt><label>{L_BESONDERE_MERKMALE}</label></dt>
+					<dt><label for="besondere_merkmale">{L_BESONDERE_MERKMALE}</label></dt>
 					<dd><select name="besondere_merkmale" id="besondere_merkmale">
 							<option value="">Wähle...</option>
 							<!-- BEGIN besondere_merkmale -->
@@ -115,9 +115,9 @@
 			<fieldset>
 				<!-- BEGIN skills -->
 				<dl>
-					<dt><label>{skill_groups.skills.NAME}</label></dt>
+					<dt><label for="{skill_groups.skills.ID}">{skill_groups.skills.NAME}</label></dt>
 					<dd>
-						<input class="inputbox autowidth" type="number" name="{skill_groups.skills.ID}" id="{skill_groups.skills.ID}" <!-- IF skill_groups.skills.IS_LANG -->data-lang="{skill_groups.skills.COUNTRY_ID}"<!-- ENDIF --> size="3" tabindex="11" value="{skill_groups.skills.VALUE}" max="100" min="1" />
+						<input class="inputbox autowidth" type="number" name="{skill_groups.skills.ID}" id="{skill_groups.skills.ID}" <!-- IF skill_groups.skills.IS_LANG -->data-lang="{skill_groups.skills.COUNTRY_ID}"<!-- ENDIF --> size="3" tabindex="11" value="{skill_groups.skills.VALUE}" max="100" min="{MIN_POINTS}" />
 						<!-- IF skills.IS_LANG --><span id="lang_{skill_groups.skills.ID}" class="bolder" style="display:none;">{L_ADD_25_LANG}</span><!-- ENDIF -->
 					</dd>
 				</dl>
