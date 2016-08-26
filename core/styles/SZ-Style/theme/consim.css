@@ -277,17 +277,21 @@ ul.travellist dd.action a.button2 {
 }
 
 .left_column {
-	float: left;
-	width: 49%;
+	display: inline-block;
+	vertical-align: top;
+	width: 33%;
+}
+
+.middle_column {
+	display: inline-block;
+	text-align: center;
+	width: 33%;
 }
 
 .right_column {
-	float: right;
-	width: 49%;
-}
-
-.clear {
-	clear: both;
+	display: inline-block;
+	text-align: right;
+	width: 33%;
 }
 
 .news {
@@ -298,13 +302,13 @@ ul.travellist dd.action a.button2 {
 
 .newsticker ul {
 	list-style-type: none;
-	padding: 0;
+	padding: 0px;
 }
 
 .newsticker {
 	display: inline-block;
 	font-size: 12px;
-	line-height: 20px;
+	line-height: 19.6px;
 	height: 30px;
 	overflow: hidden;
 	width: 71.5%;
@@ -349,11 +353,12 @@ ul.travellist dd.action a.button2 {
 
 .panel-news {
 	background-color: #ffffff;
-	padding: 0;
+	padding: 0px;
 }
-
-p .right_column {
-	text-align: right;
+.middle_column img{
+	padding: 0px;
+	margin-bottom: -11px;
+	margin-top: -5px;
 }
 
 table.table1 tbody td.indent {

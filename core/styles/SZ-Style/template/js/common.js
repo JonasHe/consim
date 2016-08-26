@@ -13,8 +13,8 @@
 	var consim = {};
 	consim.popupTime = 100;
 
-	consim.popup = function() {
-		var $popup = $('#travel_popup');
+	consim.popup = function(div_id) {
+		var $popup = $(div_id);
 
 		$(document).on('keydown.consim.popup', function(e) {
 			if (e.keyCode === keymap.ENTER || e.keyCode === keymap.ESC) {
@@ -94,7 +94,12 @@
 	}
 
 	$("input[name='travel']").click(function () {
-		alert = consim.popup();
+		alert = consim.popup('#travel_popup');
+	});
+
+	$("a.province_map").click(function (event) {
+		event.preventDefault();
+		alert = consim.popup('#map_popup');
 	});
 
 	if($('#countdown').length) {

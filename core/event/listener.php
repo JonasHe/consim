@@ -164,7 +164,7 @@ class listener implements EventSubscriberInterface
 				}
 			}
 		}
-
+		
 		// Pass the data to the template
 		$this->template->assign_vars(array(
 			'S_NEWSTICKER'					=> (isset($channel['id'])) ? true : false,

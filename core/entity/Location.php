@@ -76,7 +76,7 @@ class Location extends abstractEntity
 	*/
 	public function load($id)
 	{
-		$sql = 'SELECT l.id, l.name, l.description, l.image, t.name AS type, p.name AS province, c.name AS country
+		$sql = 'SELECT l.id, l.name, l.description, l.image, l.province_id, t.name AS type, p.name AS province, c.name AS country
 			FROM ' . $this->consim_location_table . ' l
 			LEFT JOIN ' . $this->consim_location_type_table . ' t ON l.type_id = t.id
 			LEFT JOIN ' . $this->consim_province_table . ' p ON l.province_id = p.id
@@ -169,5 +169,16 @@ class Location extends abstractEntity
 	public function getCountry()
 	{
 		return $this->getString($this->data['country']);
+	}
+
+	/**
+	* Get Province ID
+	*
+	* @return int ID
+	* @access public
+	*/
+	public function getProvinceID()
+	{
+		return $this->getInteger($this->data['province_id']);
 	}
 }

@@ -77,4 +77,7 @@ $lang = array_merge($lang, array(
 	'CONDITIONS'				=> 'Bedingungen',
 	'OUTPUT'					=> 'Ertrag',
 	'NOTHING'					=> 'keine',
+
+	'WEATHER'					=> 'Wetter',
+	'WIND'						=> 'Wind',
 ));

@@ -542,6 +542,37 @@ class Index
 		//Get User-Location
 		$this->consim_user_location = $this->container->get('consim.core.entity.location')->load($this->consim_user->getLocationId());
 
+		// Get the current weather data
+		$weather = $this->container->get('consim.core.entity.weather');
+		$weather_data = $weather->load($this->consim_user_location->getProvinceID());
+		if($weather_data->getLastUpdated() < time()-(3 * 60 * 60))
+		{
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt ($curl, CURLOPT_URL, 'http://api.openweathermap.org/data/2.5/weather?id='.$weather->getOwmId().'&units=metric&lang=de&appid=02d99700458cd650c35940bfce00bd3e');
+			$response = json_decode(curl_exec($curl),true);
+			curl_close ($curl);
+			
+			if(!is_null($response))
+			{
+				// Insert new data into database
+				$rain = (isset($response['rain']['3h'])) ? $response['rain']['3h']/3 : 0;
+				$rain = (isset($response['snow']['3h'])) ? $rain+($response['snow']['3h']/3) : $rain;
+				$weather->setLastUpdated(time())->setWeather($response['weather'][0]['description'])->setWeatherImage($response['weather'][0]['icon'])->setRain($rain)
+					->setTemperature($response['main']['temp'])->setWindSpeed($response['wind']['speed'])->setWindDirection($response['wind']['deg'])->setId($weather_data->getId())
+					->save();
+				$weather_data = $weather->load($this->consim_user_location->getProvinceID());
+			}
+			else
+			{
+				$this->template->assign_var('OWM_ERROR',$this->user->lang('OWM_NO_CONNECTION'));
+			}
+		}
+		
+		// Load the map for use on this site
+		//$map = $this->container->get('consim.core.controller.map');
+		//$map->load_map("mainMap");
+
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			//Informations for current location and time
@@ -554,6 +585,12 @@ class Index
 			'USER_EXPERIENCE_POINTS'		=> $this->consim_user->getExperiencePoints(),
 			'GO_TO_INFORMATION'				=> $this->helper->route('consim_core_activity'),
 			'U_OVERVIEW'					=> $this->helper->route('consim_core_index'),
+			'TEMPERATURE'					=> $weather_data->getTemperature(),
+			'WIND_SPEED'					=> $weather_data->getWindSpeed()*3.6,
+			'WIND_DIRECTION'				=> $weather_data->getWindDirection(),
+			'WEATHER'						=> $weather_data->getWeather(),
+			'WEATHER_IMAGE'					=> 'http://openweathermap.org/img/w/'.$weather_data->getWeatherImage().'.png',
+			//'REGION_MAP'					=> $map->show_map('width: 750px; height: 511px;')
 		));
 	}
 
