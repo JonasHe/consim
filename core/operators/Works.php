@@ -120,7 +120,9 @@ class Works
 	 * which sorted by output_id
 	 *
 	 * @param int $work_id
-	 * @return WorkOutput[][]
+	 * @return WorkOutput[][];
+	 * 		WorkOutput[output_id]['name'] = output_name
+	 * 		WorkOutput[output_id][success_threshold] = work_output
 	 */
 	public function getSortedOutputs($work_id)
 	{

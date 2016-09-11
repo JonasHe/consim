@@ -231,11 +231,12 @@ abstract class AbstractController
 		//set output to template
 		foreach ($working->getSortedOutputs() as $type => $outputs)
 		{
+			print_r($type);
 			$this->template->assign_block_vars('work_outputs', array(
 				'TYPE'			=> $outputs['name'],
-				'VALUE'			=> (isset($result) && !empty($result['outputs'][$type]))? $result['outputs'][$type]['value'] : 0,
+				'VALUE'			=> (isset($result) && !empty($result['outputs'][$type]))? $result['outputs'][$type] : 0,
 			));
-			print_r($result['outputs']);
+			print_r($result);
 
 			/** @var WorkOutput[] $outputs */
 			for($i=0; $i < 5; $i++)
