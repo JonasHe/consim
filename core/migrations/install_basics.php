@@ -194,7 +194,7 @@ class install_basics extends \phpbb\db\migration\migration
 			array('module.add', array(
 				'acp', 'ACP_CAT_CONSIMMODULES', array(
 					'module_basename'	=> '\consim\core\acp\core_module',
-					'modes'				=> array('news','anniversary'),
+					'modes'				=> array('news','anniversary','map'),
 				),
 			)),
 		);
@@ -333,7 +333,7 @@ class install_basics extends \phpbb\db\migration\migration
 			array('module.remove', array(
 				'acp', 'ACP_CAT_CONSIMMODULES', array(
 					'module_basename'	=> '\consim\core\acp\core_module',
-					'modes'				=> array('news','anniversary'),
+					'modes'				=> array('news','anniversary','map'),
 				),
 			)),
 			array('module.remove', array('acp', 'ACP_CAT_CONSIM', 'ACP_CAT_CONSIMMODULES')),

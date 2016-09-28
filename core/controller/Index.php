@@ -294,6 +294,9 @@ class Index
 			if(!$this->consim_user->getActive())
 			{
 				//Create the Travelpopup
+				$map = $this->container->get('consim.core.controller.map');
+				$map->load_map("travelMap", "mainMap");
+				$this->template->assign_var('TRAVEL_MAP', $map->show_map('width: 750px; height: 511px !important;'));
 				$location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
 			}
 		}
@@ -549,7 +552,7 @@ class Index
 		{
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt ($curl, CURLOPT_URL, 'http://api.openweathermap.org/data/2.5/weather?id='.$weather->getOwmId().'&units=metric&lang=de&appid=02d99700458cd650c35940bfce00bd3e');
+			curl_setopt ($curl, CURLOPT_URL, 'http://api.openweathermap.org/data/2.5/weather?id='.$weather->getOwmId().'&units=metric&lang=de&appid=APPID');
 			$response = json_decode(curl_exec($curl),true);
 			curl_close ($curl);
 			
@@ -570,8 +573,8 @@ class Index
 		}
 		
 		// Load the map for use on this site
-		//$map = $this->container->get('consim.core.controller.map');
-		//$map->load_map("mainMap");
+		$map = $this->container->get('consim.core.controller.map');
+		$map->load_map("consimMap", "mainMap", array('no_additional_buildings', 'no_zoom'), 3, 3);
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
@@ -590,7 +593,7 @@ class Index
 			'WIND_DIRECTION'				=> $weather_data->getWindDirection(),
 			'WEATHER'						=> $weather_data->getWeather(),
 			'WEATHER_IMAGE'					=> 'http://openweathermap.org/img/w/'.$weather_data->getWeatherImage().'.png',
-			//'REGION_MAP'					=> $map->show_map('width: 750px; height: 511px;')
+			'REGION_MAP'					=> $map->show_map('width: 750px; height: 511px !important;')
 		));
 	}
 

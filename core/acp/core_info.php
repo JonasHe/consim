@@ -21,6 +21,7 @@ class core_info
 			'modes'		=> array(
 				'news'			=> array('title' => 'CONSIM_NEWS', 'auth' => 'ext_consim/core && acl_a_extensions',	'cat' =>  array('ACP_CAT_CONSIMMODULES')),
 				'anniversary'	=> array('title' => 'CONSIM_ANNIVERSARY', 'auth' => 'ext_consim/core && acl_a_extensions',	'cat' =>  array('ACP_CAT_CONSIMMODULES')),
+				'map'			=> array('title' => 'CONSIM_MAP', 'auth' => 'ext_consim/core && acl_a_extensions',	'cat' =>  array('ACP_CAT_CONSIMMODULES')),
 			),
 		);
 	}

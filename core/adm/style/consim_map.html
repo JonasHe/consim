@@ -1,0 +1,130 @@
+<!-- INCLUDE overall_header.html -->
+<link rel="stylesheet" type="text/css" href="{ROOT_PATH}ext/consim/core/styles/SZ-Style/theme/admin_style.css">
+<!-- IF S_ERROR --><p class="error">{ERROR_MSG}</p><!-- ENDIF -->
+<script type="text/javascript">var map_admin = true;</script>
+<!-- IF S_OVERVIEW -->
+
+    <h1>{L_CONSIM_MARKERS}</h1>
+    <div class="map_wrapper">
+        <div class="map_left">{MAP}</div>
+        <div class="map_right">
+            <form action="{U_ACTION}" method="POST" id="map_add_marker">
+                <h1>{L_MARKER_ADD}</h1>
+                <div class="option">
+                    <h2>{L_MARKER_TITLE}</h2>
+                    <input type="text" name="marker_title" size="16">
+                </div>
+                <div class="option">
+                    <h2>{L_MARKER_STYLE}</h2>
+                    <input type="radio" name="marker_style" value="1" id="marker_style_1" checked="checked">
+                    <label for="marker_style_1"><img src="{ROOT_PATH}/ext/consim/core/images/map_assets/building_type_custom_1.png"></label><br>
+                    <input type="radio" name="marker_style" value="2" id="marker_style_2">
+                    <label for="marker_style_2"><img src="{ROOT_PATH}/ext/consim/core/images/map_assets/building_type_custom_2.png"></label>
+                </div>
+                <div class="option">
+                    <h2>{L_MARKER_COORDS}</h2>
+                    <p><label for="marker_x">X:</label><input type="number" name="marker_x" min="0" value="0"></p>
+                    <p><label for="marer_y">Y:</label><input type="number" name="marker_y" min="0" value="0"></p>
+                </div>
+                <div class="option" style="text-align: center">
+                    <input type="submit" name="marker_add" value="{L_MARKER_SAVE}">
+                </div>
+                <div class="option">
+                    <!-- BEGIN markers -->
+                        <a href="{markers.delete}"><img src="{ROOT_PATH}/ext/consim/core/images/delete.png"></a> {markers.title}<br>
+                    <!-- END markers -->
+                </div>
+                {S_FORM_TOKEN}
+            </form>
+        </div>
+    </div>
+
+        <div class="road_wrapper">
+            <h1>{L_CONSIM_ROADS}</h1>
+            <table id="roads">
+                <thead style="background-color: #EEEEEE;">
+                    <tr>
+                        <td>{L_ROAD_TITLE}</td>
+                        <td>{L_ROAD_IS_BLOCKED}</td>
+                        <td>{L_ROAD_TYPE}</td>
+                        <td><input type="text" id="filter_table" onkeyup="filterTable()" placeholder="{L_SEARCH}"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- BEGIN Roads -->
+                    <tr>
+                        <form action="{U_ACTION}" method="POST">
+                            <td id="title">{Roads.TITLE}</td>
+                            <td>
+                            <input type="radio" name="blocked_{Roads.ID}" value="0" id="block_option_1_{Roads.ID}" <!-- IF !Roads.BLOCKED -->checked="checked"<!-- ENDIF-->>
+                            <label for="block_option_1_{Roads.ID}" style="color:green">{L_ROAD_NOT_BLOCKED}</label>
+                            <input type="radio" name="blocked_{Roads.ID}" value="1" id="block_option_2_{Roads.ID}" <!-- IF Roads.BLOCKED -->checked="checked"<!-- ENDIF-->>
+                            <label for="block_option_2_{Roads.ID}" style="color:red">{L_ROAD_BLOCKED}</label>
+                            </td>
+                            <td>
+                                <select size="1" name="road_type_{Roads.ID}">
+                                    <option value="1" <!-- IF Roads.TYPE == 1--> selected="selected"<!-- ENDIF -->>{L_ROAD_TYPE_1}</option>
+                                    <option value="2" <!-- IF Roads.TYPE == 2--> selected="selected"<!-- ENDIF -->>{L_ROAD_TYPE_2}</option>
+                                    <option value="3" <!-- IF Roads.TYPE == 3--> selected="selected"<!-- ENDIF -->>{L_ROAD_TYPE_3}</option>
+                                    <option value="4" <!-- IF Roads.TYPE == 4--> selected="selected"<!-- ENDIF -->>{L_ROAD_TYPE_4}</option>
+                                    <option value="5" <!-- IF Roads.TYPE == 5--> selected="selected"<!-- ENDIF -->>{L_ROAD_TYPE_5}</option>
+                                </select>
+                            </td>
+                            <td><input type="hidden" name="road_id" value="{Roads.ID}"><input type="submit" value="{L_SAVE}" name="updateRoad"></td>
+                        </form>
+                    </tr>
+                    <!-- END Roads -->
+                </tbody>
+            </table>
+        </div>
+    <script>
+        var deleted = [];
+        function filterTable() {
+            var filter = document.getElementById('filter_table').value;
+            var table = document.getElementById('roads').getElementsByTagName('tbody')[0];
+            if(filter != "") {
+                if(deleted.length > 0) {
+                    for(var i = 0; i < deleted.length; i++)
+                    {
+                        var content = deleted[i];
+                        if(content.querySelector("#title").innerHTML.toLowerCase().indexOf(filter) != -1) {
+                            content.style.display = 'table-row';
+                            deleted.splice(i,1);
+                        }
+                    }
+                }
+                for(var i = 0, row; row = table.rows[i]; i++) {
+                    if(row.querySelector("#title").innerHTML.toLowerCase().indexOf(filter) == -1 && row.style.display != 'none') {
+                        row.style.display = 'none';
+                        deleted.push(row);
+                    }
+                }
+            }
+            else {
+                for(var i = 0, row; row = table.rows[i]; i++) {
+                        row.style.display = 'table-row';
+                }
+            }
+        }
+        
+        (function($) {
+            if(typeof map_admin !== "undefined" && map_admin) {
+            not_added = true;
+            $("form#map_add_marker > .option").find("input").change(function(){
+                if($("input[name=marker_title]").val() != "" && $("input[name=marker_title]").val() != data["cities"][data["cities"].length-1]["name"]) {
+                    if(not_added) {
+                        data["cities"].push({name: $("input[name=marker_title]").val()});
+                        not_added = false;
+                    }
+                    else {
+                        data["cities"][data["cities"].length-1]["name"] = $("input[name=marker_title]").val();
+                    }
+                };
+                maps[0].addMarker(max_cities+1, {coords: [$("input[name=marker_x]").val(),$("input[name=marker_y]").val()]}, 
+                    ['building_type_custom_'+$("input:radio[name=marker_style]:checked").val()]);
+            });
+            }
+        })(jQuery);
+    </script>
+<!-- ENDIF -->
+<!-- INCLUDE overall_footer.html -->

@@ -163,6 +163,7 @@ $lang = array_merge($lang, array(
 	'COUNTRY_1'					=> 'Volksrepublik Bakirien',
 	'COUNTRY_2'					=> 'Suranische Repubik',
 	'COUNTRY_3'					=> 'Freie Repubik Tadsowien',
+	'COUNTRY_4'					=> 'Unabhängig',
 
 	// locations
 	'LOCATION_1'				=> 'Kubishevsk',

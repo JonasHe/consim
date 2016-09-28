@@ -36,6 +36,9 @@ class install_travel extends \phpbb\db\migration\migration
 						'image'					=> array('VCHAR:255', ''),
 						'type_id'				=> array('UINT:8', 0),
 						'province_id'			=> array('UINT:8', 0),
+						'x'						=> array('UINT:8', 0),
+						'y'						=> array('UINT:8', 0),
+						'map_name'				=> array('VCHAR:255', '')
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
@@ -131,6 +134,33 @@ class install_travel extends \phpbb\db\migration\migration
 						's'						=> array('INDEX', 'success_threshold'),
 					),
 				),
+				$this->table_prefix . 'consim_markers'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+						'x'						=> array('UINT:8', 0),
+						'y'						=> array('UINT:8', 0),
+						'type'					=> array('UINT:8', 0),
+						'map_name'				=> array('VCHAR:255','')
+					),
+					'PRIMARY_KEY'	=> array('id'),
+					'KEYS'			=> array(
+						'prvnce_id'					=> array('INDEX', 'prvnce_id'),
+					),
+				),
+				$this->table_prefix . 'consim_roads'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'title'					=> array('VCHAR:255', ''),
+						'blocked'				=> array('UINT:1', 0),
+						'type'					=> array('UINT:8', 0),
+						'prvnce_id'				=> array('UINT:8', 0)
+					),
+					'PRIMARY_KEY'	=> array('id'),
+					'KEYS'			=> array(
+						'prvnce_id'					=> array('INDEX', 'prvnce_id'),
+					),
+				),
 			),
 		);
 	}
@@ -159,6 +189,7 @@ class install_travel extends \phpbb\db\migration\migration
 			array('custom', array(array($this, 'insert_buildings'))),
 			array('custom', array(array($this, 'insert_works'))),
 			array('custom', array(array($this, 'insert_work_outputs'))),
+			array('custom', array(array($this, 'insert_roads'))),
 		);
 	}
 
@@ -170,37 +201,37 @@ class install_travel extends \phpbb\db\migration\migration
 		$locations = array(
 			array('id' => 1, 'name' => $user->lang('NOBRI'),
 				  'description' => $user->lang('NOBRI_DESC'),
-				  'image' => 'locations/isoria_nobri.jpg', 'type_id' => 3, 'province_id' => 1),
+				  'image' => 'locations/isoria_nobri.jpg', 'type_id' => 3, 'province_id' => 1, 'x' => 865, 'y' => 275, 'map_name' => 'mainMap'),
 			array('id' => 2, 'name' => $user->lang('ALATYR'),
 				  'description' => $user->lang('ALATYR_DESC'),
-				  'image' => 'locations/isoria_alatyr.jpg', 'type_id' => 2, 'province_id' => 1),
+				  'image' => 'locations/isoria_alatyr.jpg', 'type_id' => 2, 'province_id' => 1, 'x' => 895, 'y' => 220, 'map_name' => 'mainMap'),
 			array('id' => 3, 'name' => $user->lang('GRUSHEVSK'),
 				  'description' => $user->lang('GRUSHEVSK_DESC'),
-				  'image' => 'locations/isoria_grushevsk.jpg', 'type_id' => 2, 'province_id' => 1),
+				  'image' => 'locations/isoria_grushevsk.jpg', 'type_id' => 2, 'province_id' => 1, 'x' => 915, 'y' => 310, 'map_name' => 'mainMap'),
 			array('id' => 4, 'name' => $user->lang('ASTRAKAN'),
 				  'description' => $user->lang('ASTRAKAN_DESC'),
-				  'image' => 'locations/isoria_astrakan.jpg', 'type_id' => 2, 'province_id' => 1),
+				  'image' => 'locations/isoria_astrakan.jpg', 'type_id' => 2, 'province_id' => 1, 'x' => 800, 'y' => 350, 'map_name' => 'mainMap'),
 			array('id' => 5, 'name' => $user->lang('KUBISHEVSK'),
 				  'description' => $user->lang('KUBISHEVSK_DESC'),
-				  'image' => 'locations/isoria_kubishevsk.jpg', 'type_id' => 2, 'province_id' => 1),
+				  'image' => 'locations/isoria_kubishevsk.jpg', 'type_id' => 2, 'province_id' => 1, 'x' => 765, 'y' => 260, 'map_name' => 'mainMap'),
 			array('id' => 6, 'name' => $user->lang('VARNOGRAD'),
 				  'description' => $user->lang('VARNOGRAD_DESC'),
-				  'image' => 'locations/isoria_varnograd.jpg', 'type_id' => 5, 'province_id' => 1),
+				  'image' => 'locations/isoria_varnograd.jpg', 'type_id' => 5, 'province_id' => 1, 'x' => 940, 'y' => 170, 'map_name' => 'mainMap'),
 			array('id' => 7, 'name' => $user->lang('JEGENSK'),
 				  'description' => $user->lang('JEGENSK_DESC'),
-				  'image' => 'locations/isoria_jegensk.jpg', 'type_id' => 1, 'province_id' => 1),
+				  'image' => 'locations/isoria_jegensk.jpg', 'type_id' => 1, 'province_id' => 1, 'x' => 970, 'y' => 230, 'map_name' => 'mainMap'),
 			array('id' => 8, 'name' => $user->lang('TURAV'),
 				  'description' => $user->lang('TURAV_DESC'),
-				  'image' => 'locations/isoria_turav.jpg', 'type_id' => 1, 'province_id' => 1),
+				  'image' => 'locations/isoria_turav.jpg', 'type_id' => 1, 'province_id' => 1, 'x' => 800, 'y' => 230, 'map_name' => 'mainMap'),
 			array('id' => 9, 'name' => $user->lang('KIRGANOV'),
 				  'description' => $user->lang('KIRGANOV_DESC'),
-				  'image' => 'locations/isoria_kirganov.jpg', 'type_id' => 1, 'province_id' => 1),
+				  'image' => 'locations/isoria_kirganov.jpg', 'type_id' => 1, 'province_id' => 1, 'x' => 875, 'y' => 345, 'map_name' => 'mainMap'),
 			array('id' => 10, 'name' => $user->lang('PKD_74'),
 				  'description' => $user->lang('PKD_74_DESC'),
-				  'image' => 'locations/isoria_pkd_74.jpg', 'type_id' => 6, 'province_id' => 1),
+				  'image' => 'locations/isoria_pkd_74.jpg', 'type_id' => 6, 'province_id' => 1, 'x' => 940, 'y' => 270, 'map_name' => 'mainMap'),
 			array('id' => 11, 'name' => $user->lang('SMTU_567_C'),
 				  'description' => $user->lang('SMTU_567_C_DESC'),
-				  'image' => 'locations/isoria_smtu_567_c.jpg', 'type_id' => 6, 'province_id' => 1),
+				  'image' => 'locations/isoria_smtu_567_c.jpg', 'type_id' => 6, 'province_id' => 1, 'x' => 750, 'y' => 305, 'map_name' => 'mainMap'),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_locations', $locations);
 	}
@@ -250,7 +281,7 @@ class install_travel extends \phpbb\db\migration\migration
 		global $user;
 
 		$provinces = array(
-			array('id' => 1, 'name' => $user->lang('ISORIA'), 'country_id' => 1),
+			array('id' => 3, 'name' => $user->lang('ISORIA'), 'country_id' => 1),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_provinces', $provinces);
 	}
@@ -264,6 +295,7 @@ class install_travel extends \phpbb\db\migration\migration
 			array('id' => 1, 'name' => $user->lang('COUNTRY_1')),
 			array('id' => 2, 'name' => $user->lang('COUNTRY_2')),
 			array('id' => 3, 'name' => $user->lang('COUNTRY_3')),
+			array('id' => 4, 'name' => $user->lang('COUNTRY_4')),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_countries', $countries);
 	}
@@ -1336,6 +1368,31 @@ class install_travel extends \phpbb\db\migration\migration
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_work_outputs', $output);
 	}
 
+	public function insert_roads()
+	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		$provinces = array(
+			array('id' => 20, 'title' => $user->lang('VARNOGRAD').' - '.$user->lang('ALATYR') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 21, 'title' => $user->lang('JEGENSK').' - '.$user->lang('ALATYR') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 22, 'title' => $user->lang('VARNOGRAD').' - '.$user->lang('JEGENSK') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 23, 'title' => $user->lang('PKD_74').' - '.$user->lang('JEGENSK') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 24, 'title' => $user->lang('GRUSHEVSK').' - '.$user->lang('PKD_74') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 25, 'title' => $user->lang('GRUSHEVSK').' - '.$user->lang('NOBRI') , 'blocked' => 0, 'type' => 3, 'prvnce_id' => 3),
+			array('id' => 26, 'title' => $user->lang('KUBISHEVSK').' - '.$user->lang('NOBRI') , 'blocked' => 0, 'type' => 3, 'prvnce_id' => 3),
+			array('id' => 27, 'title' => $user->lang('ALATYR').' - '.$user->lang('NOBRI') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 28, 'title' => $user->lang('ALATYR').' - '.$user->lang('TURAV') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 29, 'title' => $user->lang('KUBISHEVSK').' - '.$user->lang('TURAV') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 30, 'title' => $user->lang('KUBISHEVSK').' - '.$user->lang('SMTU_567_C') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 31, 'title' => $user->lang('ASTRAKAN').' - '.$user->lang('SMTU_567_C') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 32, 'title' => $user->lang('ASTRAKAN').' - '.$user->lang('NOBRI') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 33, 'title' => $user->lang('ASTRAKAN').' - '.$user->lang('KIRGANOV') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 34, 'title' => $user->lang('GRUSHEVSK').' - '.$user->lang('KIRGANOV') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_roads', $provinces);
+	}
+
 	/**
 	* Drop columns
 	*
@@ -1356,6 +1413,8 @@ class install_travel extends \phpbb\db\migration\migration
 				$this->table_prefix . 'consim_building_types',
 				$this->table_prefix . 'consim_works',
 				$this->table_prefix . 'consim_work_outputs',
+				$this->table_prefix . 'consim_markers',
+				$this->table_prefix . 'consim_roads',
 			),
 		);
 	}

@@ -1,5 +1,4 @@
 (function($) {  // Avoid conflicts with other libraries
-
 	'use strict';
 
 	// define a couple constants for keydown functions.
@@ -28,7 +27,7 @@
 		return $popup;
 	};
 
-	consim.popup.open = function($popup) {
+		consim.popup.open = function($popup) {
 		if (!$dark.is(':visible')) {
 			$dark.fadeIn(consim.popupTime);
 		}
@@ -36,10 +35,22 @@
 		if ($dark.is(':visible')) {
 			$dark.append($popup);
 			$popup.fadeIn(consim.popupTime);
+			maps.forEach(function(item, index) {
+				item.updateSize();
+				if(config[index]["focus"]!=0) {
+					item.setFocus({region: config[index]["focus"]})
+				}
+			});
 		} else {
 			$dark.append($popup);
 			$popup.show();
 			$dark.fadeIn(consim.popupTime);
+			maps.forEach(function(item,index) {
+				item.updateSize();
+				if(config[index]["focus"]!=0) {
+					item.setFocus({region: config["focus"]})
+				}
+			});
 		}
 
 		$popup.on('click', function(e) {
