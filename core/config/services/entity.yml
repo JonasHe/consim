@@ -153,3 +153,24 @@ services:
         arguments:
             - @dbal.conn
             - %tables.consim.anniversary%
+
+    consim.core.entity.weather:
+            class: consim\core\entity\Weather
+            scope: prototype # scope MUST be prototype for this to work!
+            arguments:
+                - @dbal.conn
+                - %tables.consim.weather%
+
+    consim.core.entity.roads:
+        class: consim\core\entity\Roads
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.roads%
+
+    consim.core.entity.markers:
+        class: consim\core\entity\Markers
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - @dbal.conn
+            - %tables.consim.markers%

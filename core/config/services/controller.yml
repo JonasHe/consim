@@ -63,3 +63,25 @@ services:
             - @template
             - @request
             - @dbal.conn
+
+    consim.core.controller.map:
+            class: consim\core\controller\Map
+            arguments:
+                - @config
+                - @service_container
+                - @controller.helper
+                - @user
+                - @template
+                - @request
+                - @dbal.conn
+
+    consim.core.controller.acpmap:s
+        class: consim\core\controller\ACP_Map
+        arguments:
+            - @config
+            - @service_container
+            - @controller.helper
+            - @user
+            - @template
+            - @request
+            - @dbal.conn

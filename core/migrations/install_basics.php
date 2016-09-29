@@ -140,6 +140,23 @@ class install_basics extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('anniversary_id'),
 				),
+				$this->table_prefix . 'consim_weather' => array(
+					'COLUMNS'		=> array(
+						'prvnce_id'				=> array('UINT:8', 0),
+						'owm_id'				=> array('UINT:8', 0),
+						'last_updated'			=> array('TIMESTAMP', 0),
+						'weather'				=> array('VCHAR:255', ''),
+						'weather_image'			=> array('VCHAR:255', ''),
+						'rain'					=> array('VCHAR:255', ''),
+						'temperature'			=> array('VCHAR:255', ''),
+						'wind_speed'			=> array('UINT:2', 0),
+						'wind_direction'		=> array('UINT:3', 0),
+					),
+					'KEYS'			=> array(
+						'prvnce_id'		=> array('INDEX', 'prvnce_id'),
+						'owm_id'		=> array('INDEX', 'owm_id'),
+					),
+				),
 			),
 			'add_columns' => array(
 				$this->table_prefix . 'users' => array(
@@ -169,6 +186,7 @@ class install_basics extends \phpbb\db\migration\migration
 			array('custom', array(array($this, 'insert_consim_figure'))),
 			array('custom', array(array($this, 'insert_consim_item'))),
 			array('custom', array(array($this, 'insert_consim_skill'))),
+			array('custom', array(array($this, 'insert_consim_weather'))),
 
 			// Add an acp tab
 			array('module.add', array('acp', 0, 'ACP_CAT_CONSIM')),
@@ -176,7 +194,7 @@ class install_basics extends \phpbb\db\migration\migration
 			array('module.add', array(
 				'acp', 'ACP_CAT_CONSIMMODULES', array(
 					'module_basename'	=> '\consim\core\acp\core_module',
-					'modes'				=> array('news','anniversary'),
+					'modes'				=> array('news','anniversary','map'),
 				),
 			)),
 		);
@@ -265,6 +283,30 @@ class install_basics extends \phpbb\db\migration\migration
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_skills', $skill);
 	}
 
+	public function insert_consim_weather()
+	{
+		$weather_data = array(
+			array('prvnce_id' => '1','owm_id' => '523523','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '2','owm_id' => '839788','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '3','owm_id' => '561560','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '4','owm_id' => '478711','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '5','owm_id' => '587081','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '6','owm_id' => '148340','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '7','owm_id' => '585514','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '8','owm_id' => '611373','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '9','owm_id' => '614455','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '10','owm_id' => '613226','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '11','owm_id' => '611847','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '12','owm_id' => '824385','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '13','owm_id' => '751864','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '14','owm_id' => '615419','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '15','owm_id' => '585226','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '16','owm_id' => '616769','last_updated' => time()-(24 * 60 * 60)),
+			array('prvnce_id' => '17','owm_id' => '174769','last_updated' => time()-(24 * 60 * 60)),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_weather', $weather_data);
+	}
+
 	/**
 	* Drop columns
 	*
@@ -283,6 +325,7 @@ class install_basics extends \phpbb\db\migration\migration
 				$this->table_prefix . 'consim_items',
 				$this->table_prefix . 'consim_inventory_items',
 				$this->table_prefix . 'consim_anniversary',
+				$this->table_prefix . 'consim_weather',
 			),
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users' => array('consim_register'),
@@ -290,7 +333,7 @@ class install_basics extends \phpbb\db\migration\migration
 			array('module.remove', array(
 				'acp', 'ACP_CAT_CONSIMMODULES', array(
 					'module_basename'	=> '\consim\core\acp\core_module',
-					'modes'				=> array('news','anniversary'),
+					'modes'				=> array('news','anniversary','map'),
 				),
 			)),
 			array('module.remove', array('acp', 'ACP_CAT_CONSIM', 'ACP_CAT_CONSIMMODULES')),
