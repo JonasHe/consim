@@ -73,7 +73,7 @@
 	<div class="panel">
 		<div class="inner">
 			<fieldset class="submit-buttons">
-				<input type="submit" tabindex="1" name="travel" class="button1" value="Reisen" />
+				<input type="submit" tabindex="1" name="travel" class="button1" value="{L_TRAVELING}" />
 			</fieldset>
 		</div>
 	</div>
@@ -96,10 +96,10 @@
 <!-- IF CAN_TRAVEL -->
 <div id="travel_popup" class="consim_popup">
 	<a href="#" class="popup_close"></a>
-	<h2 class="popup_title">Reisen</h2>
+	<h2 class="popup_title">{L_TRAVELING}</h2>
 	<div class="popup_text">
 		<p>
-			<img src="{BOARD_URL}ext/consim/core/images/map.jpeg" width="750"  height="350"/>
+			{TRAVEL_MAP}
 		</p>
 		<form method="post" action="{U_ACTION}" id="action_post">
 		<ul class="travellist">
@@ -110,7 +110,7 @@
 					<dd class="travelprovince">{destination.PROVINCE}</dd>
 					<dd class="travelcountry">{destination.COUNTRY}</dd>
 					<dd class="traveltime">{destination.TIME}</dd>
-					<dd class="action"><a href="{destination.ACTION}" name="travel" class="button2">Reisen</a></dd>
+					<dd class="action"><a href="{destination.ACTION}" name="travel" class="button2">{L_TRAVELING}</a></dd>
 				</dl>
 			</li>
 			<!-- END destination -->
@@ -119,5 +119,13 @@
 	</div>
 </div>
 <!-- ENDIF -->
+
+<div id="map_popup" class="consim_popup">
+	<a href="#" class="popup_close"></a>
+	<h2 class="popup_title">{PROVINCE}</h2>
+	<div class="popup_text">
+		{REGION_MAP}
+	</div>
+</div>
 
 <!-- INCLUDE consim_footer.html -->

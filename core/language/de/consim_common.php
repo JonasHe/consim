@@ -77,4 +77,17 @@ $lang = array_merge($lang, array(
 	'CONDITIONS'				=> 'Bedingungen',
 	'OUTPUT'					=> 'Ertrag',
 	'NOTHING'					=> 'keine',
+
+	'WEATHER'					=> 'Wetter',
+	'WIND'						=> 'Wind',
+	'OWM_NO_CONNECTION'			=> '<span style="color:red">Wetterdaten nicht aktuell</span>',
+	'ROADS'						=> 'Straßen',
+	'MAP_LEGEND_TITLE'			=> 'Karte der Region',
+	'ROAD_TYPE_1'				=> 'Feldweg',
+	'ROAD_TYPE_2'				=> 'befestigte Straße',
+	'ROAD_TYPE_3'				=> 'Schnellstraße',
+	'ROAD_TYPE_4'				=> 'Bahnverbindung',
+	'ROAD_TYPE_5'				=> 'Seeweg',
+	'ROAD_BLOCKED'				=> 'Straße gesperrt',
+	'ROAD_NOT_BLOCKED'			=> 'Sraße frei',
 ));

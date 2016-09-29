@@ -38,8 +38,24 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'CONSIM_ANNIVERSARY'			=> 'ConSim Feiertage',
-	'CONSIM_TITLE'					=> 'ConSim',
-	'CONSIM_NEWS'					=> 'ConSim News',
 	'ACP_CAT_CONSIM'				=> 'ConSim',
 	'ACP_CAT_CONSIMMODULES'			=> 'ConSim Module',
+	'CONFIRM_DELETE_MARKER'			=> 'M&ouml;chtest du den Marker wirklich l&ouml;schen?',
+	'CONSIM_MAP'					=> 'ConSim Karte',
+	'CONSIM_MARKERS'				=> 'Eigene Marker',
+	'CONSIM_NEWS'					=> 'ConSim News',
+	'CONSIM_ROADS'					=> 'Straßen',
+	'CONSIM_TITLE'					=> 'ConSim',
+
+	'MARKER_ADD'					=> 'Marker hinzuf&uuml;gen',
+	'MARKER_COORDS'					=> 'Position',
+	'MARKER_TITLE'					=> 'Text',
+	'MARKER_SAVE'					=> 'Marker speichern',
+	'MARKER_STYLE'					=> 'Aussehen',
+
+	'ROAD_IS_BLOCKED'				=> 'Straße benutzbar',
+	'ROAD_TITLE'					=> 'Straße verbindet',
+	'ROAD_TYPE'						=> 'Ausbaustatus der Straße',
+
+	'SAVE'							=> 'Speichern',
 ));

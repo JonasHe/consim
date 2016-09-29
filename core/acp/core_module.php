@@ -68,6 +68,37 @@ class core_module
 				}
 				break;
 
+			case 'map':
+				
+				// Get an instance of the admin controller and set the template (we only need acp_rsp_user in this file)
+				$controller = $phpbb_container->get('consim.core.controller.acpmap');
+				$this->tpl_name = 'consim_map';
+
+				switch($action)
+				{
+					case "delete_marker":
+						$controller->marker_delete($request->variable('marker_id',0));
+						break;
+					default:
+						$template->assign_var('S_OVERVIEW',true); // Only show the needed part of the template file
+						
+						// Update road
+						if($request->is_set_post('updateRoad'))
+						{
+							$controller->road_update($request->variable('road_id',0));
+						}
+
+						// Add marker
+						if($request->is_set_post('marker_add'))
+						{
+							$controller->marker_add();
+						}
+	
+						$controller->overview();
+						break;
+				}
+				break;
+
 			case 'news':
 			default:
 

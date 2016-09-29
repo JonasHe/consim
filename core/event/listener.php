@@ -122,8 +122,10 @@ class listener implements EventSubscriberInterface
 				WHERE n.channel_id = ".$channel['id']." 
 				ORDER BY n.topic_id";
 			$nresult = $this->db->sql_query($nsql);
+			$newsbar = false;
 			while($nrow = $this->db->sql_fetchrow($nresult))
 			{
+				$newsbar = true;
 				$this->template->assign_block_vars('allNews', array(
 				'TOPIC'		=> $nrow['topic_name'],
 				'CONTENT' 	=> $nrow['content'],
@@ -164,10 +166,10 @@ class listener implements EventSubscriberInterface
 				}
 			}
 		}
-
+		
 		// Pass the data to the template
 		$this->template->assign_vars(array(
-			'S_NEWSTICKER'					=> (isset($channel['id'])) ? true : false,
+			'S_NEWSTICKER'					=> (isset($channel['id']) && $newsbar) ? true : false,
 			'CHANNEL'						=> (isset($channel['name'])) ? $channel['name'].' '.date('H:i') : "",
 			'VREFRESH'						=> (isset($channel['vRefresh'])) ? $channel['vRefresh'] : 0,
 			'CHANNEL_BACKGROUND'			=> (isset($channel['background'])) ? $channel['background'] : "",

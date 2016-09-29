@@ -277,17 +277,21 @@ ul.travellist dd.action a.button2 {
 }
 
 .left_column {
-	float: left;
-	width: 49%;
+	display: inline-block;
+	vertical-align: top;
+	width: 33%;
+}
+
+.middle_column {
+	display: inline-block;
+	text-align: center;
+	width: 33%;
 }
 
 .right_column {
-	float: right;
-	width: 49%;
-}
-
-.clear {
-	clear: both;
+	display: inline-block;
+	text-align: right;
+	width: 33%;
 }
 
 .news {
@@ -351,9 +355,14 @@ ul.travellist dd.action a.button2 {
 	background-color: #ffffff;
 	padding: 0;
 }
+.middle_column img{
+	padding: 0px;
+	margin-bottom: -11px;
+	margin-top: -5px;
+}
 
-p .right_column {
-	text-align: right;
+table.table1 tbody td.indent {
+	padding-left: 2em;
 }
 
 table.table1 tbody td.indent {

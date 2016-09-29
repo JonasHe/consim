@@ -19,3 +19,6 @@ parameters:
     tables.consim.news_channels: %core.table_prefix%consim_news_channel
     tables.consim.news_topics: %core.table_prefix%consim_news_topics
     tables.consim.anniversary: %core.table_prefix%consim_anniversary
+    tables.consim.weather: %core.table_prefix%consim_weather
+    tables.consim.roads: %core.table_prefix%consim_roads
+    tables.consim.markers: %core.table_prefix%consim_markers
