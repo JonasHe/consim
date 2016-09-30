@@ -1,0 +1,36 @@
+imports:
+    - { resource: tables.yml }
+
+services:
+  consim.core.controller.acp.news:
+      class: consim\core\controller\acp\News
+      arguments:
+          - @config
+          - @service_container
+          - @controller.helper
+          - @user
+          - @template
+          - @request
+          - @dbal.conn
+
+  consim.core.controller.acp.anniversary:
+      class: consim\core\controller\acp\Anniversary
+      arguments:
+          - @config
+          - @service_container
+          - @controller.helper
+          - @user
+          - @template
+          - @request
+          - @dbal.conn
+
+  consim.core.controller.acp.map:
+      class: consim\core\controller\acp\Map
+      arguments:
+          - @config
+          - @service_container
+          - @controller.helper
+          - @user
+          - @template
+          - @request
+          - @dbal.conn

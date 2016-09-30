@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
 * News controller
 */
-class Map
+class MapController
 {
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -49,7 +49,7 @@ class Map
 	* @param \phpbb\template\template			$template		Template object
 	* @param \phpbb\request\request				$request		Request object
 	* @param \phpbb\db\driver\driver_interface	$db				Database object
-	* @return News
+	* @return \consim\core\entity\NewsNews
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,

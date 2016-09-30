@@ -9,14 +9,14 @@
 *
 */
 
-namespace consim\core\controller;
+namespace consim\core\controller\acp;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
 * News controller
 */
-class ACP_News
+class News
 {
 	/** @var \phpbb\config\config */
 	protected $config;

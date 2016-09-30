@@ -9,14 +9,14 @@
 *
 */
 
-namespace consim\core\controller;
+namespace consim\core\controller\acp;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
 * Anniversary controller
 */
-class ACP_Anniversary
+class Map
 {
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -92,50 +92,85 @@ class ACP_Anniversary
 	}
 	
 	/**
-	* Show all anniversaries
+	* Default page
 	*
 	* @return null
 	* @access public
 	*/
 	public function overview()
 	{	
-		// Catch all anniversaries from the database
-		$sql = 'SELECT anniversary_id, day, month, year, event, link FROM phpbb_consim_anniversary';
+        // Load the map for use on this site
+		$map = $this->container->get('consim.core.controller.map');
+		$map->load_map("addMarkers", "mainMap");
+
+        $this->template->assign_var('MAP', $map->show_map('width: 750px; height: 511px;'));
+
+		// Catch all markers from the database
+		$sql = 'SELECT id, name FROM phpbb_consim_markers';
 		$result = $this->db->sql_query($sql);
 		while($row = $this->db->sql_fetchrow($result))
 		{
-			$this->template->assign_block_vars('Anniversaries', array(
-				'EVENT' 		=> $row['event'],
-				'ODATE'			=> (($row['year']!=0) ? date("Y")-(int)$row['year'].". ": ""),
-				'DAY' 			=> $row['day'],
-				'MONTH'			=> $row['month'],
-				'YEAR'			=> $row['year'],
-				'LINK' 			=> $row['link'],
-				'ID'			=> $row['anniversary_id'],
-				'DELETE'		=> build_url()."&action=delete_anniversary&anniversary_id=".$row['anniversary_id'],
+			$this->template->assign_block_vars('markers', array(
+				'delete'	=> build_url("action").'&action=delete_marker&marker_id='.$row['id'],
+				'title' 	=> $row['name'],
+			));
+		}
+
+		// Catch all roads from the database
+		$sql = 'SELECT id, title, blocked, type FROM phpbb_consim_roads';
+		$result = $this->db->sql_query($sql);
+		while($row = $this->db->sql_fetchrow($result))
+		{
+			$this->template->assign_block_vars('Roads', array(
+				'TITLE' 		=> $row['title'],
+				'BLOCKED' 		=> $row['blocked'],
+				'TYPE'			=> $row['type'],
+				'ID'			=> $row['id'],
 			));
 		}
 	}
 
 	/**
-	* Add an anniversary
+	* Add a marker
 	*
 	* @return null
 	* @access public
 	*/
-	public function anniversary_add()
+	public function marker_add()
 	{
-		// Check if all required fields are set
-		$this->check_data($errors,array('event','day','month'));
+		// Create a form key for preventing CSRF attacks
+		add_form_key('consim_marker_add');
+		// Create an array to collect errors that will be output to the user
+		$errors = array();
 
-		// If no errors, process the form data
-		if (empty($errors))
+		//get the consimUser Entity
+		/** @var  \consim\core\entity\NewsChannel */
+		$entity = $this->container->get('consim.core.entity.markers');
+
+		// Is the form being submitted to us?
+		if ($this->request->is_set_post('marker_add'))
 		{
-			$this->container->get('consim.core.entity.anniversary')->setDay($this->request->variable('day',0,true))
-			->setMonth($this->request->variable('month',0,true))->setYear(str_pad($this->request->variable('year',0,true),2,'0', STR_PAD_LEFT))
-			->setEvent($this->request->variable('event','',true))->setLink($this->request->variable('link','',true))->insert();
+			// Test if the submitted form is valid
+			if (!check_form_key('consim_marker_add'))
+			{
+				$errors[] = $this->user->lang('FORM_INVALID');
+			}
+			
+			// Check if all required fields are set
+			$this->check_data($errors,array('marker_x','marker_y','marker_title','marker_style'));
+
+			// If no errors, process the form data
+			if (empty($errors))
+			{
+				$entity->setX($this->request->variable('marker_x',0))->
+					setY($this->request->variable('marker_y',0))->
+					setName($this->request->variable('marker_title','',true))->
+					setType($this->request->variable('marker_style',0))->insert();
+				redirect(build_url(array("action")));
+			}
 		}
 
+		// Add the error messages to the template
 		$this->template->assign_vars(array(
 			'S_ERROR'	=> (sizeof($errors)) ? true : false,
 			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
@@ -143,55 +178,40 @@ class ACP_Anniversary
 	}
 
 	/**
-	* Delete an anniversary
+	* Delete a marker
 	*
-	* @param int $id The id of the anniversary to be deleted
+	* @param int $id The id of the marker to be deleted
 	* @return null
 	* @access public
 	*/
-	public function anniversary_delete($id)
+	public function marker_delete($id)
 	{
 		if(confirm_box(true))
 		{
-			$this->container->get('consim.core.entity.anniversary')->setId($id)->delete();
+			$this->container->get('consim.core.entity.markers')->setId($id)->delete();
 		}
 		else
 		{
 			// Request confirmation from the user to delete the topic
-			confirm_box(false, $this->user->lang('ANNIVERSARY_DELETE_CONFIRM'), build_hidden_fields(array(
-				'mode' 			=> 'anniversary',
-				'action' 		=> 'delete_anniversary',
-				'anniversary_id'=> $id,
+			confirm_box(false, $this->user->lang('CONFIRM_DELETE_MARKER'), build_hidden_fields(array(
+				'mode' 			=> 'map',
+				'action' 		=> 'delete_marker',
+				'marker_id'		=> $id,
 			)));
 		}
-		redirect(build_url(array("action","anniversary_id")));
+		redirect(build_url(array("action","channel_id")));
 	}
 
-	/**
-	* Edit an Anniversary
+    /**
+	* Default page
 	*
-	* @param int $id The id of the anniversary to be edited
+    * @param int $id The ID of the road
 	* @return null
 	* @access public
 	*/
-	public function anniversary_update($id)
-	{
-		// Check if all required fields are set
-		$this->check_data($errors,array('event','day','month'));
-
-		// If no errors, process the form data
-		if (empty($errors))
-		{
-			$link = ($this->request->variable('link','',true)!="") ? $this->request->variable('link','',true) : "http://";
-
-			$this->container->get('consim.core.entity.anniversary')->setDay($this->request->variable('day',0,true))
-			->setMonth($this->request->variable('month',0,true))->setYear(str_pad($this->request->variable('year',0,true),2,'0', STR_PAD_LEFT))
-			->setEvent($this->request->variable('event','',true))->setLink($link)->setId($id)->save();
-		}
-
-		$this->template->assign_vars(array(
-			'S_ERROR'	=> (sizeof($errors)) ? true : false,
-			'ERROR_MSG'	=> (sizeof($errors)) ? implode('<br />', $errors) : '',
-		));
+	public function road_update($id)
+	{	
+		$this->container->get('consim.core.entity.roads')->setBlocked($this->request->variable('blocked_'.$id,0))
+			->setType($this->request->variable('road_type_'.$id,0))->setId($id)->save();
 	}
 }

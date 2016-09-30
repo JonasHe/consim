@@ -1,8 +1,9 @@
 imports:
     - { resource: tables.yml }
     - { resource: services/controller.yml }
+    - { resource: services/acp_controller.yml }
     - { resource: services/entity.yml }
-    - { resource: services/operators.yml }
+    - { resource: services/service.yml }
 
 services:
     consim.core.listener:

@@ -51,7 +51,7 @@ class ActionController extends AbstractController
 		if($this->consim_user->getActive())
 		{
 			//get current action
-			$action = $this->container->get('consim.core.operators.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
+			$action = $this->container->get('consim.core.service.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
 
 			if($action->getRouteId() > 0)
 			{

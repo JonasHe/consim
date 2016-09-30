@@ -36,7 +36,7 @@ class core_module
 			case 'anniversary':
 				
 				// Get an instance of the admin controller and set the template (we only need acp_rsp_user in this file)
-				$controller = $phpbb_container->get('consim.core.controller.acpanniversary');
+				$controller = $phpbb_container->get('consim.core.controller.acp.anniversary');
 				$this->tpl_name = 'consim_anniversary';
 				$user->add_lang_ext('/consim/core', 'consim_anniversary'); // Load the needed language file
 
@@ -71,7 +71,7 @@ class core_module
 			case 'map':
 				
 				// Get an instance of the admin controller and set the template (we only need acp_rsp_user in this file)
-				$controller = $phpbb_container->get('consim.core.controller.acpmap');
+				$controller = $phpbb_container->get('consim.core.controller.acp.map');
 				$this->tpl_name = 'consim_map';
 
 				switch($action)
@@ -103,7 +103,7 @@ class core_module
 			default:
 
 				// Get an instance of the admin controller and set the template (we only need acp_rsp_user in this file)
-				$news_controller = $phpbb_container->get('consim.core.controller.acpnews');
+				$news_controller = $phpbb_container->get('consim.core.controller.acp.news');
 				$this->tpl_name = 'consim_news';
 				$user->add_lang_ext('/consim/core', 'consim_news'); // Load the needed language file
 

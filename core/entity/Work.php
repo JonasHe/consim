@@ -336,7 +336,7 @@ class Work extends abstractEntity
 	{
 		if($this->sorted_outputs === null)
 		{
-			$this->sorted_outputs = $this->container->get('consim.core.operators.works')->getSortedOutputs($this->data['id']);
+			$this->sorted_outputs = $this->container->get('consim.core.service.works')->getSortedOutputs($this->data['id']);
 		}
 		return $this->sorted_outputs;
 	}

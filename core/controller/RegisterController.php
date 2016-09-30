@@ -124,7 +124,7 @@ class RegisterController
 		//get the consimUser Entity
 		$consim_user = $this->container->get('consim.core.entity.consim_user');
 		$figure = $consim_user->getFigureData();
-		$this->skills = $this->container->get('consim.core.operators.user_skills')->getSkills();
+		$this->skills = $this->container->get('consim.core.service.user_skills')->getSkills();
 
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('submit'))
@@ -162,7 +162,7 @@ class RegisterController
 		$this->createSelection($figure);
 
 		//Skills to template
-		foreach ($this->container->get('consim.core.operators.user_skills')->sortSkillsByCategory($this->skills) as $cat => $skills)
+		foreach ($this->container->get('consim.core.service.user_skills')->sortSkillsByCategory($this->skills) as $cat => $skills)
 		{
 			$this->template->assign_block_vars(
 				'skill_groups',
@@ -283,7 +283,7 @@ class RegisterController
 	{
 		$user_id = $this->user->data['user_id'];
 		$consim_user->insert($user_id);
-		$this->container->get('consim.core.operators.inventories')->setStartInventory($user_id);
+		$this->container->get('consim.core.service.inventories')->setStartInventory($user_id);
 
 		foreach ($this->skills as $skill)
 		{
