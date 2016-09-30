@@ -144,9 +144,11 @@ class install_travel extends \phpbb\db\migration\migration
 						'map_name'				=> array('VCHAR:255','')
 					),
 					'PRIMARY_KEY'	=> array('id'),
+					/**
+					* TODO: fehler! kann weg, oder falsche Spalte?
 					'KEYS'			=> array(
 						'prvnce_id'					=> array('INDEX', 'prvnce_id'),
-					),
+					),**/
 				),
 				$this->table_prefix . 'consim_roads'	=> array(
 					'COLUMNS'	=> array(
@@ -201,37 +203,37 @@ class install_travel extends \phpbb\db\migration\migration
 		$locations = array(
 			array('id' => 1, 'name' => $user->lang('NOBRI'),
 				  'description' => $user->lang('NOBRI_DESC'),
-				  'image' => 'locations/isoria_nobri.jpg', 'type_id' => 3, 'province_id' => 1, 'x' => 865, 'y' => 275, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_nobri.jpg', 'type_id' => 3, 'province_id' => 3, 'x' => 865, 'y' => 275, 'map_name' => 'mainMap'),
 			array('id' => 2, 'name' => $user->lang('ALATYR'),
 				  'description' => $user->lang('ALATYR_DESC'),
-				  'image' => 'locations/isoria_alatyr.jpg', 'type_id' => 2, 'province_id' => 1, 'x' => 895, 'y' => 220, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_alatyr.jpg', 'type_id' => 2, 'province_id' => 3, 'x' => 895, 'y' => 220, 'map_name' => 'mainMap'),
 			array('id' => 3, 'name' => $user->lang('GRUSHEVSK'),
 				  'description' => $user->lang('GRUSHEVSK_DESC'),
-				  'image' => 'locations/isoria_grushevsk.jpg', 'type_id' => 2, 'province_id' => 1, 'x' => 915, 'y' => 310, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_grushevsk.jpg', 'type_id' => 2, 'province_id' => 3, 'x' => 915, 'y' => 310, 'map_name' => 'mainMap'),
 			array('id' => 4, 'name' => $user->lang('ASTRAKAN'),
 				  'description' => $user->lang('ASTRAKAN_DESC'),
-				  'image' => 'locations/isoria_astrakan.jpg', 'type_id' => 2, 'province_id' => 1, 'x' => 800, 'y' => 350, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_astrakan.jpg', 'type_id' => 2, 'province_id' => 3, 'x' => 800, 'y' => 350, 'map_name' => 'mainMap'),
 			array('id' => 5, 'name' => $user->lang('KUBISHEVSK'),
 				  'description' => $user->lang('KUBISHEVSK_DESC'),
-				  'image' => 'locations/isoria_kubishevsk.jpg', 'type_id' => 2, 'province_id' => 1, 'x' => 765, 'y' => 260, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_kubishevsk.jpg', 'type_id' => 2, 'province_id' => 3, 'x' => 765, 'y' => 260, 'map_name' => 'mainMap'),
 			array('id' => 6, 'name' => $user->lang('VARNOGRAD'),
 				  'description' => $user->lang('VARNOGRAD_DESC'),
-				  'image' => 'locations/isoria_varnograd.jpg', 'type_id' => 5, 'province_id' => 1, 'x' => 940, 'y' => 170, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_varnograd.jpg', 'type_id' => 5, 'province_id' => 3, 'x' => 940, 'y' => 170, 'map_name' => 'mainMap'),
 			array('id' => 7, 'name' => $user->lang('JEGENSK'),
 				  'description' => $user->lang('JEGENSK_DESC'),
-				  'image' => 'locations/isoria_jegensk.jpg', 'type_id' => 1, 'province_id' => 1, 'x' => 970, 'y' => 230, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_jegensk.jpg', 'type_id' => 1, 'province_id' => 3, 'x' => 970, 'y' => 230, 'map_name' => 'mainMap'),
 			array('id' => 8, 'name' => $user->lang('TURAV'),
 				  'description' => $user->lang('TURAV_DESC'),
-				  'image' => 'locations/isoria_turav.jpg', 'type_id' => 1, 'province_id' => 1, 'x' => 800, 'y' => 230, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_turav.jpg', 'type_id' => 1, 'province_id' => 3, 'x' => 800, 'y' => 230, 'map_name' => 'mainMap'),
 			array('id' => 9, 'name' => $user->lang('KIRGANOV'),
 				  'description' => $user->lang('KIRGANOV_DESC'),
-				  'image' => 'locations/isoria_kirganov.jpg', 'type_id' => 1, 'province_id' => 1, 'x' => 875, 'y' => 345, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_kirganov.jpg', 'type_id' => 1, 'province_id' => 3, 'x' => 875, 'y' => 345, 'map_name' => 'mainMap'),
 			array('id' => 10, 'name' => $user->lang('PKD_74'),
 				  'description' => $user->lang('PKD_74_DESC'),
-				  'image' => 'locations/isoria_pkd_74.jpg', 'type_id' => 6, 'province_id' => 1, 'x' => 940, 'y' => 270, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_pkd_74.jpg', 'type_id' => 6, 'province_id' => 3, 'x' => 940, 'y' => 270, 'map_name' => 'mainMap'),
 			array('id' => 11, 'name' => $user->lang('SMTU_567_C'),
 				  'description' => $user->lang('SMTU_567_C_DESC'),
-				  'image' => 'locations/isoria_smtu_567_c.jpg', 'type_id' => 6, 'province_id' => 1, 'x' => 750, 'y' => 305, 'map_name' => 'mainMap'),
+				  'image' => 'locations/isoria_smtu_567_c.jpg', 'type_id' => 6, 'province_id' => 3, 'x' => 750, 'y' => 305, 'map_name' => 'mainMap'),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_locations', $locations);
 	}

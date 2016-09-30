@@ -75,7 +75,7 @@ services:
                 - @request
                 - @dbal.conn
 
-    consim.core.controller.acpmap:s
+    consim.core.controller.acpmap:
         class: consim\core\controller\ACP_Map
         arguments:
             - @config

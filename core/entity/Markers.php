@@ -24,7 +24,8 @@ class Markers extends abstractEntity
 		'x'			            => 'integer',
         'y'                     => 'integer',
         'type'                  => 'integer',
-        'prvnce_id'             => 'integer',
+		//ToDO: zuviel??
+        //'prvnce_id'             => 'integer',
 	);
 
 	/**
@@ -33,6 +34,7 @@ class Markers extends abstractEntity
 	protected static $validate_unsigned = array(
 		'id',
         'type',
+		//ToDO: zuviel??
         'prvnce_id',
 	);
 
