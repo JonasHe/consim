@@ -82,6 +82,8 @@ class RegisterController
 		$this->template = $template;
 		$this->request = $request;
 		$this->db = $db;
+
+		return $this;
 	}
 
 	/**
@@ -214,7 +216,6 @@ class RegisterController
 	*
 	* @param string[] $errors
 	* @param ConsimUser $consim_user
-	* @return null
 	* @access private
 	*/
 	private function check_data(&$errors, &$consim_user)
@@ -275,7 +276,6 @@ class RegisterController
 	* und speichere den User als Consim register
 	*
 	* @param ConsimUser $consim_user
-	* @return null
 	* @access private
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -311,7 +311,6 @@ class RegisterController
 	* Erzeugt die Auswahl
 	*
 	* @param ConsimFigure[] $figure
-	* @return null
 	* @access private
 	*/
 	private function createSelection($figure)
@@ -335,3 +334,4 @@ class RegisterController
 	}
 
 }
+

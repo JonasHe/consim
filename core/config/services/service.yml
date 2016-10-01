@@ -33,6 +33,12 @@ services:
           - %tables.consim.items%
           - %tables.consim.inventory_items%
 
+  consim.core.service.user:
+      class: consim\core\service\UserService
+      arguments:
+          - @dbal.conn
+          - @service_container
+
   consim.core.service.user_skill:
       class: consim\core\service\UserSkillService
       arguments:
@@ -50,3 +56,10 @@ services:
           - %tables.consim.work_outputs%
           - %tables.consim.skills%
           - %tables.consim.items%
+
+  consim.core.service.widget:
+      class: consim\core\service\WidgetService
+      arguments:
+          - @service_container
+          - @template
+          - @controller.helper

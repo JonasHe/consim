@@ -44,6 +44,7 @@ class ActionController extends AbstractController
 		$this->request = $request;
 
 		$this->init();
+		return $this;
 	}
 
 	public function showActivity()
@@ -55,26 +56,24 @@ class ActionController extends AbstractController
 
 			if($action->getRouteId() > 0)
 			{
-				$this->showTraveling($action);
-
-				// Send all data to the template file
-				return $this->helper->render('consim_traveling.html', $this->user->lang('CONSIM'));
+				return $this->showTravel($action->getId(), $action);
 			}
 			// is user working?
 			if($action->getWorkId() > 0)
 			{
-				$this->showWorking($action);
-
-				// Send all data to the template file
-				return $this->helper->render('consim_working.html', $this->user->lang('CONSIM'));
+				return $this->showWork($action->getId(), $action);
 			}
 		}
+		redirect($this->helper->route('consim_core_index'));
 		return null;
 	}
 
-	public function showWork($work_id)
+	public function showWork($work_id, $work = null)
 	{
-		$work = $this->container->get('consim.core.entity.action')->load($work_id);
+		if($work === null)
+		{
+			$work = $this->container->get('consim.core.entity.action')->load($work_id);
+		}
 
 		//check if the user is owner of action
 		if($work->getUserId() != $this->consim_user->getUserId() || $work->getWorkId() == 0)
@@ -82,15 +81,93 @@ class ActionController extends AbstractController
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
-		$this->showWorking($work);
+		$now = time();
+		$time = $work->getEndTime() - $now;
+
+		$working = $this->container->get('consim.core.entity.work')->load($work->getWorkId());
+		$location = $this->container->get('consim.core.entity.location')->load($work->getLocationId());
+		$building = $this->container->get('consim.core.entity.building')->find($location->getId(), $working->getBuildingTypeId());
+
+		//User must finished the work
+		if($work->getStatus() == 2)
+		{
+			$s_hidden_fields = build_hidden_fields(array(
+				'action_id'		=> $work->getId(),
+			));
+			$this->template->assign_vars(array(
+				'IS_CONFIRM_FINISH'	=> TRUE,
+				'U_FINISH'			=> ($work->getStatus() == 2)? $this->helper->route('consim_core_work_end') : FALSE,
+				'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
+			));
+			add_form_key('working_end');
+		}
+
+		$result = array();
+		//Work finished
+		if($work->getStatus() == 1)
+		{
+			$result = $work->getResult();
+			$this->template->assign_vars(array(
+				'IS_WORK_FINISHED'			=> TRUE,
+				'WORK_RESULT_ALL'			=> $result['conditions']['all'],
+				'WORK_RESULT_1'				=> (isset($result['conditions'][0]))? $result['conditions'][0] : 0,
+				'WORK_RESULT_2'				=> (isset($result['conditions'][1]))? $result['conditions'][1] : 0,
+				'WORK_RESULT_3'				=> (isset($result['conditions'][2]))? $result['conditions'][2] : 0,
+				'WORK_EXPERIENCE'			=> $result['experience'],
+			));
+		}
+
+		//set output to template
+		foreach ($working->getSortedOutputs() as $type => $outputs)
+		{
+			print_r($type);
+			$this->template->assign_block_vars('work_outputs', array(
+				'TYPE'			=> $outputs['name'],
+				'VALUE'			=> (isset($result) && !empty($result['outputs'][$type]))? $result['outputs'][$type] : 0,
+			));
+			print_r($result);
+
+			/** @var \consim\core\entity\WorkOutput[] $outputs */
+			for($i=0; $i < 5; $i++)
+			{
+				$this->template->assign_block_vars('work_outputs.types', array(
+					'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
+				));
+			}
+		}
+
+		// Set output vars for display in the template
+		$this->template->assign_vars(array(
+			'SHOW_WORKING'				=> TRUE,
+			'IS_WORKING'				=> ($work->getStatus() == 0)? TRUE : FALSE,
+			'WORK_NAME'					=> $working->getName(),
+			'WORK_CONDITION_1_TYPE'		=> $working->getCondition1Name(),
+			'WORK_CONDITION_1_TRIALS'	=> $working->getCondition1Trials(),
+			'WORK_CONDITION_1_VALUE'	=> $working->getCondition1Value(),
+			'WORK_CONDITION_2_TYPE'		=> $working->getCondition2Name(),
+			'WORK_CONDITION_2_TRIALS'	=> $working->getCondition2Trials(),
+			'WORK_CONDITION_2_VALUE'	=> $working->getCondition2Value(),
+			'WORK_CONDITION_3_TYPE'		=> $working->getCondition3Name(),
+			'WORK_CONDITION_3_TRIALS'	=> $working->getCondition3Trials(),
+			'WORK_CONDITION_3_VALUE'	=> $working->getCondition3Value(),
+			'WORK_CONDITION_ALL'		=> ($working->getCondition1Trials() + $working->getCondition2Trials() + $working->getCondition3Trials()),
+			'WORK_EXPERIENCE_POINTS'	=> implode("/", $working->getExperiencePoints()),
+			'WORK_BUILDING_NAME'		=> ($building->getName() != '')? '"' . $building->getName() . '"' : '',
+			'WORK_BUILDING_TYPE'		=> $building->getTypeName(),
+			'WORK_LOCATION_NAME'		=> $location->getName(),
+			'WORK_TIME'					=> ($work->getStatus() == 0)? date("i:s", $time) : FALSE,
+		));
 
 		// Send all data to the template file
 		return $this->helper->render('consim_working.html', $this->user->lang('CONSIM'));
 	}
 
-	public function showTravel($travel_id)
+	public function showTravel($travel_id, $travel = null)
 	{
-		$travel = $this->container->get('consim.core.entity.action')->load($travel_id);
+		if($travel === null)
+		{
+			$travel = $this->container->get('consim.core.entity.action')->load($travel_id);
+		}
 
 		//check if the user is owner of action
 		if($travel->getUserId() != $this->consim_user->getUserId() || $travel->getRouteId() == 0)
@@ -98,9 +175,41 @@ class ActionController extends AbstractController
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
-		$this->showTraveling($travel);
+		$now = time();
+		$time = $travel->getEndTime() - $now;
+
+		$route = $this->container->get('consim.core.entity.route')->load($travel->getRouteId());
+		$start_location = $this->container->get('consim.core.entity.location')->load($travel->getLocationId());
+		$end_location = $this->container->get('consim.core.entity.location');
+		if($travel->getLocationId() == $route->getStartLocationId())
+		{
+			$end_location->load($route->getEndLocationId());
+		}
+		else
+		{
+			$end_location->load($route->getStartLocationId());
+		}
+
+		// Set output vars for display in the template
+		$this->template->assign_vars(array(
+			'IS_TRAVELING'				=> TRUE,
+			'START_LOCATION_NAME'       => $start_location->getName(),
+			'START_LOCATION_IMAGE'      => $start_location->getImage(),
+			'START_LOCATION_TYPE'       => $start_location->getType(),
+			'START_LOCATION_PROVINCE'   => $start_location->getProvince(),
+			'START_LOCATION_COUNTRY'    => $start_location->getCountry(),
+			'START_TIME'                => date("d.m.Y - H:i:s", $travel->getStartTime()),
+			'END_LOCATION_NAME'         => $end_location->getName(),
+			'END_LOCATION_IMAGE'        => $end_location->getImage(),
+			'END_LOCATION_TYPE'         => $end_location->getType(),
+			'END_LOCATION_PROVINCE'     => $end_location->getProvince(),
+			'END_LOCATION_COUNTRY'      => $end_location->getCountry(),
+			'END_TIME'                  => date("d.m.Y - H:i:s", $travel->getEndTime()),
+			'COUNTDOWN'                 => date("i:s", $time),
+		));
 
 		// Send all data to the template file
 		return $this->helper->render('consim_traveling.html', $this->user->lang('CONSIM'));
 	}
 }
+

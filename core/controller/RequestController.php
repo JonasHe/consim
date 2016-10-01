@@ -36,6 +36,8 @@ class RequestController
 		$this->helper = $helper;
 		$this->user = $user;
 		$this->request = $request;
+
+		return $this;
 	}
 
 	public function startTravel($travel_id)
@@ -159,3 +161,4 @@ class RequestController
 		return !empty($value) && preg_match('/^\w+$/', $value);
 	}
 }
+

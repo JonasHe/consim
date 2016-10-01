@@ -10,66 +10,31 @@
 	<div class="field_top">
 		<div class="panel">
 			<p>
-				<span class="left_column">{L_LOCATION}{L_COLON} <br><a href="{USER_LOCATION_URL}">{USER_LOCATION} ({USER_LOCATION_TYPE})</a>,<br>
-					<a href="#" class="province_map">{L_PROVINCE} {USER_PROVINCE} ({USER_COUNTRY})</a>
-				</span><span class="middle_column">{L_WEATHER} <img src="{WEATHER_IMAGE}" height="32px">{OWM_ERROR}<br>
-					{TEMPERATURE}°C / {WEATHER}<br>{L_WIND}: {WIND_SPEED} km/h, {WIND_DIRECTION}°
-				</span><span class="right_column">{L_TIME}{L_COLON} {TIME}<br>
-					{L_ANNIVERSARY_TODAY}: {ANNIVERSARY_TODAY}<!-- IF ANNIVERSARY_TODAY == "" -->{L_ANNIVERSARY_NONE}<!-- ENDIF --><br>
-					{L_ANNIVERSARY_TOMORROW}: {ANNIVERSARY_TOMORROW}<!-- IF ANNIVERSARY_TOMORROW == "" -->{L_ANNIVERSARY_NONE}<!-- ENDIF --></span>
+				<!-- IF IS_LOCATION_WIDGET -->
+					<!-- INCLUDE widget/location.html -->
+				<!-- ENDIF -->
+
+				<!-- INCLUDE widget/weather.html -->
+				<!-- INCLUDE widget/anniversary.html -->
+
 			</p>
 		</div>
 	</div>
 
 	<div class="field_left">
-		<div class="panel">
-			<div class="inner">
-				<div class="content">
-					<h2>{L_INVENTORY}</h2>
-					<fieldset class="fields2">
-						<!-- BEGIN inventory -->
-						<dl>
-							<dt><label>{inventory.NAME} {L_COLON}</label></dt>
-							<dd>{inventory.VALUE} {inventory.SHORT_NAME}</dd>
-						</dl>
-						<!-- END inventory -->
-					</fieldset>
-				</div>
-			</div>
-		</div>
+		<!-- IF .inventory_widget -->
+			<!-- INCLUDE widget/inventory.html -->
+		<!-- ENDIF -->
 	</div>
 
 	<div class="field_right">
-		<div class="panel">
-			<div class="inner">
-				<div class="content">
-					<h2>{L_EXPERIENCE_POINTS}</h2>
-					<fieldset class="fields2">
-						<dl>
-							<dt><label>{L_EXPERIENCE_POINTS}{L_COLON}</label></dt>
-							<dd>{USER_EXPERIENCE_POINTS}</dd>
-						</dl>
-					</fieldset>
-				</div>
-			</div>
-		</div>
 
-		<!-- BEGIN user_skill_groups -->
-		<div class="panel">
-			<div class="inner">
-				<div class="content">
-					<h2>{user_skill_groups.NAME}</h2>
-					<fieldset class="fields2">
-						<!-- BEGIN user_skill_groups.skills -->
-						<dl>
-							<dt><label>{user_skill_groups.skills.NAME}{L_COLON}</label></dt>
-							<dd>{user_skill_groups.skills.VALUE}</dd>
-						</dl>
-						<!-- END user_skill_groups.skills -->
-					</fieldset>
-				</div>
-			</div>
-		</div>
-		<!-- END user_skill_groups -->
+		<!-- IF IS_USER_EXPERIENCE_WIDGET -->
+			<!-- INCLUDE widget/user_experience.html -->
+		<!-- ENDIF -->
+
+		<!-- IF .user_skill_groups -->
+			<!-- INCLUDE widget/user_skill.html -->
+		<!-- ENDIF -->
 	</div>
 <!-- INCLUDEJS @consim_core/js/register.js -->

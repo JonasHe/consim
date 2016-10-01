@@ -65,6 +65,7 @@ class LocationController extends AbstractController
 
 		// Is the form being submitted to us?
 		// Delete UserProfile
+		// TODO: delete; its only for debug
 		if ($this->request->is_set_post('delete'))
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
@@ -96,7 +97,7 @@ class LocationController extends AbstractController
 		$location_id = (int) $location_id;
 
 		$location = $this->container->get('consim.core.entity.location');
-		$location_op = $this->container->get('consim.core.service.location');
+		$locationService = $this->container->get('consim.core.service.location');
 
 		//location from location_id or from position of user?
 		if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
@@ -106,14 +107,14 @@ class LocationController extends AbstractController
 			if(!$this->consim_user->getActive())
 			{
 				//Create the Travelpopup
-				$location_op->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
+				$locationService->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
 			}
 		}
 		else
 		{
 			$location->load($location_id);
 		}
-		$buildings = $location_op->getAllBuildings($location->getId());
+		$buildings = $locationService->getAllBuildings($location->getId());
 
 		//Put all Buildings in the Template
 		foreach ($buildings as $entity)
