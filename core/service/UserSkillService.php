@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Operator for Inventory
  */
-class UserSkills
+class UserSkillService
 {
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;

@@ -66,13 +66,13 @@ abstract class AbstractController
 		$this->add_navlinks();
 
 		//Check all finished Actions
-		$this->container->get('consim.core.service.action_lists')->finishedActions();
+		$this->container->get('consim.core.service.action')->finishedActions();
 
 		//Get the ConSim-User
 		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
 
 		// get User Skill and add to template
-		$user_skills_container = $this->container->get('consim.core.service.user_skills');
+		$user_skills_container = $this->container->get('consim.core.service.user_skill');
 		$this->consim_user_skills = $user_skills_container->getUserSkills($this->user->data['user_id']);
 
 		foreach ($user_skills_container->sortSkillsByCategory($this->consim_user_skills) as $cat => $skills)
@@ -93,7 +93,7 @@ abstract class AbstractController
 		}
 
 		// Get inventory and add to template
-		$inventory = $this->container->get('consim.core.service.inventories')->getInventory($this->consim_user->getUserId());
+		$inventory = $this->container->get('consim.core.service.inventory')->getInventory($this->consim_user->getUserId());
 		foreach ($inventory as $item)
 		{
 			$this->template->assign_block_vars('inventory', array(
@@ -111,7 +111,7 @@ abstract class AbstractController
 		if($this->consim_user->getActive())
 		{
 			//get current action
-			$action = $this->container->get('consim.core.service.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
+			$action = $this->container->get('consim.core.service.action')->getCurrentActionFromUser($this->user->data['user_id']);
 			//Is User traveling?
 
 			if($action->getRouteId() > 0)

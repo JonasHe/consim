@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
 * Operator for all locations, that you can travel
 */
-class Locations
+class LocationService
 {
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;

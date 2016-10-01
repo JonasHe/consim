@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
 * Operator for all locations, that you can travel
 */
-class ActionLists
+class ActionService
 {
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;

@@ -2,8 +2,8 @@ imports:
     - { resource: tables.yml }
 
 services:
-  consim.core.service.locations:
-        class: consim\core\service\Locations
+  consim.core.service.location:
+        class: consim\core\service\LocationService
         arguments:
             - @dbal.conn
             - @service_container
@@ -18,31 +18,31 @@ services:
             - %tables.consim.skills%
             - %tables.consim.items%
 
-  consim.core.service.action_lists:
-      class: consim\core\service\ActionLists
+  consim.core.service.action:
+      class: consim\core\service\ActionService
       arguments:
           - @dbal.conn
           - @service_container
           - %tables.consim.actions%
 
-  consim.core.service.inventories:
-      class: consim\core\service\Inventories
+  consim.core.service.inventory:
+      class: consim\core\service\InventoryService
       arguments:
           - @dbal.conn
           - @service_container
           - %tables.consim.items%
           - %tables.consim.inventory_items%
 
-  consim.core.service.user_skills:
-      class: consim\core\service\UserSkills
+  consim.core.service.user_skill:
+      class: consim\core\service\UserSkillService
       arguments:
           - @dbal.conn
           - @service_container
           - %tables.consim.skills%
           - %tables.consim.user_skills%
 
-  consim.core.service.works:
-      class: consim\core\service\Works
+  consim.core.service.work:
+      class: consim\core\service\WorkService
       arguments:
           - @dbal.conn
           - @service_container

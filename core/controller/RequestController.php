@@ -96,7 +96,7 @@ class RequestController
 
 		//Get infos about work
 		$work = $this->container->get('consim.core.entity.work')->load($work_id);
-		$user_skills = $this->container->get('consim.core.service.user_skills')->getUserSkills($consim_user->getUserId());
+		$user_skills = $this->container->get('consim.core.service.user_skill')->getUserSkills($consim_user->getUserId());
 
 		//Check condition
 		$can_work = true;
@@ -143,7 +143,7 @@ class RequestController
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
-		$action = $this->container->get('consim.core.service.action_lists')->getCurrentActionFromUser($this->user->data['user_id']);
+		$action = $this->container->get('consim.core.service.action')->getCurrentActionFromUser($this->user->data['user_id']);
 
 		if($action->getStatus() != 2)
 		{

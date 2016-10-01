@@ -96,7 +96,7 @@ class LocationController extends AbstractController
 		$location_id = (int) $location_id;
 
 		$location = $this->container->get('consim.core.entity.location');
-		$location_op = $this->container->get('consim.core.service.locations');
+		$location_op = $this->container->get('consim.core.service.location');
 
 		//location from location_id or from position of user?
 		if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
@@ -173,7 +173,7 @@ class LocationController extends AbstractController
 		$this->add_navlinks($location->getName(), $this->helper->route('consim_core_location', array('location_id' => $location->getId())));
 
 		//Get all Works
-		$works = $this->container->get('consim.core.service.works')->getWorks($building->getTypeId());
+		$works = $this->container->get('consim.core.service.work')->getWorks($building->getTypeId());
 		foreach ($works as $work)
 		{
 			$s_hidden_fields = build_hidden_fields(array(
