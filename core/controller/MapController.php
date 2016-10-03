@@ -49,7 +49,7 @@ class MapController
 	* @param \phpbb\template\template			$template		Template object
 	* @param \phpbb\request\request				$request		Request object
 	* @param \phpbb\db\driver\driver_interface	$db				Database object
-	* @return \consim\core\entity\NewsNews
+	* @return \consim\core\controller\MapController
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -70,6 +70,8 @@ class MapController
 
         $this->divName = "";
         $this->data = "";
+
+		return $this;
 	}
 	
 	/**
@@ -80,7 +82,6 @@ class MapController
     * @param array $args Parts that shouldn't be loaded
     * @param int $focus The ID of the province to be focused
     * @param int $highlight The ID of the province to be highlighted
-	* @return null
 	* @access public
 	*/
     // args = no_roads, no_markers, no_buildings (Includes Roads), no_additional_buildings, no_zoom, no_legend
@@ -210,7 +211,7 @@ class MapController
             $sql = $this->db->sql_build_query("SELECT",array(
                 'SELECT' 			=> 'l.name, l.x, l.y, l.type_id', 
                 'FROM' 				=> array('phpbb_consim_locations' => 'l',),
-                'WHERE'             => 'l.province_id = '.$id.' AND l.map_name = '.$map));
+                'WHERE'             => 'l.province_id = '.$id.' AND l.map_name = "'. $map .'"'));
             
         }
         else
@@ -218,7 +219,7 @@ class MapController
             $sql = $this->db->sql_build_query("SELECT",array(
                 'SELECT' 			=> 'l.name, l.x, l.y, l.type_id', 
                 'FROM' 				=> array('phpbb_consim_locations' => 'l',),
-                'WHERE'             => 'l.map_name = '.$map));
+                'WHERE'             => 'l.map_name = "'. $map . '"'));
         }
 
         $result = $this->db->sql_query($sql);
@@ -273,14 +274,14 @@ class MapController
             $sql = $this->db->sql_build_query("SELECT",array(
                 'SELECT' 			=> 'm.id, m.name, m.x, m.y, m.type', 
                 'FROM' 				=> array('phpbb_consim_markers' => 'm',),
-                'WHERE'             => 'm.prvnce_id = '. $id.' AND l.map_name = '.$map));
+                'WHERE'             => 'm.prvnce_id = '. $id.' AND m.map_name = "'. $map .'"'));
         }
         else
         {
             $sql = $this->db->sql_build_query("SELECT",array(
                 'SELECT' 			=> 'm.id, m.name, m.x, m.y, m.type', 
                 'FROM' 				=> array('phpbb_consim_markers' => 'm',),
-                'WHERE'             => 'l.map_name = '.$map));
+                'WHERE'             => 'm.map_name = "'. $map .'"'));
         }
 
         $result = $this->db->sql_query($sql);

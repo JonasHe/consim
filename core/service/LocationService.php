@@ -8,7 +8,7 @@
 
 namespace consim\core\service;
 
-use consim\core\entity\Building;
+use consim\core\entity\Location;
 use consim\core\entity\RouteLocation;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -22,6 +22,9 @@ class LocationService
 
 	/** @var ContainerInterface */
 	protected $container;
+
+	/** @var  \consim\core\service\UserService */
+	protected $userService;
 
 	/**
 	* The database table the consim user data are stored in
@@ -38,38 +41,44 @@ class LocationService
 	protected $consim_skill_table;
 	protected $consim_item_table;
 
+	/** @var Location|null  */
+	protected $currentLocation = null;
+
 	/**
-	* Constructor
-	*
-	* @param \phpbb\db\driver\driver_interface	$db								Database object
-	* @param ContainerInterface					$container						Service container interface
-	* @param string								$consim_route_table				Name of the table used to store data
-	* @param string								$consim_location_table			Name of the table used to store data
-	* @param string								$consim_location_type_table		Name of the table used to store data
-	* @param string								$consim_province_table			Name of the table used to store data
-	* @param string								$consim_country_table			Name of the table used to store data
-	* @param string								$consim_building_table			Name of the table used to store data
-	* @param string								$consim_building_type_table		Name of the table used to store data
-	* @param string								$consim_work_table				Name of the table used to store data
-	* @param string								$consim_skill_table				Name of the table used to store data
-	* @param string								$consim_item_table				Name of the table used to store data
-	* @access public
-	*/
+	 * Constructor
+	 *
+	 * @param \phpbb\db\driver\driver_interface	$db									Database object
+	 * @param ContainerInterface					$container						Service container interface
+	 * @param \consim\core\service\UserService		$userService					UserService object
+	 * @param string								$consim_route_table				Name of the table used to store data
+	 * @param string								$consim_location_table			Name of the table used to store data
+	 * @param string								$consim_location_type_table		Name of the table used to store data
+	 * @param string								$consim_province_table			Name of the table used to store data
+	 * @param string								$consim_country_table			Name of the table used to store data
+	 * @param string								$consim_building_table			Name of the table used to store data
+	 * @param string								$consim_building_type_table		Name of the table used to store data
+	 * @param string								$consim_work_table				Name of the table used to store data
+	 * @param string								$consim_skill_table				Name of the table used to store data
+	 * @param string								$consim_item_table				Name of the table used to store data
+	 * @access public
+	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
-								ContainerInterface $container,
-								$consim_route_table,
-								$consim_location_table,
-								$consim_location_type_table,
-								$consim_province_table,
-								$consim_country_table,
-								$consim_building_table,
-								$consim_building_type_table,
-								$consim_work_table,
-								$consim_skill_table,
-								$consim_item_table)
+		ContainerInterface $container,
+		\consim\core\service\UserService $userService,
+		$consim_route_table,
+		$consim_location_table,
+		$consim_location_type_table,
+		$consim_province_table,
+		$consim_country_table,
+		$consim_building_table,
+		$consim_building_type_table,
+		$consim_work_table,
+		$consim_skill_table,
+		$consim_item_table)
 	{
 		$this->db = $db;
 		$this->container = $container;
+		$this->userService = $userService;
 		$this->consim_route_table = $consim_route_table;
 		$this->consim_location_table = $consim_location_table;
 		$this->consim_location_type_table = $consim_location_type_table;
@@ -83,29 +92,33 @@ class LocationService
 	}
 
 	/**
-	* Get all buildings in the location
-	*
-	* @param int $location_id Location ID
-	* @return Building[]
-	* @access public
-	*/
-	public function getAllBuildings($location_id)
+	 * Return location of current user
+	 *
+	 * @return Location
+	 */
+	public function getCurrentLocation()
 	{
-		$entities = array();
 
-		$sql = 'SELECT lb.id, lb.name, lb.description, b.id AS type_id, b.name AS type_name
-			FROM ' . $this->consim_building_table . ' lb
-			LEFT JOIN ' . $this->consim_building_type_table . ' b ON lb.type_id = b.id
-			WHERE lb.location_id = ' . (int) $location_id;
-		$result = $this->db->sql_query($sql);
-
-		while($row = $this->db->sql_fetchrow($result))
+		if($this->currentLocation == null)
 		{
-			$entities[] = $this->container->get('consim.core.entity.building')->import($row);
+			$this->currentLocation = $this->getLocation($this->userService->getCurrentUser()->getLocationId());
 		}
-		$this->db->sql_freeresult($result);
 
-		return $entities;
+		return $this->currentLocation;
+	}
+
+	/**
+	 * @param $locationId
+	 * @return Location
+	 */
+	public function getLocation($locationId)
+	{
+		if($this->currentLocation != null && $this->currentLocation->getId() == $locationId)
+		{
+			return $this->currentLocation;
+		}
+
+		return $this->container->get('consim.core.entity.location')->load($locationId);
 	}
 
 	/**
@@ -148,7 +161,7 @@ class LocationService
 	* @return void
 	* @access public
 	*/
-	public function setAllRouteDestinationsToTemplate($start, $template, $helper)
+	public function setAllRouteDestinationsToTemplate($start, \phpbb\template\template $template, \phpbb\controller\helper $helper)
 	{
 		$entities = $this->getAllRouteDestinations($start);
 

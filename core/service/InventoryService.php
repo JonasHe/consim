@@ -22,6 +22,9 @@ class InventoryService
 	/** @var ContainerInterface */
 	protected $container;
 
+	/** @var  \consim\core\service\UserService */
+	protected $userService;
+
 	/**
 	 * The database table the consim user data are stored in
 	 * @var string
@@ -29,24 +32,45 @@ class InventoryService
 	protected $consim_item_table;
 	protected $consim_inventory_item_table;
 
+	/** @var  InventoryItem[] */
+	protected $currentInventory;
+
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface		$db								Database object
 	 * @param ContainerInterface					$container						Service container interface
+	 * @param \consim\core\service\UserService		$userService					UserService object
 	 * @param string								$consim_item_table				Name of the table used to store data
 	 * @param string								$consim_inventory_item_table	Name of the table used to store data
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
-								ContainerInterface $container,
-								$consim_item_table,
-								$consim_inventory_item_table)
+		ContainerInterface $container,
+		\consim\core\service\UserService $userService,
+		$consim_item_table,
+		$consim_inventory_item_table)
 	{
 		$this->db = $db;
 		$this->container = $container;
+		$this->userService = $userService;
 		$this->consim_item_table = $consim_item_table;
 		$this->consim_inventory_item_table = $consim_inventory_item_table;
+	}
+
+	/**
+	 * Return the inventory of current user
+	 *
+	 * @return \consim\core\entity\InventoryItem[]
+	 */
+	public function getCurrentInventory()
+	{
+		if($this->currentInventory == null)
+		{
+			$this->currentInventory = $this->getInventory($this->userService->getCurrentUser()->getUserId());
+		}
+
+		return $this->currentInventory;
 	}
 
 	/**

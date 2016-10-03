@@ -22,6 +22,9 @@ class WorkService
 	/** @var ContainerInterface */
 	protected $container;
 
+	/** @var \phpbb\template\template */
+	protected $template;
+
 	/**
 	 * The database table the consim user data are stored in
 	 * @var string
@@ -36,6 +39,7 @@ class WorkService
 	 *
 	 * @param \phpbb\db\driver\driver_interface		$db							Database object
 	 * @param ContainerInterface					$container					Service container interface
+	 * @param \phpbb\template\template				$template					Template object
 	 * @param string								$consim_work_table			Name of the table used to store data
 	 * @param string								$consim_work_output_table	Name of the table used to store data
 	 * @param string								$consim_skill_table			Name of the table used to store data
@@ -44,6 +48,7 @@ class WorkService
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
 		ContainerInterface $container,
+		\phpbb\template\template $template,
 		$consim_work_table,
 		$consim_work_output_table,
 		$consim_skill_table,
@@ -51,6 +56,7 @@ class WorkService
 	{
 		$this->db = $db;
 		$this->container = $container;
+		$this->template = $template;
 		$this->consim_work_table = $consim_work_table;
 		$this->consim_work_output_table = $consim_work_output_table;
 		$this->consim_skill_table = $consim_skill_table;
@@ -144,5 +150,62 @@ class WorkService
 		$this->db->sql_freeresult($result);
 
 		return $outputs;
+	}
+
+	public function allWorksToTemplate($buildingTypeId)
+	{
+		$userService = $this->container->get('consim.core.service.user');
+		$currentUser = $userService->getCurrentUser();
+		$userSkillService = $this->container->get('consim.core.service.user_skill');
+		$currentUserSkill = $userSkillService->getCurrentUserSkills();
+		$works = $this->getWorks($buildingTypeId);
+		foreach ($works as $work)
+		{
+			$s_hidden_fields = build_hidden_fields(array(
+				'work_id'		=> $work->getId(),
+			));
+
+			$can_work = true;
+			if($currentUser->getActive() ||
+				($work->getCondition1Id() > 0 && $currentUserSkill[$work->getCondition1Id()]->getValue() < $work->getCondition1Value()) ||
+				($work->getCondition2Id() > 0 && $currentUserSkill[$work->getCondition2Id()]->getValue() < $work->getCondition2Value()) ||
+				($work->getCondition3Id() > 0 && $currentUserSkill[$work->getCondition3Id()]->getValue() < $work->getCondition3Value())
+			)
+			{
+				$can_work = false;
+			}
+
+			$this->template->assign_block_vars('works', array(
+				'NAME'					=> $work->getName(),
+				'DURATION'				=> date("i:s", $work->getDuration()),
+				'CONDITION_1_TYPE'		=> $work->getCondition1Name(),
+				'CONDITION_1_TRIALS'	=> $work->getCondition1Trials(),
+				'CONDITION_1_VALUE'		=> $work->getCondition1Value(),
+				'CONDITION_2_TYPE'		=> $work->getCondition2Name(),
+				'CONDITION_2_TRIALS'	=> $work->getCondition2Trials(),
+				'CONDITION_2_VALUE'		=> $work->getCondition2Value(),
+				'CONDITION_3_TYPE'		=> $work->getCondition3Name(),
+				'CONDITION_3_TRIALS'	=> $work->getCondition3Trials(),
+				'CONDITION_3_VALUE'		=> $work->getCondition3Value(),
+				'EXPERIENCE_POINTS'		=> implode("/", $work->getExperiencePoints()),
+				'CAN_WORK'				=> $can_work,
+				'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
+			));
+
+			foreach ($work->getSortedOutputs() as $type => $outputs)
+			{
+				$this->template->assign_block_vars('works.outputs', array(
+					'TYPE'			=> $outputs['name'],
+				));
+
+				/** @var WorkOutput[] $outputs */
+				for($i=0; $i < 5; $i++)
+				{
+					$this->template->assign_block_vars('works.outputs.types', array(
+						'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
+					));
+				}
+			}
+		}
 	}
 }

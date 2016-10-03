@@ -9,8 +9,7 @@
 
 namespace consim\core\controller;
 
-use consim\core\entity\UserSkill;
-use consim\core\entity\WorkOutput;
+use consim\core\exception\base;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -36,18 +35,26 @@ abstract class AbstractController
 	/** @var \phpbb\request\request */
 	protected $request;
 
+	/** @var  \consim\core\service\ActionService */
+	protected $actionService;
+
+	/** @var  \consim\core\service\InventoryService */
+	protected $inventoryService;
+
+	/** @var \consim\core\service\LocationService */
+	protected $locationService;
+
+	/** @var  \consim\core\service\UserService */
+	protected $userService;
+
+	/** @var  \consim\core\service\UserSkillService */
+	protected $userSkillService;
+
+	/** @var  \consim\core\service\WeatherService */
+	protected $weatherService;
+
 	/** @var  \consim\core\service\WidgetService */
 	protected $widgetService;
-
-	/**
-	 * Class-Variables
-	 **/
-	/** @var  \consim\core\entity\ConsimUser */
-	protected $consim_user;
-	/** @var  \consim\core\entity\Location */
-	protected $consim_user_location;
-	/** @var  UserSkill[] */
-	protected $consim_user_skills;
 
 	/**
 	 * Initiated all important variable
@@ -70,35 +77,24 @@ abstract class AbstractController
 		$this->add_navlinks();
 
 		//Check all finished Actions
-		$actionService = $this->container->get('consim.core.service.action');
-		$actionService->finishedActions();
-
-		//get Widget
-		//Todo: to consturctor
-		$this->widgetService = $this->container->get('consim.core.service.widget');
+		$this->actionService->finishedActions();
 
 		//Get the ConSim-User
-		$this->consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
+		$consim_user = $this->userService->getCurrentUser();
 
 		// get User Skill and add to template
-		$userSkillService = $this->container->get('consim.core.service.user_skill');
-		$this->consim_user_skills = $userSkillService->getUserSkills($this->user->data['user_id']);
+		$user_skills = $this->userSkillService->getCurrentUserSkills();
 		//User Skill to Template
-		$this->widgetService->userSkillWidget($userSkillService->sortSkillsByCategory($this->consim_user_skills));
+		$this->widgetService->userSkillWidget($this->userSkillService->sortSkillsByCategory($user_skills));
 
 		// Get inventory and add to template
-		$inventory = $this->container->get('consim.core.service.inventory')->getInventory($this->consim_user->getUserId());
+		$inventory = $this->inventoryService->getCurrentInventory();
 		$this->widgetService->inventoryWidget($inventory);
 
-		//Get User-Location
-		$this->consim_user_location = $this->container->get('consim.core.entity.location')->load($this->consim_user->getLocationId());
-
 		//Is User active?
-		if($this->consim_user->getActive()) {
+		if($consim_user->getActive()) {
 			//get current action
-			$action = $this->container->get('consim.core.service.action')->getCurrentActionFromUser(
-				$this->user->data['user_id']
-			);
+			$action = $this->actionService->getCurrentAction();
 			//Is User traveling?
 			if ($action->getRouteId() > 0) {
 				$this->widgetService->travelWidget($action);
@@ -109,10 +105,28 @@ abstract class AbstractController
 			}
 		}
 
+		//Get User-Location
+		$user_location = $this->locationService->getCurrentLocation();
+
 		//Experience to Template
-		$this->widgetService->experienceWidget($this->consim_user);
+		$this->widgetService->experienceWidget($consim_user);
 		//Location to Template
-		$this->widgetService->locationWidget($this->consim_user_location);
+		$this->widgetService->locationWidget($user_location);
+
+		//Set Weather to Template
+		try {
+			$this->weatherService
+				->loadWeatherFromProvinceID($user_location->getProvinceID())
+				->setWeatherWidget();
+		}
+		catch (base $e)
+		{
+			$this->template->assign_var('OWM_ERROR',$this->user->lang($e->getMessage()));
+		}
+
+		// Load the map for use on this site
+		$map = $this->container->get('consim.core.controller.map');
+		$map->load_map("consimMap", "mainMap", array('no_additional_buildings', 'no_zoom'), 3, 3);
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
@@ -120,6 +134,7 @@ abstract class AbstractController
 			'TIME'							=> date("d.m.Y - H:i:s", time()),
 			'GO_TO_INFORMATION'				=> $this->helper->route('consim_core_activity'),
 			'U_OVERVIEW'					=> $this->helper->route('consim_core_index'),
+			'REGION_MAP'					=> $map->show_map('width: 750px; height: 511px !important;'),
 		));
 	}
 

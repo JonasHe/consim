@@ -18,23 +18,37 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ActionController extends AbstractController
 {
 	/**
-	* Constructor
-	*
-	* @param \phpbb\config\config				$config				Config object
-	* @param \phpbb\controller\helper			$helper				Controller helper object
-	* @param ContainerInterface					$container			Service container interface
-	* @param \phpbb\user						$user				User object
-	* @param \phpbb\template\template			$template			Template object
-	* @param \phpbb\request\request				$request			Request object
-	* @return \consim\core\controller\ActionController
-	* @access public
-	*/
+	 * Constructor
+	 *
+	 * @param \phpbb\config\config				$config				Config object
+	 * @param \phpbb\controller\helper			$helper				Controller helper object
+	 * @param ContainerInterface					$container			Service container interface
+	 * @param \phpbb\user						$user				User object
+	 * @param \phpbb\template\template			$template			Template object
+	 * @param \phpbb\request\request				$request			Request object
+	 * @param \consim\core\service\ActionService	$actionService		ActionService object
+	 * @param \consim\core\service\InventoryService	$inventoryService	InventoryService object
+	 * @param \consim\core\service\LocationService	$locationService	LocationService object
+	 * @param \consim\core\service\UserService		$userService		UserService object
+	 * @param \consim\core\service\UserSkillService	$userSkillService	UserSkillService object
+	 * @param \consim\core\service\WeatherService	$weatherService		WeatherService object
+	 * @param \consim\core\service\widgetService	$widgetService		WidgetService object
+	 * @return \consim\core\controller\ActionController
+	 * @access public
+	 */
 	public function __construct(\phpbb\config\config $config,
-								ContainerInterface $container,
-								\phpbb\controller\helper $helper,
-								\phpbb\user $user,
-								\phpbb\template\template $template,
-								\phpbb\request\request $request)
+		ContainerInterface $container,
+		\phpbb\controller\helper $helper,
+		\phpbb\user $user,
+		\phpbb\template\template $template,
+		\phpbb\request\request $request,
+		\consim\core\service\ActionService $actionService,
+		\consim\core\service\InventoryService $inventoryService,
+		\consim\core\service\LocationService $locationService,
+		\consim\core\service\UserService $userService,
+		\consim\core\service\UserSkillService $userSkillService,
+		\consim\core\service\WeatherService $weatherService,
+		\consim\core\service\WidgetService $widgetService)
 	{
 		$this->config = $config;
 		$this->container = $container;
@@ -42,6 +56,13 @@ class ActionController extends AbstractController
 		$this->user = $user;
 		$this->template = $template;
 		$this->request = $request;
+		$this->actionService = $actionService;
+		$this->inventoryService = $inventoryService;
+		$this->locationService = $locationService;
+		$this->userService = $userService;
+		$this->userSkillService = $userSkillService;
+		$this->weatherService = $weatherService;
+		$this->widgetService = $widgetService;
 
 		$this->init();
 		return $this;
@@ -49,10 +70,11 @@ class ActionController extends AbstractController
 
 	public function showActivity()
 	{
-		if($this->consim_user->getActive())
+		$consim_user = $this->userService->getCurrentUser();
+		if($consim_user->getActive())
 		{
 			//get current action
-			$action = $this->container->get('consim.core.service.action')->getCurrentActionFromUser($this->user->data['user_id']);
+			$action = $this->actionService->getCurrentAction();
 
 			if($action->getRouteId() > 0)
 			{
@@ -76,7 +98,7 @@ class ActionController extends AbstractController
 		}
 
 		//check if the user is owner of action
-		if($work->getUserId() != $this->consim_user->getUserId() || $work->getWorkId() == 0)
+		if($work->getUserId() != $this->userService->getCurrentUser()->getUserId() || $work->getWorkId() == 0)
 		{
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
@@ -120,12 +142,10 @@ class ActionController extends AbstractController
 		//set output to template
 		foreach ($working->getSortedOutputs() as $type => $outputs)
 		{
-			print_r($type);
 			$this->template->assign_block_vars('work_outputs', array(
 				'TYPE'			=> $outputs['name'],
 				'VALUE'			=> (isset($result) && !empty($result['outputs'][$type]))? $result['outputs'][$type] : 0,
 			));
-			print_r($result);
 
 			/** @var \consim\core\entity\WorkOutput[] $outputs */
 			for($i=0; $i < 5; $i++)
@@ -170,7 +190,7 @@ class ActionController extends AbstractController
 		}
 
 		//check if the user is owner of action
-		if($travel->getUserId() != $this->consim_user->getUserId() || $travel->getRouteId() == 0)
+		if($travel->getUserId() != $this->userService->getCurrentUser()->getUserId() || $travel->getRouteId() == 0)
 		{
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}

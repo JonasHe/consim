@@ -7,6 +7,7 @@ services:
         arguments:
             - @dbal.conn
             - @service_container
+            - @consim.core.service.user
             - %tables.consim.routes%
             - %tables.consim.locations%
             - %tables.consim.location_types%
@@ -23,13 +24,23 @@ services:
       arguments:
           - @dbal.conn
           - @service_container
+          - @consim.core.service.user
           - %tables.consim.actions%
+
+  consim.core.service.building:
+        class: consim\core\service\BuildingService
+        arguments:
+            - @dbal.conn
+            - @service_container
+            - @template
+            - @controller.helper
 
   consim.core.service.inventory:
       class: consim\core\service\InventoryService
       arguments:
           - @dbal.conn
           - @service_container
+          - @consim.core.service.user
           - %tables.consim.items%
           - %tables.consim.inventory_items%
 
@@ -38,12 +49,14 @@ services:
       arguments:
           - @dbal.conn
           - @service_container
+          - @user
 
   consim.core.service.user_skill:
       class: consim\core\service\UserSkillService
       arguments:
           - @dbal.conn
           - @service_container
+          - @consim.core.service.user
           - %tables.consim.skills%
           - %tables.consim.user_skills%
 
@@ -52,10 +65,17 @@ services:
       arguments:
           - @dbal.conn
           - @service_container
+          - @template
           - %tables.consim.works%
           - %tables.consim.work_outputs%
           - %tables.consim.skills%
           - %tables.consim.items%
+
+  consim.core.service.weather:
+        class: consim\core\service\WeatherService
+        arguments:
+            - @service_container
+            - @template
 
   consim.core.service.widget:
       class: consim\core\service\WidgetService

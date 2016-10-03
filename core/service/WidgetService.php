@@ -117,15 +117,16 @@ class WidgetService
 		$time = $action->getEndTime() - $now;
 
 		$route = $this->container->get('consim.core.entity.route')->load($action->getRouteId());
-		$start_location = $this->container->get('consim.core.entity.location')->load($action->getLocationId());
-		$end_location = $this->container->get('consim.core.entity.location');
+		$locationService = $this->container->get('consim.core.service.location');
+		$start_location = $locationService->getLocation($action->getLocationId());
+		$end_location = null;
 		if($action->getLocationId() == $route->getStartLocationId())
 		{
-			$end_location->load($route->getEndLocationId());
+			$end_location = $locationService->getLocation($route->getEndLocationId());
 		}
 		else
 		{
-			$end_location->load($route->getStartLocationId());
+			$end_location = $locationService->getLocation($route->getStartLocationId());
 		}
 
 		// Set output vars for display in the template
@@ -154,7 +155,7 @@ class WidgetService
 		$time = $action->getEndTime() - $now;
 
 		$working = $this->container->get('consim.core.entity.work')->load($action->getWorkId());
-		$location = $this->container->get('consim.core.entity.location')->load($action->getLocationId());
+		$location = $this->container->get('consim.core.service.location')->getLocation($action->getLocationId());
 		$building = $this->container->get('consim.core.entity.building')->find($location->getId(), $working->getBuildingTypeId());
 
 		// Set output vars for display in the template

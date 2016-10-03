@@ -9,7 +9,6 @@
 
 namespace consim\core\controller;
 
-use consim\core\entity\WorkOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -23,13 +22,20 @@ class LocationController extends AbstractController
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\config\config				$config			Config object
-	 * @param ContainerInterface				$container		Service container interface
-	 * @param \phpbb\controller\helper			$helper			Controller helper object
-	 * @param \phpbb\user						$user			User object
-	 * @param \phpbb\template\template			$template		Template object
-	 * @param \phpbb\request\request			$request		Request object
-	 * @param \phpbb\db\driver\driver_interface	$db				Database object
+	 * @param \phpbb\config\config					$config				Config object
+	 * @param ContainerInterface					$container			Service container interface
+	 * @param \phpbb\controller\helper				$helper				Controller helper object
+	 * @param \phpbb\user							$user				User object
+	 * @param \phpbb\template\template				$template			Template object
+	 * @param \phpbb\request\request				$request			Request object
+	 * @param \phpbb\db\driver\driver_interface		$db					Database object
+	 * @param \consim\core\service\ActionService	$actionService		ActionService object
+	 * @param \consim\core\service\InventoryService	$inventoryService	InventoryService object
+	 * @param \consim\core\service\LocationService	$locationService	LocationService object
+	 * @param \consim\core\service\UserService		$userService		UserService object
+	 * @param \consim\core\service\UserSkillService	$userSkillService	UserSkillService object
+	 * @param \consim\core\service\WeatherService	$weatherService		WeatherService object
+	 * @param \consim\core\service\widgetService	$widgetService		WidgetService object
 	 * @return \consim\core\controller\LocationController
 	 * @access public
 	 */
@@ -39,7 +45,14 @@ class LocationController extends AbstractController
 		\phpbb\user $user,
 		\phpbb\template\template $template,
 		\phpbb\request\request $request,
-		\phpbb\db\driver\driver_interface $db)
+		\phpbb\db\driver\driver_interface $db,
+		\consim\core\service\ActionService $actionService,
+		\consim\core\service\InventoryService $inventoryService,
+		\consim\core\service\LocationService $locationService,
+		\consim\core\service\UserService $userService,
+		\consim\core\service\UserSkillService $userSkillService,
+		\consim\core\service\WeatherService $weatherService,
+		\consim\core\service\WidgetService $widgetService)
 	{
 		$this->config = $config;
 		$this->container = $container;
@@ -48,9 +61,17 @@ class LocationController extends AbstractController
 		$this->template = $template;
 		$this->request = $request;
 		$this->db = $db;
+		$this->actionService = $actionService;
+		$this->inventoryService = $inventoryService;
+		$this->locationService = $locationService;
+		$this->userService = $userService;
+		$this->userSkillService = $userSkillService;
+		$this->weatherService = $weatherService;
+		$this->widgetService = $widgetService;
 
 		//Starting with the init
 		$this->init();
+		return $this;
 	}
 
 	/**
@@ -62,7 +83,6 @@ class LocationController extends AbstractController
 	 */
 	public function showLocation($location_id = 0)
 	{
-
 		// Is the form being submitted to us?
 		// Delete UserProfile
 		// TODO: delete; its only for debug
@@ -96,46 +116,32 @@ class LocationController extends AbstractController
 		//must be an integer
 		$location_id = (int) $location_id;
 
-		$location = $this->container->get('consim.core.entity.location');
-		$locationService = $this->container->get('consim.core.service.location');
-
+		$location = null;
+		$consimUser = $this->userService->getCurrentUser();
 		//location from location_id or from position of user?
-		if($location_id === 0 || $location_id === $this->consim_user->getLocationId())
+		if($location_id === 0 || $location_id === $consimUser->getLocationId())
 		{
-			$location = $this->consim_user_location;
+			$location = $this->locationService->getCurrentLocation();
 
-			if(!$this->consim_user->getActive())
+			if(!$consimUser->getActive())
 			{
 				//Create the Travelpopup
-				$locationService->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
+				$this->locationService->setAllRouteDestinationsToTemplate($location->getId(), $this->template, $this->helper);
 			}
 		}
 		else
 		{
-			$location->load($location_id);
+			$location = $this->locationService->getLocation($location_id);
 		}
-		$buildings = $locationService->getAllBuildings($location->getId());
 
-		//Put all Buildings in the Template
-		foreach ($buildings as $entity)
-		{
-			$building = array(
-				'NAME'			=> ($entity->getName() != '')? '"' . $entity->getName() . '"' : '',
-				'TYPE'  		=> $entity->getTypeName(),
-				'URL'			=> $this->helper->route('consim_core_building',
-					array(
-						'location_id' => $location->getId(),
-						'building_id' => $entity->getId(),
-					)),
-			);
-
-			$this->template->assign_block_vars('buildings', $building);
-		}
+		//Set all building from location to template
+		$this->container->get('consim.core.service.building')
+			->allLocationBuildingsToTemplate($location->getId());
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
-			'CAN_TRAVEL'					=> ($location->getId() === $this->consim_user->getLocationId()
-				&& !$this->consim_user->getActive())? TRUE : FALSE,
+			'CAN_TRAVEL'					=> ($location->getId() === $consimUser->getLocationId()
+				&& !$consimUser->getActive())? TRUE : FALSE,
 			'LOCATION'						=> $location->getName(),
 			'LOCATION_DESC'					=> $location->getDescription(),
 			'LOCATION_IMAGE'				=> $location->getImage(),
@@ -167,62 +173,14 @@ class LocationController extends AbstractController
 			redirect($this->helper->route('consim_core_location', array('location_id' => $location_id)));
 		}
 
-		$location = $this->container->get('consim.core.entity.location')->load($location_id);
+		$location = $this->locationService->getLocation($location_id);
 		$building = $this->container->get('consim.core.entity.building')->load($building_id);
 
 		//add location to navbar
 		$this->add_navlinks($location->getName(), $this->helper->route('consim_core_location', array('location_id' => $location->getId())));
 
-		//Get all Works
-		$works = $this->container->get('consim.core.service.work')->getWorks($building->getTypeId());
-		foreach ($works as $work)
-		{
-			$s_hidden_fields = build_hidden_fields(array(
-				'work_id'		=> $work->getId(),
-			));
-
-			$can_work = true;
-			if($this->consim_user->getActive() ||
-				($work->getCondition1Id() > 0 && $this->consim_user_skills[$work->getCondition1Id()]->getValue() < $work->getCondition1Value()) ||
-				($work->getCondition2Id() > 0 && $this->consim_user_skills[$work->getCondition2Id()]->getValue() < $work->getCondition2Value()) ||
-				($work->getCondition3Id() > 0 && $this->consim_user_skills[$work->getCondition3Id()]->getValue() < $work->getCondition3Value())
-			)
-			{
-				$can_work = false;
-			}
-
-			$this->template->assign_block_vars('works', array(
-				'NAME'					=> $work->getName(),
-				'DURATION'				=> date("i:s", $work->getDuration()),
-				'CONDITION_1_TYPE'		=> $work->getCondition1Name(),
-				'CONDITION_1_TRIALS'	=> $work->getCondition1Trials(),
-				'CONDITION_1_VALUE'		=> $work->getCondition1Value(),
-				'CONDITION_2_TYPE'		=> $work->getCondition2Name(),
-				'CONDITION_2_TRIALS'	=> $work->getCondition2Trials(),
-				'CONDITION_2_VALUE'		=> $work->getCondition2Value(),
-				'CONDITION_3_TYPE'		=> $work->getCondition3Name(),
-				'CONDITION_3_TRIALS'	=> $work->getCondition3Trials(),
-				'CONDITION_3_VALUE'		=> $work->getCondition3Value(),
-				'EXPERIENCE_POINTS'		=> implode("/", $work->getExperiencePoints()),
-				'CAN_WORK'				=> $can_work,
-				'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
-			));
-
-			foreach ($work->getSortedOutputs() as $type => $outputs)
-			{
-				$this->template->assign_block_vars('works.outputs', array(
-					'TYPE'			=> $outputs['name'],
-				));
-
-				/** @var WorkOutput[] $outputs */
-				for($i=0; $i < 5; $i++)
-				{
-					$this->template->assign_block_vars('works.outputs.types', array(
-						'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
-					));
-				}
-			}
-		}
+		//Show all Works
+		$this->container->get('consim.core.service.work')->allWorksToTemplate($building->getTypeId());
 
 		add_form_key('working');
 		// Set output vars for display in the template

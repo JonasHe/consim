@@ -40,7 +40,7 @@ abstract class abstractEntity
 	* All data is validated and an exception is thrown if any data is invalid.
 	*
 	* @param mixed[] $data Data array, typically from the database
-	* @return self
+	* @return $this
 	* @access public
 	* @throws \consim\core\exception\invalid_argument
 	* @throws \consim\core\exception\out_of_bounds
@@ -107,7 +107,7 @@ abstract class abstractEntity
 	* @param string $string New value of $varname
 	* @param integer $max_char Allowed number of characters; Default: 255
 	* @param integer $min_char Minimum number of characters; Default: 0
-	* @return abstractEntity $this object for chaining calls; load()->set()->save()
+	* @return $this object for chaining calls; load()->set()->save()
 	* @access protected
 	* @throws \consim\core\exception\invalid_argument
 	* @throws \consim\core\exception\unexpected_value
@@ -153,7 +153,7 @@ abstract class abstractEntity
 	* @param integer $integer New value of $varname
 	* @param boolean $unsigned If must the integer unsigned?; Default: true
 	* @param int $max_int Maximum of Integer
-	* @return abstractEntity $this object for chaining calls; load()->set()->save()
+	* @return $this object for chaining calls; load()->set()->save()
 	* @access protected
 	* @throws \consim\core\exception\out_of_bounds
 	*/

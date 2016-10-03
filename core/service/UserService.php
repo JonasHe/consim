@@ -21,17 +21,54 @@ class UserService
 	/** @var ContainerInterface */
 	protected $container;
 
+	/** @var \phpbb\user */
+	protected $user;
+
+	/** @var \consim\core\entity\ConsimUser|null */
+	protected $currentUser = null;
+
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\db\driver\driver_interface		$db							Database object
-	 * @param ContainerInterface					$container					Service container interface
+	 * @param \phpbb\db\driver\driver_interface		$db				Database object
+	 * @param ContainerInterface					$container		Service container interface
+	 * @param \phpbb\user							$user			User object
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
-		ContainerInterface $container)
+		ContainerInterface $container,
+		\phpbb\user $user)
 	{
 		$this->db = $db;
 		$this->container = $container;
+		$this->user = $user;
+	}
+
+	/**
+	 * @return \consim\core\entity\ConsimUser
+	 */
+	public function getCurrentUser()
+	{
+		if($this->currentUser == null)
+		{
+			$this->currentUser = $this->getUser($this->user->data['user_id']);
+		}
+
+		return $this->currentUser;
+	}
+
+	/**
+	 * @param $userId
+	 *
+	 * @return \consim\core\entity\ConsimUser
+	 */
+	public function getUser($userId)
+	{
+		if($this->currentUser != null && $this->currentUser->getUserId())
+		{
+			return $this->currentUser;
+		}
+
+		return $this->container->get('consim.core.entity.consim_user')->load($userId);
 	}
 }

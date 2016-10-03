@@ -12,6 +12,13 @@ services:
                 - @template
                 - @request
                 - @dbal.conn
+                - @consim.core.service.action
+                - @consim.core.service.inventory
+                - @consim.core.service.location
+                - @consim.core.service.user
+                - @consim.core.service.user_skill
+                - @consim.core.service.weather
+                - @consim.core.service.widget
 
     consim.core.controller.action:
         class: consim\core\controller\ActionController
@@ -22,6 +29,13 @@ services:
             - @user
             - @template
             - @request
+            - @consim.core.service.action
+            - @consim.core.service.inventory
+            - @consim.core.service.location
+            - @consim.core.service.user
+            - @consim.core.service.user_skill
+            - @consim.core.service.weather
+            - @consim.core.service.widget
 
     consim.core.controller.request:
         class: consim\core\controller\RequestController

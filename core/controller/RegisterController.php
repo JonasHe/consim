@@ -279,7 +279,7 @@ class RegisterController
 	* @access private
 	* @throws \consim\core\exception\out_of_bounds
 	*/
-	private function addUserToConsim($consim_user)
+	private function addUserToConsim(ConsimUser $consim_user)
 	{
 		$user_id = $this->user->data['user_id'];
 		$consim_user->insert($user_id);
