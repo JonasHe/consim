@@ -153,7 +153,7 @@ class RequestController
 		}
 		$action->userDone();
 
-		redirect($this->helper->route('consim_core_work', array('work_id' => $action->getId())));
+		redirect($this->helper->route('consim_core_work', array('action_id' => $action->getId())));
 	}
 
 	protected function is_valid($value)

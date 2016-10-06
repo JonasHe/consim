@@ -9,7 +9,6 @@
 
 namespace consim\core\controller;
 
-use consim\core\service\MapService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
