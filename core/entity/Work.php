@@ -8,8 +8,6 @@
 
 namespace consim\core\entity;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 /**
  * Entity
  */
@@ -57,9 +55,6 @@ class Work extends abstractEntity
 		'condition_3_value',
 	);
 
-	/** @var ContainerInterface */
-	protected $container;
-
 	/**
 	 * The database table the consim user data are stored in
 	 * @var string
@@ -76,18 +71,15 @@ class Work extends abstractEntity
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface	$db					Database object
-	 * @param ContainerInterface				$container			Service container interface
 	 * @param string							$consim_work_table	Name of the table used to store data
 	 * @param string							$consim_skill_table	Name of the table used to store data
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
-		ContainerInterface $container,
 		$consim_work_table,
 		$consim_skill_table)
 	{
 		$this->db = $db;
-		$this->container = $container;
 		$this->consim_work_table = $consim_work_table;
 		$this->consim_skill_table = $consim_skill_table;
 	}
@@ -325,19 +317,5 @@ class Work extends abstractEntity
 	{
 		$this->data['experience_points'] = unserialize($string);
 		return $this;
-	}
-
-	/**
-	 * Get all Output for this Work
-	 *
-	 * @return WorkOutput[][]
-	 */
-	public function getSortedOutputs()
-	{
-		if($this->sorted_outputs === null)
-		{
-			$this->sorted_outputs = $this->container->get('consim.core.service.work')->getSortedOutputs($this->data['id']);
-		}
-		return $this->sorted_outputs;
 	}
 }

@@ -122,6 +122,34 @@ class LocationService
 	}
 
 	/**
+	 * Return start and end location of route
+	 * e.g: Location[start] and Location[end]
+	 *
+	 * @param \consim\core\entity\Route $route
+	 * @return \consim\core\entity\Location[]
+	 */
+	public function getLocationFromRoute($start_id, $route)
+	{
+		/** @var Location[] $locations */
+		$locations = array();
+
+		//if start equal start of route
+		if($start_id == $route->getStartLocationId())
+		{
+			$locations['start'] = $this->getLocation($start_id);
+			$locations['end'] = $this->getLocation($route->getEndLocationId());
+		}
+		//if reverse way
+		else
+		{
+			$locations['start'] = $this->getLocation($route->getEndLocationId());
+			$locations['end'] = $this->getLocation($route->getStartLocationId());
+		}
+
+		return $locations;
+	}
+
+	/**
 	* Get all destination, which can be arrive at the start location
 	*
 	* @param int $start start location

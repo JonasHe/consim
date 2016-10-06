@@ -8,6 +8,7 @@
 
 namespace consim\core\service;
 
+use consim\core\entity\Building;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -45,6 +46,42 @@ class BuildingService
 		$this->container = $container;
 		$this->template = $template;
 		$this->helper = $helper;
+	}
+
+	/**
+	 * Return the building
+	 *
+	 * @param $buildingId
+	 * @return Building
+	 */
+	public function getBuilding($buildingId)
+	{
+		return $this->container->get('consim.core.entity.building')->load($buildingId);
+	}
+
+	/**
+	 * @param int $location_id
+	 * @param int $building_type_id
+	 * @return Building
+	 * @throws \consim\core\exception\out_of_bounds
+	 */
+	public function findBuilding($location_id, $building_type_id)
+	{
+		$sql = 'SELECT lb.id, lb.name, lb.description, b.id AS type_id, b.name AS type_name
+			FROM ' . $this->container->getParameter('tables.consim.buildings') . ' lb
+			LEFT JOIN ' . $this->container->getParameter('tables.consim.building_types') . ' b ON lb.type_id = b.id
+			WHERE b.id = '. $building_type_id .'
+				AND lb.location_id = '. $location_id;
+		$result = $this->db->sql_query($sql);
+		$data = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		if ($data === false)
+		{
+			throw new \consim\core\exception\out_of_bounds('id');
+		}
+
+		return $this->container->get('consim.core.entity.building')->import($data);
 	}
 
 	/**

@@ -70,6 +70,22 @@ class ActionService
 	}
 
 	/**
+	 * Return action from actionId
+	 *
+	 * @param $actionId
+	 * @return Action
+	 */
+	public function getAction($actionId)
+	{
+		if($this->currentAction != null && $this->currentAction->getId() == $actionId)
+		{
+			return $this->currentAction;
+		}
+
+		return $this->container->get('consim.core.entity.action')->load($actionId);
+	}
+
+	/**
 	* Get all finished actions
 	*
 	* @access public

@@ -124,9 +124,7 @@ abstract class AbstractController
 			$this->template->assign_var('OWM_ERROR',$this->user->lang($e->getMessage()));
 		}
 
-		// Load the map for use on this site
-		$map = $this->container->get('consim.core.controller.map');
-		$map->load_map("consimMap", "mainMap", array('no_additional_buildings', 'no_zoom'), 3, 3);
+
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
@@ -134,7 +132,6 @@ abstract class AbstractController
 			'TIME'							=> date("d.m.Y - H:i:s", time()),
 			'GO_TO_INFORMATION'				=> $this->helper->route('consim_core_activity'),
 			'U_OVERVIEW'					=> $this->helper->route('consim_core_index'),
-			'REGION_MAP'					=> $map->show_map('width: 750px; height: 511px !important;'),
 		));
 	}
 

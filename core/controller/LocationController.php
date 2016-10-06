@@ -9,6 +9,7 @@
 
 namespace consim\core\controller;
 
+use consim\core\service\MapService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,6 +19,15 @@ class LocationController extends AbstractController
 {
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
+
+	/** @var \consim\core\service\BuildingService */
+	protected $buildingService;
+
+	/** @var \consim\core\service\MapService */
+	protected $mapService;
+
+	/** @var \consim\core\service\WorkService */
+	protected $workService;
 
 	/**
 	 * Constructor
@@ -30,12 +40,16 @@ class LocationController extends AbstractController
 	 * @param \phpbb\request\request				$request			Request object
 	 * @param \phpbb\db\driver\driver_interface		$db					Database object
 	 * @param \consim\core\service\ActionService	$actionService		ActionService object
+	 * @param \consim\core\service\BuildingService	$buildingService	BuildingService object
 	 * @param \consim\core\service\InventoryService	$inventoryService	InventoryService object
 	 * @param \consim\core\service\LocationService	$locationService	LocationService object
+	 * @param \consim\core\service\MapService		$mapService			MapService object
 	 * @param \consim\core\service\UserService		$userService		UserService object
 	 * @param \consim\core\service\UserSkillService	$userSkillService	UserSkillService object
 	 * @param \consim\core\service\WeatherService	$weatherService		WeatherService object
 	 * @param \consim\core\service\widgetService	$widgetService		WidgetService object
+	 * @param \consim\core\service\WorkService		$workService		WorkService object
+	 * @param
 	 * @return \consim\core\controller\LocationController
 	 * @access public
 	 */
@@ -47,12 +61,15 @@ class LocationController extends AbstractController
 		\phpbb\request\request $request,
 		\phpbb\db\driver\driver_interface $db,
 		\consim\core\service\ActionService $actionService,
+		\consim\core\service\BuildingService $buildingService,
 		\consim\core\service\InventoryService $inventoryService,
 		\consim\core\service\LocationService $locationService,
+		\consim\core\service\MapService $mapService,
 		\consim\core\service\UserService $userService,
 		\consim\core\service\UserSkillService $userSkillService,
 		\consim\core\service\WeatherService $weatherService,
-		\consim\core\service\WidgetService $widgetService)
+		\consim\core\service\WidgetService $widgetService,
+		\consim\core\service\WorkService $workService)
 	{
 		$this->config = $config;
 		$this->container = $container;
@@ -62,12 +79,15 @@ class LocationController extends AbstractController
 		$this->request = $request;
 		$this->db = $db;
 		$this->actionService = $actionService;
+		$this->buildingService = $buildingService;
 		$this->inventoryService = $inventoryService;
 		$this->locationService = $locationService;
+		$this->mapService = $mapService;
 		$this->userService = $userService;
 		$this->userSkillService = $userSkillService;
 		$this->weatherService = $weatherService;
 		$this->widgetService = $widgetService;
+		$this->workService = $workService;
 
 		//Starting with the init
 		$this->init();
@@ -138,6 +158,11 @@ class LocationController extends AbstractController
 		$this->container->get('consim.core.service.building')
 			->allLocationBuildingsToTemplate($location->getId());
 
+		//Display the map
+		$this->mapService->showMap("consimMap", "mainMap", array('no_additional_buildings', 'no_zoom'), 3, 3, 'width: 750px; height: 511px !important;');
+		//$map = $this->container->get('consim.core.controller.map');
+		//$map->load_map("consimMap", "mainMap", array('no_additional_buildings', 'no_zoom'), 3, 3);
+
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(
 			'CAN_TRAVEL'					=> ($location->getId() === $consimUser->getLocationId()
@@ -174,13 +199,13 @@ class LocationController extends AbstractController
 		}
 
 		$location = $this->locationService->getLocation($location_id);
-		$building = $this->container->get('consim.core.entity.building')->load($building_id);
+		$building = $this->buildingService->getBuilding($building_id);
 
 		//add location to navbar
 		$this->add_navlinks($location->getName(), $this->helper->route('consim_core_location', array('location_id' => $location->getId())));
 
 		//Show all Works
-		$this->container->get('consim.core.service.work')->allWorksToTemplate($building->getTypeId());
+		$this->workService->allWorksToTemplate($building->getTypeId());
 
 		add_form_key('working');
 		// Set output vars for display in the template

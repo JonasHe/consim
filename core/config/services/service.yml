@@ -2,23 +2,6 @@ imports:
     - { resource: tables.yml }
 
 services:
-  consim.core.service.location:
-        class: consim\core\service\LocationService
-        arguments:
-            - @dbal.conn
-            - @service_container
-            - @consim.core.service.user
-            - %tables.consim.routes%
-            - %tables.consim.locations%
-            - %tables.consim.location_types%
-            - %tables.consim.provinces%
-            - %tables.consim.countries%
-            - %tables.consim.buildings%
-            - %tables.consim.building_types%
-            - %tables.consim.works%
-            - %tables.consim.skills%
-            - %tables.consim.items%
-
   consim.core.service.action:
       class: consim\core\service\ActionService
       arguments:
@@ -43,6 +26,40 @@ services:
           - @consim.core.service.user
           - %tables.consim.items%
           - %tables.consim.inventory_items%
+
+  consim.core.service.location:
+      class: consim\core\service\LocationService
+      arguments:
+          - @dbal.conn
+          - @service_container
+          - @consim.core.service.user
+          - %tables.consim.routes%
+          - %tables.consim.locations%
+          - %tables.consim.location_types%
+          - %tables.consim.provinces%
+          - %tables.consim.countries%
+          - %tables.consim.buildings%
+          - %tables.consim.building_types%
+          - %tables.consim.works%
+          - %tables.consim.skills%
+          - %tables.consim.items%
+
+  consim.core.service.map:
+      class: consim\core\service\MapService
+      arguments:
+          - @config
+          - @service_container
+          - @controller.helper
+          - @user
+          - @template
+          - @request
+          - @dbal.conn
+
+  consim.core.service.route:
+      class: consim\core\service\RouteService
+      arguments:
+          - @dbal.conn
+          - @service_container
 
   consim.core.service.user:
       class: consim\core\service\UserService

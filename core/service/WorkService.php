@@ -64,6 +64,17 @@ class WorkService
 	}
 
 	/**
+	 * Return work from work_id
+	 *
+	 * @param $work_id
+	 * @return \consim\core\entity\Work
+	 */
+	public function getWork($work_id)
+	{
+		return $this->container->get('consim.core.entity.work')->load($work_id);
+	}
+
+	/**
 	 * Get all works of building type
 	 *
 	 * @param int $buildingType
@@ -152,6 +163,41 @@ class WorkService
 		return $outputs;
 	}
 
+	/**
+	 * Set all work outputs to template
+	 *
+	 * @param $work_id
+	 * @return void
+	 */
+	public function allWorkOutputsToTemplate($work_id)
+	{
+		//get sorted outpus
+		$workOutputs = $this->getSortedOutputs($work_id);
+
+		//set output to template
+		foreach ($workOutputs as $type => $outputs)
+		{
+			$this->template->assign_block_vars('work_outputs', array(
+				'TYPE'			=> $outputs['name'],
+				'VALUE'			=> (isset($result) && !empty($result['outputs'][$type]))? $result['outputs'][$type] : 0,
+			));
+
+			/** @var \consim\core\entity\WorkOutput[] $outputs */
+			for($i=0; $i < 5; $i++)
+			{
+				$this->template->assign_block_vars('work_outputs.types', array(
+					'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
+				));
+			}
+		}
+	}
+
+	/**
+	 * All works of buildings type to template
+	 *
+	 * @param $buildingTypeId
+	 * @return void
+	 */
 	public function allWorksToTemplate($buildingTypeId)
 	{
 		$userService = $this->container->get('consim.core.service.user');
@@ -192,7 +238,8 @@ class WorkService
 				'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
 			));
 
-			foreach ($work->getSortedOutputs() as $type => $outputs)
+			$workOutputs = $this->getSortedOutputs($work->getId());
+			foreach ($workOutputs as $outputs)
 			{
 				$this->template->assign_block_vars('works.outputs', array(
 					'TYPE'			=> $outputs['name'],

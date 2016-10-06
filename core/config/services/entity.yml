@@ -68,7 +68,6 @@ services:
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @dbal.conn
-            - @service_container
             - %tables.consim.works%
             - %tables.consim.skills%
 
