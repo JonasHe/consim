@@ -10,6 +10,8 @@
 namespace consim\core\controller;
 
 use consim\core\entity\Action;
+use consim\core\service\ActionService;
+use consim\core\service\UserSkillService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -17,29 +19,77 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class RequestController
 {
+	/** @var ContainerInterface */
+	protected $container;
+
+	/** @var \phpbb\controller\helper */
+	protected $helper;
+
+	/** @var \phpbb\user */
+	protected $user;
+
+	/** @var \phpbb\request\request */
+	protected $request;
+
+	/** @var  \consim\core\service\ActionService */
+	protected $actionService;
+
+	/** @var \consim\core\service\RouteService */
+	protected $routeService;
+
+	/** @var  \consim\core\service\UserService */
+	protected $userService;
+
+	/** @var  \consim\core\service\UserSkillService */
+	protected $userSkillService;
+
+	/** @var \consim\core\service\WorkService */
+	protected $workService;
+
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\controller\helper			$helper				Controller helper object
-	 * @param ContainerInterface				$container			Service container interface
-	 * @param \phpbb\user						$user				User object
-	 * @param \phpbb\request\request			$request			Request object
+	 * @param \phpbb\controller\helper				$helper				Controller helper object
+	 * @param ContainerInterface					$container			Service container interface
+	 * @param \phpbb\user							$user				User object
+	 * @param \phpbb\request\request				$request			Request object
+	 * @param \consim\core\service\ActionService	$actionService		ActionService object
+	 * @param \consim\core\service\RouteService		$routeService		RouteService object
+	 * @param \consim\core\service\UserService		$userService		UserService object
+	 * @param \consim\core\service\UserSkillService	$userSkillService	UserSkillService object
+	 * @param \consim\core\service\WorkService		$workService		WorkService object
 	 * @return \consim\core\controller\RequestController
 	 * @access public
 	 */
 	public function __construct(ContainerInterface $container,
 		\phpbb\controller\helper $helper,
 		\phpbb\user $user,
-		\phpbb\request\request $request)
+		\phpbb\request\request $request,
+		\consim\core\service\ActionService $actionService,
+		\consim\core\service\RouteService $routeService,
+		\consim\core\service\UserService $userService,
+		\consim\core\service\UserSkillService $userSkillService,
+		\consim\core\service\WorkService $workService)
 	{
 		$this->container = $container;
 		$this->helper = $helper;
 		$this->user = $user;
 		$this->request = $request;
+		$this->actionService = $actionService;
+		$this->routeService = $routeService;
+		$this->userService = $userService;
+		$this->userSkillService = $userSkillService;
+		$this->workService = $workService;
 
 		return $this;
 	}
 
+	/**
+	 * Start travel
+	 *
+	 * @param $travel_id
+	 * @return void
+	 */
 	public function startTravel($travel_id)
 	{
 		//Check the request
@@ -49,7 +99,7 @@ class RequestController
 		}
 
 		//Load ConsimUser
-		$consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
+		$consim_user = $this->userService->getCurrentUser();
 
 		//Check, if user not active
 		if($consim_user->getActive())
@@ -58,7 +108,7 @@ class RequestController
 		}
 
 		//Get Infos about the Route
-		$route = $this->container->get('consim.core.entity.route')->load($consim_user->getLocationId(), $travel_id);
+		$route = $this->routeService->findRoute($consim_user->getLocationId(), $travel_id);
 
 		$now = time();
 		$this->container->get('consim.core.entity.action')
@@ -78,6 +128,11 @@ class RequestController
 		redirect($this->helper->route('consim_core_index'));
 	}
 
+	/**
+	 * Start work
+	 *
+	 * return void
+	 */
 	public function startWork()
 	{
 		$work_id = $this->request->variable('work_id', 0);
@@ -88,7 +143,7 @@ class RequestController
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
 		//Load ConsimUser
-		$consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
+		$consim_user = $this->userService->getCurrentUser();
 
 		//Check, if user not active
 		if($consim_user->getActive())
@@ -97,19 +152,11 @@ class RequestController
 		}
 
 		//Get infos about work
-		$work = $this->container->get('consim.core.entity.work')->load($work_id);
-		$user_skills = $this->container->get('consim.core.service.user_skill')->getUserSkills($consim_user->getUserId());
+		$work = $this->workService->getWork($work_id);
+		$user_skills = $this->userSkillService->getCurrentUserSkills();
 
 		//Check condition
-		$can_work = true;
-		if(($work->getCondition1Id() > 0 && $user_skills[$work->getCondition1Id()]->getValue() < $work->getCondition1Value()) ||
-			($work->getCondition2Id() > 0 && $user_skills[$work->getCondition2Id()]->getValue() < $work->getCondition2Value()) ||
-			($work->getCondition3Id() > 0 && $user_skills[$work->getCondition3Id()]->getValue() < $work->getCondition3Value())
-		)
-		{
-			$can_work = false;
-		}
-		if($can_work === false)
+		if(!$work->canUserWork($user_skills))
 		{
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
@@ -127,9 +174,15 @@ class RequestController
 		redirect($this->helper->route('consim_core_index'));
 	}
 
+	/**
+	 * End work
+	 *
+	 * @return void
+	 */
 	public function endWork()
 	{
 		$action_id = $this->request->variable('action_id', 0);
+
 		//Check the request
 		if (!$this->is_valid($action_id) || !check_form_key('working_end'))
 		{
@@ -137,7 +190,7 @@ class RequestController
 		}
 
 		//Load ConsimUser
-		$consim_user = $this->container->get('consim.core.entity.consim_user')->load($this->user->data['user_id']);
+		$consim_user = $this->userService->getCurrentUser();
 
 		//Check, if user active
 		if(!$consim_user->getActive())
@@ -145,7 +198,7 @@ class RequestController
 			throw new \phpbb\exception\http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
-		$action = $this->container->get('consim.core.service.action')->getCurrentActionFromUser($this->user->data['user_id']);
+		$action = $this->actionService->getCurrentAction();
 
 		if($action->getStatus() != 2)
 		{
@@ -156,6 +209,12 @@ class RequestController
 		redirect($this->helper->route('consim_core_work', array('action_id' => $action->getId())));
 	}
 
+	/**
+	 * Is value valid?
+	 *
+	 * @param $value
+	 * @return bool
+	 */
 	protected function is_valid($value)
 	{
 		return !empty($value) && preg_match('/^\w+$/', $value);

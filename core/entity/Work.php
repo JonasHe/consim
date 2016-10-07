@@ -318,4 +318,23 @@ class Work extends abstractEntity
 		$this->data['experience_points'] = unserialize($string);
 		return $this;
 	}
+
+	/**
+	 * Check if user can run this work
+	 *
+	 * @param \consim\core\entity\UserSkill[] $user_skills
+	 * @return bool
+	 */
+	public function canUserWork($user_skills)
+	{
+		if(($this->data['condition_1_id'] > 0 && $user_skills[$this->data['condition_1_id']]->getValue() < $this->data['condition_1_value']) ||
+			($this->data['condition_2_id'] > 0 && $user_skills[$this->data['condition_2_id']]->getValue() < $this->data['condition_1_value']) ||
+			($this->data['condition_3_id'] > 0 && $user_skills[$this->data['condition_3_id']]->getValue() < $this->data['condition_1_value'])
+		)
+		{
+			return false;
+		}
+
+		return true;
+	}
 }

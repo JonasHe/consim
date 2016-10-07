@@ -45,4 +45,16 @@ class RouteService
 	{
 		return $this->container->get('consim.core.entity.route')->load($route_id);
 	}
+
+	/**
+	 * Find route with start location and end location
+	 *
+	 * @param $start
+	 * @param $end
+	 * @return \consim\core\entity\Route
+	 */
+	public function findRoute($start, $end)
+	{
+		return $this->container->get('consim.core.entity.route')->find($start, $end);
+	}
 }
