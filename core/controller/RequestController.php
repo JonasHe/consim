@@ -10,8 +10,6 @@
 namespace consim\core\controller;
 
 use consim\core\entity\Action;
-use consim\core\service\ActionService;
-use consim\core\service\UserSkillService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

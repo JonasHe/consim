@@ -50,6 +50,11 @@ services:
             - @controller.helper
             - @user
             - @request
+            - @consim.core.service.action
+            - @consim.core.service.route
+            - @consim.core.service.user
+            - @consim.core.service.user_skill
+            - @consim.core.service.work
 
     consim.core.controller.register:
         class: consim\core\controller\RegisterController
