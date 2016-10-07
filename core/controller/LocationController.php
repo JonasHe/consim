@@ -9,8 +9,6 @@
 
 namespace consim\core\controller;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 /**
  * Main controller
  */
@@ -31,8 +29,6 @@ class LocationController extends AbstractController
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\config\config					$config				Config object
-	 * @param ContainerInterface					$container			Service container interface
 	 * @param \phpbb\controller\helper				$helper				Controller helper object
 	 * @param \phpbb\user							$user				User object
 	 * @param \phpbb\template\template				$template			Template object
@@ -52,9 +48,7 @@ class LocationController extends AbstractController
 	 * @return \consim\core\controller\LocationController
 	 * @access public
 	 */
-	public function __construct(\phpbb\config\config $config,
-		ContainerInterface $container,
-		\phpbb\controller\helper $helper,
+	public function __construct(\phpbb\controller\helper $helper,
 		\phpbb\user $user,
 		\phpbb\template\template $template,
 		\phpbb\request\request $request,
@@ -70,8 +64,6 @@ class LocationController extends AbstractController
 		\consim\core\service\WidgetService $widgetService,
 		\consim\core\service\WorkService $workService)
 	{
-		$this->config = $config;
-		$this->container = $container;
 		$this->helper = $helper;
 		$this->user = $user;
 		$this->template = $template;
@@ -154,13 +146,16 @@ class LocationController extends AbstractController
 		}
 
 		//Set all building from location to template
-		$this->container->get('consim.core.service.building')
-			->allLocationBuildingsToTemplate($location->getId());
+		$this->buildingService->allLocationBuildingsToTemplate($location->getId());
 
 		//Display the map
-		$this->mapService->showMap("consimMap", "mainMap", array('no_additional_buildings', 'no_zoom'), 3, 3, 'width: 750px; height: 511px !important;');
-		//$map = $this->container->get('consim.core.controller.map');
-		//$map->load_map("consimMap", "mainMap", array('no_additional_buildings', 'no_zoom'), 3, 3);
+		$this->mapService->showMap("consimMap",
+			"mainMap",
+			'width: 750px; height: 511px !important;',
+			array('no_additional_buildings', 'no_zoom'),
+			3,
+			3
+		);
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(

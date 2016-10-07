@@ -11,7 +11,7 @@
 
 namespace consim\core\migrations\v10x;
 
-class m4_province_3 extends \phpbb\db\migration\migration
+class m6_province_3 extends \phpbb\db\migration\migration
 {
 	static public function depends_on()
 	{

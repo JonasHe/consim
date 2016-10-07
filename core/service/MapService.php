@@ -37,12 +37,6 @@ class MapService
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
-	/** @var string */
-	protected $divName;
-
-	/** @var string */
-	protected $data;
-
 	/**
 	 * Constructor
 	 *
@@ -72,9 +66,6 @@ class MapService
 		$this->request = $request;
 		$this->db = $db;
 
-		$this->divName = "";
-		$this->data = "";
-
 		return $this;
 	}
 
@@ -83,30 +74,19 @@ class MapService
 	 *
 	 * @param string $divName		The name of the div where the map should be shown
 	 * @param string $map			The map which should be loaded
+	 * @param string $css			Css to make it look nicer
 	 * @param array  $args			Parts that shouldn't be loaded
 	 * @param int    $focus			The ID of the province to be focused
 	 * @param int    $highlight		The ID of the province to be highlighted
-	 * @param string $css			Css to make it look nicer
+	 * @return void
 	 */
-	public function showMap($divName, $map, $args = array(), $focus = 0, $highlight = 0, $css = "")
+	public function showMap($divName, $map, $css, $args = array(), $focus = 0, $highlight = 0)
 	{
 		$map = $this->load_map($divName, $map, $args, $focus, $highlight);
 
 		$this->template->assign_vars(array(
-			'REGION_MAP' => '<div id="'. $divName .'" style="'. $css .'background-size: cover;"></div>'. $map,
+			'MAP' => '<div id="'. $divName .'" style="'. $css .'background-size: cover;"></div>'. $map,
 		));
-	}
-
-	/**
-	 * Function show the map in the desired spot
-	 *
-	 * @param string $css Css to make it look nicer
-	 * @return string
-	 * @access public
-	 */
-	public function show_map($css)
-	{
-		return '<div id="'. $this->divName .'" style="'. $css .'background-size: cover;"></div>'. $this->data;
 	}
 
 	/**
@@ -118,13 +98,12 @@ class MapService
 	 * @param int $focus The ID of the province to be focused
 	 * @param int $highlight The ID of the province to be highlighted
 	 * @return string
-	 * @access public
+	 * @access protected
 	 */
 	// args = no_roads, no_markers, no_buildings (Includes Roads), no_additional_buildings, no_zoom, no_legend
-	public function load_map($divName, $map, $args = array(), $focus = 0, $highlight = 0)
+	protected function load_map($divName, $map, $args = array(), $focus = 0, $highlight = 0)
 	{
 		$markers = $roads = $cities = $regions = array();
-		$this->divName = $divName;
 
 		if(!in_array('no_roads',$args) && !in_array('no_buildings',$args) && !in_array('no_additional_buildings',$args))
 		{
@@ -160,7 +139,7 @@ class MapService
 		$this->user->add_lang_ext('consim/core', 'consim_install');
 
 		//Alle erforderlichen Daten wurden geladen und werden für die Ausgabe gespeichert
-		$this->data = '<div style="display: none;" class="map_config">'.json_encode(array("zoom" => $zoom, "legend" => $legend, "divName" => $this->divName,
+		$data = '<div style="display: none;" class="map_config">'.json_encode(array("zoom" => $zoom, "legend" => $legend, "divName" => $divName,
 																						  "focus" => $focus, "map_name" => $map, "board_url" => generate_board_url())).'</div>
             <div style="display: none;" id="map_data">'.json_encode(array("roads" => $roads, "cities" => array_merge($cities,$markers),
 																		  "provinces" => $this->load_provinces($regions, $highlight), "regions" => $regions, "language" => array(
@@ -179,17 +158,18 @@ class MapService
             <script type="text/javascript" src="'.generate_board_url().'/ext/consim/core/styles/SZ-Style/template/js/'.$map.'.js"></script>
             <script type="text/javascript" src="'.generate_board_url().'/ext/consim/core/styles/SZ-Style/template/js/mapConfig.js"></script>';
 
-		return $this->data;
+		return $data;
 	}
 
 	/**
 	 * Load all roads and their status
 	 *
+	 * @param array $regions
 	 * @param int $id Not null if only the roads of one province should be loaded
-	 * @return array $roads Contains all requested roads and their status
-	 * @access private
+	 * @return array $roads    Contains all requested roads and their status
+	 * @access protected
 	 */
-	private function load_roads(&$regions, $id = 0)
+	protected function load_roads(&$regions, $id = 0)
 	{
 		$roads = array();
 
@@ -222,11 +202,12 @@ class MapService
 	/**
 	 * Load all cities
 	 *
+	 * @param string $map
 	 * @param int $id Not null if only the cities of one province should be loaded
 	 * @return array $cities Contains all requested cities and their data
-	 * @access private
+	 * @access protected
 	 */
-	private function load_cities($map, $id = 0)
+	protected function load_cities($map, $id = 0)
 	{
 		$cities = array();
 		//$this->user->add_lang_ext('consim/core', 'consim_install');
@@ -261,10 +242,12 @@ class MapService
 	/**
 	 * Load all provinces and their data
 	 *
+	 * @param array $regions
+	 * @param int $highlight
 	 * @return array $provinces Contains all provinces and their data
-	 * @access private
+	 * @access protected
 	 */
-	private function load_provinces(&$regions, $highlight)
+	protected function load_provinces(&$regions, $highlight)
 	{
 		$provinces = array();
 
@@ -286,11 +269,12 @@ class MapService
 	/**
 	 * Load all custom markers
 	 *
+	 * @param string $map
 	 * @param int $id Not null if only the roads of one province should be loaded
 	 * @return array $markers Contains all requested markers
-	 * @access private
+	 * @access protected
 	 */
-	private function load_markers($map, $id = 0)
+	protected function load_markers($map, $id = 0)
 	{
 		$markers = array();
 

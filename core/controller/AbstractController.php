@@ -10,19 +10,12 @@
 namespace consim\core\controller;
 
 use consim\core\exception\base;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Main controller
  */
 abstract class AbstractController
 {
-	/** @var \phpbb\config\config */
-	protected $config;
-
-	/** @var ContainerInterface */
-	protected $container;
-
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 

@@ -49,7 +49,7 @@ class Map
 	* @param \phpbb\template\template			$template		Template object
 	* @param \phpbb\request\request				$request		Request object
 	* @param \phpbb\db\driver\driver_interface	$db				Database object
-	* @return News
+	* @return Map
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -67,6 +67,8 @@ class Map
 		$this->template = $template;
 		$this->request = $request;
 		$this->db = $db;
+
+		return $this;
 	}
 
 	/**
@@ -100,10 +102,8 @@ class Map
 	public function overview()
 	{	
         // Load the map for use on this site
-		$map = $this->container->get('consim.core.controller.map');
-		$map->load_map("addMarkers", "mainMap");
-
-        $this->template->assign_var('MAP', $map->show_map('width: 750px; height: 511px;'));
+		$this->container->get('consim.core.service.map')
+			->showMap("addMarkers", "mainMap", 'width: 750px; height: 511px;');
 
 		// Catch all markers from the database
 		$sql = 'SELECT id, name FROM phpbb_consim_markers';

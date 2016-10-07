@@ -5,8 +5,6 @@ services:
     consim.core.controller.location:
             class: consim\core\controller\LocationController
             arguments:
-                - @config
-                - @service_container
                 - @controller.helper
                 - @user
                 - @template
@@ -26,8 +24,6 @@ services:
     consim.core.controller.action:
         class: consim\core\controller\ActionController
         arguments:
-            - @config
-            - @service_container
             - @controller.helper
             - @user
             - @template
