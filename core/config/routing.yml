@@ -1,50 +1,50 @@
 consim_core_index:
     path: /game
-    defaults: { _controller: consim.core.controller.location:showLocation }
+    defaults: { _controller: consim.core.controller.location:showLocationAction }
 
 consim_core_location:
     path: /game/location/{location_id}
-    defaults: { _controller: consim.core.controller.location:showLocation, location_id: 0 }
+    defaults: { _controller: consim.core.controller.location:showLocationAction, location_id: 0 }
     requirements:
         location_id: \w+
 
 consim_core_building:
     path: /game/location/{location_id}/building/{building_id}
-    defaults: { _controller: consim.core.controller.location:showLocationBuilding, location_id: 0, building_id: 0 }
+    defaults: { _controller: consim.core.controller.location:showLocationBuildingAction, location_id: 0, building_id: 0 }
     requirements:
         location_id: \w+
         building_id: \w+
 
 consim_core_activity:
     path: /game/activity
-    defaults: { _controller: consim.core.controller.action:showActivity}
+    defaults: { _controller: consim.core.controller.action:showActivityAction}
 
 consim_core_work_end:
     path: /game/work/end
-    defaults: { _controller: consim.core.controller.request:endWork }
+    defaults: { _controller: consim.core.controller.request:endWorkAction }
 
 consim_core_work_start:
     path: /game/work/start
-    defaults: { _controller: consim.core.controller.request:startWork }
+    defaults: { _controller: consim.core.controller.request:startWorkAction }
 
 consim_core_travel_start:
     path: /game/travel/start/{travel_id}
-    defaults: { _controller: consim.core.controller.request:startTravel, travel_id: 0 }
+    defaults: { _controller: consim.core.controller.request:startTravelAction, travel_id: 0 }
     requirements:
         travel_id: \w+
 
 consim_core_travel:
     path: /game/travel/{action_id}
-    defaults: { _controller: consim.core.controller.action:showTravel, action_id: 0}
+    defaults: { _controller: consim.core.controller.action:showTravelAction, action_id: 0}
     requirements:
         travel_id: \w+
 
 consim_core_work:
     path: /game/work/{action_id}
-    defaults: { _controller: consim.core.controller.action:showWork, action_id: 0}
+    defaults: { _controller: consim.core.controller.action:showWorkAction, action_id: 0}
     requirements:
         work_id: \w+
 
 consim_core_register:
     path: /game/register
-    defaults: { _controller: consim.core.controller.register:display }
+    defaults: { _controller: consim.core.controller.register:displayAction }

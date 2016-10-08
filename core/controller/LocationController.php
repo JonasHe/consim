@@ -92,7 +92,7 @@ class LocationController extends AbstractController
 	 * @return null
 	 * @access public
 	 */
-	public function showLocation($location_id = 0)
+	public function showLocationAction($location_id = 0)
 	{
 		// Is the form being submitted to us?
 		// Delete UserProfile
@@ -181,7 +181,7 @@ class LocationController extends AbstractController
 	 * @return null
 	 * @access public
 	 */
-	public function showLocationBuilding($location_id, $building_id)
+	public function showLocationBuildingAction($location_id, $building_id)
 	{
 		//must be an integer
 		$location_id = (int) $location_id;

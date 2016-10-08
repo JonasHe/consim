@@ -82,7 +82,7 @@ class ActionController extends AbstractController
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function showActivity()
+	public function showActivityAction()
 	{
 		$consim_user = $this->userService->getCurrentUser();
 		if($consim_user->getActive())
@@ -110,7 +110,7 @@ class ActionController extends AbstractController
 	 * @param int	$action_id
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function showWork($action_id)
+	public function showWorkAction($action_id)
 	{
 		$action = $this->actionService->getAction($action_id);
 
@@ -189,7 +189,7 @@ class ActionController extends AbstractController
 	 * @param $action_id
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function showTravel($action_id)
+	public function showTravelAction($action_id)
 	{
 		$action = $this->actionService->getAction($action_id);
 

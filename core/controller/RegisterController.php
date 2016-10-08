@@ -92,7 +92,7 @@ class RegisterController
 	* @return null
 	* @access public
 	*/
-	public function display()
+	public function displayAction()
 	{
 		//Ist User schon registriert?
 		if($this->user->data['consim_register'])

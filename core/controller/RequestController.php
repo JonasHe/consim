@@ -88,7 +88,7 @@ class RequestController
 	 * @param $travel_id
 	 * @return void
 	 */
-	public function startTravel($travel_id)
+	public function startTravelAction($travel_id)
 	{
 		//Check the request
 		if (!$this->is_valid($travel_id) || !check_link_hash($this->request->variable('hash', ''), 'travel_' . $travel_id))
@@ -131,7 +131,7 @@ class RequestController
 	 *
 	 * return void
 	 */
-	public function startWork()
+	public function startWorkAction()
 	{
 		$work_id = $this->request->variable('work_id', 0);
 
@@ -177,7 +177,7 @@ class RequestController
 	 *
 	 * @return void
 	 */
-	public function endWork()
+	public function endWorkAction()
 	{
 		$action_id = $this->request->variable('action_id', 0);
 
