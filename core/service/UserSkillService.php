@@ -66,7 +66,7 @@ class UserSkillService
 	 */
 	public function getCurrentUserSkills()
 	{
-		if($this->currentUserSkills == null)
+		if(null === $this->currentUserSkills)
 		{
 			$this->currentUserSkills = $this->getUserSkills($this->userService->getCurrentUser()->getUserId());
 		}

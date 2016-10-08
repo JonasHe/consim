@@ -65,7 +65,7 @@ class InventoryService
 	 */
 	public function getCurrentInventory()
 	{
-		if($this->currentInventory == null)
+		if(null === $this->currentInventory)
 		{
 			$this->currentInventory = $this->getInventory($this->userService->getCurrentUser()->getUserId());
 		}

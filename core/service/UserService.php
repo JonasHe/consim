@@ -49,7 +49,7 @@ class UserService
 	 */
 	public function getCurrentUser()
 	{
-		if($this->currentUser == null)
+		if(null === $this->currentUser)
 		{
 			$this->currentUser = $this->getUser($this->user->data['user_id']);
 		}
@@ -64,7 +64,7 @@ class UserService
 	 */
 	public function getUser($userId)
 	{
-		if($this->currentUser != null && $this->currentUser->getUserId())
+		if(null !== $this->currentUser && $this->currentUser->getUserId())
 		{
 			return $this->currentUser;
 		}

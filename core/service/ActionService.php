@@ -61,7 +61,7 @@ class ActionService
 	 */
 	public function getCurrentAction()
 	{
-		if($this->currentAction == null)
+		if(null === $this->currentAction)
 		{
 			$this->currentAction = $this->getCurrentActionFromUser($this->userService->getCurrentUser()->getUserId());
 		}
@@ -77,7 +77,7 @@ class ActionService
 	 */
 	public function getAction($actionId)
 	{
-		if($this->currentAction != null && $this->currentAction->getId() == $actionId)
+		if(null !== $this->currentAction && $this->currentAction->getId() == $actionId)
 		{
 			return $this->currentAction;
 		}
@@ -113,7 +113,7 @@ class ActionService
 	*/
 	public function getCurrentActionFromUser($user_id)
 	{
-		if($this->currentAction != null && $this->userService->getCurrentUser()->getUserId() == $user_id)
+		if(null !== $this->currentAction && $this->userService->getCurrentUser()->getUserId() == $user_id)
 		{
 			return $this->currentAction;
 		}

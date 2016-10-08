@@ -99,7 +99,7 @@ class LocationService
 	public function getCurrentLocation()
 	{
 
-		if($this->currentLocation == null)
+		if(null === $this->currentLocation)
 		{
 			$this->currentLocation = $this->getLocation($this->userService->getCurrentUser()->getLocationId());
 		}
@@ -113,7 +113,7 @@ class LocationService
 	 */
 	public function getLocation($locationId)
 	{
-		if($this->currentLocation != null && $this->currentLocation->getId() == $locationId)
+		if(null !== $this->currentLocation && $this->currentLocation->getId() == $locationId)
 		{
 			return $this->currentLocation;
 		}
