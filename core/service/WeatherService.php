@@ -73,7 +73,7 @@ class WeatherService
 	 */
 	public function getCurrentWeather()
 	{
-		if($this->weatherData == null)
+		if(null === $this->weatherData)
 		{
 			throw new unexpected_value('provinceId');
 		}
@@ -87,7 +87,7 @@ class WeatherService
 	 */
 	public function setWeatherWidget()
 	{
-		if($this->weatherData == null)
+		if(null === $this->weatherData)
 		{
 			throw new unexpected_value('provinceId');
 		}

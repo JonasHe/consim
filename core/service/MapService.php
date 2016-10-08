@@ -132,7 +132,8 @@ class MapService
 			$cities = $this->load_cities($map, $focus);
 		}
 
-		$buildings = (!in_array('no_buildings',$args)) ? true : false;
+		//why?
+		//$buildings = (!in_array('no_buildings',$args)) ? true : false;
 		$zoom = (!in_array('no_zoom', $args)) ? true : false;
 		$legend = (!in_array('no_legend', $args)) ? true : false;
 

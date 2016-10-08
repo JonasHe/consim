@@ -9,7 +9,6 @@
 
 namespace consim\core\controller;
 
-use consim\core\entity\Action;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

@@ -125,10 +125,11 @@ class LocationService
 	 * Return start and end location of route
 	 * e.g: Location[start] and Location[end]
 	 *
+	 * @param int $start_id
 	 * @param \consim\core\entity\Route $route
 	 * @return \consim\core\entity\Location[]
 	 */
-	public function getLocationFromRoute($start_id, $route)
+	public function getLocationFromRoute($start_id, \consim\core\entity\Route $route)
 	{
 		/** @var Location[] $locations */
 		$locations = array();
