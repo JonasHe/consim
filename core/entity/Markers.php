@@ -24,8 +24,7 @@ class Markers extends abstractEntity
 		'x'			            => 'integer',
         'y'                     => 'integer',
         'type'                  => 'integer',
-		//ToDO: zuviel??
-        //'prvnce_id'             => 'integer',
+        'map_name'              => 'integer',
 	);
 
 	/**
@@ -34,8 +33,6 @@ class Markers extends abstractEntity
 	protected static $validate_unsigned = array(
 		'id',
         'type',
-		//ToDO: zuviel??
-        'prvnce_id',
 	);
 
 	/**
@@ -62,7 +59,7 @@ class Markers extends abstractEntity
 	*
 	* Will throw an exception if the data was already inserted (call save() instead)
 	*
-	* @return News $this object for chaining calls; load()->set()->save()
+	* @return Markers $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -78,7 +75,7 @@ class Markers extends abstractEntity
 		unset($this->data['id']);
 
 		// Insert the data to the database
-		$sql = 'INSERT INTO ' . $this->consim_markers_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
+		$sql = 'INSERT INTO ' . $this->consim_markers_table . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
 		// Set the id using the id created by the SQL insert
@@ -247,5 +244,17 @@ class Markers extends abstractEntity
 	public function setType($type)
 	{
 		return $this->setInteger('type',$type);
+	}
+
+	/**
+	 * Set Map Name
+	 *
+	 * @param string $name
+	 * @return Markers
+	 * @access public
+	 */
+	public function setMapName($name)
+	{
+		return $this->setString('map_name',$name,255,0);
 	}
 }

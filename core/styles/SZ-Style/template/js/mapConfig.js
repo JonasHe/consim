@@ -4,20 +4,24 @@
     }
 
     config = [];
+    data = [];
     $('.map_config').each(function(index,element) {
         config.push($.parseJSON(element.innerText));
     });
 
-    data = $.parseJSON($('#map_data').text());
-    max_cities = data["cities"].length;
+    $('.map_data').each(function(index,element) {
+        data.push($.parseJSON(element.innerText));
+    });
+    var curr_data = data[data.length-1];
+    max_cities = curr_data["cities"].length;
     var settings = config[config.length-1];
     var pan = (settings["focus"] == 0) ? true : false;
     
     $('#'+settings["divName"]).css('background-image', 'url('+settings['board_url']+'/ext/consim/core/images/'+settings['map_name']+'.png)');
 
-    for(i = 0; i < data["cities"].length; i++) {
-        if(typeof data["language"]["BUILDING_TYPE_"+data["cities"][i]["type"]] != "undefined") {
-            data["cities"][i]["name"] = data["language"]["BUILDING_TYPE_"+data["cities"][i]["type"]]+" "+data["cities"][i]["name"];
+    for(i = 0; i < curr_data["cities"].length; i++) {
+        if(typeof curr_data["language"]["BUILDING_TYPE_" + curr_data["cities"][i]["type"]] != "undefined") {
+            curr_data["cities"][i]["name"] = curr_data["language"]["BUILDING_TYPE_" + curr_data["cities"][i]["type"]] + " " + curr_data["cities"][i]["name"];
         }
     }
     maps.push(new jvm.Map({
@@ -38,24 +42,24 @@
             }
         },
         onRegionTipShow: function(e, el, code){
-            if(typeof data["roads"][code] != "undefined") {
-                blocked = (data["roads"][code]["blocked"]==1) ? '<div class="blocked">'+data["language"]["ROAD_BLOCKED"]+'</div>' : 
-                '<div class="not_blocked">'+data["language"]["ROAD_NOT_BLOCKED"]+'</div>';
-                 el.html(data["roads"][code]["title"]+" ("+data["language"][data["roads"][code]["road_type"]]+")<br>"+blocked);
+            if(typeof curr_data["roads"][code] != "undefined") {
+                blocked = (curr_data["roads"][code]["blocked"]==1) ? '<div class="blocked">'+curr_data["language"]["ROAD_BLOCKED"]+'</div>' :
+                '<div class="not_blocked">'+curr_data["language"]["ROAD_NOT_BLOCKED"]+'</div>';
+                 el.html(curr_data["roads"][code]["title"]+" ("+curr_data["language"][curr_data["roads"][code]["road_type"]]+")<br>"+blocked);
             }
-            if(typeof data["provinces"][code] != "undefined") {
-                 el.html(data["provinces"][code]["name"]+"<br>"+data["language"]["COUNTRY_"+data["provinces"][code]["country"]]);
+            if(typeof curr_data["provinces"][code] != "undefined") {
+                 el.html(curr_data["provinces"][code]["name"]+"<br>"+curr_data["language"]["COUNTRY_"+curr_data["provinces"][code]["country"]]);
             }
         },
         onMarkerTipShow: function(e, el, code){
-            if(code > max_cities && typeof data["cities"][code-1] != "undefined") {
-                 el.html(data["cities"][code-1]["name"]);
+            if(code > max_cities && typeof curr_data["cities"][code-1] != "undefined") {
+                 el.html(curr_data["cities"][code-1]["name"]);
             }
         },
-        markers: data["cities"].map(function(a) { return { name: a.name, coords: a.coords } }),       
+        markers: curr_data["cities"].map(function(a) { return { name: a.name, coords: a.coords } }),
         series: {
             regions: [{
-                values: data["regions"].reduce(function(a,b){ a[b.id] = b.country; return a},{}),
+                values: curr_data["regions"].reduce(function(a,b){ a[b.id] = b.country; return a},{}),
                 scale: {
                     1: "#7d2e29",
                     2: "#37532b",
@@ -82,18 +86,18 @@
                 "building_type_custom_1": settings['board_url']+'/ext/consim/core/images/map_assets/building_type_custom_1.png',
                 "building_type_custom_2": settings['board_url']+'/ext/consim/core/images/map_assets/building_type_custom_2.png',
                 },
-                values: data["cities"].reduce(function(a,b,c){ a[c] = "building_type_"+b.type;  return a}, {}),
+                values: curr_data["cities"].reduce(function(a,b,c){ a[c] = "building_type_"+b.type;  return a}, {}),
                 legend: {
                     horizontal: true,
-                    title: data["language"]["MAP_LEGEND_TITLE"],
+                    title: curr_data["language"]["MAP_LEGEND_TITLE"],
                     labelRender: function(v){
                     return {
-                        building_type_1: data["language"]["BUILDING_TYPE_1"],
-                        building_type_2: data["language"]["BUILDING_TYPE_2"],
-                        building_type_3: data["language"]["BUILDING_TYPE_3"],
-                        building_type_4: data["language"]["BUILDING_TYPE_4"],
-                        building_type_5: data["language"]["BUILDING_TYPE_5"],
-                        building_type_6: data["language"]["BUILDING_TYPE_6"],
+                        building_type_1: curr_data["language"]["BUILDING_TYPE_1"],
+                        building_type_2: curr_data["language"]["BUILDING_TYPE_2"],
+                        building_type_3: curr_data["language"]["BUILDING_TYPE_3"],
+                        building_type_4: curr_data["language"]["BUILDING_TYPE_4"],
+                        building_type_5: curr_data["language"]["BUILDING_TYPE_5"],
+                        building_type_6: curr_data["language"]["BUILDING_TYPE_6"]
                     }[v];
                     }
                 }

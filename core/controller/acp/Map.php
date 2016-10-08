@@ -76,7 +76,7 @@ class Map
 	*
 	* @param string[] $errors
 	* @param string[] $fields All required fields
-	* @return null
+	* @return void
 	* @access private
 	*/
 	private function check_data(&$errors, $fields)
@@ -96,7 +96,7 @@ class Map
 	/**
 	* Default page
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function overview()
@@ -104,6 +104,7 @@ class Map
         // Load the map for use on this site
 		$this->container->get('consim.core.service.map')
 			->showMap("addMarkers", "mainMap", 'width: 750px; height: 511px;');
+		$this->template->assign_var('MAP_NAME',"mainMap");
 
 		// Catch all markers from the database
 		$sql = 'SELECT id, name FROM phpbb_consim_markers';
@@ -128,18 +129,19 @@ class Map
 				'ID'			=> $row['id'],
 			));
 		}
+
+		// Create a form key for preventing CSRF attacks
+		add_form_key('consim_marker_add');
 	}
 
 	/**
 	* Add a marker
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function marker_add()
 	{
-		// Create a form key for preventing CSRF attacks
-		add_form_key('consim_marker_add');
 		// Create an array to collect errors that will be output to the user
 		$errors = array();
 
@@ -162,10 +164,11 @@ class Map
 			// If no errors, process the form data
 			if (empty($errors))
 			{
-				$entity->setX($this->request->variable('marker_x',0))->
-					setY($this->request->variable('marker_y',0))->
-					setName($this->request->variable('marker_title','',true))->
-					setType($this->request->variable('marker_style',0))->insert();
+				$entity->setX($this->request->variable('marker_x',0))
+					->setY($this->request->variable('marker_y',0))
+					->setName($this->request->variable('marker_title','',true))
+					->setType($this->request->variable('marker_style',0))
+					->setMapName($this->request->variable('marker_map_name','',true))->insert();
 				redirect(build_url(array("action")));
 			}
 		}
@@ -181,7 +184,7 @@ class Map
 	* Delete a marker
 	*
 	* @param int $id The id of the marker to be deleted
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function marker_delete($id)
@@ -206,7 +209,7 @@ class Map
 	* Default page
 	*
     * @param int $id The ID of the road
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function road_update($id)

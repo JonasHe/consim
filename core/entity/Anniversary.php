@@ -65,7 +65,7 @@ class Anniversary extends abstractEntity
 	* Load the data from the database for this object
 	*
 	* @param int $id user identifier
-	* @return News $this object for chaining calls; load()->set()->save()
+	* @return Anniversary $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -91,7 +91,7 @@ class Anniversary extends abstractEntity
 	*
 	* Will throw an exception if the data was already inserted (call save() instead)
 	*
-	* @return News $this object for chaining calls; load()->set()->save()
+	* @return Anniversary $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -107,7 +107,7 @@ class Anniversary extends abstractEntity
 		unset($this->data['anniversary_id']);
 
 		// Insert the data to the database
-		$sql = 'INSERT INTO ' . $this->consim_anniversary_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
+		$sql = 'INSERT INTO ' . $this->consim_anniversary_table . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
 		// Set the id using the id created by the SQL insert
@@ -122,7 +122,7 @@ class Anniversary extends abstractEntity
 	* This must be called before closing or any changes will not be saved!
 	* If adding a data (saving for the first time), you must call insert() or an exeception will be thrown
 	*
-	* @return News $this object for chaining calls; load()->set()->save()
+	* @return Anniversary $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -145,7 +145,7 @@ class Anniversary extends abstractEntity
 	/**
 	* Delete the entry with the given Id
 	*
-	* @return News $this object for chaining calls; load()->set()->save()
+	* @return Anniversary $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -248,7 +248,7 @@ class Anniversary extends abstractEntity
 	* Set Anniversary Year
 	*
 	* @param int $id
-	* @return Year
+	* @return Anniversary
 	* @access public
 	*/
 	public function setYear($id)

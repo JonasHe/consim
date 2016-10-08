@@ -295,7 +295,7 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 				),
 				$this->table_prefix . 'consim_markers'	=> array(
 					'COLUMNS'	=> array(
-						'id'					=> array('UINT:8', 0),
+						'id'					=> array('UINT:8', NULL, 'auto_increment'),
 						'name'					=> array('VCHAR:255', ''),
 						'x'						=> array('UINT:8', 0),
 						'y'						=> array('UINT:8', 0),

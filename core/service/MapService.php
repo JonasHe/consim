@@ -132,17 +132,18 @@ class MapService
 			$cities = $this->load_cities($map, $focus);
 		}
 
-		//why?
-		//$buildings = (!in_array('no_buildings',$args)) ? true : false;
 		$zoom = (!in_array('no_zoom', $args)) ? true : false;
 		$legend = (!in_array('no_legend', $args)) ? true : false;
 
 		$this->user->add_lang_ext('consim/core', 'consim_install');
 
+		//get board url
+		$boardUrl = generate_board_url();
+
 		//Alle erforderlichen Daten wurden geladen und werden für die Ausgabe gespeichert
 		$data = '<div style="display: none;" class="map_config">'.json_encode(array("zoom" => $zoom, "legend" => $legend, "divName" => $divName,
-																						  "focus" => $focus, "map_name" => $map, "board_url" => generate_board_url())).'</div>
-            <div style="display: none;" id="map_data">'.json_encode(array("roads" => $roads, "cities" => array_merge($cities,$markers),
+																						  "focus" => $focus, "map_name" => $map, "board_url" => $boardUrl)).'</div>
+            <div style="display: none;" class="map_data">'.json_encode(array("roads" => $roads, "cities" => array_merge($cities,$markers),
 																		  "provinces" => $this->load_provinces($regions, $highlight), "regions" => $regions, "language" => array(
 					"ROAD_TYPE_1" => $this->user->lang('ROAD_TYPE_1'), "ROAD_TYPE_2" => $this->user->lang('ROAD_TYPE_2'),
 					"ROAD_TYPE_3" => $this->user->lang('ROAD_TYPE_3'), "ROAD_TYPE_4" => $this->user->lang('ROAD_TYPE_4'),
@@ -153,11 +154,11 @@ class MapService
 					"BUILDING_TYPE_5" => $this->user->lang('INDUSTRY_AREA'), "BUILDING_TYPE_6" => $this->user->lang('MILITARY_AREA'),
 					"COUNTRY_1" => $this->user->lang('COUNTRY_1'),"COUNTRY_2" => $this->user->lang('COUNTRY_2'),"COUNTRY_3" => $this->user->lang('COUNTRY_3'),
 					"COUNTRY_4" => $this->user->lang('COUNTRY_4'),))).'</div>
-            <link rel="stylesheet" type="text/css" href="'.generate_board_url().'/ext/consim/core/styles/SZ-Style/theme/jvectormap.css">
-            <script type="text/javascript" src="'.generate_board_url().'/assets/javascript/jquery.min.js"></script>
-            <script type="text/javascript" src="'.generate_board_url().'/ext/consim/core/styles/SZ-Style/template/js/jvectormap.js"></script>
-            <script type="text/javascript" src="'.generate_board_url().'/ext/consim/core/styles/SZ-Style/template/js/'.$map.'.js"></script>
-            <script type="text/javascript" src="'.generate_board_url().'/ext/consim/core/styles/SZ-Style/template/js/mapConfig.js"></script>';
+            <link rel="stylesheet" type="text/css" href="'. $boardUrl .'/ext/consim/core/styles/SZ-Style/theme/jvectormap.css">
+            <script type="text/javascript" src="'. $boardUrl .'/assets/javascript/jquery.min.js"></script>
+            <script type="text/javascript" src="'. $boardUrl .'/ext/consim/core/styles/SZ-Style/template/js/jvectormap.js"></script>
+            <script type="text/javascript" src="'. $boardUrl .'/ext/consim/core/styles/SZ-Style/template/js/'.$map.'.js"></script>
+            <script type="text/javascript" src="'. $boardUrl .'/ext/consim/core/styles/SZ-Style/template/js/mapConfig.js"></script>';
 
 		return $data;
 	}
@@ -279,7 +280,7 @@ class MapService
 	{
 		$markers = array();
 
-		// If the ID is not nill only load the roads of a specific province
+		// If the ID is not null only load the roads of a specific province
 		if($id != 0)
 		{
 			$sql = $this->db->sql_build_query("SELECT",array(

@@ -106,7 +106,7 @@ class NewsChannel extends abstractEntity
 		unset($this->data['channel_id']);
 
 		// Insert the data to the database
-		$sql = 'INSERT INTO ' . $this->consim_channel_table . ' ' . $this->db->sql_build_array('INSERT', $this->data);
+		$sql = 'INSERT INTO ' . $this->consim_channel_table . $this->db->sql_build_array('INSERT', $this->data);
 		$this->db->sql_query($sql);
 
 		// Set the id using the id created by the SQL insert
