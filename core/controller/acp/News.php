@@ -9,14 +9,14 @@
 *
 */
 
-namespace consim\core\controller;
+namespace consim\core\controller\acp;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
 * News controller
 */
-class ACP_News
+class News
 {
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -67,6 +67,8 @@ class ACP_News
 		$this->template = $template;
 		$this->request = $request;
 		$this->db = $db;
+
+		return $this;
 	}
 
 	/**
@@ -74,7 +76,7 @@ class ACP_News
 	*
 	* @param string[] $errors
 	* @param string[] $fields All required fields
-	* @return null
+	* @return void
 	* @access private
 	*/
 	private function check_data(&$errors, $fields)
@@ -94,7 +96,7 @@ class ACP_News
 	/**
 	* Display all channels and news
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function news_overview()
@@ -151,7 +153,7 @@ class ACP_News
 	/**
 	* Add a channel
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function channel_add()
@@ -214,7 +216,7 @@ class ACP_News
 	* Edit a channel
 	*
 	* @param int $id The id of the news to be edited
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function channel_edit($id)
@@ -291,7 +293,7 @@ class ACP_News
 	* Delete a channel
 	*
 	* @param int $id The id of the news to be deleted
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function channel_delete($id)
@@ -315,7 +317,7 @@ class ACP_News
 	/**
 	* Add a news
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function news_add()
@@ -386,7 +388,7 @@ class ACP_News
 	* Edit a news
 	*
 	* @param int $id The id of the news to be edited
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function news_edit($id)
@@ -470,7 +472,7 @@ class ACP_News
 	* Delete a news
 	*
 	* @param int $id The id of the news to be deleted
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function news_delete($id)
@@ -494,7 +496,7 @@ class ACP_News
 	/**
 	* Add a topic
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function topic_add()
@@ -519,7 +521,7 @@ class ACP_News
 	* Edit a topic
 	*
 	* @param int $id The id of the news to be edited
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function topic_edit($id)
@@ -543,7 +545,7 @@ class ACP_News
 	* Delete a topic
 	*
 	* @param int $id The id of the news to be deleted
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function topic_delete($id)

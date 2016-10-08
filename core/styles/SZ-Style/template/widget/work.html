@@ -1,0 +1,12 @@
+<div class="panel">
+	<div class="inner">
+		<div class="content">
+			<h2>{L_ACTIVITY} (<!-- IF WORK_WIDGET_IS_WORKING -->{WORK_WIDGET_TIME}<!-- ELSE -->{L_FINISHED}<!-- ENDIF-->)</h2>
+			<p>{WORK_WIDGET_NAME} in {WORK_WIDGET_BUILDING_TYPE}<!-- IF BUILDING_NAME --> "{WORK_WIDGET_BUILDING_NAME}"<!-- ENDIF -->, {WORK_WIDGET_LOCATION_NAME}.</p>
+			<span><a href="{GO_TO_INFORMATION}" class="button2">{L_INFORMATION}</a></span>
+			<!-- IF IS_CONFIRM_FINISH -->
+			<a href="{GO_TO_INFORMATION}" class="button2">{L_FINISH}</a>
+			<!-- ENDIF -->
+		</div>
+	</div>
+</div>

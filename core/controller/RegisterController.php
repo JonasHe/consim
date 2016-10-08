@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
 * Main controller
 */
-class Register
+class RegisterController
 {
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -64,7 +64,7 @@ class Register
 	* @param \phpbb\template\template			$template		Template object
 	* @param \phpbb\request\request				$request		Request object
 	* @param \phpbb\db\driver\driver_interface	$db				Database object
-	* @return \consim\core\controller\Register
+	* @return \consim\core\controller\RegisterController
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -82,6 +82,8 @@ class Register
 		$this->template = $template;
 		$this->request = $request;
 		$this->db = $db;
+
+		return $this;
 	}
 
 	/**
@@ -90,7 +92,7 @@ class Register
 	* @return null
 	* @access public
 	*/
-	public function display()
+	public function displayAction()
 	{
 		//Ist User schon registriert?
 		if($this->user->data['consim_register'])
@@ -124,7 +126,7 @@ class Register
 		//get the consimUser Entity
 		$consim_user = $this->container->get('consim.core.entity.consim_user');
 		$figure = $consim_user->getFigureData();
-		$this->skills = $this->container->get('consim.core.operators.user_skills')->getSkills();
+		$this->skills = $this->container->get('consim.core.service.user_skill')->getSkills();
 
 		// Is the form being submitted to us?
 		if ($this->request->is_set_post('submit'))
@@ -162,7 +164,7 @@ class Register
 		$this->createSelection($figure);
 
 		//Skills to template
-		foreach ($this->container->get('consim.core.operators.user_skills')->sortSkillsByCategory($this->skills) as $cat => $skills)
+		foreach ($this->container->get('consim.core.service.user_skill')->sortSkillsByCategory($this->skills) as $cat => $skills)
 		{
 			$this->template->assign_block_vars(
 				'skill_groups',
@@ -214,7 +216,6 @@ class Register
 	*
 	* @param string[] $errors
 	* @param ConsimUser $consim_user
-	* @return null
 	* @access private
 	*/
 	private function check_data(&$errors, &$consim_user)
@@ -275,15 +276,14 @@ class Register
 	* und speichere den User als Consim register
 	*
 	* @param ConsimUser $consim_user
-	* @return null
 	* @access private
 	* @throws \consim\core\exception\out_of_bounds
 	*/
-	private function addUserToConsim($consim_user)
+	private function addUserToConsim(ConsimUser $consim_user)
 	{
 		$user_id = $this->user->data['user_id'];
 		$consim_user->insert($user_id);
-		$this->container->get('consim.core.operators.inventories')->setStartInventory($user_id);
+		$this->container->get('consim.core.service.inventory')->setStartInventory($user_id);
 
 		foreach ($this->skills as $skill)
 		{
@@ -311,7 +311,6 @@ class Register
 	* Erzeugt die Auswahl
 	*
 	* @param ConsimFigure[] $figure
-	* @return null
 	* @access private
 	*/
 	private function createSelection($figure)
@@ -335,3 +334,4 @@ class Register
 	}
 
 }
+

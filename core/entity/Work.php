@@ -8,8 +8,6 @@
 
 namespace consim\core\entity;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 /**
  * Entity
  */
@@ -57,9 +55,6 @@ class Work extends abstractEntity
 		'condition_3_value',
 	);
 
-	/** @var ContainerInterface */
-	protected $container;
-
 	/**
 	 * The database table the consim user data are stored in
 	 * @var string
@@ -76,18 +71,15 @@ class Work extends abstractEntity
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface	$db					Database object
-	 * @param ContainerInterface				$container			Service container interface
 	 * @param string							$consim_work_table	Name of the table used to store data
 	 * @param string							$consim_skill_table	Name of the table used to store data
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
-		ContainerInterface $container,
 		$consim_work_table,
 		$consim_skill_table)
 	{
 		$this->db = $db;
-		$this->container = $container;
 		$this->consim_work_table = $consim_work_table;
 		$this->consim_skill_table = $consim_skill_table;
 	}
@@ -328,16 +320,21 @@ class Work extends abstractEntity
 	}
 
 	/**
-	 * Get all Output for this Work
+	 * Check if user can run this work
 	 *
-	 * @return WorkOutput[][]
+	 * @param \consim\core\entity\UserSkill[] $user_skills
+	 * @return bool
 	 */
-	public function getSortedOutputs()
+	public function canUserWork($user_skills)
 	{
-		if($this->sorted_outputs === null)
+		if(($this->data['condition_1_id'] > 0 && $user_skills[$this->data['condition_1_id']]->getValue() < $this->data['condition_1_value']) ||
+			($this->data['condition_2_id'] > 0 && $user_skills[$this->data['condition_2_id']]->getValue() < $this->data['condition_1_value']) ||
+			($this->data['condition_3_id'] > 0 && $user_skills[$this->data['condition_3_id']]->getValue() < $this->data['condition_1_value'])
+		)
 		{
-			$this->sorted_outputs = $this->container->get('consim.core.operators.works')->getSortedOutputs($this->data['id']);
+			return false;
 		}
-		return $this->sorted_outputs;
+
+		return true;
 	}
 }

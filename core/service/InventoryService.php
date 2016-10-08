@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  */
 
-namespace consim\core\operators;
+namespace consim\core\service;
 
 use consim\core\entity\InventoryItem;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -14,13 +14,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Operator for Inventory
  */
-class Inventories
+class InventoryService
 {
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
 	/** @var ContainerInterface */
 	protected $container;
+
+	/** @var  \consim\core\service\UserService */
+	protected $userService;
 
 	/**
 	 * The database table the consim user data are stored in
@@ -29,24 +32,45 @@ class Inventories
 	protected $consim_item_table;
 	protected $consim_inventory_item_table;
 
+	/** @var  InventoryItem[] */
+	protected $currentInventory;
+
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface		$db								Database object
 	 * @param ContainerInterface					$container						Service container interface
+	 * @param \consim\core\service\UserService		$userService					UserService object
 	 * @param string								$consim_item_table				Name of the table used to store data
 	 * @param string								$consim_inventory_item_table	Name of the table used to store data
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
-								ContainerInterface $container,
-								$consim_item_table,
-								$consim_inventory_item_table)
+		ContainerInterface $container,
+		\consim\core\service\UserService $userService,
+		$consim_item_table,
+		$consim_inventory_item_table)
 	{
 		$this->db = $db;
 		$this->container = $container;
+		$this->userService = $userService;
 		$this->consim_item_table = $consim_item_table;
 		$this->consim_inventory_item_table = $consim_inventory_item_table;
+	}
+
+	/**
+	 * Return the inventory of current user
+	 *
+	 * @return \consim\core\entity\InventoryItem[]
+	 */
+	public function getCurrentInventory()
+	{
+		if(null === $this->currentInventory)
+		{
+			$this->currentInventory = $this->getInventory($this->userService->getCurrentUser()->getUserId());
+		}
+
+		return $this->currentInventory;
 	}
 
 	/**

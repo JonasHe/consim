@@ -9,14 +9,14 @@
 *
 */
 
-namespace consim\core\controller;
+namespace consim\core\controller\acp;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
 * Anniversary controller
 */
-class ACP_Anniversary
+class Anniversary
 {
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -49,7 +49,7 @@ class ACP_Anniversary
 	* @param \phpbb\template\template			$template		Template object
 	* @param \phpbb\request\request				$request		Request object
 	* @param \phpbb\db\driver\driver_interface	$db				Database object
-	* @return News
+	* @return Anniversary
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -67,6 +67,8 @@ class ACP_Anniversary
 		$this->template = $template;
 		$this->request = $request;
 		$this->db = $db;
+
+		return $this;
 	}
 
 	/**
@@ -74,7 +76,7 @@ class ACP_Anniversary
 	*
 	* @param string[] $errors
 	* @param string[] $fields All required fields
-	* @return null
+	* @return void
 	* @access private
 	*/
 	private function check_data(&$errors, $fields)
@@ -94,7 +96,7 @@ class ACP_Anniversary
 	/**
 	* Show all anniversaries
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function overview()
@@ -120,7 +122,7 @@ class ACP_Anniversary
 	/**
 	* Add an anniversary
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function anniversary_add()
@@ -146,7 +148,7 @@ class ACP_Anniversary
 	* Delete an anniversary
 	*
 	* @param int $id The id of the anniversary to be deleted
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function anniversary_delete($id)
@@ -171,7 +173,7 @@ class ACP_Anniversary
 	* Edit an Anniversary
 	*
 	* @param int $id The id of the anniversary to be edited
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function anniversary_update($id)

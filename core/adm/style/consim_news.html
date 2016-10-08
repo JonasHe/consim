@@ -73,10 +73,10 @@
 	   <fieldset>
 			<dl><dt><label for="name">{L_CHANNEL_NAME}</label></dt>
 				<dd>
-					<input type="text" name="name" value="{NAME}">
+					<input type="text" name="name" id="name" value="{NAME}">
 				</dd>
 			</dl>
-			 <dl><dt><label for="name">{L_VREFRESH}</label></dt>
+			 <dl><dt><label>{L_VREFRESH}</label></dt>
 				<dd>
 					<input type="radio" name="vrefresh" value="1" <!-- IF VREF_YES -->checked="checked"<!-- ENDIF -->>{L_YES}
 				</dd>
@@ -87,7 +87,7 @@
 			<dl>
 				<dt><label for="group">{L_GROUPS_ALLOWED}</label></dt>
 				<dd>
-					<select name="group" size="1">
+					<select name="group" id="group" size="1">
 						<option value="2">{L_G_REGISTERED}</option>
 						<!-- BEGIN allUsers -->
 							<option value="{allUsers.GROUPID}" <!-- IF allUsers.GROUPID == GID -->selected="selected"<!-- ENDIF --> >{allUsers.GROUPNAME}</option>
@@ -108,7 +108,7 @@
 					<input name="background" type="text" id="background" value="{BACKGROUND}"/>
 				</dd>
 			</dl>
-			<!-- IF S_DELETE --><a href="{DELETE}">{L_DELETE_CHANNEL}<!-- ENDIF-->
+			<!-- IF S_DELETE --><a href="{DELETE}">{L_DELETE_CHANNEL}</a><!-- ENDIF-->
 			<p class="quick">
 				<input type="submit" value="{L_SUBMIT}" name="addChannel">
 			</p>
@@ -122,13 +122,13 @@
 	   <fieldset>
 			<dl><dt><label for="content">{L_NEWS_CONTENT}</label></dt>
 				<dd>
-					<textarea name="content">{CONTENT}</textarea>
+					<textarea name="content" id="content">{CONTENT}</textarea>
 				</dd>
 			</dl>
 			<dl>
 				<dt><label for="channel">{L_CHANNEL}</label></dt>
 				<dd>
-					<select name="channel" size="1">
+					<select name="channel" id="channel" size="1">
 						<!-- BEGIN allChannels -->
 							<option value="{allChannels.CHANNELID}" <!-- IF allChannels.CHANNELID == CID -->selected="selected"<!-- ENDIF --> >{allChannels.NAME}</option>
 						<!-- END allChannels -->
@@ -138,7 +138,7 @@
 			<dl>
 				 <dt><label for="topic">{L_TOPIC}</label></dt>
 				<dd>
-					<select name="topic" size="1">
+					<select name="topic" id="topic" size="1">
 						<!-- BEGIN allTopics -->
 							<option value="{allTopics.TOPICID}" <!-- IF allTopics.TOPICID == TID -->selected="selected"<!-- ENDIF --> >{allTopics.NAME}</option>
 						<!-- END allTopics -->

@@ -2,39 +2,10 @@
 
 <div class="field_center">
 
-	<!-- IF SHOW_WORKING -->
-	<div class="panel">
-		<div class="inner">
-			<div class="content">
-				<h2>{L_ACTIVITY} (<!-- IF IS_WORKING -->{WORK_TIME}<!-- ELSE -->{L_FINISHED}<!-- ENDIF-->)</h2>
-				<p>{WORK_NAME} in {WORK_BUILDING_TYPE}<!-- IF BUILDING_NAME --> "{WORK_BUILDING_NAME}"<!-- ENDIF -->, {WORK_LOCATION_NAME}.</p>
-				<span><a href="{GO_TO_INFORMATION}" class="button2">{L_INFORMATION}</a></span>
-				<!-- IF IS_CONFIRM_FINISH -->
-					<a href="{GO_TO_INFORMATION}" class="button2">{L_FINISH}</a>
-				<!-- ENDIF -->
-			</div>
-		</div>
-	</div>
-	<!-- ELSE IF IS_TRAVELING -->
-	<div class="panel">
-		<div class="inner">
-			<div class="content">
-				<h2>{L_ACTIVITY} ({COUNTDOWN})</h2>
-				<div class="inner">
-					<div class="travel_location">
-						<p>{START_LOCATION_TYPE} {START_LOCATION_NAME}, {START_LOCATION_PROVINCE} ({START_LOCATION_COUNTRY})</p>
-					</div>
-					<div class="travel_middle">
-						<div style="font-size:3em;">&#8694;</div>
-					</div>
-					<div class="travel_location">
-						<p>{END_LOCATION_TYPE} {END_LOCATION_NAME}, {END_LOCATION_PROVINCE} ({END_LOCATION_COUNTRY})</p>
-					</div>
-				</div>
-				<span><a href="{GO_TO_INFORMATION}" class="button2">{L_INFORMATION}</a></span>
-			</div>
-		</div>
-	</div>
+	<!-- IF SHOW_WORK_WIDGET -->
+		<!-- INCLUDE widget/work.html -->
+	<!-- ELSE IF SHOW_TRAVEL_WIDGET -->
+		<!-- INCLUDE widget/travel.html -->
 	<!-- ENDIF -->
 
 	<div class="panel">
@@ -99,7 +70,7 @@
 	<h2 class="popup_title">{L_TRAVELING}</h2>
 	<div class="popup_text">
 		<p>
-			{TRAVEL_MAP}
+			{MAP}
 		</p>
 		<form method="post" action="{U_ACTION}" id="action_post">
 		<ul class="travellist">

@@ -9,14 +9,14 @@
 *
 */
 
-namespace consim\core\controller;
+namespace consim\core\controller\acp;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
 * Anniversary controller
 */
-class ACP_Map
+class Map
 {
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -49,7 +49,7 @@ class ACP_Map
 	* @param \phpbb\template\template			$template		Template object
 	* @param \phpbb\request\request				$request		Request object
 	* @param \phpbb\db\driver\driver_interface	$db				Database object
-	* @return News
+	* @return Map
 	* @access public
 	*/
 	public function __construct(\phpbb\config\config $config,
@@ -67,6 +67,8 @@ class ACP_Map
 		$this->template = $template;
 		$this->request = $request;
 		$this->db = $db;
+
+		return $this;
 	}
 
 	/**
@@ -74,7 +76,7 @@ class ACP_Map
 	*
 	* @param string[] $errors
 	* @param string[] $fields All required fields
-	* @return null
+	* @return void
 	* @access private
 	*/
 	private function check_data(&$errors, $fields)
@@ -94,16 +96,15 @@ class ACP_Map
 	/**
 	* Default page
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function overview()
 	{	
         // Load the map for use on this site
-		$map = $this->container->get('consim.core.controller.map');
-		$map->load_map("addMarkers", "mainMap");
-
-        $this->template->assign_var('MAP', $map->show_map('width: 750px; height: 511px;'));
+		$this->container->get('consim.core.service.map')
+			->showMap("addMarkers", "mainMap", 'width: 750px; height: 511px;');
+		$this->template->assign_var('MAP_NAME',"mainMap");
 
 		// Catch all markers from the database
 		$sql = 'SELECT id, name FROM phpbb_consim_markers';
@@ -128,18 +129,19 @@ class ACP_Map
 				'ID'			=> $row['id'],
 			));
 		}
+
+		// Create a form key for preventing CSRF attacks
+		add_form_key('consim_marker_add');
 	}
 
 	/**
 	* Add a marker
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function marker_add()
 	{
-		// Create a form key for preventing CSRF attacks
-		add_form_key('consim_marker_add');
 		// Create an array to collect errors that will be output to the user
 		$errors = array();
 
@@ -162,10 +164,11 @@ class ACP_Map
 			// If no errors, process the form data
 			if (empty($errors))
 			{
-				$entity->setX($this->request->variable('marker_x',0))->
-					setY($this->request->variable('marker_y',0))->
-					setName($this->request->variable('marker_title','',true))->
-					setType($this->request->variable('marker_style',0))->insert();
+				$entity->setX($this->request->variable('marker_x',0))
+					->setY($this->request->variable('marker_y',0))
+					->setName($this->request->variable('marker_title','',true))
+					->setType($this->request->variable('marker_style',0))
+					->setMapName($this->request->variable('marker_map_name','',true))->insert();
 				redirect(build_url(array("action")));
 			}
 		}
@@ -181,7 +184,7 @@ class ACP_Map
 	* Delete a marker
 	*
 	* @param int $id The id of the marker to be deleted
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function marker_delete($id)
@@ -206,7 +209,7 @@ class ACP_Map
 	* Default page
 	*
     * @param int $id The ID of the road
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function road_update($id)

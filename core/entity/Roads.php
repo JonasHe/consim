@@ -86,7 +86,7 @@ class Roads extends abstractEntity
 	* This must be called before closing or any changes will not be saved!
 	* If adding a data (saving for the first time), you must call insert() or an exeception will be thrown
 	*
-	* @return NewsTopics $this object for chaining calls; load()->set()->save()
+	* @return Roads $this object for chaining calls; load()->set()->save()
 	* @access public
 	* @throws \consim\core\exception\out_of_bounds
 	*/
@@ -121,7 +121,7 @@ class Roads extends abstractEntity
 	* Set Road ID
 	*
 	* @param int $id The Id of the road
-	* @return int $id
+	* @return Roads
 	* @access public
 	*/
 	public function setId($id)

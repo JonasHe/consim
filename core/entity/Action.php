@@ -461,6 +461,7 @@ class Action extends abstractEntity
 				'outputs'		=> array(),
 				'experience'	=> 0,
 			);
+
 			//Calculate result with condition_1, condition_2 and condition_3
 			if($row['condition_1_value'] > 0 && $row['condition_1_trials'] > 0)
 			{
@@ -474,6 +475,7 @@ class Action extends abstractEntity
 			{
 				$result['conditions'][2] = $this->calculateResult($row['user_skill_3'], $row['condition_3_trials']);
 			}
+			//the sum of all conditions
 			$result['conditions']['all'] = array_sum($result['conditions']);
 
 			//get success threshold
@@ -484,7 +486,7 @@ class Action extends abstractEntity
 			$result['experience'] = $this->setExperience($experience_points, $success_threshold);
 
 			//calculate outputs
-			$result['outputs'] = $this->setOutput($success_threshold);
+			$result['outputs'] = $this->setOutputs($success_threshold);
 
 			//Action is done
 			$this->data['status'] = self::completed;
@@ -501,9 +503,18 @@ class Action extends abstractEntity
 				WHERE user_id = ' . $this->data['user_id'];
 			$this->db->sql_query($sql);
 		}
+
 		return null;
 	}
 
+	/**
+	 * Calculate the result of one condition and check if the user have win the condition
+	 *
+	 * @param $user_skill
+	 * @param $number
+	 *
+	 * @return int
+	 */
 	private function calculateResult($user_skill, $number)
 	{
 		$result = 0;
@@ -520,13 +531,18 @@ class Action extends abstractEntity
 	}
 
 	/**
+	 * Set the experience and updated it in db
+	 *
 	 * @param int[] $experience_points
 	 * @param int $success_threshold
 	 * @return int
 	 */
 	private function setExperience($experience_points, $success_threshold)
 	{
-		$points = $experience_points[($success_threshold - 1)];
+		if($success_threshold < 3)
+			return 0;
+
+		$points = $experience_points[($success_threshold-1)];
 
 		//update experience
 		$sql = 'UPDATE '. $this->consim_user_table .'
@@ -538,10 +554,12 @@ class Action extends abstractEntity
 	}
 
 	/**
+	 * Get all Outputs from db and update it on user inventory
+	 *
 	 * @param int $success_threshold
 	 * @return array
 	 */
-	private function setOutput($success_threshold)
+	private function setOutputs($success_threshold)
 	{
 		$sql = 'SELECT output_id AS id, output_value AS value
 				FROM phpbb_consim_work_outputs

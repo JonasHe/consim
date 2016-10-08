@@ -302,13 +302,13 @@ ul.travellist dd.action a.button2 {
 
 .newsticker ul {
 	list-style-type: none;
-	padding: 0px;
+	padding: 0;
 }
 
 .newsticker {
 	display: inline-block;
 	font-size: 12px;
-	line-height: 19.6px;
+	line-height: 20px;
 	height: 30px;
 	overflow: hidden;
 	width: 71.5%;
@@ -353,12 +353,16 @@ ul.travellist dd.action a.button2 {
 
 .panel-news {
 	background-color: #ffffff;
-	padding: 0px;
+	padding: 0;
 }
 .middle_column img{
 	padding: 0px;
 	margin-bottom: -11px;
 	margin-top: -5px;
+}
+
+table.table1 tbody td.indent {
+	padding-left: 2em;
 }
 
 table.table1 tbody td.indent {

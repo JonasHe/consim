@@ -23,10 +23,11 @@
                 </div>
                 <div class="option">
                     <h2>{L_MARKER_COORDS}</h2>
-                    <p><label for="marker_x">X:</label><input type="number" name="marker_x" min="0" value="0"></p>
-                    <p><label for="marer_y">Y:</label><input type="number" name="marker_y" min="0" value="0"></p>
+                    <p><label for="marker_x">X:</label><input type="number" name="marker_x" id="marker_x" min="0" value="0"></p>
+                    <p><label for="marker_y">Y:</label><input type="number" name="marker_y" id="marker_y" min="0" value="0"></p>
                 </div>
                 <div class="option" style="text-align: center">
+                    <input type="hidden" name="marker_map_name" value="{MAP_NAME}">
                     <input type="submit" name="marker_add" value="{L_MARKER_SAVE}">
                 </div>
                 <div class="option">
@@ -109,20 +110,21 @@
         
         (function($) {
             if(typeof map_admin !== "undefined" && map_admin) {
-            not_added = true;
-            $("form#map_add_marker > .option").find("input").change(function(){
-                if($("input[name=marker_title]").val() != "" && $("input[name=marker_title]").val() != data["cities"][data["cities"].length-1]["name"]) {
-                    if(not_added) {
-                        data["cities"].push({name: $("input[name=marker_title]").val()});
-                        not_added = false;
-                    }
-                    else {
-                        data["cities"][data["cities"].length-1]["name"] = $("input[name=marker_title]").val();
-                    }
-                };
-                maps[0].addMarker(max_cities+1, {coords: [$("input[name=marker_x]").val(),$("input[name=marker_y]").val()]}, 
-                    ['building_type_custom_'+$("input:radio[name=marker_style]:checked").val()]);
-            });
+                var not_added = true;
+                var curr_data = data[data.length-1]["cities"];
+                $("form#map_add_marker > .option").find("input").change(function(){
+                    if($("input[name=marker_title]").val() != "" && $("input[name=marker_title]").val() != curr_data[curr_data.length-1]["name"]) {
+                        if(not_added) {
+                            curr_data.push({name: $("input[name=marker_title]").val()});
+                            not_added = false;
+                        }
+                        else {
+                            curr_data["cities"][curr_data["cities"].length-1]["name"] = $("input[name=marker_title]").val();
+                        }
+                    };
+                    maps[0].addMarker(max_cities+1, {coords: [$("input[name=marker_x]").val(),$("input[name=marker_y]").val()]},
+                        ['building_type_custom_'+$("input:radio[name=marker_style]:checked").val()]);
+                });
             }
         })(jQuery);
     </script>

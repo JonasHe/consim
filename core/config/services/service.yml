@@ -1,0 +1,102 @@
+imports:
+    - { resource: tables.yml }
+
+services:
+  consim.core.service.action:
+      class: consim\core\service\ActionService
+      arguments:
+          - @dbal.conn
+          - @service_container
+          - @consim.core.service.user
+          - %tables.consim.actions%
+
+  consim.core.service.building:
+        class: consim\core\service\BuildingService
+        arguments:
+            - @dbal.conn
+            - @service_container
+            - @template
+            - @controller.helper
+
+  consim.core.service.inventory:
+      class: consim\core\service\InventoryService
+      arguments:
+          - @dbal.conn
+          - @service_container
+          - @consim.core.service.user
+          - %tables.consim.items%
+          - %tables.consim.inventory_items%
+
+  consim.core.service.location:
+      class: consim\core\service\LocationService
+      arguments:
+          - @dbal.conn
+          - @service_container
+          - @consim.core.service.user
+          - %tables.consim.routes%
+          - %tables.consim.locations%
+          - %tables.consim.location_types%
+          - %tables.consim.provinces%
+          - %tables.consim.countries%
+          - %tables.consim.buildings%
+          - %tables.consim.building_types%
+          - %tables.consim.works%
+          - %tables.consim.skills%
+          - %tables.consim.items%
+
+  consim.core.service.map:
+      class: consim\core\service\MapService
+      arguments:
+          - @config
+          - @service_container
+          - @controller.helper
+          - @user
+          - @template
+          - @request
+          - @dbal.conn
+
+  consim.core.service.route:
+      class: consim\core\service\RouteService
+      arguments:
+          - @dbal.conn
+          - @service_container
+
+  consim.core.service.user:
+      class: consim\core\service\UserService
+      arguments:
+          - @dbal.conn
+          - @service_container
+          - @user
+
+  consim.core.service.user_skill:
+      class: consim\core\service\UserSkillService
+      arguments:
+          - @dbal.conn
+          - @service_container
+          - @consim.core.service.user
+          - %tables.consim.skills%
+          - %tables.consim.user_skills%
+
+  consim.core.service.work:
+      class: consim\core\service\WorkService
+      arguments:
+          - @dbal.conn
+          - @service_container
+          - @template
+          - %tables.consim.works%
+          - %tables.consim.work_outputs%
+          - %tables.consim.skills%
+          - %tables.consim.items%
+
+  consim.core.service.weather:
+        class: consim\core\service\WeatherService
+        arguments:
+            - @service_container
+            - @template
+
+  consim.core.service.widget:
+      class: consim\core\service\WidgetService
+      arguments:
+          - @service_container
+          - @template
+          - @controller.helper

@@ -73,7 +73,7 @@ class listener implements EventSubscriberInterface
 	* Load common consim language files during user setup and add the newsbar and history hint
 	*
 	* @param object $event The event object
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function load_language_on_setup($event)
@@ -87,6 +87,7 @@ class listener implements EventSubscriberInterface
 
 		// Add the Newsbar
 		$groups = $channel = $anniversary = array();
+		$newsbar = false;
 		
 		//Catch all groups from the database where the user is a member of
 		$sql = 'SELECT group_id FROM '. USER_GROUP_TABLE .' WHERE user_id = ' . $this->user->data['user_id'];
@@ -122,7 +123,6 @@ class listener implements EventSubscriberInterface
 				WHERE n.channel_id = ".$channel['id']." 
 				ORDER BY n.topic_id";
 			$nresult = $this->db->sql_query($nsql);
-			$newsbar = false;
 			while($nrow = $this->db->sql_fetchrow($nresult))
 			{
 				$newsbar = true;
@@ -182,7 +182,7 @@ class listener implements EventSubscriberInterface
 	/**
 	* Create a URL to the consim controller file for the header linklist
 	*
-	* @return null
+	* @return void
 	* @access public
 	*/
 	public function add_page_header_link()
