@@ -89,7 +89,7 @@ class LocationController extends AbstractController
 	 * Display a location
 	 *
 	 * @param int $location_id
-	 * @return null
+	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @access public
 	 */
 	public function showLocationAction($location_id = 0)
@@ -178,7 +178,7 @@ class LocationController extends AbstractController
 	 *
 	 * @param int $location_id
 	 * @param int $building_id
-	 * @return null
+	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @access public
 	 */
 	public function showLocationBuildingAction($location_id, $building_id)
