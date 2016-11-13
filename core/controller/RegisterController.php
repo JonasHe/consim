@@ -283,7 +283,7 @@ class RegisterController
 	{
 		$user_id = $this->user->data['user_id'];
 		$consim_user->insert($user_id);
-		$this->container->get('consim.core.service.inventory')->setStartInventory($user_id);
+		$this->container->get('consim.core.service.inventory')->setStartInventory($user_id, $consim_user->getGeburtsland()->getValue());
 
 		foreach ($this->skills as $skill)
 		{
