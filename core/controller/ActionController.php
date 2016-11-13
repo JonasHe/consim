@@ -92,12 +92,12 @@ class ActionController extends AbstractController
 
 			if($action->getRouteId() > 0)
 			{
-				return $this->showTravel($action->getId());
+				return $this->showTravelAction($action->getId());
 			}
 			// is user working?
 			if($action->getWorkId() > 0)
 			{
-				return $this->showWork($action->getId());
+				return $this->showWorkAction($action->getId());
 			}
 		}
 		redirect($this->helper->route('consim_core_index'));
@@ -225,6 +225,47 @@ class ActionController extends AbstractController
 
 		// Send all data to the template file
 		return $this->helper->render('consim_traveling.html', $this->user->lang('CONSIM'));
+	}
+
+	/**
+	 * Display page to list all action of current user
+	 *
+	 * @param int $page
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function showActionListAction($page=0)
+	{
+		$actions = $this->actionService->getActions($this->userService->getCurrentUser()->getUserId());
+
+		foreach ($actions as $action)
+		{
+			if($action->getWorkId() > 0)
+			{
+				$this->template->assign_block_vars('actionlist', array(
+					'ACTION_NAME'		=> $this->workService->getWork($action->getId())->getName(),
+					'ACTION_URL'		=> $this->helper->route('consim_core_work', array('action_id' => $action->getId())),
+					'LOCATION_NAME'		=> $this->locationService->getLocation($action->getLocationId())->getName(),
+					'LOCATION_URL'		=> $this->helper->route('consim_core_location', array('location_id' => $action->getLocationId())),
+					'STARTTIME'			=> $this->user->format_date($action->getStartTime()),
+					'ENDTIME'			=> $this->user->format_date($action->getEndTime()),
+					'STATUS'			=> $action->getStatus(),
+				));
+			}
+			else
+			{
+				$this->template->assign_block_vars('actionlist', array(
+					'ACTION_NAME'		=> 'blubb',
+					'ACTION_URL'		=> $this->helper->route('consim_core_travel', array('action_id' => $action->getId())),
+					'LOCATION_NAME'		=> $this->locationService->getLocation($action->getLocationId())->getName(),
+					'LOCATION_URL'		=> $this->helper->route('consim_core_location', array('location_id' => $action->getLocationId())),
+					'STARTTIME'			=> $this->user->format_date($action->getStartTime()),
+					'ENDTIME'			=> $this->user->format_date($action->getEndTime()),
+					'STATUS'			=> $action->getStatus(),
+				));
+			}
+		}
+
+		return $this->helper->render('consim_action_list.html', $this->user->lang('CONSIM'));
 	}
 }
 

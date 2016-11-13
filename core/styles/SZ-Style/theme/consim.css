@@ -49,6 +49,12 @@
 	margin-right: 15px;
 }
 
+.field_center .forumbg-table {
+	margin-top: 0;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
 .content .location_image {
 	float:right;
 	width:40%;

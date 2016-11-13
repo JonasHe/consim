@@ -1,0 +1,41 @@
+<!-- INCLUDE consim_header.html -->
+
+<div class="field_center">
+	<div class="forumbg forumbg-table">
+		<div class="inner">
+			<table class="table1 show-header responsive" id="actionlist">
+				<thead>
+					<tr>
+						<th class="name" data-dfn="{L_ACTION}">{L_ACTION}</th>
+						<th class="location">{L_LOCATION}</th>
+						<th class="starttime">{L_STARTTIME}</th>
+						<th class="endtime">{L_ENDTIME}</th>
+						<th class="status">{L_STATUS}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- BEGIN actionlist -->
+						<tr class="bg1">
+							<td><dfn style="display: none;">{L_ACTION}</dfn><a href="{actionlist.ACTION_URL}">{actionlist.ACTION_NAME}</a></td>
+							<td class="location"><dfn style="display: none;">{L_LOCATION}</dfn><a href="{actionlist.LOCATION_URL}" title="{actionlist.LOCATION_NAME}">{actionlist.LOCATION_NAME}</a></td>
+							<td class="starttime"><dfn style="display: none;">{L_STARTTIME}</dfn>{actionlist.STARTTIME}</td>
+							<td class="starttime"><dfn style="display: none;">{L_ENDTIME}</dfn>{actionlist.ENDTIME}</td>
+							<td class="status"><dfn style="display: none;">{L_STATUS}</dfn>{actionlist.STATUS}</td>
+						</tr>
+					<!-- END actionlist -->
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="panel">
+		<div class="inner">
+			<form method="post" action="{U_ACTION}">
+				<fieldset class="submit-buttons">
+					<a href="{U_OVERVIEW}" class="button2" >{L_BACK_TO} {L_OVERVIEW}</a>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- INCLUDE consim_footer.html -->

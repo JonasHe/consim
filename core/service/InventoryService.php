@@ -104,9 +104,10 @@ class InventoryService
 	 * Put the items for all user to new user
 	 *
 	 * @param int $user_id
+	 * @param string $country
 	 * @throws \consim\core\exception\out_of_bounds
 	 */
-	public function setStartInventory($user_id)
+	public function setStartInventory($user_id, $country)
 	{
 		$sql = 'SELECT id
 				FROM ' . $this->consim_item_table . '
@@ -115,8 +116,18 @@ class InventoryService
 
 		while($row = $this->db->sql_fetchrow($result))
 		{
+			$value = 0;
+
+			//set start value for country of birth
+			if($row['id'] == 1 && $country == 'bak' || //1 = rubel
+				$row['id'] == 2 && $country == 'sur' || //2 = dinar
+				$row['id'] == 3 && $country == 'frt') //3 = dollar
+			{
+				$value = 50;
+			}
+
 			$this->container->get('consim.core.entity.inventory_item')
-				->insert($user_id, $row['id'], 0);
+				->insert($user_id, $row['id'], $value);
 		}
 		$this->db->sql_freeresult($result);
 	}

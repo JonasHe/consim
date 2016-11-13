@@ -127,4 +127,48 @@ class ActionService
 		
 		return $this->container->get('consim.core.entity.action')->import($row);
 	}
+
+	/**
+	 *
+	 * @param int $user_id
+	 * @param int $number Number of Action.
+	 * @param int $start
+	 * @return Action[]
+	 */
+	public function getActions($user_id, $number = 25, $start = 0)
+	{
+		$action = array();
+
+		$sql = 'SELECT a.id, a.user_id, a.location_id, a.starttime, a.endtime, a.route_id, a.work_id, a.result, a.successful_trials, a.status
+			FROM ' . $this->consim_action_table . ' a
+			WHERE user_id = ' . (int) $user_id .'
+			ORDER BY a.endtime DESC';
+		$result = $this->db->sql_query_limit($sql, $number, $start);
+
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$action[] = $this->container->get('consim.core.entity.action')->import($row);
+		}
+		$this->db->sql_freeresult($result);
+
+		return $action;
+	}
+
+	/**
+	 * Return number of al actions
+	 *
+	 * @param int $user_id
+	 * @return int
+	 */
+	public function getNumberOfActions($user_id)
+	{
+		$sql = 'SELECT COUNT(id) AS num_action
+			FROM ' . $this->consim_action_table . '
+			WHERE user_id = '. (int) $user_id;
+		$result = $this->db->sql_query($sql);
+		$total_actions = (int) $this->db->sql_fetchfield('num_posts');
+		$this->db->sql_freeresult($result);
+
+		return $total_actions;
+	}
 }

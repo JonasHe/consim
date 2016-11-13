@@ -45,6 +45,12 @@ consim_core_work:
     requirements:
         work_id: \w+
 
+consim_core_action_list:
+    path: /game/action/list/{page}
+    defaults: {_controller: consim.core.controller.action:showActionListAction, page: 0}
+    requirements:
+            page: \w+
+
 consim_core_register:
     path: /game/register
     defaults: { _controller: consim.core.controller.register:displayAction }

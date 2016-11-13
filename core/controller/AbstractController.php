@@ -125,6 +125,7 @@ abstract class AbstractController
 			'TIME'							=> date("d.m.Y - H:i:s", time()),
 			'GO_TO_INFORMATION'				=> $this->helper->route('consim_core_activity'),
 			'U_OVERVIEW'					=> $this->helper->route('consim_core_index'),
+			'U_ACTIONLIST'					=> $this->helper->route('consim_core_action_list'),
 		));
 	}
 
