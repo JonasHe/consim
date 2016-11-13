@@ -67,6 +67,7 @@ $lang = array_merge($lang, array(
 	'BACK_TO'					=> 'Zurück nach',
 	'OVERVIEW'					=> 'Übersicht',
 	'LOCATION'					=> 'Standort',
+	'ACCEPT'					=> 'Annehmen',
 
 	'RESULT'					=> 'Ergebnis',
 	'SUCCESSFUL'				=> 'Erfolgreich',
