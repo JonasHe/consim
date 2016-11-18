@@ -68,7 +68,7 @@ $lang = array_merge($lang, array(
 
 	//Locations
 	'NOBRI'					=> 'Nobri',
-	'NOBRI_DESC'			=> 'Nobri ist die jüngste und kleinste unter den Provinzhauptstädten der Volksrepublik Bakirien mit ca. 385.000 Einwohnern, erst im Jahr 1984 wurde die Stadt auf die Initiative der regionalen Kommunistischen Partei gegründet und bildete seitdem das Zentrum der Provinz Isoria. '
+	'NOBRI_DESC'			=> 'Nobri ist die jüngste und kleinste unter den Provinzhauptstädten der Volksrepublik Bakirien mit ca. 385.000 Einwohnern. Erst im Jahr 1984 wurde die Stadt auf Initiative der regionalen Kommunistischen Partei gegründet und bildete seitdem das Zentrum der Provinz Isoria. '
 							  .'Die am 21. Januar dem Todestag Lenins gegründete Stadt sollte ein Modellprojekt der Kommunistischen Partei werden und einen neuen Typus moderne Verwaltungsstadt begründen, Nobri liegt weder strategisch exponiert, noch liegt die Provinzhauptstadt in der Nähe eines der großen Ressourcenvorkommen der Provinz. '
 							  .'Ihre Lage zeichnet sich nur durch die Nähe zum größten Hafen der Volksrepublik und ihrer einzigartig zusammengesetzt Bevölkerung aus. Nobri weist die höchste Dichte von Parteimitgliedern in der gesamten Volksrepublik Bakirien aus, weiterhin übersteigt auch das Bruttoeinkommen pro Kopf, dass der beiden anderen wichtigen Städte bei weitem. '
 							  .'Die Clique der aus Nobri stammenden Politiker ist im ganzen Land für ihren Einfluss in den wichtigsten Gremien der Partei und des Staates bekannt. <br />'
