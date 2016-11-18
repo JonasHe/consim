@@ -317,6 +317,35 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 						'prvnce_id'					=> array('INDEX', 'prvnce_id'),
 					),
 				),
+				$this->table_prefix. 'consim_asset_types'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
+				$this->table_prefix. 'consim_assets'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'type_id'				=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+						'short_name'			=> array('VCHAR:255', ''),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
+				$this->table_prefix. 'consim_users_assets'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', NULL, 'auto_increment'),
+						'user_id'				=> array('UINT:8', 0),
+						'asset_id'				=> array('UINT:8', 0),
+						'value'					=> array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+					'KEYS'			=> array(
+						'user_id'					=> array('INDEX', 'user_id'),
+						'asset_id'					=> array('INDEX', 'asset_id'),
+					),
+				),
 			),
 			/**
 			 * Add Columns
@@ -377,6 +406,9 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 				$this->table_prefix . 'consim_work_outputs',
 				$this->table_prefix . 'consim_markers',
 				$this->table_prefix . 'consim_roads',
+				$this->table_prefix . 'consim_asset_types',
+				$this->table_prefix . 'consim_assets',
+				$this->table_prefix . 'consim_users_assets',
 			),
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users' => array('consim_register'),

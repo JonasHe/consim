@@ -2,6 +2,12 @@ imports:
     - { resource: tables.yml }
 
 services:
+  consim.core.service.asset:
+      class: consim\core\service\AssetService
+      arguments:
+          - @dbal.conn
+          - @service_container
+
   consim.core.service.action:
       class: consim\core\service\ActionService
       arguments:

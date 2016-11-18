@@ -22,3 +22,6 @@ parameters:
     tables.consim.weather: %core.table_prefix%consim_weather
     tables.consim.roads: %core.table_prefix%consim_roads
     tables.consim.markers: %core.table_prefix%consim_markers
+    tables.consim.asset_types: %core.table_prefix%consim_asset_types
+    tables.consim.assets: %core.table_prefix%consim_assets
+    tables.consim.users_assets: %core.table_prefix%consim_users_assets

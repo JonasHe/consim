@@ -202,12 +202,14 @@ $lang = array_merge($lang, array(
 	'SKILL_23'					=> 'Überlebenskunde',
 
 	// Inventory Items
+	/*
 	'ITEM_1'					=> 'Bakirischer Rubel',
 	'ITEM_1_SHORT'				=> 'BR',
 	'ITEM_2'					=> 'Suranischer Dinar',
 	'ITEM_2_SHORT'				=> 'SD',
 	'ITEM_3'					=> 'Tadsowischer Dollar',
 	'ITEM_3_SHORT'				=> 'TD',
+	*/
 	
 	// Countries
 	'COUNTRY_1'					=> 'Volksrepublik Bakirien',
@@ -260,4 +262,21 @@ $lang = array_merge($lang, array(
 	'WORK_16'					=> 'Straßenschmuggler',
 	'WORK_17'					=> 'Schmugglerführer',
 	'WORK_18'					=> 'Grenzschmuggler',
+
+	// Assets
+	'CURRENCIES'				=> 'Währungen',
+	'CURRENCY_1'				=> 'Bakirischer Rubel',
+	'CURRENCY_1_SHORT'			=> 'BR',
+	'CURRENCY_2'				=> 'Suranischer Dinar',
+	'CURRENCY_2_SHORT'			=> 'SD',
+	'CURRENCY_3'				=> 'Tadsowischer Dollar',
+	'CURRENCY_3_SHORT'			=> 'TD',
+	'BONDS'						=> 'Anleihen',
+	'BOND_1'					=> 'Bakirische Volksanleihe',
+	'BOND_1_SHORT'				=> 'BaVo',
+	'BOND_2'					=> 'Suranische Kapitalgabe',
+	'BOND_2_SHORT'				=> 'SuKa',
+	'BOND_3'					=> 'Tadsowische Freiheitsaktie',
+	'BOND_3_SHORT'				=> 'TaFr',
+	'SHARES'					=> 'Aktien',
 ));

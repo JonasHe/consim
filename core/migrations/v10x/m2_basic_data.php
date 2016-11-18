@@ -43,6 +43,8 @@ class m2_basic_data extends \phpbb\db\migration\migration
 			array('custom', array(array($this, 'insert_location_types'))),
 			array('custom', array(array($this, 'insert_provinces'))),
 			array('custom', array(array($this, 'insert_countries'))),
+			array('custom', array(array($this, 'insert_asset_types'))),
+			array('custom', array(array($this, 'insert_assets'))),
 
 			// Add an acp tab
 			array('module.add', array('acp', 0, 'ACP_CAT_CONSIM')),
@@ -202,6 +204,35 @@ class m2_basic_data extends \phpbb\db\migration\migration
 			array('id' => 4, 'name' => $user->lang('COUNTRY_4')),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_countries', $countries);
+	}
+
+	public function insert_asset_types()
+	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		$countries = array(
+			array('id' => 1, 'name' => $user->lang('CURRENCIES')),
+			array('id' => 2, 'name' => $user->lang('BONDS')),
+			array('id' => 3, 'name' => $user->lang('SHARES')),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_asset_types', $countries);
+	}
+
+	public function insert_assets()
+	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		$countries = array(
+			array('id' => 1, 'type_id' => 1, 'name' => $user->lang('CURRENCY_1'), 'short_name' => $user->lang('CURRENCY_1_SHORT')),
+			array('id' => 2, 'type_id' => 1, 'name' => $user->lang('CURRENCY_2'), 'short_name' => $user->lang('CURRENCY_2_SHORT')),
+			array('id' => 3, 'type_id' => 1, 'name' => $user->lang('CURRENCY_3'), 'short_name' => $user->lang('CURRENCY_3_SHORT')),
+			array('id' => 4, 'type_id' => 2, 'name' => $user->lang('BOND_1'), 'short_name' => $user->lang('BOND_1_SHORT')),
+			array('id' => 5, 'type_id' => 2, 'name' => $user->lang('BOND_2'), 'short_name' => $user->lang('BOND_2_SHORT')),
+			array('id' => 6, 'type_id' => 2, 'name' => $user->lang('BOND_3'), 'short_name' => $user->lang('BOND_3_SHORT')),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_assets', $countries);
 	}
 
 	/**
