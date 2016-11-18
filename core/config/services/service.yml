@@ -91,6 +91,7 @@ services:
   consim.core.service.weather:
         class: consim\core\service\WeatherService
         arguments:
+            - @config
             - @service_container
             - @template
 

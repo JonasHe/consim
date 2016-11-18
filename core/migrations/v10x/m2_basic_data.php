@@ -33,7 +33,9 @@ class m2_basic_data extends \phpbb\db\migration\migration
 		$user->add_lang_ext('consim/core', 'consim_install');
 
 		return array(
-			// Set the current version
+			// Set config
+			//array('config.add', array('consim_weather_api_key', '')),
+
 			array('custom', array(array($this, 'insert_consim_figure'))),
 			array('custom', array(array($this, 'insert_consim_item'))),
 			array('custom', array(array($this, 'insert_consim_skill'))),

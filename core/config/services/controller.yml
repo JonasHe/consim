@@ -3,23 +3,23 @@ imports:
 
 services:
     consim.core.controller.location:
-            class: consim\core\controller\LocationController
-            arguments:
-                - @controller.helper
-                - @user
-                - @template
-                - @request
-                - @dbal.conn
-                - @consim.core.service.action
-                - @consim.core.service.building
-                - @consim.core.service.inventory
-                - @consim.core.service.location
-                - @consim.core.service.map
-                - @consim.core.service.user
-                - @consim.core.service.user_skill
-                - @consim.core.service.weather
-                - @consim.core.service.widget
-                - @consim.core.service.work
+        class: consim\core\controller\LocationController
+        arguments:
+            - @controller.helper
+            - @user
+            - @template
+            - @request
+            - @dbal.conn
+            - @consim.core.service.action
+            - @consim.core.service.building
+            - @consim.core.service.inventory
+            - @consim.core.service.location
+            - @consim.core.service.map
+            - @consim.core.service.user
+            - @consim.core.service.user_skill
+            - @consim.core.service.weather
+            - @consim.core.service.widget
+            - @consim.core.service.work
 
     consim.core.controller.action:
         class: consim\core\controller\ActionController
