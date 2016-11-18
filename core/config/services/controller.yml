@@ -2,6 +2,21 @@ imports:
     - { resource: tables.yml }
 
 services:
+    consim.core.controller.asset:
+        class: consim\core\controller\AssetController
+        arguments:
+            - @controller.helper
+            - @user
+            - @template
+            - @request
+            - @consim.core.service.action
+            - @consim.core.service.inventory
+            - @consim.core.service.location
+            - @consim.core.service.user
+            - @consim.core.service.user_skill
+            - @consim.core.service.weather
+            - @consim.core.service.widget
+
     consim.core.controller.location:
         class: consim\core\controller\LocationController
         arguments:

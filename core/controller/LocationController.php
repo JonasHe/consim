@@ -44,7 +44,6 @@ class LocationController extends AbstractController
 	 * @param \consim\core\service\WeatherService	$weatherService		WeatherService object
 	 * @param \consim\core\service\widgetService	$widgetService		WidgetService object
 	 * @param \consim\core\service\WorkService		$workService		WorkService object
-	 * @param
 	 * @return \consim\core\controller\LocationController
 	 * @access public
 	 */
