@@ -21,25 +21,119 @@ class AssetService
 	/** @var ContainerInterface */
 	protected $container;
 
+	/** @var  \consim\core\service\UserService */
+	protected $userService;
+
+	//
+	const CURRENCY_TYPE = 1;
+	const BOND_TYPE = 2;
+	const SHARE_TYPE = 3;
+
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface		$db								Database object
 	 * @param ContainerInterface					$container						Service container interface
+	 * @param \consim\core\service\UserService		$userService					UserService object
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
-		ContainerInterface $container)
+		ContainerInterface $container,
+		\consim\core\service\UserService $userService)
 	{
 		$this->db = $db;
 		$this->container = $container;
+		$this->userService = $userService;
+	}
+
+	/**
+	 * Get cash asset of current user
+	 *
+	 * @return \consim\core\entity\UserAsset[]
+	 */
+	public function getCurrentCashAsset()
+	{
+		$user = $this->userService->getCurrentUser();
+
+		$cashAsset = array();
+		$sql = 'SELECT ua.id, ua.user_id, ua.asset_id, a.type_id, at.name as type_name, a.name, a.short_name, ua.value
+			FROM '. $this->container->getParameter('tables.consim.users_assets') .' ua
+			LEFT JOIN '. $this->container->getParameter('tables.consim.assets') .' a ON a.id = ua.asset_id 
+			LEFT JOIN '. $this->container->getParameter('tables.consim.asset_types') .' at ON at.id = a.type_id
+			WHERE ua.user_id = '. $user->getUserId() .' AND a.type_id = '. self::CURRENCY_TYPE;
+		$result = $this->db->sql_query($sql);
+
+		while($row = $this->db->sql_fetchrow($result))
+		{
+			$cashAsset[] = $this->container->get('consim.core.entity.user_asset')->import($row);
+		}
+		$this->db->sql_freeresult($result);
+
+		return $cashAsset;
+	}
+
+	/**
+	 * @return \consim\core\entity\Asset[]
+	 */
+	public function getAllCurrencies()
+	{
+		$currencies = array();
+		$sql = 'SELECT a.id, a.type_id, at.name as type_name, a.name, a.short_name
+			FROM '. $this->container->getParameter('tables.consim.assets') .' a
+			LEFT JOIN '. $this->container->getParameter('tables.consim.asset_types') .' at ON at.id = a.type_id 
+			WHERE a.type_id = '. self::CURRENCY_TYPE;
+		$result = $this->db->sql_query($sql);
+
+		while($row = $this->db->sql_fetchrow($result))
+		{
+			$currencies[] = $this->container->get('consim.core.entity.asset')->import($row);
+		}
+		$this->db->sql_freeresult($result);
+
+		return $currencies;
+	}
+
+	/**
+	 * @param int $currency_id
+	 * @return \consim\core\entity\Asset
+	 */
+	public function getCurrency($currency_id)
+	{
+		return $this->container->get('consim.core.entity.asset')->load($currency_id);
+	}
+
+	public function getAllBonds()
+	{
+		$bonds = array();
+		$sql = 'SELECT a.id, a.type_id, at.type_name, a.name, a.short_names
+			FROM '. $this->container->getParameter('tables.consim.assets') .' a
+			LEFT JOIN '. $this->container->getParameter('tables.consim.asset_types') .' at ON at.id = a.type_id 
+			WHERE a.type_id = '. self::BOND_TYPE;
+		$result = $this->db->sql_query($sql);
+
+		while($row = $this->db->sql_fetchrow($result))
+		{
+			$bonds[] = $this->container->get('consim.core.entity.asset')->import($row);
+		}
+		$this->db->sql_freeresult($result);
+
+		return $bonds;
+	}
+
+	/**
+	 * @param int $bond_id
+	 * @return \consim\core\entity\Asset
+	 */
+	public function getBond($bond_id)
+	{
+		return $this->container->get('consim.core.entity.asset')->load($bond_id);
 	}
 
 	public function setStartAssets($user_id, $country)
 	{
 		$sql = 'SELECT id
 				FROM ' . $this->container->getParameter('tables.consim.assets') . '
-				WHERE type_id = 1 or type_id = 2';
+				WHERE type_id = '. self::CURRENCY_TYPE .' or type_id = '. self::BOND_TYPE;
 		$result = $this->db->sql_query($sql);
 
 		$insert = array();
@@ -55,7 +149,7 @@ class AssetService
 				$value = 50;
 			}
 
-			$insert[] = array('user_id' => $user_id, 'asset_id' => $row['id'], $value);
+			$insert[] = array('user_id' => (int) $user_id, 'asset_id' => (int) $row['id'], 'value' => $value);
 			/**$this->container->get('consim.core.entity.inventory_item')
 				->insert($user_id, $row['id'], $value);*/
 		}

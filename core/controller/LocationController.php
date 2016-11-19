@@ -35,6 +35,7 @@ class LocationController extends AbstractController
 	 * @param \phpbb\request\request				$request			Request object
 	 * @param \phpbb\db\driver\driver_interface		$db					Database object
 	 * @param \consim\core\service\ActionService	$actionService		ActionService object
+	 * @param \consim\core\service\AssetService		$assetService		AssetService object
 	 * @param \consim\core\service\BuildingService	$buildingService	BuildingService object
 	 * @param \consim\core\service\InventoryService	$inventoryService	InventoryService object
 	 * @param \consim\core\service\LocationService	$locationService	LocationService object
@@ -53,6 +54,7 @@ class LocationController extends AbstractController
 		\phpbb\request\request $request,
 		\phpbb\db\driver\driver_interface $db,
 		\consim\core\service\ActionService $actionService,
+		\consim\core\service\AssetService $assetService,
 		\consim\core\service\BuildingService $buildingService,
 		\consim\core\service\InventoryService $inventoryService,
 		\consim\core\service\LocationService $locationService,
@@ -69,6 +71,7 @@ class LocationController extends AbstractController
 		$this->request = $request;
 		$this->db = $db;
 		$this->actionService = $actionService;
+		$this->assetService = $assetService;
 		$this->buildingService = $buildingService;
 		$this->inventoryService = $inventoryService;
 		$this->locationService = $locationService;

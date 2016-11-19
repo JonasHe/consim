@@ -342,8 +342,8 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
-						'user_id'					=> array('INDEX', 'user_id'),
-						'asset_id'					=> array('INDEX', 'asset_id'),
+						'u_id'					=> array('INDEX', 'user_id'),
+						'a_id'					=> array('INDEX', 'asset_id'),
 					),
 				),
 			),

@@ -31,6 +31,9 @@ abstract class AbstractController
 	/** @var  \consim\core\service\ActionService */
 	protected $actionService;
 
+	/** @var  \consim\core\service\AssetService */
+	protected $assetService;
+
 	/** @var  \consim\core\service\InventoryService */
 	protected $inventoryService;
 
@@ -83,6 +86,10 @@ abstract class AbstractController
 		// Get inventory and add to template
 		$inventory = $this->inventoryService->getCurrentInventory();
 		$this->widgetService->inventoryWidget($inventory);
+
+		//Get Cash Assets and add to template
+		$cashAssets = $this->assetService->getCurrentCashAsset();
+		$this->widgetService->cashAssetsWidget($cashAssets);
 
 		//Is User active?
 		if($consim_user->getActive()) {

@@ -26,6 +26,7 @@ services:
             - @request
             - @dbal.conn
             - @consim.core.service.action
+            - @consim.core.service.asset
             - @consim.core.service.building
             - @consim.core.service.inventory
             - @consim.core.service.location

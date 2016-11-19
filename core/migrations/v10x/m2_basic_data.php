@@ -11,6 +11,8 @@
 
 namespace consim\core\migrations\v10x;
 
+use consim\core\service\AssetService;
+
 class m2_basic_data extends \phpbb\db\migration\migration
 {
 	static public function depends_on()
@@ -212,9 +214,9 @@ class m2_basic_data extends \phpbb\db\migration\migration
 		global $user;
 
 		$countries = array(
-			array('id' => 1, 'name' => $user->lang('CURRENCIES')),
-			array('id' => 2, 'name' => $user->lang('BONDS')),
-			array('id' => 3, 'name' => $user->lang('SHARES')),
+			array('id' => AssetService::CURRENCY_TYPE, 'name' => $user->lang('CURRENCIES')),
+			array('id' => AssetService::BOND_TYPE, 'name' => $user->lang('BONDS')),
+			array('id' => AssetService::SHARE_TYPE, 'name' => $user->lang('SHARES')),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_asset_types', $countries);
 	}
@@ -225,12 +227,12 @@ class m2_basic_data extends \phpbb\db\migration\migration
 		global $user;
 
 		$countries = array(
-			array('id' => 1, 'type_id' => 1, 'name' => $user->lang('CURRENCY_1'), 'short_name' => $user->lang('CURRENCY_1_SHORT')),
-			array('id' => 2, 'type_id' => 1, 'name' => $user->lang('CURRENCY_2'), 'short_name' => $user->lang('CURRENCY_2_SHORT')),
-			array('id' => 3, 'type_id' => 1, 'name' => $user->lang('CURRENCY_3'), 'short_name' => $user->lang('CURRENCY_3_SHORT')),
-			array('id' => 4, 'type_id' => 2, 'name' => $user->lang('BOND_1'), 'short_name' => $user->lang('BOND_1_SHORT')),
-			array('id' => 5, 'type_id' => 2, 'name' => $user->lang('BOND_2'), 'short_name' => $user->lang('BOND_2_SHORT')),
-			array('id' => 6, 'type_id' => 2, 'name' => $user->lang('BOND_3'), 'short_name' => $user->lang('BOND_3_SHORT')),
+			array('id' => 1, 'type_id' => AssetService::CURRENCY_TYPE, 'name' => $user->lang('CURRENCY_1'), 'short_name' => $user->lang('CURRENCY_1_SHORT')),
+			array('id' => 2, 'type_id' => AssetService::CURRENCY_TYPE, 'name' => $user->lang('CURRENCY_2'), 'short_name' => $user->lang('CURRENCY_2_SHORT')),
+			array('id' => 3, 'type_id' => AssetService::CURRENCY_TYPE, 'name' => $user->lang('CURRENCY_3'), 'short_name' => $user->lang('CURRENCY_3_SHORT')),
+			array('id' => 4, 'type_id' => AssetService::BOND_TYPE, 'name' => $user->lang('BOND_1'), 'short_name' => $user->lang('BOND_1_SHORT')),
+			array('id' => 5, 'type_id' => AssetService::BOND_TYPE, 'name' => $user->lang('BOND_2'), 'short_name' => $user->lang('BOND_2_SHORT')),
+			array('id' => 6, 'type_id' => AssetService::BOND_TYPE, 'name' => $user->lang('BOND_3'), 'short_name' => $user->lang('BOND_3_SHORT')),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_assets', $countries);
 	}
