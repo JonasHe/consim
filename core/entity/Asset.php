@@ -18,11 +18,14 @@ class Asset extends abstractEntity
 	 *
 	 **/
 	protected static $fields = array(
-		'id'				=> 'integer',
-		'type_id'			=> 'integer',
-		'type_name'			=> 'string',
-		'name'				=> 'string',
-		'short_name'		=> 'string',
+		'id'					=> 'integer',
+		'type_id'				=> 'integer',
+		'type_name'				=> 'string',
+		'name'					=> 'string',
+		'short_name'			=> 'string',
+		'exchange_rate_value'	=> 'integer',
+		'exchange_rate_comma'	=> 'integer',
+		'nominal_value'			=> 'integer',
 	);
 
 	/**
@@ -31,6 +34,9 @@ class Asset extends abstractEntity
 	protected static $validate_unsigned = array(
 		'id',
 		'type_id',
+		'exchange_rate_value',
+		'exchange_rate_comma',
+		'nominal_value',
 	);
 
 	/**
@@ -66,7 +72,8 @@ class Asset extends abstractEntity
 	 */
 	public function load($id)
 	{
-		$sql = 'SELECT a.id, a.type_id, at.name as type_name, a.name, a.short_name
+		$sql = 'SELECT a.id, a.type_id, at.name as type_name, a.name, a.short_name,
+				a.exchange_rate_value, a.exchange_rate_comma, a.nominal_value
 			FROM '. $this->consim_asset_table .' a
 			LEFT JOIN '. $this->consim_asset_type_table .' at ON at.id = a.type_id 
 			WHERE a.id = '. (int) $id;
@@ -135,5 +142,28 @@ class Asset extends abstractEntity
 	public function getShortName()
 	{
 		return $this->getString($this->data['short_name']);
+	}
+
+	/**
+	 * Get exchange rate
+	 *
+	 * @return float Exchange rate
+	 * @access public
+	 */
+	public function getExchangeRate()
+	{
+		$rate = $this->data['exchange_rate_value'] / $this->data['exchange_rate_comma'];
+		return $rate;
+	}
+
+	/**
+	 * Get nominal value
+	 *
+	 * @return int nominal value
+	 * @access public
+	 */
+	public function getNominalValue()
+	{
+		return $this->getInteger($this->data['nominal_value']);
 	}
 }

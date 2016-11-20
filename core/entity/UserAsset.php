@@ -18,14 +18,17 @@ class UserAsset extends \consim\core\entity\Asset
 	 *
 	 **/
 	protected static $fields = array(
-		'id'				=> 'integer',
-		'user_id'			=> 'integer',
-		'asset_id'			=> 'integer',
-		'type_id'			=> 'integer',
-		'type_name'			=> 'string',
-		'name'				=> 'string',
-		'short_name'		=> 'string',
-		'value'				=> 'integer',
+		'id'					=> 'integer',
+		'user_id'				=> 'integer',
+		'asset_id'				=> 'integer',
+		'type_id'				=> 'integer',
+		'type_name'				=> 'string',
+		'name'					=> 'string',
+		'short_name'			=> 'string',
+		'value'					=> 'integer',
+		'exchange_rate_value'	=> 'integer',
+		'exchange_rate_comma'	=> 'integer',
+		'nominal_value'			=> 'integer',
 	);
 
 	/**
@@ -37,6 +40,9 @@ class UserAsset extends \consim\core\entity\Asset
 		'asset_id',
 		'type_id',
 		'value',
+		'exchange_rate_value',
+		'exchange_rate_comma',
+		'nominal_value',
 	);
 
 	/**

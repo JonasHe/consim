@@ -213,12 +213,12 @@ class m2_basic_data extends \phpbb\db\migration\migration
 		/** @var \phpbb\user $user */
 		global $user;
 
-		$countries = array(
+		$asset_types = array(
 			array('id' => AssetService::CURRENCY_TYPE, 'name' => $user->lang('CURRENCIES')),
 			array('id' => AssetService::BOND_TYPE, 'name' => $user->lang('BONDS')),
 			array('id' => AssetService::SHARE_TYPE, 'name' => $user->lang('SHARES')),
 		);
-		$this->db->sql_multi_insert($this->table_prefix . 'consim_asset_types', $countries);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_asset_types', $asset_types);
 	}
 
 	public function insert_assets()
@@ -226,15 +226,45 @@ class m2_basic_data extends \phpbb\db\migration\migration
 		/** @var \phpbb\user $user */
 		global $user;
 
-		$countries = array(
-			array('id' => 1, 'type_id' => AssetService::CURRENCY_TYPE, 'name' => $user->lang('CURRENCY_1'), 'short_name' => $user->lang('CURRENCY_1_SHORT')),
-			array('id' => 2, 'type_id' => AssetService::CURRENCY_TYPE, 'name' => $user->lang('CURRENCY_2'), 'short_name' => $user->lang('CURRENCY_2_SHORT')),
-			array('id' => 3, 'type_id' => AssetService::CURRENCY_TYPE, 'name' => $user->lang('CURRENCY_3'), 'short_name' => $user->lang('CURRENCY_3_SHORT')),
-			array('id' => 4, 'type_id' => AssetService::BOND_TYPE, 'name' => $user->lang('BOND_1'), 'short_name' => $user->lang('BOND_1_SHORT')),
-			array('id' => 5, 'type_id' => AssetService::BOND_TYPE, 'name' => $user->lang('BOND_2'), 'short_name' => $user->lang('BOND_2_SHORT')),
-			array('id' => 6, 'type_id' => AssetService::BOND_TYPE, 'name' => $user->lang('BOND_3'), 'short_name' => $user->lang('BOND_3_SHORT')),
+		$assets_currency = array(
+			array('id' => 1, 'type_id' => AssetService::CURRENCY_TYPE,
+				  'name' => $user->lang('CURRENCY_1'),
+				  'short_name' => $user->lang('CURRENCY_1_SHORT'),
+				  'exchange_rate_value' => 144,
+				  'exchange_rate_comma' => 1000),
+			array('id' => 2, 'type_id' => AssetService::CURRENCY_TYPE,
+				  'name' => $user->lang('CURRENCY_2'),
+				  'short_name' => $user->lang('CURRENCY_2_SHORT'),
+				  'exchange_rate_value' => 581,
+				  'exchange_rate_comma' => 1000),
+			array('id' => 3, 'type_id' => AssetService::CURRENCY_TYPE,
+				  'name' => $user->lang('CURRENCY_3'),
+				  'short_name' => $user->lang('CURRENCY_3_SHORT'),
+				  'exchange_rate_value' => 211,
+				  'exchange_rate_comma' => 100),
 		);
-		$this->db->sql_multi_insert($this->table_prefix . 'consim_assets', $countries);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_assets', $assets_currency);
+		$assets_bond = array(
+			array('id' => 4, 'type_id' => AssetService::BOND_TYPE,
+				  'name' => $user->lang('BOND_1'),
+				  'short_name' => $user->lang('BOND_1_SHORT'),
+				  'exchange_rate_value' => 1,
+				  'exchange_rate_comma' => 10,
+				  'nominal_value' => 500),
+			array('id' => 5, 'type_id' => AssetService::BOND_TYPE,
+				  'name' => $user->lang('BOND_2'),
+				  'short_name' => $user->lang('BOND_2_SHORT'),
+				  'exchange_rate_value' => 2,
+				  'exchange_rate_comma' => 1,
+				  'nominal_value' => 500),
+			array('id' => 6, 'type_id' => AssetService::BOND_TYPE,
+				  'name' => $user->lang('BOND_3'),
+				  'short_name' => $user->lang('BOND_3_SHORT'),
+				  'exchange_rate_value' => 8973,
+				  'exchange_rate_comma' => 10000,
+				  'nominal_value' => 500),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_assets', $assets_bond);
 	}
 
 	/**

@@ -70,6 +70,31 @@ class AssetController extends AbstractController
 	 */
 	public function indexAction()
 	{
+		$cashAssets = $this->assetService->getCurrentCashAsset();
+		foreach ($cashAssets as $currency)
+		{
+			$this->template->assign_block_vars('asset_currencies', array(
+				'NAME'			=> $currency->getName(),
+				'SHORT_NAME'	=> $currency->getShortName(),
+				'VALUE'			=> $currency->getValue(),
+				'EXCHANGE_RATE'	=> '1 '. $currency->getShortName() .' : '. $currency->getExchangeRate() .' Cr',
+				'TOTAL_VALUE'	=> $currency->getValue() * $currency->getExchangeRate(),
+			));
+		}
+
+		$bondAssets = $this->assetService->getCurrentBondAsset();
+		foreach ($bondAssets as $bond)
+		{
+			$this->template->assign_block_vars('asset_bonds', array(
+				'NAME'			=> $bond->getName(),
+				'SHORT_NAME'	=> $bond->getShortName(),
+				'VALUE'			=> $bond->getValue(),
+				'NOMINAL_VALUE'	=> $bond->getNominalValue(),
+				'EXCHANGE_RATE'	=> '1 '. $bond->getShortName() .' : '. $bond->getExchangeRate() .' Cr',
+				'TOTAL_VALUE'	=> $bond->getValue() * $bond->getExchangeRate(),
+			));
+		}
+
 		// Send all data to the template file
 		return $this->helper->render('consim_asset.html', $this->user->lang('CONSIM'));
 	}

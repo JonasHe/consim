@@ -24,6 +24,12 @@ class AssetService
 	/** @var  \consim\core\service\UserService */
 	protected $userService;
 
+	/** @var \consim\core\entity\UserAsset[]|null */
+	protected $currentCashAsset = null;
+
+	/** @var \consim\core\entity\UserAsset[]|null */
+	protected $currentBondAsset = null;
+
 	//
 	const CURRENCY_TYPE = 1;
 	const BOND_TYPE = 2;
@@ -53,10 +59,15 @@ class AssetService
 	 */
 	public function getCurrentCashAsset()
 	{
+		if(null != $this->currentCashAsset)
+		{
+			return $this->currentCashAsset;
+		}
 		$user = $this->userService->getCurrentUser();
 
 		$cashAsset = array();
-		$sql = 'SELECT ua.id, ua.user_id, ua.asset_id, a.type_id, at.name as type_name, a.name, a.short_name, ua.value
+		$sql = 'SELECT ua.id, ua.user_id, ua.asset_id, a.type_id, at.name as type_name, a.name, a.short_name, ua.value,
+				a.exchange_rate_value, a.exchange_rate_comma, a.nominal_value
 			FROM '. $this->container->getParameter('tables.consim.users_assets') .' ua
 			LEFT JOIN '. $this->container->getParameter('tables.consim.assets') .' a ON a.id = ua.asset_id 
 			LEFT JOIN '. $this->container->getParameter('tables.consim.asset_types') .' at ON at.id = a.type_id
@@ -69,7 +80,42 @@ class AssetService
 		}
 		$this->db->sql_freeresult($result);
 
+		$this->currentCashAsset = $cashAsset;
+
 		return $cashAsset;
+	}
+
+	/**
+	 * Get cash asset of current user
+	 *
+	 * @return \consim\core\entity\UserAsset[]
+	 */
+	public function getCurrentBondAsset()
+	{
+		if(null != $this->currentBondAsset)
+		{
+			return $this->currentBondAsset;
+		}
+		$user = $this->userService->getCurrentUser();
+
+		$bondAssets = array();
+		$sql = 'SELECT ua.id, ua.user_id, ua.asset_id, a.type_id, at.name as type_name, a.name, a.short_name, ua.value,
+				a.exchange_rate_value, a.exchange_rate_comma, a.nominal_value
+			FROM '. $this->container->getParameter('tables.consim.users_assets') .' ua
+			LEFT JOIN '. $this->container->getParameter('tables.consim.assets') .' a ON a.id = ua.asset_id 
+			LEFT JOIN '. $this->container->getParameter('tables.consim.asset_types') .' at ON at.id = a.type_id
+			WHERE ua.user_id = '. $user->getUserId() .' AND a.type_id = '. self::BOND_TYPE;
+		$result = $this->db->sql_query($sql);
+
+		while($row = $this->db->sql_fetchrow($result))
+		{
+			$bondAssets[] = $this->container->get('consim.core.entity.user_asset')->import($row);
+		}
+		$this->db->sql_freeresult($result);
+
+		$this->currentBondAsset = $bondAssets;
+
+		return $bondAssets;
 	}
 
 	/**
@@ -78,7 +124,8 @@ class AssetService
 	public function getAllCurrencies()
 	{
 		$currencies = array();
-		$sql = 'SELECT a.id, a.type_id, at.name as type_name, a.name, a.short_name
+		$sql = 'SELECT a.id, a.type_id, at.name as type_name, a.name, a.short_name,
+				a.exchange_rate_value, a.exchange_rate_comma, a.nominal_value
 			FROM '. $this->container->getParameter('tables.consim.assets') .' a
 			LEFT JOIN '. $this->container->getParameter('tables.consim.asset_types') .' at ON at.id = a.type_id 
 			WHERE a.type_id = '. self::CURRENCY_TYPE;
@@ -105,7 +152,8 @@ class AssetService
 	public function getAllBonds()
 	{
 		$bonds = array();
-		$sql = 'SELECT a.id, a.type_id, at.type_name, a.name, a.short_names
+		$sql = 'SELECT a.id, a.type_id, at.name as type_name, a.name, a.short_names,
+				a.exchange_rate_value, a.exchange_rate_comma, a.nominal_value
 			FROM '. $this->container->getParameter('tables.consim.assets') .' a
 			LEFT JOIN '. $this->container->getParameter('tables.consim.asset_types') .' at ON at.id = a.type_id 
 			WHERE a.type_id = '. self::BOND_TYPE;

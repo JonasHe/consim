@@ -362,7 +362,7 @@ ul.travellist dd.action a.button2 {
 	padding: 0;
 }
 .middle_column img{
-	padding: 0px;
+	padding: 0;
 	margin-bottom: -11px;
 	margin-top: -5px;
 }
@@ -373,4 +373,81 @@ table.table1 tbody td.indent {
 
 table.table1 tbody td.indent {
 	padding-left: 2em;
+}
+
+ul.consim_list {
+	font-size: 1.2em;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+ul.consim_list, ul.consim_list li{
+	display: block;
+	list-style-type: none;
+	margin: 0;
+}
+
+ul.consim_list li.consim_header {
+	border-bottom: 1px solid #000000;
+}
+
+ul.consim_list li.two-row {
+	height: 40px;
+	line-height: 30px;
+}
+
+ul.consim_list li.consim_header dt.title {
+	font-weight: normal;
+	font-size: 1.6em;
+}
+
+ul.consim_list dl {
+	overflow: hidden;
+	margin-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+ul.consim_list dt, ul.consim_list dd {
+	display: block;
+	float: left;
+}
+
+ul.consim_list dt {
+	width: 100%;
+	margin-right: -500px;
+
+}
+
+ul.consim_list dd{
+	text-align: center;
+}
+
+ul.consim_list dd.two-row {
+	line-height: normal;
+}
+
+ul.consim_list dd.total-value {
+	float:right;
+}
+
+ul.consim_list dd.value {
+	text-align: left;
+	width: 50px;
+}
+
+ul.consim_list dd.value.column-2 {
+	width: 200px;
+}
+
+ul.consim_list dd.nominal-value,
+ul.consim_list dd.exchange-rate,
+ul.consim_list dd.total-value {
+	width: 150px;
+}
+
+ul.column-4 dd.nominal-value {
+	width: 150px;
+}
+
+li.consim_list_row {
+	border-bottom: 1px solid #000000;
 }
