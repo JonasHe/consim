@@ -1,0 +1,67 @@
+<!-- INCLUDE consim_header.html -->
+
+<div class="field_center">
+
+	<div class="panel">
+		<div class="inner">
+			<div class="content">
+				<div class="inner">
+					<ul class="consim_list">
+						<li class="consim_header two-row">
+							<dl>
+								<dt class="title">{L_CURRENCIES}</dt>
+								<dd class="value column-2">{L_VALUE}</dd>
+								<dd class="excahnge-rate two-row">{L_EXCHANGE_RATE}</dd>
+								<dd class="total-value">{L_TOTAL_VALUE}</dd>
+							</dl>
+						</li>
+						<!-- BEGIN asset_currencies -->
+						<li class="consim_list_row">
+							<dl>
+								<dt class="title">{asset_currencies.NAME} ({asset_currencies.SHORT_NAME})</dt>
+								<dd class="value column-2">{asset_currencies.VALUE}</dd>
+								<dd class="exchange-rate">{asset_currencies.EXCHANGE_RATE}</dd>
+								<dd class="total-value">{asset_currencies.TOTAL_VALUE}</dd>
+							</dl>
+						</li>
+						<!-- END asset_currencies -->
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel">
+		<div class="inner">
+			<div class="content">
+				<div class="inner">
+					<ul class="consim_list">
+						<li class="consim_header two-row">
+							<dl>
+								<dt class="title">{L_BONDS}</dt>
+								<dd class="value">{L_VALUE}</dd>
+								<dd class="nominal-value two-row">{L_NOMINAL_VALUE}</dd>
+								<dd class="exchange-rate two-row">{L_EXCHANGE_RATE}</dd>
+								<dd class="total-value">{L_TOTAL_VALUE}</dd>
+							</dl>
+						</li>
+						<!-- BEGIN asset_bonds -->
+						<li class="consim_list_row">
+							<dl>
+								<dt class="title">{asset_bonds.NAME} ({asset_bonds.SHORT_NAME})</dt>
+								<dd class="value">{asset_bonds.VALUE}</dd>
+								<dd class="nominal-value two-row">{asset_bonds.NOMINAL_VALUE}</dd>
+								<dd class="exchange-rate">{asset_bonds.EXCHANGE_RATE}</dd>
+								<dd class="total-value">{asset_bonds.TOTAL_VALUE}</dd>
+							</dl>
+						</li>
+						<!-- END asset_bonds -->
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- INCLUDE consim_footer.html -->

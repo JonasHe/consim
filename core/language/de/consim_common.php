@@ -40,6 +40,8 @@ $lang = array_merge($lang, array(
 	'CONSIM'					=> 'ConSim',
 	'CONSIM_TITLE'				=> 'ConSim',
 	'ACTIONLIST'				=> 'Aktvitäten',
+	'ASSET'						=> 'Vermögen',
+	'CASH_ASSETS'				=> 'Barvermögen',
 
 	'ANNIVERSARY_NONE'			=> 'Keine historischen Ereignisse',
 	'ANNIVERSARY_TODAY'			=> 'Heute',
@@ -92,4 +94,12 @@ $lang = array_merge($lang, array(
 	'ROAD_TYPE_5'				=> 'Seeweg',
 	'ROAD_BLOCKED'				=> 'Straße gesperrt',
 	'ROAD_NOT_BLOCKED'			=> 'Sraße frei',
+
+	//Asset_page
+	'CURRENCIES'				=> 'Währungen',
+	'BONDS'						=> 'Staatsanleihen',
+	'EXCHANGE_RATE'				=> 'Aktueller Wechselkurs<br />(Währung:Credits)',
+	'TOTAL_VALUE'				=> 'Gesamtwert in Credits',
+	'NOMINAL_VALUE'				=> 'Nominalwert<br />pro Einheit',
+	'VALUE'						=> 'Menge',
 ));

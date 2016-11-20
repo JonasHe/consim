@@ -10,6 +10,13 @@ services:
           - @consim.core.service.user
           - %tables.consim.actions%
 
+  consim.core.service.asset:
+      class: consim\core\service\AssetService
+      arguments:
+          - @dbal.conn
+          - @service_container
+          - @consim.core.service.user
+
   consim.core.service.building:
         class: consim\core\service\BuildingService
         arguments:
@@ -86,11 +93,12 @@ services:
           - %tables.consim.works%
           - %tables.consim.work_outputs%
           - %tables.consim.skills%
-          - %tables.consim.items%
+          - %tables.consim.assets%
 
   consim.core.service.weather:
         class: consim\core\service\WeatherService
         arguments:
+            - @config
             - @service_container
             - @template
 

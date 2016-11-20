@@ -2,6 +2,10 @@ consim_core_index:
     path: /game
     defaults: { _controller: consim.core.controller.location:showLocationAction }
 
+consim_core_asset:
+    path: /game/asset
+    defaults: { _controller: consim.core.controller.asset:indexAction}
+
 consim_core_location:
     path: /game/location/{location_id}
     defaults: { _controller: consim.core.controller.location:showLocationAction, location_id: 0 }

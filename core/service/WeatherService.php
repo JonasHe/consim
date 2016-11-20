@@ -19,6 +19,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class WeatherService
 {
+	/** @var \phpbb\config\config */
+	protected $config;
+
 	/** @var ContainerInterface */
 	protected $container;
 
@@ -34,14 +37,17 @@ class WeatherService
 	/**
 	 * Constructor
 	 *
-	 * @param ContainerInterface					$container		Service container interface
-	 * @param \phpbb\template\template				$template		Template object
+	 * @param \phpbb\config\config				$config			Config object
+	 * @param ContainerInterface				$container		Service container interface
+	 * @param \phpbb\template\template			$template		Template object
 	 * @return WeatherService
 	 * @access public
 	 */
-	public function __construct(ContainerInterface $container,
+	public function __construct(\phpbb\config\config $config,
+		ContainerInterface $container,
 		\phpbb\template\template $template)
 	{
+		$this->config = $config;
 		$this->container = $container;
 		$this->template = $template;
 
@@ -108,7 +114,7 @@ class WeatherService
 	{
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($curl, CURLOPT_URL, 'http://api.openweathermap.org/data/2.5/weather?id='.$this->weatherData->getOwmId().'&units=metric&lang=de&appid=APPID');
+		curl_setopt ($curl, CURLOPT_URL, 'http://api.openweathermap.org/data/2.5/weather?id='.$this->weatherData->getOwmId().'&units=metric&lang=de&appid=' . $this->config['consim_weather_api_key']);
 		$response = json_decode(curl_exec($curl),true);
 		curl_close ($curl);
 

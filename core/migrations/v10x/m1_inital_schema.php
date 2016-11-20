@@ -284,8 +284,8 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 						'id'					=> array('UINT:8', 0),
 						'work_id'				=> array('UINT:8', 0),
 						'success_threshold'		=> array('UINT:8', 0),
-						'output_id'				=> array('UINT:8', 0),
-						'output_value'			=> array('UINT:8', 0),
+						'asset_id'				=> array('UINT:8', 0),
+						'asset_value'			=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
@@ -315,6 +315,38 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
 						'prvnce_id'					=> array('INDEX', 'prvnce_id'),
+					),
+				),
+				$this->table_prefix. 'consim_asset_types'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
+				$this->table_prefix. 'consim_assets'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', 0),
+						'type_id'				=> array('UINT:8', 0),
+						'name'					=> array('VCHAR:255', ''),
+						'short_name'			=> array('VCHAR:255', ''),
+						'exchange_rate_value'	=> array('UINT:8', 0),
+						'exchange_rate_comma'	=> array('UINT:8', 0),
+						'nominal_value'			=> array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+				),
+				$this->table_prefix. 'consim_users_assets'	=> array(
+					'COLUMNS'	=> array(
+						'id'					=> array('UINT:8', NULL, 'auto_increment'),
+						'user_id'				=> array('UINT:8', 0),
+						'asset_id'				=> array('UINT:8', 0),
+						'value'					=> array('UINT:8', 0),
+					),
+					'PRIMARY_KEY'	=> array('id'),
+					'KEYS'			=> array(
+						'u_id'					=> array('INDEX', 'user_id'),
+						'a_id'					=> array('INDEX', 'asset_id'),
 					),
 				),
 			),
@@ -377,6 +409,9 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 				$this->table_prefix . 'consim_work_outputs',
 				$this->table_prefix . 'consim_markers',
 				$this->table_prefix . 'consim_roads',
+				$this->table_prefix . 'consim_asset_types',
+				$this->table_prefix . 'consim_assets',
+				$this->table_prefix . 'consim_users_assets',
 			),
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users' => array('consim_register'),

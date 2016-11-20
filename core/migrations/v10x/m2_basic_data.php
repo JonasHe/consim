@@ -11,6 +11,8 @@
 
 namespace consim\core\migrations\v10x;
 
+use consim\core\service\AssetService;
+
 class m2_basic_data extends \phpbb\db\migration\migration
 {
 	static public function depends_on()
@@ -33,7 +35,9 @@ class m2_basic_data extends \phpbb\db\migration\migration
 		$user->add_lang_ext('consim/core', 'consim_install');
 
 		return array(
-			// Set the current version
+			// Set config
+			//array('config.add', array('consim_weather_api_key', '')),
+
 			array('custom', array(array($this, 'insert_consim_figure'))),
 			array('custom', array(array($this, 'insert_consim_item'))),
 			array('custom', array(array($this, 'insert_consim_skill'))),
@@ -41,6 +45,8 @@ class m2_basic_data extends \phpbb\db\migration\migration
 			array('custom', array(array($this, 'insert_location_types'))),
 			array('custom', array(array($this, 'insert_provinces'))),
 			array('custom', array(array($this, 'insert_countries'))),
+			array('custom', array(array($this, 'insert_asset_types'))),
+			array('custom', array(array($this, 'insert_assets'))),
 
 			// Add an acp tab
 			array('module.add', array('acp', 0, 'ACP_CAT_CONSIM')),
@@ -200,6 +206,65 @@ class m2_basic_data extends \phpbb\db\migration\migration
 			array('id' => 4, 'name' => $user->lang('COUNTRY_4')),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_countries', $countries);
+	}
+
+	public function insert_asset_types()
+	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		$asset_types = array(
+			array('id' => AssetService::CURRENCY_TYPE, 'name' => $user->lang('CURRENCIES')),
+			array('id' => AssetService::BOND_TYPE, 'name' => $user->lang('BONDS')),
+			array('id' => AssetService::SHARE_TYPE, 'name' => $user->lang('SHARES')),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_asset_types', $asset_types);
+	}
+
+	public function insert_assets()
+	{
+		/** @var \phpbb\user $user */
+		global $user;
+
+		$assets_currency = array(
+			array('id' => 1, 'type_id' => AssetService::CURRENCY_TYPE,
+				  'name' => $user->lang('CURRENCY_1'),
+				  'short_name' => $user->lang('CURRENCY_1_SHORT'),
+				  'exchange_rate_value' => 144,
+				  'exchange_rate_comma' => 1000),
+			array('id' => 2, 'type_id' => AssetService::CURRENCY_TYPE,
+				  'name' => $user->lang('CURRENCY_2'),
+				  'short_name' => $user->lang('CURRENCY_2_SHORT'),
+				  'exchange_rate_value' => 581,
+				  'exchange_rate_comma' => 1000),
+			array('id' => 3, 'type_id' => AssetService::CURRENCY_TYPE,
+				  'name' => $user->lang('CURRENCY_3'),
+				  'short_name' => $user->lang('CURRENCY_3_SHORT'),
+				  'exchange_rate_value' => 211,
+				  'exchange_rate_comma' => 100),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_assets', $assets_currency);
+		$assets_bond = array(
+			array('id' => 4, 'type_id' => AssetService::BOND_TYPE,
+				  'name' => $user->lang('BOND_1'),
+				  'short_name' => $user->lang('BOND_1_SHORT'),
+				  'exchange_rate_value' => 1,
+				  'exchange_rate_comma' => 10,
+				  'nominal_value' => 500),
+			array('id' => 5, 'type_id' => AssetService::BOND_TYPE,
+				  'name' => $user->lang('BOND_2'),
+				  'short_name' => $user->lang('BOND_2_SHORT'),
+				  'exchange_rate_value' => 2,
+				  'exchange_rate_comma' => 1,
+				  'nominal_value' => 500),
+			array('id' => 6, 'type_id' => AssetService::BOND_TYPE,
+				  'name' => $user->lang('BOND_3'),
+				  'short_name' => $user->lang('BOND_3_SHORT'),
+				  'exchange_rate_value' => 8973,
+				  'exchange_rate_comma' => 10000,
+				  'nominal_value' => 500),
+		);
+		$this->db->sql_multi_insert($this->table_prefix . 'consim_assets', $assets_bond);
 	}
 
 	/**

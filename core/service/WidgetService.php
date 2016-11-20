@@ -66,6 +66,22 @@ class WidgetService
 	}
 
 	/**
+	 * @param \consim\core\entity\UserAsset[]	$assets
+	 */
+	public function cashAssetsWidget(array $assets)
+	{
+		foreach ($assets as $asset)
+		{
+			$this->template->assign_block_vars('cash_asset_widget', array(
+				'ID'			=> $asset->getId(),
+				'NAME'			=> $asset->getName(),
+				'SHORT_NAME'	=> $asset->getShortName(),
+				'VALUE'			=> $asset->getValue(),
+			));
+		}
+	}
+
+	/**
 	 * @param \consim\core\entity\InventoryItem[]	$inventory
 	 */
 	public function inventoryWidget(array $inventory)

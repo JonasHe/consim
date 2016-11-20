@@ -31,6 +31,9 @@ abstract class AbstractController
 	/** @var  \consim\core\service\ActionService */
 	protected $actionService;
 
+	/** @var  \consim\core\service\AssetService */
+	protected $assetService;
+
 	/** @var  \consim\core\service\InventoryService */
 	protected $inventoryService;
 
@@ -84,6 +87,10 @@ abstract class AbstractController
 		$inventory = $this->inventoryService->getCurrentInventory();
 		$this->widgetService->inventoryWidget($inventory);
 
+		//Get Cash Assets and add to template
+		$cashAssets = $this->assetService->getCurrentCashAsset();
+		$this->widgetService->cashAssetsWidget($cashAssets);
+
 		//Is User active?
 		if($consim_user->getActive()) {
 			//get current action
@@ -126,6 +133,7 @@ abstract class AbstractController
 			'GO_TO_INFORMATION'				=> $this->helper->route('consim_core_activity'),
 			'U_OVERVIEW'					=> $this->helper->route('consim_core_index'),
 			'U_ACTIONLIST'					=> $this->helper->route('consim_core_action_list'),
+			'U_ASSET'						=> $this->helper->route('consim_core_asset'),
 		));
 	}
 

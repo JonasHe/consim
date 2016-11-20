@@ -21,9 +21,9 @@ class WorkOutput extends abstractEntity
 		'id'					=> 'integer',
 		'work_id'				=> 'integer',
 		'success_threshold'		=> 'integer',
-		'output_id' 			=> 'integer',
-		'output_value'			=> 'integer',
-		'output_name'			=> 'string',
+		'asset_id' 				=> 'integer',
+		'asset_value'			=> 'integer',
+		'asset_name'			=> 'string',
 	);
 
 	/**
@@ -33,31 +33,31 @@ class WorkOutput extends abstractEntity
 		'id',
 		'work_id',
 		'success_threshold',
-		'output_id',
-		'output_value',
+		'asset_id',
+		'asset_value',
 	);
 	/**
 	 * The database table the consim user data are stored in
 	 * @var string
 	 */
 	protected $consim_work_output_table;
-	protected $consim_item_table;
+	protected $consim_asset_table;
 
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface	$db							Database object
 	 * @param string							$consim_work_output_table	Name of the table used to store data
-	 * @param string							$consim_item_table			Name of the table used to store data
+	 * @param string							$consim_asset_table			Name of the table used to store data
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
 		$consim_work_output_table,
-		$consim_item_table)
+		$consim_asset_table)
 	{
 		$this->db = $db;
 		$this->consim_work_output_table = $consim_work_output_table;
-		$this->consim_item_table = $consim_item_table;
+		$this->consim_asset_table = $consim_asset_table;
 	}
 
 	/**
@@ -71,9 +71,9 @@ class WorkOutput extends abstractEntity
 	public function load($id)
 	{
 		$sql = 'SELECT o.id, o.work_id, o.success_threshold,
-				o.output_id, o.output_value, COALESCE(i.name,"") AS output_name
+				o.asset_id, o.asset_value, COALESCE(i.name,"") AS asset_name
 			FROM ' . $this->consim_work_output_table . ' o
-			LEFT JOIN '. $this->consim_item_table .' i ON i.id = o.output_id
+			LEFT JOIN '. $this->consim_asset_table .' i ON i.id = o.asset_id
 			WHERE w.id = '.  $id;
 		$result = $this->db->sql_query($sql);
 		$this->data = $this->db->sql_fetchrow($result);
@@ -121,35 +121,35 @@ class WorkOutput extends abstractEntity
 	}
 
 	/**
-	 * Get Output ID
+	 * Get Asset ID
 	 *
-	 * @return int Output ID
+	 * @return int Asset ID
 	 * @access public
 	 */
-	public function getOutputId()
+	public function getAssetId()
 	{
-		return $this->getInteger($this->data['output_id']);
+		return $this->getInteger($this->data['asset_id']);
 	}
 
 	/**
-	 * Get Output value
+	 * Get Asset value
 	 *
-	 * @return int Output value
+	 * @return int Asset value
 	 * @access public
 	 */
-	public function getOutputValue()
+	public function getAssetValue()
 	{
-		return $this->getInteger($this->data['output_value']);
+		return $this->getInteger($this->data['asset_value']);
 	}
 
 	/**
-	 * Get Output Name
+	 * Get Asset Name
 	 *
-	 * @return string Output Name
+	 * @return string Asset Name
 	 * @access public
 	 */
-	public function getOutputName()
+	public function getAssetName()
 	{
-		return $this->getString($this->data['output_name']);
+		return $this->getString($this->data['asset_name']);
 	}
 }

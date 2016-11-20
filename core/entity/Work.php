@@ -328,8 +328,8 @@ class Work extends abstractEntity
 	public function canUserWork($user_skills)
 	{
 		if(($this->data['condition_1_id'] > 0 && $user_skills[$this->data['condition_1_id']]->getValue() < $this->data['condition_1_value']) ||
-			($this->data['condition_2_id'] > 0 && $user_skills[$this->data['condition_2_id']]->getValue() < $this->data['condition_1_value']) ||
-			($this->data['condition_3_id'] > 0 && $user_skills[$this->data['condition_3_id']]->getValue() < $this->data['condition_1_value'])
+			($this->data['condition_2_id'] > 0 && $user_skills[$this->data['condition_2_id']]->getValue() < $this->data['condition_2_value']) ||
+			($this->data['condition_3_id'] > 0 && $user_skills[$this->data['condition_3_id']]->getValue() < $this->data['condition_3_value'])
 		)
 		{
 			return false;
