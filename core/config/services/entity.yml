@@ -11,7 +11,6 @@ services:
             - %tables.consim.actions%
             - %tables.consim.user%
             - %tables.consim.works%
-            - %tables.consim.inventory_items%
 
     consim.core.entity.anniversary:
         class: consim\core\entity\Anniversary
@@ -187,4 +186,4 @@ services:
         arguments:
             - @dbal.conn
             - %tables.consim.work_outputs%
-            - %tables.consim.items%
+            - %tables.consim.assets%

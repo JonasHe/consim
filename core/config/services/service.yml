@@ -93,7 +93,7 @@ services:
           - %tables.consim.works%
           - %tables.consim.work_outputs%
           - %tables.consim.skills%
-          - %tables.consim.items%
+          - %tables.consim.assets%
 
   consim.core.service.weather:
         class: consim\core\service\WeatherService

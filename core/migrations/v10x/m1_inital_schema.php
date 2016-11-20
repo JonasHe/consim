@@ -284,8 +284,8 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 						'id'					=> array('UINT:8', 0),
 						'work_id'				=> array('UINT:8', 0),
 						'success_threshold'		=> array('UINT:8', 0),
-						'output_id'				=> array('UINT:8', 0),
-						'output_value'			=> array('UINT:8', 0),
+						'asset_id'				=> array('UINT:8', 0),
+						'asset_value'			=> array('UINT:8', 0),
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(

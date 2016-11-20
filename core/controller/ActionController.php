@@ -31,6 +31,7 @@ class ActionController extends AbstractController
 	 * @param \phpbb\template\template				$template			Template object
 	 * @param \phpbb\request\request				$request			Request object
 	 * @param \consim\core\service\ActionService	$actionService		ActionService object
+	 * @param \consim\core\service\AssetService		$assetService		AssetService object
 	 * @param \consim\core\service\BuildingService	$buildingService	BuildingService object
 	 * @param \consim\core\service\InventoryService	$inventoryService	InventoryService object
 	 * @param \consim\core\service\LocationService	$locationService	LocationService object
@@ -48,6 +49,7 @@ class ActionController extends AbstractController
 		\phpbb\template\template $template,
 		\phpbb\request\request $request,
 		\consim\core\service\ActionService $actionService,
+		\consim\core\service\AssetService $assetService,
 		\consim\core\service\BuildingService $buildingService,
 		\consim\core\service\InventoryService $inventoryService,
 		\consim\core\service\LocationService $locationService,
@@ -63,6 +65,7 @@ class ActionController extends AbstractController
 		$this->template = $template;
 		$this->request = $request;
 		$this->actionService = $actionService;
+		$this->assetService = $assetService;
 		$this->buildingService = $buildingService;
 		$this->inventoryService = $inventoryService;
 		$this->locationService = $locationService;
@@ -142,6 +145,7 @@ class ActionController extends AbstractController
 		}
 
 		//Work finished
+		$result = null;
 		if($action->getStatus() == 1)
 		{
 			$result = $action->getResult();
@@ -154,8 +158,7 @@ class ActionController extends AbstractController
 				'WORK_EXPERIENCE'			=> $result['experience'],
 			));
 		}
-
-		$this->workService->allWorkOutputsToTemplate($work->getId());
+		$this->workService->allWorkOutputsToTemplate($work->getId(), $result);
 
 		// Set output vars for display in the template
 		$this->template->assign_vars(array(

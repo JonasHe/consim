@@ -57,7 +57,6 @@ class Action extends abstractEntity
 	protected $consim_action_table;
 	protected $consim_user_table;
 	protected $consim_work_table;
-	protected $consim_inventory_item_table;
 
 	// work is active
 	const active = 0;
@@ -74,22 +73,19 @@ class Action extends abstractEntity
 	* @param string								$consim_action_table			Name of the table used to store data
 	* @param string								$consim_user_table				Name of the table used to store data
 	* @param string								$consim_work_table				Name of the table used to store data
-	* @param string								$consim_inventory_item_table	Name of the table used to store data
 	* @access public
 	*/
 	public function __construct(\phpbb\db\driver\driver_interface $db,
 								ContainerInterface $container,
 								$consim_action_table,
 								$consim_user_table,
-								$consim_work_table,
-								$consim_inventory_item_table)
+								$consim_work_table)
 	{
 		$this->db = $db;
 		$this->container = $container;
 		$this->consim_action_table = $consim_action_table;
 		$this->consim_user_table = $consim_user_table;
 		$this->consim_work_table = $consim_work_table;
-		$this->consim_inventory_item_table = $consim_inventory_item_table;
 	}
 
 	/**
@@ -561,8 +557,8 @@ class Action extends abstractEntity
 	 */
 	private function setOutputs($success_threshold)
 	{
-		$sql = 'SELECT output_id AS id, output_value AS value
-				FROM phpbb_consim_work_outputs
+		$sql = 'SELECT asset_id AS id, asset_value AS value
+				FROM '. $this->container->getParameter('tables.consim.work_outputs') .'
 				WHERE work_id = '. $this->getWorkId() .' AND
 					success_threshold = '. (int) $success_threshold .'
 				ORDER BY id ASC';
@@ -575,10 +571,10 @@ class Action extends abstractEntity
 		foreach($row as $output)
 		{
 			$result[$output['id']] = $output['value'];
-			$sql = 'UPDATE '. $this->consim_inventory_item_table .'
+			$sql = 'UPDATE '. $this->container->getParameter('tables.consim.users_assets') .'
 					SET value = value + '. $output['value'] .'
 					WHERE user_id = '. $this->getUserId() .' AND
-						item_id = '. $output['id'];
+						asset_id = '. $output['id'];
 			$this->db->sql_query($sql);
 		}
 

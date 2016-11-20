@@ -10,6 +10,7 @@ services:
             - @template
             - @request
             - @consim.core.service.action
+            - @consim.core.service.asset
             - @consim.core.service.inventory
             - @consim.core.service.location
             - @consim.core.service.user
@@ -45,6 +46,7 @@ services:
             - @template
             - @request
             - @consim.core.service.action
+            - @consim.core.service.asset
             - @consim.core.service.building
             - @consim.core.service.inventory
             - @consim.core.service.location

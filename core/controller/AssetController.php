@@ -22,6 +22,7 @@ class AssetController extends AbstractController
 	 * @param \phpbb\template\template              $template Template object
 	 * @param \phpbb\request\request                $request Request object
 	 * @param \consim\core\service\ActionService    $actionService ActionService object
+	 * @param \consim\core\service\AssetService		$assetService		AssetService object
 	 * @param \consim\core\service\InventoryService $inventoryService InventoryService object
 	 * @param \consim\core\service\LocationService  $locationService LocationService object
 	 * @param \consim\core\service\UserService      $userService UserService object
@@ -37,6 +38,7 @@ class AssetController extends AbstractController
 		\phpbb\template\template $template,
 		\phpbb\request\request $request,
 		\consim\core\service\ActionService $actionService,
+		\consim\core\service\AssetService $assetService,
 		\consim\core\service\InventoryService $inventoryService,
 		\consim\core\service\LocationService $locationService,
 		\consim\core\service\UserService $userService,
@@ -49,6 +51,7 @@ class AssetController extends AbstractController
 		$this->template = $template;
 		$this->request = $request;
 		$this->actionService = $actionService;
+		$this->assetService = $assetService;
 		$this->inventoryService = $inventoryService;
 		$this->locationService = $locationService;
 		$this->userService = $userService;

@@ -32,7 +32,7 @@ class WorkService
 	protected $consim_work_table;
 	protected $consim_work_output_table;
 	protected $consim_skill_table;
-	protected $consim_item_table;
+	protected $consim_asset_table;
 
 	/**
 	 * Constructor
@@ -43,7 +43,7 @@ class WorkService
 	 * @param string								$consim_work_table			Name of the table used to store data
 	 * @param string								$consim_work_output_table	Name of the table used to store data
 	 * @param string								$consim_skill_table			Name of the table used to store data
-	 * @param string								$consim_item_table			Name of the table used to store data
+	 * @param string								$consim_asset_table			Name of the table used to store data
 	 * @access public
 	 */
 	public function __construct(\phpbb\db\driver\driver_interface $db,
@@ -52,7 +52,7 @@ class WorkService
 		$consim_work_table,
 		$consim_work_output_table,
 		$consim_skill_table,
-		$consim_item_table)
+		$consim_asset_table)
 	{
 		$this->db = $db;
 		$this->container = $container;
@@ -60,7 +60,7 @@ class WorkService
 		$this->consim_work_table = $consim_work_table;
 		$this->consim_work_output_table = $consim_work_output_table;
 		$this->consim_skill_table = $consim_skill_table;
-		$this->consim_item_table = $consim_item_table;
+		$this->consim_asset_table = $consim_asset_table;
 	}
 
 	/**
@@ -117,9 +117,9 @@ class WorkService
 		$outputs = array();
 
 		$sql = 'SELECT o.id, o.work_id, o.successful_trials,
-				o.output_id, o.output_value, COALESCE(i.name,"") AS output_name, o.success_threshold
+				o.asset_id, o.asset_value, COALESCE(i.name,"") AS asset_name, o.success_threshold
 			FROM ' . $this->consim_work_output_table . ' o
-			LEFT JOIN '. $this->consim_item_table .' i ON i.id = o.output_id
+			LEFT JOIN '. $this->consim_asset_table .' i ON i.id = o.asset_id
 			WHERE o.work_id = '.  $work_id;
 		$result = $this->db->sql_query($sql);
 
@@ -134,29 +134,29 @@ class WorkService
 
 	/**
 	 * Get all Output for a Work
-	 * which sorted by output_id
+	 * which sorted by asset_id
 	 *
 	 * @param int $work_id
 	 * @return WorkOutput[][];
-	 * 		WorkOutput[output_id]['name'] = output_name
-	 * 		WorkOutput[output_id][success_threshold] = work_output
+	 * 		WorkOutput[asset_id]['name'] = output_name
+	 * 		WorkOutput[asset_id][success_threshold] = work_output
 	 */
 	public function getSortedOutputs($work_id)
 	{
 		$outputs = array();
 
 		$sql = 'SELECT o.id, o.work_id, o.success_threshold,
-				o.output_id, o.output_value, COALESCE(i.name,"") AS output_name, o.success_threshold
+				o.asset_id, o.asset_value, COALESCE(i.name,"") AS asset_name, o.success_threshold
 			FROM ' . $this->consim_work_output_table . ' o
-			LEFT JOIN '. $this->consim_item_table .' i ON i.id = o.output_id
+			LEFT JOIN '. $this->consim_asset_table .' i ON i.id = o.asset_id
 			WHERE o.work_id = '.  $work_id .'
 			ORDER BY o.id, o.success_threshold ASC';
 		$result = $this->db->sql_query($sql);
 
 		while($row = $this->db->sql_fetchrow($result))
 		{
-			$outputs[$row['output_id']]['name'] = $row['output_name'];
-			$outputs[$row['output_id']][] = $this->container->get('consim.core.entity.work_output')->import($row);
+			$outputs[$row['asset_id']]['name'] = $row['asset_name'];
+			$outputs[$row['asset_id']][] = $this->container->get('consim.core.entity.work_output')->import($row);
 		}
 		$this->db->sql_freeresult($result);
 
@@ -166,10 +166,11 @@ class WorkService
 	/**
 	 * Set all work outputs to template
 	 *
-	 * @param $work_id
+	 * @param int $work_id
+	 * @param array $result; default: null
 	 * @return void
 	 */
-	public function allWorkOutputsToTemplate($work_id)
+	public function allWorkOutputsToTemplate($work_id, $result = null)
 	{
 		//get sorted outpus
 		$workOutputs = $this->getSortedOutputs($work_id);
@@ -177,16 +178,18 @@ class WorkService
 		//set output to template
 		foreach ($workOutputs as $type => $outputs)
 		{
+			//send result to template
 			$this->template->assign_block_vars('work_outputs', array(
 				'TYPE'			=> $outputs['name'],
 				'VALUE'			=> (isset($result) && !empty($result['outputs'][$type]))? $result['outputs'][$type] : 0,
 			));
 
+			//send all WorkOutputs to template
 			/** @var \consim\core\entity\WorkOutput[] $outputs */
 			for($i=0; $i < 5; $i++)
 			{
 				$this->template->assign_block_vars('work_outputs.types', array(
-					'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
+					'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getAssetValue() : 0,
 				));
 			}
 		}
@@ -249,7 +252,7 @@ class WorkService
 				for($i=0; $i < 5; $i++)
 				{
 					$this->template->assign_block_vars('works.outputs.types', array(
-						'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getOutputValue() : 0,
+						'VALUE'			=> (isset($outputs[$i]))? $outputs[$i]->getAssetValue() : 0,
 					));
 				}
 			}
