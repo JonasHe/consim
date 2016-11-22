@@ -150,13 +150,19 @@ class LocationController extends AbstractController
 		//Set all building from location to template
 		$this->buildingService->allLocationBuildingsToTemplate($location->getId());
 
-		//Display the map
-		$this->mapService->showMap("consimMap",
+		//Display the map of the current region
+		$this->mapService->showMap("regionMap",
 			"mainMap",
 			'width: 750px; height: 511px !important;',
 			array('no_additional_buildings', 'no_zoom'),
 			3,
 			3
+		);
+
+		// Display a map of all regions
+		$this->mapService->showMap("consimMap",
+			"mainMap",
+			'width: 750px; height: 511px !important;'
 		);
 
 		// Set output vars for display in the template
