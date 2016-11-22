@@ -85,7 +85,7 @@ class MapService
 		$map = $this->load_map($divName, $map, $args, $focus, $highlight);
 
 		$this->template->assign_vars(array(
-			'MAP' => '<div id="'. $divName .'" style="'. $css .'background-size: cover;"></div>'. $map,
+			strtoupper($divName) => '<div id="'. $divName .'" style="'. $css .'background-size: cover;"></div>'. $map,
 		));
 	}
 
