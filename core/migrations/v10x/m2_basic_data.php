@@ -189,7 +189,11 @@ class m2_basic_data extends \phpbb\db\migration\migration
 		global $user;
 
 		$provinces = array(
+			array('id' => 1, 'name' => $user->lang('DMNASI'), 'country_id' => 1),
+			array('id' => 2, 'name' => $user->lang('WARANDI'), 'country_id' => 1),
 			array('id' => 3, 'name' => $user->lang('ISORIA'), 'country_id' => 1),
+			array('id' => 18, 'name' => $user->lang('WASTELAND'), 'country_id' => 4),
+			array('id' => 19, 'name' => $user->lang('WASTELAND'), 'country_id' => 4),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_provinces', $provinces);
 	}

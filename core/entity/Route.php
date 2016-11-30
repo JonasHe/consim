@@ -22,6 +22,10 @@ class Route extends abstractEntity
 		'start_location_id'		=> 'integer',
 		'end_location_id'		=> 'integer',
 		'time'					=> 'integer',
+		'blocked'               => 'integer',
+		'type'                  => 'integer',
+		'prvnce_id'             => 'integer',
+
 	);
 
 	/**
@@ -32,6 +36,9 @@ class Route extends abstractEntity
 		'start_location_id',
 		'end_location_id',
 		'time',
+		'blocked',
+		'type',
+		'prvnce_id'
 	);
 	/**
 	* The database table the consim user data are stored in
@@ -146,5 +153,62 @@ class Route extends abstractEntity
 	public function getTime()
 	{
 		return $this->getInteger($this->data['time']);
+	}
+
+	/**
+	 * Get Blocked
+	 *
+	 * @return int Blocked
+	 * @access public
+	 */
+	public function getBlocked()
+	{
+		return $this->getInteger($this->data['blocked']);
+	}
+
+	/**
+	 * Set Blocked
+	 *
+	 * @param int $blocked
+	 * @return Route
+	 * @access public
+	 */
+	public function setBlocked($blocked)
+	{
+		return $this->setInteger('blocked',$blocked);
+	}
+
+	/**
+	 * Get Type
+	 *
+	 * @return int $type
+	 * @access public
+	 */
+	public function getType()
+	{
+		return $this->getInteger($this->data['type']);
+	}
+
+	/**
+	 * Set Type
+	 *
+	 * @param int $type
+	 * @return Route
+	 * @access public
+	 */
+	public function setType($type)
+	{
+		return $this->setInteger('type',$type);
+	}
+
+	/**
+	 * Get Province ID
+	 *
+	 * @return int $prvnce_id
+	 * @access public
+	 */
+	public function getPrvnceId()
+	{
+		return $this->getInteger($this->data['prvnce_id']);
 	}
 }

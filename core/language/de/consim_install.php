@@ -168,6 +168,7 @@ $lang = array_merge($lang, array(
 	'ISORIA'					=> 'Isoria',
 	'WARANDI'					=> 'Warandi',
 	'DMNASI'					=> 'Dmnasi',
+	'WASTELAND'                 => 'Ausland',
 
 	// Skills Category
 	'SKILL_CAT_1'				=> 'Sprachen',

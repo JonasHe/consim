@@ -6,7 +6,7 @@
 
     <h1>{L_CONSIM_MARKERS}</h1>
     <div class="map_wrapper">
-        <div class="map_left">{MAP}</div>
+        <div class="map_left">{ADDMARKERS}</div>
         <div class="map_right">
             <form action="{U_ACTION}" method="POST" id="map_add_marker">
                 <h1>{L_MARKER_ADD}</h1>
@@ -107,7 +107,7 @@
                 }
             }
         }
-        
+
         (function($) {
             if(typeof map_admin !== "undefined" && map_admin) {
                 var not_added = true;

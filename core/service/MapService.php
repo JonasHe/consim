@@ -132,6 +132,22 @@ class MapService
 			$cities = $this->load_cities($map, $focus);
 		}
 
+
+		// Create a title with the names from the cities array
+		foreach($roads as $key => $value)
+		{
+			if(key_exists($value['start_location_id'],$cities))
+			{
+				$roads[$key]["title"] = $cities[$value['start_location_id']]["name"];
+			}
+
+			if(key_exists($value['end_location_id'],$cities))
+			{
+				$roads[$key]["title"] .= " - ".$cities[$value['end_location_id']]["name"];
+			}
+		}
+
+
 		$zoom = (!in_array('no_zoom', $args)) ? true : false;
 		$legend = (!in_array('no_legend', $args)) ? true : false;
 
@@ -179,23 +195,23 @@ class MapService
 		if($id != 0)
 		{
 			$sql = $this->db->sql_build_query("SELECT",array(
-				'SELECT' 			=> 'r.id, r.blocked, r.type, r.title',
-				'FROM' 				=> array('phpbb_consim_roads' => 'r',),
+				'SELECT' 			=> 'r.id, r.blocked, r.type, r.start_location_id, r.end_location_id',
+				'FROM' 				=> array('phpbb_consim_routes' => 'r'),
 				'WHERE'             => 'r.prvnce_id = '.$id));
-
 		}
 		else
 		{
 			$sql = $this->db->sql_build_query("SELECT",array(
-				'SELECT' 			=> 'r.id, r.blocked, r.type, r.title',
-				'FROM' 				=> array('phpbb_consim_roads' => 'r',)));
+				'SELECT' 			=> 'r.id, r.blocked, r.type, r.start_location_id, r.end_location_id',
+				'FROM' 				=> array('phpbb_consim_routes' => 'r')));
 		}
 
 		$result = $this->db->sql_query($sql);
 		while($row = $this->db->sql_fetchrow($result))
 		{
-			$roads[$row['id']] = array('road_type' => 'ROAD_TYPE_'.$row['type'], 'blocked' => $row['blocked'], 'title' => $row['title']);
-			$regions[] = array('id' => $row['id'], 'country' => 'ROAD_TYPE_'.$row['type']);
+			$roads[($row['id']+19)] = array('road_type' => 'ROAD_TYPE_'.$row['type'], 'blocked' => $row['blocked'],
+				'start_location_id' => $row['start_location_id'], 'end_location_id' => $row['end_location_id']);
+			$regions[] = array('id' => ($row['id']+19), 'country' => 'ROAD_TYPE_'.$row['type']);
 		}
 
 		return $roads;

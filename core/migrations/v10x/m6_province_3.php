@@ -35,7 +35,6 @@ class m6_province_3 extends \phpbb\db\migration\migration
 		return array(
 			array('custom', array(array($this, 'insert_locations'))),
 			array('custom', array(array($this, 'insert_routes'))),
-			array('custom', array(array($this, 'insert_roads'))),
 		);
 	}
 
@@ -82,52 +81,43 @@ class m6_province_3 extends \phpbb\db\migration\migration
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_locations', $locations);
 	}
 
+
 	public function insert_routes()
 	{
 		$routes = array(
-			array('id' => 1, 'start_location_id' => 1, 'end_location_id' => 2, 'time' => 360),
-			array('id' => 2, 'start_location_id' => 1, 'end_location_id' => 3, 'time' => 300),
-			array('id' => 3, 'start_location_id' => 1, 'end_location_id' => 9, 'time' => 480),
-			array('id' => 4, 'start_location_id' => 1, 'end_location_id' => 4, 'time' => 360),
-			array('id' => 5, 'start_location_id' => 1, 'end_location_id' => 5, 'time' => 300),
-			array('id' => 6, 'start_location_id' => 5, 'end_location_id' => 8, 'time' => 300),
-			array('id' => 7, 'start_location_id' => 5, 'end_location_id' => 11, 'time' => 300),
-			array('id' => 8, 'start_location_id' => 11, 'end_location_id' => 4, 'time' => 540),
-			array('id' => 9, 'start_location_id' => 4, 'end_location_id' => 9, 'time' => 420),
-			array('id' => 10, 'start_location_id' => 8, 'end_location_id' => 2, 'time' => 360),
-			array('id' => 11, 'start_location_id' => 9, 'end_location_id' => 3, 'time' => 360),
-			array('id' => 12, 'start_location_id' => 3, 'end_location_id' => 10, 'time' => 360),
-			array('id' => 13, 'start_location_id' => 10, 'end_location_id' => 7, 'time' => 240),
-			array('id' => 14, 'start_location_id' => 2, 'end_location_id' => 6, 'time' => 360),
-			array('id' => 15, 'start_location_id' => 2, 'end_location_id' => 7, 'time' => 300),
-			array('id' => 16, 'start_location_id' => 6, 'end_location_id' => 7, 'time' => 480),
+			array('id' => 1, 'start_location_id' => 1, 'end_location_id' => 2, 'time' => 360,
+			      'blocked' => 0, 'type' => 3, 'prvnce_id' => 3),
+			array('id' => 2, 'start_location_id' => 1, 'end_location_id' => 3, 'time' => 300,
+			      'blocked' => 0, 'type' => 3, 'prvnce_id' => 3),
+			array('id' => 3, 'start_location_id' => 1, 'end_location_id' => 9, 'time' => 480,
+			      'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 4, 'start_location_id' => 1, 'end_location_id' => 4, 'time' => 360,
+			      'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 5, 'start_location_id' => 1, 'end_location_id' => 5, 'time' => 300,
+			      'blocked' => 0, 'type' => 3, 'prvnce_id' => 3),
+			array('id' => 6, 'start_location_id' => 5, 'end_location_id' => 8, 'time' => 300,
+			      'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 7, 'start_location_id' => 5, 'end_location_id' => 11, 'time' => 300,
+			      'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 8, 'start_location_id' => 11, 'end_location_id' => 4, 'time' => 540,
+			      'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 9, 'start_location_id' => 4, 'end_location_id' => 9, 'time' => 420,
+			      'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 10, 'start_location_id' => 8, 'end_location_id' => 2, 'time' => 360,
+			      'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 11, 'start_location_id' => 9, 'end_location_id' => 3, 'time' => 360,
+			      'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 12, 'start_location_id' => 3, 'end_location_id' => 10, 'time' => 360,
+			      'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 13, 'start_location_id' => 10, 'end_location_id' => 7, 'time' => 240,
+			      'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
+			array('id' => 14, 'start_location_id' => 2, 'end_location_id' => 6, 'time' => 360,
+			      'blocked' => 0, 'type' => 3, 'prvnce_id' => 3),
+			array('id' => 15, 'start_location_id' => 2, 'end_location_id' => 7, 'time' => 300,
+			      'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
+			array('id' => 16, 'start_location_id' => 6, 'end_location_id' => 7, 'time' => 480,
+			      'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
 		);
 		$this->db->sql_multi_insert($this->table_prefix . 'consim_routes', $routes);
 	}
-
-	public function insert_roads()
-	{
-		/** @var \phpbb\user $user */
-		global $user;
-
-		$provinces = array(
-			array('id' => 20, 'title' => $user->lang('VARNOGRAD').' - '.$user->lang('ALATYR') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
-			array('id' => 21, 'title' => $user->lang('JEGENSK').' - '.$user->lang('ALATYR') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
-			array('id' => 22, 'title' => $user->lang('VARNOGRAD').' - '.$user->lang('JEGENSK') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
-			array('id' => 23, 'title' => $user->lang('PKD_74').' - '.$user->lang('JEGENSK') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
-			array('id' => 24, 'title' => $user->lang('GRUSHEVSK').' - '.$user->lang('PKD_74') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
-			array('id' => 25, 'title' => $user->lang('GRUSHEVSK').' - '.$user->lang('NOBRI') , 'blocked' => 0, 'type' => 3, 'prvnce_id' => 3),
-			array('id' => 26, 'title' => $user->lang('KUBISHEVSK').' - '.$user->lang('NOBRI') , 'blocked' => 0, 'type' => 3, 'prvnce_id' => 3),
-			array('id' => 27, 'title' => $user->lang('ALATYR').' - '.$user->lang('NOBRI') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
-			array('id' => 28, 'title' => $user->lang('ALATYR').' - '.$user->lang('TURAV') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
-			array('id' => 29, 'title' => $user->lang('KUBISHEVSK').' - '.$user->lang('TURAV') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
-			array('id' => 30, 'title' => $user->lang('KUBISHEVSK').' - '.$user->lang('SMTU_567_C') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
-			array('id' => 31, 'title' => $user->lang('ASTRAKAN').' - '.$user->lang('SMTU_567_C') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
-			array('id' => 32, 'title' => $user->lang('ASTRAKAN').' - '.$user->lang('NOBRI') , 'blocked' => 0, 'type' => 2, 'prvnce_id' => 3),
-			array('id' => 33, 'title' => $user->lang('ASTRAKAN').' - '.$user->lang('KIRGANOV') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
-			array('id' => 34, 'title' => $user->lang('GRUSHEVSK').' - '.$user->lang('KIRGANOV') , 'blocked' => 0, 'type' => 1, 'prvnce_id' => 3),
-		);
-		$this->db->sql_multi_insert($this->table_prefix . 'consim_roads', $provinces);
-	}
-
 }

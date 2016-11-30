@@ -217,6 +217,9 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 						'start_location_id'		=> array('UINT:8', 0),
 						'end_location_id'		=> array('UINT:8', 0),
 						'time'					=> array('UINT:8', 0),
+						'blocked'				=> array('UINT:1', 0),
+						'type'					=> array('UINT:8', 0),
+						'prvnce_id'				=> array('UINT:8', 0)
 					),
 					'PRIMARY_KEY'	=> array('id'),
 					'KEYS'			=> array(
@@ -303,19 +306,6 @@ class m1_inital_schema extends \phpbb\db\migration\migration
 						'map_name'				=> array('VCHAR:255','')
 					),
 					'PRIMARY_KEY'	=> array('id'),
-				),
-				$this->table_prefix . 'consim_roads'	=> array(
-					'COLUMNS'	=> array(
-						'id'					=> array('UINT:8', 0),
-						'title'					=> array('VCHAR:255', ''),
-						'blocked'				=> array('UINT:1', 0),
-						'type'					=> array('UINT:8', 0),
-						'prvnce_id'				=> array('UINT:8', 0)
-					),
-					'PRIMARY_KEY'	=> array('id'),
-					'KEYS'			=> array(
-						'prvnce_id'					=> array('INDEX', 'prvnce_id'),
-					),
 				),
 				$this->table_prefix. 'consim_asset_types'	=> array(
 					'COLUMNS'	=> array(

@@ -100,7 +100,7 @@ class Map
 	* @access public
 	*/
 	public function overview()
-	{	
+	{
         // Load the map for use on this site
 		$this->container->get('consim.core.service.map')
 			->showMap("addMarkers", "mainMap", 'width: 750px; height: 511px;');
@@ -117,11 +117,32 @@ class Map
 			));
 		}
 
-		// Catch all roads from the database
-		$sql = 'SELECT id, title, blocked, type FROM phpbb_consim_roads';
+		// Catch all cities from the database for later use in the routes loop
+		$cities = array();
+		$sql = $this->db->sql_build_query("SELECT",array(
+			'SELECT' 			=> 'l.name',
+			'FROM' 				=> array('phpbb_consim_locations' => 'l',)));
 		$result = $this->db->sql_query($sql);
 		while($row = $this->db->sql_fetchrow($result))
 		{
+			$cities[] = array('name' => $row['name']);
+		}
+
+		// Catch all roads from the database
+		$sql = 'SELECT id, start_location_id, end_location_id blocked, type FROM phpbb_consim_routes';
+		$result = $this->db->sql_query($sql);
+		while($row = $this->db->sql_fetchrow($result))
+		{
+			if(key_exists($row['start_location_id'],$cities))
+			{
+				$row["title"] = $cities[$row['start_location_id']]["name"];
+			}
+
+			if(key_exists($row['end_location_id'],$cities))
+			{
+				$row["title"] .= " - ".$cities[$row['end_location_id']]["name"];
+			}
+
 			$this->template->assign_block_vars('Roads', array(
 				'TITLE' 		=> $row['title'],
 				'BLOCKED' 		=> $row['blocked'],
@@ -214,7 +235,7 @@ class Map
 	*/
 	public function road_update($id)
 	{	
-		$this->container->get('consim.core.entity.roads')->setBlocked($this->request->variable('blocked_'.$id,0))
+		$this->container->get('consim.core.entity.routes')->setBlocked($this->request->variable('blocked_'.$id,0))
 			->setType($this->request->variable('road_type_'.$id,0))->setId($id)->save();
 	}
 }

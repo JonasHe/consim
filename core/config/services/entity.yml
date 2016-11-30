@@ -118,13 +118,6 @@ services:
             - @dbal.conn
             - %tables.consim.provinces%
 
-    consim.core.entity.roads:
-        class: consim\core\entity\Roads
-        scope: prototype # scope MUST be prototype for this to work!
-        arguments:
-            - @dbal.conn
-            - %tables.consim.roads%
-
     consim.core.entity.route:
         class: consim\core\entity\Route
         scope: prototype # scope MUST be prototype for this to work!

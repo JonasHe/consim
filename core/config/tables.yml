@@ -20,7 +20,6 @@ parameters:
     tables.consim.news_topics: %core.table_prefix%consim_news_topics
     tables.consim.anniversary: %core.table_prefix%consim_anniversary
     tables.consim.weather: %core.table_prefix%consim_weather
-    tables.consim.roads: %core.table_prefix%consim_roads
     tables.consim.markers: %core.table_prefix%consim_markers
     tables.consim.asset_types: %core.table_prefix%consim_asset_types
     tables.consim.assets: %core.table_prefix%consim_assets
