@@ -136,14 +136,14 @@ class MapService
 		// Create a title with the names from the cities array
 		foreach($roads as $key => $value)
 		{
-			if(key_exists($value['start_location_id'],$cities))
+			if(key_exists($value['start_location_id']-1,$cities))
 			{
-				$roads[$key]["title"] = $cities[$value['start_location_id']]["name"];
+				$roads[$key]["title"] = $cities[$value['start_location_id']-1]["name"];
 			}
 
-			if(key_exists($value['end_location_id'],$cities))
+			if(key_exists($value['end_location_id']-1,$cities))
 			{
-				$roads[$key]["title"] .= " - ".$cities[$value['end_location_id']]["name"];
+				$roads[$key]["title"] .= " - ".$cities[$value['end_location_id']-1]["name"];
 			}
 		}
 

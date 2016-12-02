@@ -129,18 +129,18 @@ class Map
 		}
 
 		// Catch all roads from the database
-		$sql = 'SELECT id, start_location_id, end_location_id blocked, type FROM phpbb_consim_routes';
+		$sql = 'SELECT id, start_location_id, end_location_id, blocked, type FROM phpbb_consim_routes';
 		$result = $this->db->sql_query($sql);
 		while($row = $this->db->sql_fetchrow($result))
 		{
-			if(key_exists($row['start_location_id'],$cities))
+			if(key_exists($row['start_location_id']-1,$cities))
 			{
-				$row["title"] = $cities[$row['start_location_id']]["name"];
+				$row["title"] = $cities[$row['start_location_id']-1]["name"];
 			}
 
-			if(key_exists($row['end_location_id'],$cities))
+			if(key_exists($row['end_location_id']-1,$cities))
 			{
-				$row["title"] .= " - ".$cities[$row['end_location_id']]["name"];
+				$row["title"] .= " - ".$cities[$row['end_location_id']-1]["name"];
 			}
 
 			$this->template->assign_block_vars('Roads', array(
